@@ -9,8 +9,11 @@ Description: Jam Color manipulation functions, rainbow categorical colors
     with varying luminance and chroma, convert vector to colors,
     re-usable named vector of colors for consistency across plots,
     convert data.frame to color, subsetColors.
+Depends: R (>= 3.4.3)
+Imports: jamba
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 URL: http://github.com/jmw86069/jamcolor
 BugReports: http://github.com/jmw86069/jamcolor/issues
+RoxygenNote: 6.0.1
