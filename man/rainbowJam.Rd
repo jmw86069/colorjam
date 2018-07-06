@@ -104,6 +104,6 @@ rainbowJam(12);
 showColors(rainbowJam(12));
 
 # be fancy and label colors using the closest R named color
-showColors(nameVector(rainbowJam(12), closestRcolor(rainbowJam(12))));
+showColors(rainbowJam(12, nameStyle="colors"));
 
 }
