@@ -1,7 +1,7 @@
-Package: jamcolor
+Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.0.900
+Version: 0.0.1.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -14,6 +14,7 @@ Imports: jamba
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-URL: http://github.com/jmw86069/jamcolor
-BugReports: http://github.com/jmw86069/jamcolor/issues
+URL: http://github.com/jmw86069/colorjam
+BugReports: http://github.com/jmw86069/colorjam/issues
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1

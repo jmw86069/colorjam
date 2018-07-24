@@ -11,7 +11,7 @@ hw2h(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, ...)
 not need to be in sequential order.}
 
 \item{h1, h2}{vector of color hues, which by default are defined in
-\code{h2hwOptions}, but allowed here in cases where the global options
+\code{\link[=h2hwOptions]{h2hwOptions()}}, but allowed here in cases where the global options
 should be overridden but not modified.}
 }
 \value{
@@ -43,4 +43,8 @@ warpedHues;
 hues <- hw2h(warpedHues);
 hues;
 
+}
+\seealso{
+Other hue warp functions: \code{\link{h2hwOptions}},
+  \code{\link{h2hw}}
 }

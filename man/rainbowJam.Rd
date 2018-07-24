@@ -65,7 +65,7 @@ colors: "none" returns colors with no names; "hcl" assigns names with
 the color number prefix, followed by H, C, L values; "colors" names the
 vector by the hex color code.}
 
-\item{h1, h2}{numeric vectors as used by \code{h2hw} and \code{hw2h} to
+\item{h1, h2}{numeric vectors as used by \code{\link[=h2hw]{h2hw()}} and \code{\link[=hw2h]{hw2h()}} to
 convert from warped hues to standard hues. The default values define
 red-yellow-blue (additive) color space, which is converted to
 red-green-blue color space to produce the actual R color.}
@@ -80,22 +80,23 @@ rainbow categorical colors using varied luminance and chroma
 }
 \details{
 This function customizes similar functions \code{grDevices::rainbow},
-\code{colorspace::rainbow_hcl}, and \code{scales::hue_pal} in two main
+\code{\link[colorspace:rainbow_hcl]{colorspace::rainbow_hcl()}}, and \code{\link[scales:hue_pal]{scales::hue_pal()}} in two main
 ways:
-
-1. It uses the warped color wheel (see \code{h2hw}) which compresses the
+\enumerate{
+\item It uses the warped color wheel (see \code{\link[=h2hw]{h2hw()}} which compresses the
 green component of the standard HCL color hue wheel, extending the yellow.
-2. It uses a varying luminance and chroma vector which was selected to
+\item It uses a varying luminance and chroma vector which was selected to
 optimize visual distinctiveness of adjacent colors. There is still a limit
 to the maximum number of effectively different categorical colors, however
 this function appears to improve other available methods.
+}
 
 This function is also intended to enable use of a custom color wheel,
 for example a set of color mappings could define color-blind friendly
-ranges of colors when using the warped hue functions \code{h2hw} and
-\code{hw2h}. When \code{warpHue=TRUE} the values for \code{h1} and
+ranges of colors when using the warped hue functions \code{\link[=h2hw]{h2hw()}} and
+\code{\link[=hw2h]{hw2h()}}. When \code{warpHue=TRUE} the values for \code{h1} and
 \code{h2} are used to define a mapping from warped hues to standard
-hues recognized by \code{hcl}.
+hues recognized by \code{\link[=hcl]{hcl()}}.
 }
 \examples{
 rainbowJam(12);

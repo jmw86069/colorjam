@@ -14,15 +14,15 @@ h2hwOptions(h1, h2, h1default = c(0, 60, 120, 240, 360), h2default = c(0,
 \item{h2}{NULL or numeric vector of color hue values, sequential between
 0 and 360.}
 
-\item{verbose}{logical whether to print verbose output}
-
-\item{h1default.h2default}{numeric vector of color hue values to use when
+\item{h1default, h2default}{numeric vector of color hue values to use when
 h1 or h2 are NULL, respectively. The default values are
 included here as a function parameter here for visibility.}
+
+\item{verbose}{logical whether to print verbose output}
 }
 \value{
 list with names \code{h1} and \code{h2} containing numeric vectors
-   of hues between 0 and 360.
+of hues between 0 and 360.
 }
 \description{
 Get hue color warp options used to convert to and from warped hues
@@ -35,18 +35,19 @@ and blue=240, to a color wheel like RYB (red, yellow, blue) where red=0,
 yellow=120, and blue=240, (green becomes 180). This conversion is
 non-linear, meaning it warps (bends) the colors.
 
-The purpose of using options() to store the color hue is to make it
+The purpose of using \code{options()} to store the color hue is to make it
 easy to re-use the settings across multiple function calls. The related
-reason for this function \code{h2hwOptions} is to make it clear the
+reason for this function \code{\link[=h2hwOptions]{h2hwOptions()}} is to make it clear the
 default values, and make it clear how to update and review the current
 settings.
 
-Together the vector \code{h1} and \code{h2} are used by \code{approx} to
+Together the vector \code{h1} and \code{h2} are used by \code{\link[stats:approx]{stats::approx()}} to
 convert from the value ranges in \code{h1} to the corresponding value
-ranges in \code{h2}.
+ranges in \code{h2}. Using this mechanism, one could define ranges which
+effectively remove entire slices of the color wheel.
 
-To disable the warped hue mechanism, set h2 equal to h1, for example
-\code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{approx}
+To disable the warped hue mechanism, set \code{h2} equal to \code{h1} for example
+\code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{\link[stats:approx]{stats::approx()}}
 to interpret every hue as a 1:1 relationship with the warped hue.
 }
 \examples{
@@ -57,4 +58,8 @@ h2hwOptions(h1=c(0, 60,120,240,300,360),
    h2=c(0,120,180,240,280,360))
 h2hw(300)
 
+}
+\seealso{
+Other hue warp functions: \code{\link{h2hw}},
+  \code{\link{hw2h}}
 }

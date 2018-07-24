@@ -11,12 +11,12 @@ h2hw(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, ...)
 not need to be in sequential order.}
 
 \item{h1, h2}{vector of color hues, which by default are defined in
-\code{h2hwOptions}, but allowed here in cases where the global options
+\code{\link[=h2hwOptions]{h2hwOptions()}}, but allowed here in cases where the global options
 should be overridden but not modified.}
 }
 \value{
 numeric vector of hue values after applying the hue warp
-   operation.
+operation.
 
 numeric vector of warped color hues.
 }
@@ -25,19 +25,19 @@ Convert standard hue to warped hue using the hue warp vectors
 }
 \details{
 This function is intended to convert from a vector of hue values to
-the warped hues defined by the vectors returned by \code{h2hwOptions}.
+the warped hues defined by the vectors returned by \code{\link[=h2hwOptions]{h2hwOptions()}}.
 The intent is to convert colors in RGB space into RYB space by default,
 which substantially improves several other color manipulations, such
 as selection of categorical colors, and color blending.
 
 Note the input hue is considered the "standard" color hue as defined
-by the \code{colorspace::polarLUV} function, ranging between 0 and 360.
+by the \code{\link[colorspace:polarLUV]{colorspace::polarLUV()}} function, ranging between 0 and 360.
 By this standard, 0 is defined as red, 120 is defined as green, and
 240 is defined as blue.
 
 The default mappings convert RGB (red, green, blue) to RYB (red, yellow,
 blue). The color yellow has hue=60 in RGB space, so the call to
-\code{hw2h(60)} results in 120, which is the hue in RYB space.
+\code{hw2h(60)} results in \code{120}, which is the hue in RYB space.
 }
 \examples{
 ## Yellow when using an RGB color wheel is 60 degrees,
@@ -53,4 +53,8 @@ warpedHuesBY <- h2hw(huesBY);
 warpedHuesBY;
 warpedHues <- h2hw(hues);
 
+}
+\seealso{
+Other hue warp functions: \code{\link{h2hwOptions}},
+  \code{\link{hw2h}}
 }

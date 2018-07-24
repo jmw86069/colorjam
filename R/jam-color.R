@@ -10,30 +10,31 @@
 #' yellow=120, and blue=240, (green becomes 180). This conversion is
 #' non-linear, meaning it warps (bends) the colors.
 #'
-#' The purpose of using options() to store the color hue is to make it
+#' The purpose of using `options()` to store the color hue is to make it
 #' easy to re-use the settings across multiple function calls. The related
-#' reason for this function \code{h2hwOptions} is to make it clear the
+#' reason for this function [h2hwOptions()] is to make it clear the
 #' default values, and make it clear how to update and review the current
 #' settings.
 #'
-#' Together the vector \code{h1} and \code{h2} are used by \code{approx} to
-#' convert from the value ranges in \code{h1} to the corresponding value
-#' ranges in \code{h2}.
+#' Together the vector `h1` and `h2` are used by [stats::approx()] to
+#' convert from the value ranges in `h1` to the corresponding value
+#' ranges in `h2`. Using this mechanism, one could define ranges which
+#' effectively remove entire slices of the color wheel.
 #'
-#' To disable the warped hue mechanism, set h2 equal to h1, for example
-#' \code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{approx}
+#' To disable the warped hue mechanism, set `h2` equal to `h1` for example
+#' `h2hwOptions(h2=h2hwOptions()$h1)`. Doing so will cause [stats::approx()]
 #' to interpret every hue as a 1:1 relationship with the warped hue.
 #'
 #' @param h1 NULL or numeric vector of color hue values, sequential between
 #'    0 and 360.
 #' @param h2 NULL or numeric vector of color hue values, sequential between
 #'    0 and 360.
-#' @param h1default.h2default numeric vector of color hue values to use when
+#' @param h1default,h2default numeric vector of color hue values to use when
 #'    h1 or h2 are NULL, respectively. The default values are
 #'    included here as a function parameter here for visibility.
 #' @param verbose logical whether to print verbose output
 #'
-#' @return list with names \code{h1} and \code{h2} containing numeric vectors
+#' @return list with names `h1` and `h2` containing numeric vectors
 #'    of hues between 0 and 360.
 #'
 #' @examples
@@ -43,6 +44,8 @@
 #' h2hwOptions(h1=c(0, 60,120,240,300,360),
 #'    h2=c(0,120,180,240,280,360))
 #' h2hw(300)
+#'
+#' @family hue warp functions
 #'
 #' @export
 h2hwOptions <- function
@@ -95,24 +98,24 @@ h2hwOptions <- function
 #' Convert standard hue to warped hue using the hue warp vectors
 #'
 #' This function is intended to convert from a vector of hue values to
-#' the warped hues defined by the vectors returned by \code{h2hwOptions}.
+#' the warped hues defined by the vectors returned by [h2hwOptions()].
 #' The intent is to convert colors in RGB space into RYB space by default,
 #' which substantially improves several other color manipulations, such
 #' as selection of categorical colors, and color blending.
 #'
 #' Note the input hue is considered the "standard" color hue as defined
-#' by the \code{colorspace::polarLUV} function, ranging between 0 and 360.
+#' by the [colorspace::polarLUV()] function, ranging between 0 and 360.
 #' By this standard, 0 is defined as red, 120 is defined as green, and
 #' 240 is defined as blue.
 #'
 #' The default mappings convert RGB (red, green, blue) to RYB (red, yellow,
 #' blue). The color yellow has hue=60 in RGB space, so the call to
-#' \code{hw2h(60)} results in 120, which is the hue in RYB space.
+#' `hw2h(60)` results in `120`, which is the hue in RYB space.
 #'
 #' @param h numeric vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
 #' @param h1,h2 vector of color hues, which by default are defined in
-#'    \code{h2hwOptions}, but allowed here in cases where the global options
+#'    [h2hwOptions()], but allowed here in cases where the global options
 #'    should be overridden but not modified.
 #'
 #' @return numeric vector of hue values after applying the hue warp
@@ -133,6 +136,8 @@ h2hwOptions <- function
 #' warpedHuesBY <- h2hw(huesBY);
 #' warpedHuesBY;
 #' warpedHues <- h2hw(hues);
+#'
+#' @family hue warp functions
 #'
 #' @export
 h2hw <- function
@@ -170,7 +175,7 @@ h2hw <- function
 #' @param h numeric vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
 #' @param h1,h2 vector of color hues, which by default are defined in
-#'    \code{h2hwOptions}, but allowed here in cases where the global options
+#'    [h2hwOptions()], but allowed here in cases where the global options
 #'    should be overridden but not modified.
 #'
 #' @return numeric vector of color hues.
@@ -183,6 +188,8 @@ h2hw <- function
 #' warpedHues;
 #' hues <- hw2h(warpedHues);
 #' hues;
+#'
+#' @family hue warp functions
 #'
 #' @export
 hw2h <- function
@@ -205,10 +212,10 @@ hw2h <- function
 #' rainbow categorical colors using varied luminance and chroma
 #'
 #' This function customizes similar functions \code{grDevices::rainbow},
-#' \code{colorspace::rainbow_hcl}, and \code{scales::hue_pal} in two main
+#' [colorspace::rainbow_hcl()], and [scales::hue_pal()] in two main
 #' ways:
 #'
-#' 1. It uses the warped color wheel (see \code{h2hw}) which compresses the
+#' 1. It uses the warped color wheel (see [h2hw()] which compresses the
 #' green component of the standard HCL color hue wheel, extending the yellow.
 #' 2. It uses a varying luminance and chroma vector which was selected to
 #' optimize visual distinctiveness of adjacent colors. There is still a limit
@@ -217,10 +224,10 @@ hw2h <- function
 #'
 #' This function is also intended to enable use of a custom color wheel,
 #' for example a set of color mappings could define color-blind friendly
-#' ranges of colors when using the warped hue functions \code{h2hw} and
-#' \code{hw2h}. When \code{warpHue=TRUE} the values for \code{h1} and
-#' \code{h2} are used to define a mapping from warped hues to standard
-#' hues recognized by \code{hcl}.
+#' ranges of colors when using the warped hue functions [h2hw()] and
+#' [hw2h()]. When `warpHue=TRUE` the values for `h1` and
+#' `h2` are used to define a mapping from warped hues to standard
+#' hues recognized by [hcl()].
 #'
 #' @param n integer number of categorical colors to return
 #' @param alpha numeric alpha transparency of colors, values ranging from
@@ -266,7 +273,7 @@ hw2h <- function
 #'    colors: "none" returns colors with no names; "hcl" assigns names with
 #'    the color number prefix, followed by H, C, L values; "colors" names the
 #'    vector by the hex color code.
-#' @param h1,h2 numeric vectors as used by \code{h2hw} and \code{hw2h} to
+#' @param h1,h2 numeric vectors as used by [h2hw()] and [hw2h()] to
 #'    convert from warped hues to standard hues. The default values define
 #'    red-yellow-blue (additive) color space, which is converted to
 #'    red-green-blue color space to produce the actual R color.
