@@ -32,6 +32,8 @@
 #' @param h1default,h2default numeric vector of color hue values to use when
 #'    h1 or h2 are NULL, respectively. The default values are
 #'    included here as a function parameter here for visibility.
+#' @param reset logical whether to reset `h1` and `h2` values to the defaults,
+#'    as defined in `h1defaults` and `h2defaults`, respectively.
 #' @param verbose logical whether to print verbose output
 #'
 #' @return list with names `h1` and `h2` containing numeric vectors
@@ -53,10 +55,20 @@ h2hwOptions <- function
  h2,
  h1default=c(0, 60,120,240,360),
  h2default=c(0,120,180,240,360),
+ reset=FALSE,
  verbose=FALSE,
  ...)
 {
    ## Purpose is to define options("h2hw.h1") and options("h2hw.h2");
+   ##
+   ## Consider using different default values:
+   ## h1 <- c(0,  60, 120, 240, 300, 340, 360);
+   ## h2 <- c(0, 100, 160, 240, 330, 350, 360);
+   ## These default values further expand colors from blue to purple
+   if (length(reset) && reset) {
+      h1 <- formals(h2hwOptions)$h1defaults;
+      h2 <- formals(h2hwOptions)$h2defaults;
+   }
    if (!missing(h1)) {
       if (length(h1) == 0 || !igrepHas("numeric|integer", class(h1))) {
          h1 <- h1default;
@@ -362,7 +374,7 @@ rainbowJam <- function
    }
 
    ## Generate a color hue sequence
-   nHues <- max(c(nfloor, n+1));
+   nHues <- max(c(nfloor, n));
    if (length(hues) == 0) {
       ## hue starts from 0 to 360,
       ## add the Hstart to rotate the color hues,
@@ -379,6 +391,7 @@ rainbowJam <- function
       if (verbose) {
          printDebug("rainbowJam(): ",
             "warping hues");
+         ch(data.frame(h1=h1, h2=h2), Inf);
       }
       hues <- hw2h(hues,
          h1=h1,
