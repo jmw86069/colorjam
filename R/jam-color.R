@@ -601,3 +601,45 @@ closestRcolor <- function
    return(retX);
 }
 
+#' Assign colors to vector of group labels
+#'
+#' Assign colors to vector of group labels
+#'
+#' This function takes a character or factor vector as input, then
+#' assigns categorical colors to each label using `colorFunc`, by
+#' default `rainbowJam()`.
+#'
+#' @export
+group2colors <- function
+(x,
+   alpha=1,
+   colorFunc=rainbowJam,
+   useGradient=FALSE,
+   verbose=FALSE,
+   ...)
+{
+   ## Purpose is to take a character vector input, and assign colors
+   ## to each unique value.
+   ## By default, it uses colorjam::rainbowJam(), however any function
+   ## which return n number of colors will suffice, for example
+   ##
+   if (igrepHas("factor", class(x))) {
+      xLabels <- levels(x);
+   } else {
+      xLabels <- mixedSort(unique(x));
+   }
+   xColors <- nameVector(
+      colorFunc(length(xLabels),
+         ...),
+      xLabels);
+   xColorsNew <- xColors[as.character(x)];
+   if (useGradient) {
+      xColorsNew <- colors2gradient(xColorsNew,
+         ...);
+   }
+   if (length(names(x)) > 0) {
+      names(xColorsNew) <- names(x);
+   }
+   xColorsNew;
+}
+

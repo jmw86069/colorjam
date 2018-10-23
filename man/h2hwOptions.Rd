@@ -4,8 +4,9 @@
 \alias{h2hwOptions}
 \title{Get hue color warp options}
 \usage{
-h2hwOptions(h1, h2, h1default = c(0, 60, 120, 240, 360), h2default = c(0,
-  120, 180, 240, 360), verbose = FALSE, ...)
+h2hwOptions(h1, h2, h1default = c(0, 60, 120, 240, 360),
+  h2default = c(0, 120, 180, 240, 360), reset = FALSE,
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{h1}{NULL or numeric vector of color hue values, sequential between
@@ -17,6 +18,9 @@ h2hwOptions(h1, h2, h1default = c(0, 60, 120, 240, 360), h2default = c(0,
 \item{h1default, h2default}{numeric vector of color hue values to use when
 h1 or h2 are NULL, respectively. The default values are
 included here as a function parameter here for visibility.}
+
+\item{reset}{logical whether to reset \code{h1} and \code{h2} values to the defaults,
+as defined in \code{h1defaults} and \code{h2defaults}, respectively.}
 
 \item{verbose}{logical whether to print verbose output}
 }
@@ -63,3 +67,4 @@ h2hw(300)
 Other hue warp functions: \code{\link{h2hw}},
   \code{\link{hw2h}}
 }
+\concept{hue warp functions}
