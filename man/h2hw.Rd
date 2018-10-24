@@ -58,4 +58,3 @@ warpedHues <- h2hw(hues);
 Other hue warp functions: \code{\link{h2hwOptions}},
   \code{\link{hw2h}}
 }
-\concept{hue warp functions}

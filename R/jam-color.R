@@ -609,13 +609,54 @@ closestRcolor <- function
 #' assigns categorical colors to each label using `colorFunc`, by
 #' default `rainbowJam()`.
 #'
+#' If a previous set of colors has already been defined, the parameter
+#' `colorSub` is intended to maintain that same set of colors. However,
+#' all input values in `x` must be present in the `names(colorSub)`
+#' otherwise all colors are reassigned.
+#'
+#' In future, this function will maintain a partial set of colors,
+#' while assigning colors with maximum visible differences from the
+#' existing colors.
+#'
+#' @param x character or factor vector representing group membership.
+#' @param alpha numerical value indicating the alpha transparency to
+#'    apply to the output colors, scaled from 0 (fully transparent) to
+#'    1 (no transparency).
+#' @param colorFunc function whose first parameter is the number of
+#'    colors to return, and where `...` is passed for additional
+#'    parameters as needed. By default it uses `colorjam::rainbowJam()`.
+#' @param colorSub optional named vector of colors, whose names must
+#'    match all entries in `x`. This vector is used to re-apply
+#'    colors which have already been assigned to the labels in `x`.
+#' @param useGradient logical indicating whether to apply a light-to-dark
+#'    gradient to repeated colors, for example to distinguish multiple
+#'    replicates of a group.
+#' @param sortFunc function to use when sorting character or numeric
+#'    input in `x`, by default `jamba::mixedSort()`. When input `x` is
+#'    a factor, the factor levels are maintained in the same order.
+#' @param verbose logical indicating whether to print verbose output.
+#' @param ... additional parameters are passed to `colorFunc`
+#'
+#' @examples
+#' abcde <- group2colors(letters[1:5]);
+#' aabbccddee <- group2colors(rep(letters[1:5], each=2));
+#' aaabbcccccdeeee <- group2colors(rep(letters[1:5], c(3,2,5,1,4)));
+#' aaabbcccccdeeee2 <- group2colors(rep(letters[1:5], c(3,2,5,1,4)), useGradient=TRUE);
+#'
+#' showColors(list(abcde=abcde,
+#'    aabbccddee=aabbccddee,
+#'    aaabbcccccdeeee=aaabbcccccdeeee,
+#'    aaabbcccccdeeee2=aaabbcccccdeeee2));
+#'
 #' @export
 group2colors <- function
 (x,
-   alpha=1,
-   colorFunc=rainbowJam,
-   useGradient=FALSE,
-   verbose=FALSE,
+ alpha=1,
+ colorFunc=rainbowJam,
+ colorSub=NULL,
+ sortFunc=jamba::mixedSort,
+ useGradient=FALSE,
+ verbose=FALSE,
    ...)
 {
    ## Purpose is to take a character vector input, and assign colors
@@ -628,13 +669,19 @@ group2colors <- function
    } else {
       xLabels <- mixedSort(unique(x));
    }
-   xColors <- nameVector(
-      colorFunc(length(xLabels),
-         ...),
-      xLabels);
+   if (all(xLabels %in% names(colorSub))) {
+      xColors <- colorSub;
+   } else {
+      xColors <- nameVector(
+         colorFunc(length(xLabels),
+            ...),
+         xLabels);
+   }
+
+   ## Apply colors to the input data
    xColorsNew <- xColors[as.character(x)];
    if (useGradient) {
-      xColorsNew <- colors2gradient(xColorsNew,
+      xColorsNew <- color2gradient(xColorsNew,
          ...);
    }
    if (length(names(x)) > 0) {
@@ -643,3 +690,262 @@ group2colors <- function
    xColorsNew;
 }
 
+#' Jam default theme for ggplot2
+#'
+#' Jam default theme for ggplot2
+#'
+#' This function applies some default theme settings to ggplot2, mainly
+#' taking away the default grey newspaper background color, also rotates the
+#' x-axis label text to 60 degrees, to accomodate longer labels without
+#' overlaps.
+#'
+#' @param theme_default function representing a ggplot2 theme.
+#' @param base_size default font point size, used for scaling the
+#'    overall text sizes larger or smaller.
+#' @param grid.major.size,grid.minor.size the line width for the major
+#'    and minor grid lines, respectively. Set to 0 to suppress either.
+#' @param strip.background.colour,strip.background.fill color for the
+#'    border and strip background itself when ggplot2 is using a
+#'    faceted layout.
+#' @param panel.grid.major.colour,panel.grid.minor.colour colors for
+#'    the major and minor grid lines, respectively.
+#' @param axis.text.x.angle numeric degrees to rotate the x-axis
+#'    labels, apparently starts at 0 (horizontal) and goes
+#'    counter-clockwise (to the left.)
+#' @param blankGrid,blankXgrid,blankYgrid logical indicating whether
+#'    to have a blank grid for everything, major, or minor axis lines,
+#'    respectively. Intended to make it fast and easy to remove all
+#'    gridlines.
+#' @param resetTheme logical whether to call the function `theme_default`
+#'    which essentially resets (replaces) all previous settings with
+#'    those defined in the theme function. If `FALSE` then only the
+#'    specific settings defined in this function will be applied.
+#' @param verbose logical indicating whether to print verbose output.
+#' @param ... additional arguments are passed to `ggplot2::theme()` in
+#'    order to allow custom settings beyond what this function provides.
+#'
+#' @export
+theme_jam <- function
+(theme_default=theme_bw,
+ base_size=18,
+ grid.major.size=0.5,
+ grid.minor.size=0.25,
+ strip.background.colour="grey30",
+ strip.background.fill="lightgoldenrod1",
+ panel.grid.major.colour="grey60",
+ panel.grid.minor.colour="grey80",
+ axis.text.x.angle=60,
+ blankGrid=FALSE,
+ blankXgrid=FALSE,
+ blankYgrid=FALSE,
+ resetTheme=TRUE,
+ verbose=FALSE,
+ ...)
+{
+   ## Purpose is to provide simple theme for ggplot2 plots
+   ##
+   ## if blankXgrid=TRUE it substitutes panel.grid.major.x=element_blank()
+   ## and panel.grid.minor.x=element_blank()
+   ##
+   ## Anything in '...' is passed to theme(...) in order to customize other
+   ## theme options.
+   if (resetTheme) {
+      tNew <- theme_default(base_size=base_size);
+   } else {
+      tNew <- theme_get();
+   }
+   tNew <- tNew +
+      theme(
+         axis.text.x=element_text(angle=axis.text.x.angle,
+            hjust=1),
+         strip.text=element_text(colour=setTextContrastColor(strip.background.fill),
+         ),
+         strip.background=element_rect(
+            colour=strip.background.colour,
+            fill=strip.background.fill),
+         panel.grid.major=element_line(
+            colour=panel.grid.major.colour,
+            size=grid.major.size),
+         panel.grid.minor=element_line(
+            colour=panel.grid.minor.colour,
+            size=grid.minor.size));
+   if (blankGrid || blankXgrid) {
+      if (verbose) {
+         printDebug("theme_jam(): ",
+            "blankXgrid");
+      }
+      tNew <- tNew + theme(panel.grid.major.x=element_blank(),
+         panel.grid.minor.x=element_blank());
+   }
+   if (blankGrid || blankYgrid) {
+      if (verbose) {
+         printDebug("theme_jam(): ",
+            "blankYgrid");
+      }
+      tNew <- tNew + theme(panel.grid.major.y=element_blank(),
+         panel.grid.minor.y=element_blank());
+   }
+   if (length(list(...)) > 0) {
+      tNew <- tNew + theme(...);
+   }
+   invisible(tNew);
+}
+
+#' Apply rainbowJam categorical colors to a ggplot2 object
+#'
+#' Apply rainbowJam categorical colors to a ggplot2 object
+#'
+#' This function provides a function in the format `scale_color_*`
+#' to be applied to ggplot2 objects. It can provide a more visibly
+#' distinct set of categorical colors than `ggplot2::scale_color_hue()`.
+#'
+#' @param ... additional arguments are passed to `ggplot2::discrete_scale()`.
+#' @param type character string indicating the colors are sequential
+#'    `"seq"`, and is passed to `colorjam::jam_pal()`.
+#' @param palette integer value indicating the categorical palette
+#'    to use, intended to provide variety in the color assignment.
+#'    (Not yet implemented.)
+#' @param direction integer indicating whether to reverse the color
+#'    assignment, either `1` for the default forward assignment, or
+#'    `-1` for reverse assignment. Any negative value will reverse
+#'    the colors.
+#' @param invert logical indicating whether to return corresponding
+#'    contrasting colors, for example for text labels, typically either
+#'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param useGrey integer value between 0 and 100 indicating the grey
+#'    value, as sent to `jamba::setTextContrastColor()`, used only when
+#'    `invert=TRUE`.
+#'
+#' @examples
+#' if (suppressPackageStartupMessages(require(ggplot2))) {
+#'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
+#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=clarity)));
+#'
+#'    d + scale_color_hue() + ggtitle("scale_color_hue()");
+#'    d + scale_color_jam() + ggtitle("scale_color_jam()");
+#' }
+#' @export
+scale_color_jam <- function
+(...,
+ type="seq",
+ palette=1,
+ direction=1,
+ invert=FALSE,
+ useGrey=20)
+{
+   ## Purpose is to provide rainbowJam() in ggplot2 context
+   if (suppressPackageStartupMessages(!require(ggplot2))) {
+      stop("scale_color_jam() requires the ggplot2 package.");
+   }
+   discrete_scale("colour",
+      "jam",
+      jam_pal(type=type,
+         palette=palette,
+         direction=direction,
+         invert=invert,
+         useGrey=useGrey),
+      ...);
+}
+
+#' Apply rainbowJam categorical color fill to a ggplot2 object
+#'
+#' Apply rainbowJam categorical color fill to a ggplot2 object
+#'
+#' This function provides a function in the format `scale_fill_*`
+#' to be applied to ggplot2 objects. It can provide a more visibly
+#' distinct set of categorical colors than `ggplot2::scale_fill_hue()`.
+#'
+#' @param ... additional arguments are passed to `ggplot2::discrete_scale()`.
+#' @param type character string indicating the colors are sequential
+#'    `"seq"`, and is passed to `colorjam::jam_pal()`.
+#' @param palette integer value indicating the categorical palette
+#'    to use, intended to provide variety in the color assignment.
+#'    (Not yet implemented.)
+#' @param direction integer indicating whether to reverse the color
+#'    assignment, either `1` for the default forward assignment, or
+#'    `-1` for reverse assignment. Any negative value will reverse
+#'    the colors.
+#' @param invert logical indicating whether to return corresponding
+#'    contrasting colors, for example for text labels, typically either
+#'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param useGrey integer value between 0 and 100 indicating the grey
+#'    value, as sent to `jamba::setTextContrastColor()`, used only when
+#'    `invert=TRUE`.
+#'
+#' @export
+scale_fill_jam <- function
+(...,
+ type="seq",
+ palette=1,
+ direction=1,
+ invert=FALSE,
+ useGrey=20)
+{
+   ## Purpose is to provide rainbowJam() in ggplot2 context
+   if (suppressPackageStartupMessages(!require(ggplot2))) {
+      stop("scale_fill_jam() requires the ggplot2 package.");
+   }
+   discrete_scale("fill",
+      "jam",
+      jam_pal(type=type,
+         palette=palette,
+         direction=direction,
+         invert=invert,
+         useGrey=useGrey),
+      ...);
+}
+
+#' Jam color palette for ggplot2
+#'
+#' Jam color palette for ggplot2
+#'
+#' @param type character string indicating the colors are sequential
+#'    `"seq"`.
+#' @param palette integer value indicating the categorical palette
+#'    to use, intended to provide variety in the color assignment.
+#'    (Not yet implemented.)
+#' @param direction integer indicating whether to reverse the color
+#'    assignment, either `1` for the default forward assignment, or
+#'    `-1` for reverse assignment. Any negative value will reverse
+#'    the colors.
+#' @param invert logical indicating whether to return corresponding
+#'    contrasting colors, for example for text labels, typically either
+#'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param useGrey integer value between 0 and 100 indicating the grey
+#'    value, as sent to `jamba::setTextContrastColor()`, used only when
+#'    `invert=TRUE`.
+#'
+#' @export
+jam_pal <- function
+(type="seq",
+ palette=1,
+ direction=1,
+ invert=FALSE,
+ useGrey=20)
+{
+   ## Note this function does not specifically require ggplot2
+   if (invert) {
+      function(n) {
+         pal <- setTextContrastColor(rainbowJam(n),
+            useGrey=useGrey);
+         names(pal) <- NULL;
+         printDebug(pal);
+         pal <- pal[seq_len(n)];
+         if (direction < 0) {
+            pal <- rev(pal);
+         }
+         pal;
+      }
+   } else {
+      function(n) {
+         pal <- rainbowJam(n);
+         names(pal) <- NULL;
+         printDebug(pal);
+         pal <- pal[seq_len(n)];
+         if (direction < 0) {
+            pal <- rev(pal);
+         }
+         pal;
+      }
+   }
+}

@@ -4,8 +4,35 @@
 \alias{group2colors}
 \title{Assign colors to vector of group labels}
 \usage{
-group2colors(x, alpha = 1, colorFunc = rainbowJam,
-  useGradient = FALSE, verbose = FALSE, ...)
+group2colors(x, alpha = 1, colorFunc = rainbowJam, colorSub = NULL,
+  sortFunc = jamba::mixedSort, useGradient = FALSE, verbose = FALSE, ...)
+}
+\arguments{
+\item{x}{character or factor vector representing group membership.}
+
+\item{alpha}{numerical value indicating the alpha transparency to
+apply to the output colors, scaled from 0 (fully transparent) to
+1 (no transparency).}
+
+\item{colorFunc}{function whose first parameter is the number of
+colors to return, and where \code{...} is passed for additional
+parameters as needed. By default it uses \code{colorjam::rainbowJam()}.}
+
+\item{colorSub}{optional named vector of colors, whose names must
+match all entries in \code{x}. This vector is used to re-apply
+colors which have already been assigned to the labels in \code{x}.}
+
+\item{sortFunc}{function to use when sorting character or numeric
+input in \code{x}, by default \code{jamba::mixedSort()}. When input \code{x} is
+a factor, the factor levels are maintained in the same order.}
+
+\item{useGradient}{logical indicating whether to apply a light-to-dark
+gradient to repeated colors, for example to distinguish multiple
+replicates of a group.}
+
+\item{verbose}{logical indicating whether to print verbose output.}
+
+\item{...}{additional parameters are passed to \code{colorFunc}}
 }
 \description{
 Assign colors to vector of group labels
@@ -14,4 +41,25 @@ Assign colors to vector of group labels
 This function takes a character or factor vector as input, then
 assigns categorical colors to each label using \code{colorFunc}, by
 default \code{rainbowJam()}.
+
+If a previous set of colors has already been defined, the parameter
+\code{colorSub} is intended to maintain that same set of colors. However,
+all input values in \code{x} must be present in the \code{names(colorSub)}
+otherwise all colors are reassigned.
+
+In future, this function will maintain a partial set of colors,
+while assigning colors with maximum visible differences from the
+existing colors.
+}
+\examples{
+abcde <- group2colors(letters[1:5]);
+aabbccddee <- group2colors(rep(letters[1:5], each=2));
+aaabbcccccdeeee <- group2colors(rep(letters[1:5], c(3,2,5,1,4)));
+aaabbcccccdeeee2 <- group2colors(rep(letters[1:5], c(3,2,5,1,4)), useGradient=TRUE);
+
+showColors(list(abcde=abcde,
+   aabbccddee=aabbccddee,
+   aaabbcccccdeeee=aaabbcccccdeeee,
+   aaabbcccccdeeee2=aaabbcccccdeeee2));
+
 }

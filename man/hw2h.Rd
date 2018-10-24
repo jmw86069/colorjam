@@ -48,4 +48,3 @@ hues;
 Other hue warp functions: \code{\link{h2hwOptions}},
   \code{\link{h2hw}}
 }
-\concept{hue warp functions}

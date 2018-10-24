@@ -4,12 +4,11 @@
 \alias{rainbowJam}
 \title{rainbow categorical colors using varied luminance and chroma}
 \usage{
-rainbowJam(n = NULL, alpha = 1, nfloor = 4, hues = NULL,
-  Cvals = c(75, 95, 80, 65, 72, 80), Lvals = c(62, 83, 69, 58, 65, 74),
-  Crange = NULL, Lrange = NULL, Hstart = 12.2, warpHue = TRUE,
-  doTest = FALSE, sFactor = 1, darkFactor = 1,
-  nameStyle = c("none", "hcl", "colors"), h1 = h2hwOptions()$h1,
-  h2 = h2hwOptions()$h2, verbose = FALSE, ...)
+rainbowJam(n = NULL, alpha = 1, nfloor = 4, hues = NULL, Cvals = c(75,
+  95, 80, 65, 72, 80), Lvals = c(62, 83, 69, 58, 65, 74), Crange = NULL,
+  Lrange = NULL, Hstart = 12.2, warpHue = TRUE, doTest = FALSE,
+  sFactor = 1, darkFactor = 1, nameStyle = c("none", "hcl", "colors"),
+  h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, verbose = FALSE, ...)
 }
 \arguments{
 \item{n}{integer number of categorical colors to return}

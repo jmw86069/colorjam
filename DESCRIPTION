@@ -11,6 +11,7 @@ Description: Jam Color manipulation functions, rainbow categorical colors
     convert data.frame to color, subsetColors.
 Depends: R (>= 3.0.0)
 Imports: jamba
+Suggests: ggplot2
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
