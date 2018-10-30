@@ -574,9 +574,9 @@ closestRcolor <- function
       if (returnType %in% "match") {
          newX <- iClosestColorWhich;
       } else if (returnType %in% "name") {
-         newX <- nameVector(colnames(HCLdist)[iClosestColorWhich], rownames(HCLdist));
+         newX <- nameVector(colnames(HCLdist)[iClosestColorWhich], colnames(xHCL));
       } else {
-         newX <- nameVector(colorSet[iClosestColorWhich], rownames(HCLdist));
+         newX <- nameVector(colorSet[iClosestColorWhich], colnames(xHCL));
       }
    }
 

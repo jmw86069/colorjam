@@ -1,3 +1,18 @@
+# colorjam version 0.0.4.900
+
+## new functions
+
+* `theme_jam()` which provides a Jam-specific ggplot2 default.
+* `scale_color_jam()`, `scale_fill_jam()`, and `jam_pal()` provide
+categorical colors and fills, respectively, using `rainbowJam()`.
+
+## bug fixes and enhancements
+
+* Updated DESCRIPTION to include proper "Remotes" entry pointing
+to the Github jamba package.
+* Updated `closestRcolor()` to fix a small bug with name handling
+of the output.
+
 # colorjam version 0.0.3.900
 
 ## new functions
