@@ -311,8 +311,12 @@ rainbowJam <- function
  Cvals=c(75,95,80, 65,72,80),
  Lvals=c(62,83,69,58,65,74),
  # Scaling of the ranges above
+ #Crange=getOption("jam.Crange"),
+ #Lrange=getOption("jam.Lrange"),
+ #Cgrey=getOption("jam.Cgrey"),
  Crange=NULL,
  Lrange=NULL,
+ Cgrey=NULL,
  Hstart=12.2,
  warpHue=TRUE,
  doTest=FALSE,
@@ -407,12 +411,24 @@ rainbowJam <- function
    ## Scale the lVals and cVals ranges to given lRange and cRange if needed
    ## (note we have to do the scaling before taking a subset of values!)
    if (length(Lrange) == 2 && !all(Lrange %in% range(Lvals))) {
+      #Lvals <- normScale(Lvals,
+      #   from=Lrange[1],
+      #   to=Lrange[2]);
+      ## 19nov2018 changed to restrict the extremes, not stretch the
+      ## interior values to the minimum/maximum
       Lvals <- normScale(Lvals,
+         low=min(c(Lrange[1], min(Lvals))),
+         high=max(c(Lrange[2], max(Lvals))),
          from=Lrange[1],
          to=Lrange[2]);
    }
    if (length(Crange) == 2 && !all(Crange %in% range(Cvals))) {
+      #Cvals <- normScale(Cvals,
+      #   from=Crange[1],
+      #   to=Crange[2]);
       Cvals <- normScale(Cvals,
+         low=min(c(Crange[1], min(Cvals))),
+         high=max(c(Crange[2], max(Cvals))),
          from=Crange[1],
          to=Crange[2]);
    }
