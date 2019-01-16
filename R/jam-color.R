@@ -70,7 +70,7 @@ h2hwOptions <- function
       h2 <- formals(h2hwOptions)$h2defaults;
    }
    if (!missing(h1)) {
-      if (length(h1) == 0 || !igrepHas("numeric|integer", class(h1))) {
+      if (length(h1) == 0 || !jamba::igrepHas("numeric|integer", class(h1))) {
          h1 <- h1default;
       }
       if (verbose) {
@@ -80,13 +80,13 @@ h2hwOptions <- function
       options("h2hw.h1"=h1);
    } else {
       h1 <- getOption("h2hw.h1", default=h1default);
-      if (length(h1) == 0 || !igrepHas("numeric|integer", class(h1))) {
+      if (length(h1) == 0 || !jamba::igrepHas("numeric|integer", class(h1))) {
          h1 <- h1default;
       }
       options("h2hw.h1"=h1);
    }
    if (!missing(h2)) {
-      if (length(h2) == 0 || !igrepHas("numeric|integer", class(h2))) {
+      if (length(h2) == 0 || !jamba::igrepHas("numeric|integer", class(h2))) {
          h2 <- h2default;
       }
       if (verbose) {
@@ -96,7 +96,7 @@ h2hwOptions <- function
       options("h2hw.h2"=h2);
    } else {
       h2 <- getOption("h2hw.h2", default=h2default);
-      if (length(h2) == 0 || !igrepHas("numeric|integer", class(h2))) {
+      if (length(h2) == 0 || !jamba::igrepHas("numeric|integer", class(h2))) {
          h2 <- h2default;
       }
       options("h2hw.h2"=h2);
@@ -680,7 +680,7 @@ group2colors <- function
    ## By default, it uses colorjam::rainbowJam(), however any function
    ## which return n number of colors will suffice, for example
    ##
-   if (igrepHas("factor", class(x))) {
+   if (jamba::igrepHas("factor", class(x))) {
       xLabels <- levels(x);
    } else {
       xLabels <- mixedSort(unique(x));
@@ -828,6 +828,11 @@ theme_jam <- function
 #' @param invert logical indicating whether to return corresponding
 #'    contrasting colors, for example for text labels, typically either
 #'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param darkFactor,sFactor numeric sent to `jamba::makeColorDarker()` for
+#'    optional adjustment of the color, by darkness and saturation,
+#'    respectively. Intended when using `scale_color_jam()` and
+#'    `scale_fill_jam()` where you want the color value to be lighter
+#'    or darker than the fill color, a useful effect for outlines.
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
@@ -835,10 +840,10 @@ theme_jam <- function
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
 #'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=clarity)));
+#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
 #'
-#'    d + scale_color_hue() + ggtitle("scale_color_hue()");
-#'    d + scale_color_jam() + ggtitle("scale_color_jam()");
+#'    print(d + scale_color_hue() + ggtitle("scale_color_hue()"));
+#'    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
 #' }
 #' @export
 scale_color_jam <- function
@@ -847,6 +852,8 @@ scale_color_jam <- function
  palette=1,
  direction=1,
  invert=FALSE,
+ darkFactor=1,
+ sFactor=1,
  useGrey=20)
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
@@ -859,6 +866,8 @@ scale_color_jam <- function
          palette=palette,
          direction=direction,
          invert=invert,
+         darkFactor=darkFactor,
+         sFactor=sFactor,
          useGrey=useGrey),
       ...);
 }
@@ -884,6 +893,11 @@ scale_color_jam <- function
 #' @param invert logical indicating whether to return corresponding
 #'    contrasting colors, for example for text labels, typically either
 #'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param darkFactor,sFactor numeric sent to `jamba::makeColorDarker()` for
+#'    optional adjustment of the color, by darkness and saturation,
+#'    respectively. Intended when using `scale_color_jam()` and
+#'    `scale_fill_jam()` where you want the color value to be lighter
+#'    or darker than the fill color, a useful effect for outlines.
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
@@ -895,6 +909,8 @@ scale_fill_jam <- function
  palette=1,
  direction=1,
  invert=FALSE,
+ darkFactor=1,
+ sFactor=1,
  useGrey=20)
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
@@ -907,6 +923,8 @@ scale_fill_jam <- function
          palette=palette,
          direction=direction,
          invert=invert,
+         darkFactor=darkFactor,
+         sFactor=sFactor,
          useGrey=useGrey),
       ...);
 }
@@ -927,6 +945,11 @@ scale_fill_jam <- function
 #' @param invert logical indicating whether to return corresponding
 #'    contrasting colors, for example for text labels, typically either
 #'    `"white"` or `"black"` as defined by `jamba::setTextContrastColor()`.
+#' @param darkFactor,sFactor numeric sent to `jamba::makeColorDarker()` for
+#'    optional adjustment of the color, by darkness and saturation,
+#'    respectively. Intended when using `scale_color_jam()` and
+#'    `scale_fill_jam()` where you want the color value to be lighter
+#'    or darker than the fill color, a useful effect for outlines.
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
@@ -937,6 +960,8 @@ jam_pal <- function
  palette=1,
  direction=1,
  invert=FALSE,
+ darkFactor=1,
+ sFactor=1,
  useGrey=20)
 {
    ## Note this function does not specifically require ggplot2
@@ -945,7 +970,6 @@ jam_pal <- function
          pal <- setTextContrastColor(rainbowJam(n),
             useGrey=useGrey);
          names(pal) <- NULL;
-         printDebug(pal);
          pal <- pal[seq_len(n)];
          if (direction < 0) {
             pal <- rev(pal);
@@ -955,8 +979,12 @@ jam_pal <- function
    } else {
       function(n) {
          pal <- rainbowJam(n);
+         if (darkFactor != 1 || sFactor != 1) {
+            pal <- makeColorDarker(pal,
+               darkFactor=darkFactor,
+               sFactor=sFactor);
+         }
          names(pal) <- NULL;
-         printDebug(pal);
          pal <- pal[seq_len(n)];
          if (direction < 0) {
             pal <- rev(pal);

@@ -5,7 +5,7 @@
 \title{Apply rainbowJam categorical colors to a ggplot2 object}
 \usage{
 scale_color_jam(..., type = "seq", palette = 1, direction = 1,
-  invert = FALSE, useGrey = 20)
+  invert = FALSE, darkFactor = 1, sFactor = 1, useGrey = 20)
 }
 \arguments{
 \item{...}{additional arguments are passed to \code{ggplot2::discrete_scale()}.}
@@ -26,6 +26,12 @@ the colors.}
 contrasting colors, for example for text labels, typically either
 \code{"white"} or \code{"black"} as defined by \code{jamba::setTextContrastColor()}.}
 
+\item{darkFactor, sFactor}{numeric sent to \code{jamba::makeColorDarker()} for
+optional adjustment of the color, by darkness and saturation,
+respectively. Intended when using \code{scale_color_jam()} and
+\code{scale_fill_jam()} where you want the color value to be lighter
+or darker than the fill color, a useful effect for outlines.}
+
 \item{useGrey}{integer value between 0 and 100 indicating the grey
 value, as sent to \code{jamba::setTextContrastColor()}, used only when
 \code{invert=TRUE}.}
@@ -41,9 +47,9 @@ distinct set of categorical colors than \code{ggplot2::scale_color_hue()}.
 \examples{
 if (suppressPackageStartupMessages(require(ggplot2))) {
    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-   (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=clarity)));
+   (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
 
-   d + scale_color_hue() + ggtitle("scale_color_hue()");
-   d + scale_color_jam() + ggtitle("scale_color_jam()");
+   print(d + scale_color_hue() + ggtitle("scale_color_hue()"));
+   print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
 }
 }

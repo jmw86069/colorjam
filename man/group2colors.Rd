@@ -5,7 +5,8 @@
 \title{Assign colors to vector of group labels}
 \usage{
 group2colors(x, alpha = 1, colorFunc = rainbowJam, colorSub = NULL,
-  sortFunc = jamba::mixedSort, useGradient = FALSE, verbose = FALSE, ...)
+  sortFunc = jamba::mixedSort, useGradient = FALSE, verbose = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{character or factor vector representing group membership.}

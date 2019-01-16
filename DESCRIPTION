@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.4.900
+Version: 0.0.5.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -9,8 +9,9 @@ Description: Jam Color manipulation functions, rainbow categorical colors
     with varying luminance and chroma, convert vector to colors,
     re-usable named vector of colors for consistency across plots,
     convert data.frame to color, subsetColors.
-Depends: R (>= 3.0.0)
-Imports: jamba
+Depends: R (>= 3.0.0),
+    jamba
+Imports:
 Suggests: ggplot2
 License: GPL-2
 Encoding: UTF-8
@@ -19,4 +20,4 @@ Remotes: github::jmw86069/jamba
 URL: http://github.com/jmw86069/colorjam
 BugReports: http://github.com/jmw86069/colorjam/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

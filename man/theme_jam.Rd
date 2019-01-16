@@ -4,12 +4,14 @@
 \alias{theme_jam}
 \title{Jam default theme for ggplot2}
 \usage{
-theme_jam(theme_default = theme_bw, base_size = 18, grid.major.size = 0.5,
-  grid.minor.size = 0.25, strip.background.colour = "grey30",
+theme_jam(theme_default = theme_bw, base_size = 18,
+  grid.major.size = 0.5, grid.minor.size = 0.25,
+  strip.background.colour = "grey30",
   strip.background.fill = "lightgoldenrod1",
-  panel.grid.major.colour = "grey60", panel.grid.minor.colour = "grey80",
-  axis.text.x.angle = 60, blankGrid = FALSE, blankXgrid = FALSE,
-  blankYgrid = FALSE, resetTheme = TRUE, verbose = FALSE, ...)
+  panel.grid.major.colour = "grey60",
+  panel.grid.minor.colour = "grey80", axis.text.x.angle = 60,
+  blankGrid = FALSE, blankXgrid = FALSE, blankYgrid = FALSE,
+  resetTheme = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{theme_default}{function representing a ggplot2 theme.}

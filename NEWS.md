@@ -1,3 +1,12 @@
+# colorjam version 0.0.5.900
+
+## additions
+
+* A README.Rmd file was created with a basic walkthrough for colorjam.
+* DESCRIPTION was changed to move "jamba" to the "Depends:" field.
+Guidance from R Package Development and R central docs is cryptic on
+this point.
+
 # colorjam version 0.0.4.900
 
 ## new functions
