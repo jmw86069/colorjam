@@ -680,10 +680,13 @@ group2colors <- function
    ## By default, it uses colorjam::rainbowJam(), however any function
    ## which return n number of colors will suffice, for example
    ##
+   if (length(sortFunc) == 0 || !is.function(sortFunc)) {
+      sortFunc <- c;
+   }
    if (jamba::igrepHas("factor", class(x))) {
       xLabels <- levels(x);
    } else {
-      xLabels <- mixedSort(unique(x));
+      xLabels <- sortFunc(unique(x));
    }
    if (all(xLabels %in% names(colorSub))) {
       xColors <- colorSub;
