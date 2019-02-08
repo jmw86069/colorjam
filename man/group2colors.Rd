@@ -58,7 +58,7 @@ aabbccddee <- group2colors(rep(letters[1:5], each=2));
 aaabbcccccdeeee <- group2colors(rep(letters[1:5], c(3,2,5,1,4)));
 aaabbcccccdeeee2 <- group2colors(rep(letters[1:5], c(3,2,5,1,4)), useGradient=TRUE);
 
-showColors(list(abcde=abcde,
+jamba::showColors(list(abcde=abcde,
    aabbccddee=aabbccddee,
    aaabbcccccdeeee=aaabbcccccdeeee,
    aaabbcccccdeeee2=aaabbcccccdeeee2));

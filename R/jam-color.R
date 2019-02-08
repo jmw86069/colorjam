@@ -143,7 +143,7 @@ h2hwOptions <- function
 #' # RGB colors are convenient, but are not ideal especially when blending
 #' # colors. Note that blue and yellow have hues that differ by exactly 180
 #' # degrees, meaning a hue average is as likely to be purple as green.
-#' huesBY <- col2hcl(c("blue", "yellow"))["H",];
+#' huesBY <- jamba::col2hcl(c("blue", "yellow"))["H",];
 #' huesBY;
 #' warpedHuesBY <- h2hw(huesBY);
 #' warpedHuesBY;
@@ -297,10 +297,10 @@ hw2h <- function
 #' rainbowJam(12);
 #'
 #' # show colors
-#' showColors(rainbowJam(12));
+#' jamba::showColors(rainbowJam(12));
 #'
 #' # be fancy and label colors using the closest R named color
-#' showColors(rainbowJam(12, nameStyle="colors"));
+#' jamba::showColors(rainbowJam(12, nameStyle="colors"));
 #'
 #' @export
 rainbowJam <- function
@@ -340,25 +340,25 @@ rainbowJam <- function
    if (doTest) {
       oPar <- par();
       par(mfrow=c(5,1));
-      colSet <- nameVector(rainbowCat(n), 1:n);
-      showColors(colSet,
+      colSet <- jamba::nameVector(rainbowCat(n), 1:n);
+      jamba::showColors(colSet,
          main=paste("n =", n, " colors"),
          xaxt="n");
       title("The more colors, the more likely non-adjacent colors will look similar");
-      showColors(colSet[seq(from=1, to=n, by=3)],
+      jamba::showColors(colSet[seq(from=1, to=n, by=3)],
          main="offset by 3 (Dark colors)",
          xaxt="n");
       if (n > 1) {
          fullHiSet <- seq(from=2, to=n, by=3);
          whichHiSet <- fullHiSet[-seq(from=2, to=length(fullHiSet), by=2)];
-         showColors(colSet[whichHiSet],
+         jamba::showColors(colSet[whichHiSet],
             main="Light colors",
             xaxt="n");
-         showColors(colSet[-whichHiSet],
+         jamba::showColors(colSet[-whichHiSet],
             main="Non-light colors",
             xaxt="n");
          if (n > 2) {
-            showColors(colSet[seq(from=3, to=n, by=2)],
+            jamba::showColors(colSet[seq(from=3, to=n, by=2)],
                main="offset by 2 + 3 (Medium colors)",
                xaxt="n");
          }
@@ -449,7 +449,7 @@ rainbowJam <- function
    }
 
    ## Generate colors using HCL definitions
-   hclSet <- hcl2col(H=hues,
+   hclSet <- jamba::hcl2col(H=hues,
       C=Cvals,
       L=Lvals,
       alpha=alpha);
@@ -464,14 +464,14 @@ rainbowJam <- function
          ...);
    }
    if (nameStyle %in% "hcl") {
-      hclNames <- makeNames(paste(seq_len(n),
+      hclNames <- jamba::makeNames(paste(seq_len(n),
          paste0("H", signif(hues, digits=3)),
          paste0("C", signif(Cvals, digits=3)),
          paste0("L", signif(Lvals, digits=3)),
          sep="_"));
       names(hclSet) <- hclNames;
    } else if (nameStyle %in% "colors") {
-      hclNames <- makeNames(closestRcolor(hclSet));
+      hclNames <- jamba::makeNames(closestRcolor(hclSet));
       names(hclSet) <- hclNames;
    } else {
       hclSet <- unname(hclSet);
@@ -494,24 +494,24 @@ rainbowJam <- function
 #' @param x character vector of colors, either in hex format or any
 #'    valid color in R.
 #' @param colorSet vector of colors, by default includes the R colors
-#'    provided by \code{colors()} minus the "grey##" greyscale colors,
+#'    provided by `grDevices::colors()` minus the "grey##" greyscale colors,
 #'    however any vector of colors can be used, whether named or not.
 #' @param showPalette boolean indicating whether to display the input
 #'    colors and resulting closest matching colors by using
-#'    \code{jamba::showColors}.
+#'    `jamba::showColors()`.
 #' @param colorModel character color model to use, currently only using
 #'    "hcl", though "rgb" and "ryb" were both tested and judged to perform
 #'    less effectively.
 #' @param Hwt,Cwt,Lwt relative weights for each dimension of HCL colors,
 #'    respectively.
 #' @param warpHue boolean indicating whether to perform the hue warp
-#'    operation using \code{h2hw()} which improves the ability to match
+#'    operation using `h2hw()` which improves the ability to match
 #'    colors between orange and green.
 #' @param returnType character type of data to return: "color" will return
 #'    the actual closest color; "name" will return the name of the closest
-#'    color, or if the \code{colorSet} vector has no names, its values will
+#'    color, or if the `colorSet` vector has no names, its values will
 #'    be used; "match" will return an integer vector as an index to colors
-#'    in \code{colorSet}.
+#'    in `colorSet`.
 #' @param verbose logical whether to print verbose output
 #'
 #' @examples
@@ -549,12 +549,12 @@ closestRcolor <- function
       origX <- x;
    }
    if (length(names(origX)) == 0) {
-      names(origX) <- makeNames(origX);
+      names(origX) <- jamba::makeNames(origX);
    }
    if (returnType %in% "name" && length(names(colorSet)) == 0) {
-      names(colorSet) <- makeNames(colorSet);
+      names(colorSet) <- jamba::makeNames(colorSet);
    }
-   x <- nameVector(unique(origX));
+   x <- jamba::nameVector(unique(origX));
    if (colorModel %in% "hcl") {
 
       # hcl
@@ -568,8 +568,8 @@ closestRcolor <- function
          matrix(diff1, ncol=length(b), nrow=length(a),
             dimnames=list(names(a), names(b)));
       }
-      xHCL <- col2hcl(x);
-      colorSetHCL <- col2hcl(colorSet);
+      xHCL <- jamba::col2hcl(x);
+      colorSetHCL <- jamba::col2hcl(colorSet);
 
       ## Adjust H to RYB
       if (warpHue) {
@@ -590,9 +590,11 @@ closestRcolor <- function
       if (returnType %in% "match") {
          newX <- iClosestColorWhich;
       } else if (returnType %in% "name") {
-         newX <- nameVector(colnames(HCLdist)[iClosestColorWhich], colnames(xHCL));
+         newX <- jamba::nameVector(colnames(HCLdist)[iClosestColorWhich],
+            colnames(xHCL));
       } else {
-         newX <- nameVector(colorSet[iClosestColorWhich], colnames(xHCL));
+         newX <- jamba::nameVector(colorSet[iClosestColorWhich],
+            colnames(xHCL));
       }
    }
 
@@ -603,8 +605,8 @@ closestRcolor <- function
 
    ## Optionally display the palette before and after
    if (showPalette) {
-      showColors(list(original=nameVector(origX),
-         returned=nameVector(retX)),
+      jamba::showColors(list(original=jamba::nameVector(origX),
+         returned=jamba::nameVector(retX)),
          ...);
    }
    ## Return to data.frame or matrix form if needed
@@ -659,7 +661,7 @@ closestRcolor <- function
 #' aaabbcccccdeeee <- group2colors(rep(letters[1:5], c(3,2,5,1,4)));
 #' aaabbcccccdeeee2 <- group2colors(rep(letters[1:5], c(3,2,5,1,4)), useGradient=TRUE);
 #'
-#' showColors(list(abcde=abcde,
+#' jamba::showColors(list(abcde=abcde,
 #'    aabbccddee=aabbccddee,
 #'    aaabbcccccdeeee=aaabbcccccdeeee,
 #'    aaabbcccccdeeee2=aaabbcccccdeeee2));
@@ -691,7 +693,7 @@ group2colors <- function
    if (all(xLabels %in% names(colorSub))) {
       xColors <- colorSub;
    } else {
-      xColors <- nameVector(
+      xColors <- jamba::nameVector(
          colorFunc(length(xLabels),
             ...),
          xLabels);
@@ -777,7 +779,8 @@ theme_jam <- function
       theme(
          axis.text.x=element_text(angle=axis.text.x.angle,
             hjust=1),
-         strip.text=element_text(colour=setTextContrastColor(strip.background.fill),
+         strip.text=element_text(
+            colour=jamba::setTextContrastColor(strip.background.fill),
          ),
          strip.background=element_rect(
             colour=strip.background.colour,
@@ -970,7 +973,7 @@ jam_pal <- function
    ## Note this function does not specifically require ggplot2
    if (invert) {
       function(n) {
-         pal <- setTextContrastColor(rainbowJam(n),
+         pal <- jamba::setTextContrastColor(rainbowJam(n),
             useGrey=useGrey);
          names(pal) <- NULL;
          pal <- pal[seq_len(n)];
@@ -983,7 +986,7 @@ jam_pal <- function
       function(n) {
          pal <- rainbowJam(n);
          if (darkFactor != 1 || sFactor != 1) {
-            pal <- makeColorDarker(pal,
+            pal <- jamba::makeColorDarker(pal,
                darkFactor=darkFactor,
                sFactor=sFactor);
          }
@@ -996,3 +999,208 @@ jam_pal <- function
       }
    }
 }
+
+#' Convert numeric matrix to heatmap colors
+#'
+#' Convert numeric matrix to heatmap colors
+#'
+#' This function is intended as a rapid way of applying a color
+#' gradient to columns of numeric values, where each column
+#' has its own base color. It calls `jamba::getColorRamp()`
+#' for each column, and when supplied with one color, it
+#' creates a color gradient from `"grey95"` to the output
+#' of `jamba::color2gradient()`.
+#'
+#' When `lens` is non-zero, the color gradient is warped in order
+#' to intensify the color saturation across the numeric range.
+#'
+#' @param x numeric matrix. If there are no `colnames(x)` they will
+#'    be created using `jamba::makeNames(rep("x", ncol(x)))`.
+#' @param colorV character vector of R colors, named by `colnames(x)`,
+#'    and recycled to `ncol(x)` if needed. If `colorV` is supplied as
+#'    a list, the list elements are mapped to `colnames(x)` in order.
+#' @param defaultBaseColor character vector of R colors used as the default
+#'    base color, when `colorV` is supplied as a vector.
+#' @param transformFunc function applied to numeric values before
+#'    the color gradient is mapped to numeric values. For example,
+#'    `transformFunc=function(i)-log10(i)` would map colors to P-value
+#'    using a `-log10(p)` transformation.
+#' @param lens numeric value passed to `warpRamp()` to adjust the
+#'    distribution of colors along the numeric range.
+#' @param shareLimit logical indicating whether one numeric limit `numLimit`
+#'    should be used to define the numeric range for color mapping.
+#' @param numLimitFactor when `numLimit` is NULL, this factor is applied to
+#'    the maximum numeric value to determine the `numLimit`.
+#' @param numLimit numeric value to define the maximum numeric value
+#'    above which all numeric values are mapped to the maximum color.
+#'    When set to `NULL` the `numLimitFactor` is used to define
+#'    the `numLimit`.
+#' @param baseline numeric value to define the numeric baseline, used
+#'    when `divergent=FALSE`.
+#' @param divergent logical indicating whether to apply colors to the numeric
+#'    range symmetric around zero.
+#' @param rampN integer value to define the number of color breaks for
+#'    each color gradient.
+#' @param verbose logical indicating whether to print verbose output.
+#' @param ... additional arguments are ignored.
+#'
+#' @family jam matrix functions
+#'
+#' @examples
+#' set.seed(123);
+#' # generate a random numeric matrix
+#' m1 <- matrix(ncol=12, rnorm(120));
+#' m1n <- m1;
+#' m1n[] <- format(round(abs(m1), digits=2), trim=TRUE);
+#' jamba::imageByColors(
+#'    matrix2heatColors(abs(m1),
+#'       transformFunc=c,
+#'       divergent=FALSE,
+#'       lens=-5,
+#'       shareNumLimit=TRUE,
+#'       baseline=0,
+#'       numLimit=4),
+#'    cellnote=m1n);
+#'
+#' @export
+matrix2heatColors <- function
+(x,
+ colorV=group2colors(colnames(x)),
+ defaultBaseColor="#FFFFFF",
+ transformFunc=c,
+ lens=0,
+ shareLimit=TRUE,
+ numLimitFactor=0.95,
+ numLimit=NULL,
+ baseline=0,
+ divergent=FALSE,
+ rampN=15,
+ verbose=FALSE,
+...)
+{
+   ## Purpose is to create a color gradient from a numeric matrix
+   ## intended for when each column should have its own distinct color
+   ## usually a gradient from white to the specified color.
+   ##
+   ## This function calls vals2colorLevels() for each column.
+   ##
+   ## Make sure x has colnames
+   if (length(colnames(x)) == 0) {
+      colnames(x) <- jamba::makeNames(rep("x", ncol(x)));
+   }
+   xNames <- colnames(x);
+
+   ## Define farbeLim if not provided
+   if (length(numLimit) == 0) {
+      if (shareLimit) {
+         ## Shared max color value
+         numLimit <- max(jamba::rmNA(abs(transformFunc(x)))) * numLimitFactor;
+         if (verbose) {
+            jamba::printDebug("matrix2heatColors():",
+               "defined shared farbeLim value:",
+               format(digits=2, numLimit));
+         }
+         numLimit <- rep(numLimit, length.out=ncol(x));
+      } else {
+         numLimit <- sapply(1:ncol(x), function(i){
+            numLimit <- max(jamba::rmNA(abs(transformFunc(x)))) * numLimitFactor;
+         });
+         if (verbose) {
+            jamba::printDebug("matrix2heatColors():",
+               "defined individual numLimit values:",
+               format(digits=2, numLimit));
+         }
+      }
+      names(numLimit) <- xNames;
+   } else {
+      numLimit <- rep(numLimit, length.out=ncol(x));
+      if (verbose) {
+         jamba::printDebug("matrix2heatColors():",
+            "numLimit values as provided:",
+            format(digits=2, numLimit));
+      }
+      if (length(names(numLimit)) > 0 &&
+            all(names(numLimit) %in% xNames)) {
+         numLimit <- numLimit[xNames];
+      } else {
+         names(numLimit) <- xNames;
+      }
+   }
+   lens <- jamba::nameVector(rep(lens,
+      length.out=ncol(x)),
+      xNames);
+   defaultBaseColor <- jamba::nameVector(rep(defaultBaseColor,
+      length.out=ncol(x)),
+      xNames);
+   baseline <- jamba::nameVector(rep(baseline,
+      length.out=ncol(x)),
+      xNames);
+   numLimit <- jamba::nameVector(rep(numLimit,
+      length.out=ncol(x)),
+      xNames);
+   rampN <- jamba::nameVector(rep(rampN,
+      length.out=ncol(x)),
+      xNames);
+   divergent <- jamba::nameVector(rep(divergent,
+      length.out=ncol(x)),
+      xNames);
+   colorV <- jamba::nameVector(rep(colorV,
+      length.out=ncol(x)),
+      xNames);
+
+   xColors <- do.call(cbind, lapply(nameVector(colnames(x)), function(i){
+      k <- (transformFunc(x[,i]));
+      if (verbose) {
+         printDebug("matrix2heatColors():", i,
+            ", numLimit:", format(numLimit[i], digits=2),
+            ", lens:", format(lens[i], digits=2),
+            ", defaultBaseColor:", defaultBaseColor[i],
+            ", baseline:", format(baseline[i], digits=2),
+            ", colorRamp:", colorV[[i]],
+            fgText=list("orange", "lightblue",
+               "orange", "lightblue",
+               "orange", "lightblue",
+               "orange", defaultBaseColor[i],
+               "orange", "lightblue",
+               "orange", colorV[[i]]));
+      }
+      if (divergent[i]) {
+         # divergent color ramp
+         if (divergent[i]) {
+            k <- jamba::noiseFloor(k,
+               minimum=-numLimit[i],
+               ceiling=numLimit[i]);
+         }
+         kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
+            defaultBaseColor=defaultBaseColor[i],
+            n=rampN[i]),
+            divergent=TRUE,
+            lens=lens[i]);
+         kCut <- cut(k,
+            breaks=seq(from=-numLimit[i],
+               to=numLimit[i],
+               length.out=rampN[i]+1));
+         kColor <- kRamp[kCut];
+      } else {
+         # one-directional color ramp
+         if (divergent[i]) {
+            k <- jamba::noiseFloor(k,
+               minimum=baseline[i],
+               ceiling=numLimit[i]);
+         }
+         kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
+            defaultBaseColor=defaultBaseColor[i],
+            n=rampN[i]),
+            divergent=FALSE,
+            lens=lens[i]);
+         kCut <- cut(k,
+            breaks=seq(from=baseline[i],
+               to=numLimit[i],
+               length.out=rampN[i]+1));
+         kColor <- kRamp[kCut];
+      }
+      kColor;
+   }));
+   return(xColors);
+}
+

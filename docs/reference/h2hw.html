@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7.900</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ blue). The color yellow has hue=60 in RGB space, so the call to
 <span class='co'># RGB colors are convenient, but are not ideal especially when blending</span>
 <span class='co'># colors. Note that blue and yellow have hues that differ by exactly 180</span>
 <span class='co'># degrees, meaning a hue average is as likely to be purple as green.</span>
-<span class='no'>huesBY</span> <span class='kw'>&lt;-</span> <span class='fu'>col2hcl</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"yellow"</span>))[<span class='st'>"H"</span>,];
+<span class='no'>huesBY</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/jamba/topics/col2hcl'>col2hcl</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"yellow"</span>))[<span class='st'>"H"</span>,];
 <span class='no'>huesBY</span>;</div><div class='output co'>#&gt;      blue    yellow 
 #&gt; 265.87278  85.87351 </div><div class='input'><span class='no'>warpedHuesBY</span> <span class='kw'>&lt;-</span> <span class='fu'>h2hw</span>(<span class='no'>huesBY</span>);
 <span class='no'>warpedHuesBY</span>;</div><div class='output co'>#&gt; [1] 265.8728 145.8735</div><div class='input'><span class='no'>warpedHues</span> <span class='kw'>&lt;-</span> <span class='fu'>h2hw</span>(<span class='no'>hues</span>);</div><div class='output co'>#&gt; <span class='error'>Error in approx(x = h1, y = h2, xout = (h%%360)): object 'hues' not found</span></div><div class='input'>

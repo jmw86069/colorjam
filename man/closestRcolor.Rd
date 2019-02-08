@@ -14,12 +14,12 @@ closestRcolor(x, colorSet = unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
 valid color in R.}
 
 \item{colorSet}{vector of colors, by default includes the R colors
-provided by \code{colors()} minus the "grey##" greyscale colors,
+provided by \code{grDevices::colors()} minus the "grey##" greyscale colors,
 however any vector of colors can be used, whether named or not.}
 
 \item{showPalette}{boolean indicating whether to display the input
 colors and resulting closest matching colors by using
-\code{jamba::showColors}.}
+\code{jamba::showColors()}.}
 
 \item{colorModel}{character color model to use, currently only using
 "hcl", though "rgb" and "ryb" were both tested and judged to perform

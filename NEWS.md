@@ -1,3 +1,15 @@
+# colorjam version 0.0.7.900
+
+## changes
+
+* Added more function prefixes "jamba::" to avoid handle the inconsistent
+import implementation in R.
+
+## new functions
+
+* `matrix2heatColors()` to apply color gradient to each column in a matrix,
+where each column has its own color scale.
+
 # colorjam version 0.0.5.900
 
 ## additions

@@ -47,7 +47,7 @@ h2hw(60);
 # RGB colors are convenient, but are not ideal especially when blending
 # colors. Note that blue and yellow have hues that differ by exactly 180
 # degrees, meaning a hue average is as likely to be purple as green.
-huesBY <- col2hcl(c("blue", "yellow"))["H",];
+huesBY <- jamba::col2hcl(c("blue", "yellow"))["H",];
 huesBY;
 warpedHuesBY <- h2hw(huesBY);
 warpedHuesBY;

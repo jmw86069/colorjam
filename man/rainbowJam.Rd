@@ -103,9 +103,9 @@ hues recognized by \code{\link[=hcl]{hcl()}}.
 rainbowJam(12);
 
 # show colors
-showColors(rainbowJam(12));
+jamba::showColors(rainbowJam(12));
 
 # be fancy and label colors using the closest R named color
-showColors(rainbowJam(12, nameStyle="colors"));
+jamba::showColors(rainbowJam(12, nameStyle="colors"));
 
 }
