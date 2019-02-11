@@ -64,8 +64,7 @@ showColors(vals2colorLevels(x));
 showColors(vals2colorLevels(x, rampN=15))
 
 # change the baseline
-baseline <- 5;
-showColors(vals2colorLevels(x, baseline=5);
+showColors(vals2colorLevels(x, baseline=-2));
 
 # adjust the gradient using lens
 par("mar"=c(5,5,4,2));
