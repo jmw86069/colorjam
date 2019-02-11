@@ -109,3 +109,12 @@ jamba::showColors(rainbowJam(12));
 jamba::showColors(rainbowJam(12, nameStyle="colors"));
 
 }
+\seealso{
+Other jam color functions: \code{\link{closestRcolor}},
+  \code{\link{group2colors}}, \code{\link{jam_pal}},
+  \code{\link{matrix2heatColors}},
+  \code{\link{scale_color_jam}},
+  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
+  \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}

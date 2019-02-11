@@ -56,3 +56,11 @@ although the default values appear to work fairly well.
 closestRcolor(rainbowJam(12), showPalette=TRUE);
 
 }
+\seealso{
+Other jam color functions: \code{\link{group2colors}},
+  \code{\link{jam_pal}}, \code{\link{matrix2heatColors}},
+  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
+  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
+  \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}

@@ -84,3 +84,12 @@ jamba::imageByColors(
    cellnote=m1n);
 
 }
+\seealso{
+Other jam color functions: \code{\link{closestRcolor}},
+  \code{\link{group2colors}}, \code{\link{jam_pal}},
+  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
+  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
+  \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}
+\concept{jam matrix functions}

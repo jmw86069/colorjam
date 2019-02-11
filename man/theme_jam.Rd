@@ -57,3 +57,12 @@ taking away the default grey newspaper background color, also rotates the
 x-axis label text to 60 degrees, to accomodate longer labels without
 overlaps.
 }
+\seealso{
+Other jam color functions: \code{\link{closestRcolor}},
+  \code{\link{group2colors}}, \code{\link{jam_pal}},
+  \code{\link{matrix2heatColors}},
+  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
+  \code{\link{scale_fill_jam}},
+  \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}

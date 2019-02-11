@@ -44,3 +44,11 @@ This function provides a function in the format \code{scale_fill_*}
 to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_fill_hue()}.
 }
+\seealso{
+Other jam color functions: \code{\link{closestRcolor}},
+  \code{\link{group2colors}}, \code{\link{jam_pal}},
+  \code{\link{matrix2heatColors}},
+  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
+  \code{\link{theme_jam}}, \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}

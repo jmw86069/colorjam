@@ -293,6 +293,8 @@ hw2h <- function
 #'
 #' @return vector of colors
 #'
+#' @family jam color functions
+#'
 #' @examples
 #' rainbowJam(12);
 #'
@@ -514,6 +516,8 @@ rainbowJam <- function
 #'    in `colorSet`.
 #' @param verbose logical whether to print verbose output
 #'
+#' @family jam color functions
+#'
 #' @examples
 #' closestRcolor(rainbowJam(12), showPalette=TRUE);
 #'
@@ -655,6 +659,8 @@ closestRcolor <- function
 #' @param verbose logical indicating whether to print verbose output.
 #' @param ... additional parameters are passed to `colorFunc`
 #'
+#' @family jam color functions
+#'
 #' @examples
 #' abcde <- group2colors(letters[1:5]);
 #' aabbccddee <- group2colors(rep(letters[1:5], each=2));
@@ -744,6 +750,8 @@ group2colors <- function
 #' @param verbose logical indicating whether to print verbose output.
 #' @param ... additional arguments are passed to `ggplot2::theme()` in
 #'    order to allow custom settings beyond what this function provides.
+#'
+#' @family jam color functions
 #'
 #' @export
 theme_jam <- function
@@ -843,6 +851,8 @@ theme_jam <- function
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
 #'
+#' @family jam color functions
+#'
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
 #'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
@@ -908,6 +918,8 @@ scale_color_jam <- function
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
 #'
+#' @family jam color functions
+#'
 #' @export
 scale_fill_jam <- function
 (...,
@@ -959,6 +971,8 @@ scale_fill_jam <- function
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
+#'
+#' @family jam color functions
 #'
 #' @export
 jam_pal <- function
@@ -1045,6 +1059,7 @@ jam_pal <- function
 #' @param ... additional arguments are ignored.
 #'
 #' @family jam matrix functions
+#' @family jam color functions
 #'
 #' @examples
 #' set.seed(123);
@@ -1152,48 +1167,60 @@ matrix2heatColors <- function
       k <- (transformFunc(x[,i]));
       if (verbose) {
          printDebug("matrix2heatColors():", i,
-            ", numLimit:", format(numLimit[i], digits=2),
             ", lens:", format(lens[i], digits=2),
             ", defaultBaseColor:", defaultBaseColor[i],
             ", baseline:", format(baseline[i], digits=2),
+            ", numLimit:", format(numLimit[i], digits=2),
             ", colorRamp:", colorV[[i]],
             fgText=list("orange", "lightblue",
                "orange", "lightblue",
-               "orange", "lightblue",
                "orange", defaultBaseColor[i],
+               "orange", "lightblue",
                "orange", "lightblue",
                "orange", colorV[[i]]));
       }
       if (divergent[i]) {
-         # divergent color ramp
-         if (divergent[i]) {
-            k <- jamba::noiseFloor(k,
-               minimum=-numLimit[i],
-               ceiling=numLimit[i]);
-         }
+         ## divergent color ramp
+         k <- jamba::noiseFloor(k,
+            minimum=-numLimit[i],
+            ceiling=numLimit[i]);
          kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
             defaultBaseColor=defaultBaseColor[i],
             n=rampN[i]),
             divergent=TRUE,
             lens=lens[i]);
+         if (verbose) {
+            printDebug("matrix2heatColors(): ",
+               "divergent:", divergent,
+               ",\nkRamp:", kRamp,
+               fgText=list("orange", "dodgerblue", "orange",
+                  "dodgerblue", kRamp));
+         }
          kCut <- cut(k,
+            include.lowest=TRUE,
             breaks=seq(from=-numLimit[i],
                to=numLimit[i],
                length.out=rampN[i]+1));
          kColor <- kRamp[kCut];
       } else {
-         # one-directional color ramp
-         if (divergent[i]) {
-            k <- jamba::noiseFloor(k,
-               minimum=baseline[i],
-               ceiling=numLimit[i]);
-         }
+         ## one-directional color ramp
+         k <- jamba::noiseFloor(k,
+            minimum=baseline[i],
+            ceiling=numLimit[i]);
          kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
             defaultBaseColor=defaultBaseColor[i],
             n=rampN[i]),
             divergent=FALSE,
             lens=lens[i]);
+         if (verbose) {
+            printDebug("matrix2heatColors(): ",
+               "divergent:", divergent[i],
+               ",\nkRamp:", kRamp,
+               fgText=list("orange", "dodgerblue", "orange",
+                  "dodgerblue", kRamp));
+         }
          kCut <- cut(k,
+            include.lowest=TRUE,
             breaks=seq(from=baseline[i],
                to=numLimit[i],
                length.out=rampN[i]+1));
@@ -1201,6 +1228,190 @@ matrix2heatColors <- function
       }
       kColor;
    }));
+   rownames(xColors) <- rownames(x);
    return(xColors);
 }
 
+#' Apply color gradient to numeric values
+#'
+#' Apply color gradient to numeric values
+#'
+#' This function is similar to several other existing R functions
+#' that take a vector of numeric values, and apply a color gradient
+#' (color ramp) to the numeric values. This function provides the ability
+#' to warp the color ramp, for example using `jamba::warpRamp()` in order
+#' to adjust the color gradient relative to the numeric range of the
+#' data.
+#'
+#' @param x numeric vector
+#' @param divergent logical indicating whether the numeric values
+#'    are divergent, by default baseline=0 will center the color
+#'    ramp at zero.
+#' @param col color value compatible with the `col` argument of
+#'    `jamba::getColorRamp()`. Example include: single color; multiple
+#'    colors; single color ramp name; or a custom color function.
+#' @param defaultBaseColor character color used as a base color when
+#'    a single color is supplied in `col`.
+#' @param lens numeric value sent to `jamba::warpRamp()`, to define the
+#'    level of color warping to apply to the color gradient, where `lens=0`
+#'    applies no adjustment.
+#' @param numLimit numeric value indicating the maximum numeric value,
+#'    where values in `x` greater than this value are assigned to the
+#'    maximum color. When not defined, and `divergent=TRUE` it uses
+#'    `max(abs(x), na.rm=TRUE)`, or `divergent=FALSE` it uses
+#'    `max(x, na.rm=TRUE)`.
+#' @param baseline numeric value indicating the minimum numeric value,
+#'    where values in `x` less than this value are assigned to the
+#'    minimum color. When not defined, and `divergent=TRUE` it sets
+#'    `baseline=0`; when `divergent=FALSE` it uses `min(x, na.rm=TRUE)`.
+#' @param rampN integer number of colors to define for the color
+#'    gradient. Higher values define a smooth color gradient.
+#' @param verbose logical indicating whether to print verbose output.
+#' @param ... additional arguments are passed to `jamba::getColorRamp()`.
+#'
+#' @family jam color functions
+#'
+#' @examples
+#' # Start with an example numeric vector
+#' x <- nameVector(-5:10);
+#' showColors(vals2colorLevels(x));
+#'
+#' # decrease the number of gradient colors
+#' showColors(vals2colorLevels(x, rampN=15))
+#'
+#' # change the baseline
+#' showColors(vals2colorLevels(x, baseline=-2));
+#'
+#' # adjust the gradient using lens
+#' par("mar"=c(5,5,4,2));
+#' imageByColors(rbindList(lapply(nameVector(c(-5,-2,0,2,5)), function(lens){
+#'    vals2colorLevels(x, rampN=25, lens=lens);
+#' })));
+#' title(ylab="color lens factor", xlab="numeric value",
+#'    main="Effects of warping the color gradient");
+#'
+#' @export
+vals2colorLevels <- function
+(x,
+ divergent=TRUE,
+ col="RdBu_r",
+ defaultBaseColor="#FFFFFF",
+ lens=0,
+ numLimit=NULL,
+ baseline=NULL,
+ rampN=25,
+ verbose=FALSE,
+ ...)
+{
+   ## Purpose is to convert a numeric vector into a color gradient
+   if (length(divergent) == 0) {
+      divergent <- FALSE;
+   }
+   if (length(defaultBaseColor) == 0) {
+      defaultBaseColor <- "#FFFFFF";
+   }
+   if (length(lens) == 0) {
+      lens <- 0;
+   }
+   if (length(rampN) == 0) {
+      rampN <- 15;
+   }
+   if (length(col) == 0) {
+      if (divergent) {
+         col <- "RdBu_r";
+      } else {
+         col <- "Reds";
+      }
+   }
+   if (length(numLimit) == 0) {
+      if (divergent) {
+         numLimit <- max(abs(x-baseline)+baseline, na.rm=TRUE);
+      } else {
+         numLimit <- max(x, na.rm=TRUE);
+      }
+   }
+   if (length(baseline) == 0) {
+      if (divergent) {
+         baseline <- 0;
+      } else {
+         baseline <- min(x, na.rm=TRUE);
+      }
+   }
+
+   ## Get the color ramp values
+   colorV <- jamba::getColorRamp(col=col,
+      n=rampN,
+      defaultBaseColor=defaultBaseColor,
+      verbose=verbose,
+      ...);
+
+   ## Optionally print verbose output
+   if (verbose) {
+      if (divergent) {
+         colorVnames <- rep(seq(from=1, to=floor(length(colorV)/2)), each=2)*c(-1,1);
+         if (length(colorV) %% 2) {
+            colorVnames <- sort(c(0, colorVnames));
+         }
+      } else {
+         colorVnames <- seq_along(colorV);
+      }
+      jamba::printDebug("vals2colorLevels(): ",
+         "colorV:\n",
+         format(colorVnames),
+         sep=", ",
+         Lrange=c(10,95), Crange=c(40,95),
+         fgText=list("orange", "dodgerblue", colorV));
+   }
+   ## Optionally warp the color ramp
+   if (lens != 0) {
+      colorV <- jamba::warpRamp(colorV,
+         divergent=TRUE,
+         lens=lens,
+         ...);
+      if (verbose) {
+         jamba::printDebug("vals2colorLevels(): ",
+            "colorV (lens):\n",
+            format(colorVnames),
+            sep=", ",
+            Lrange=c(10,95), Crange=c(40,95),
+            fgText=list("orange", "dodgerblue", colorV));
+      }
+   }
+
+   ## Apply the color gradient
+   if (divergent) {
+      ## divergent color ramp
+      k <- jamba::noiseFloor(x,
+         minimum=baseline-numLimit,
+         ceiling=numLimit);
+      kBreaks <- seq(from=2*baseline-numLimit,
+         to=numLimit,
+         length.out=rampN+1);
+   } else {
+      ## one-directional color ramp
+      k <- jamba::noiseFloor(x,
+         minimum=baseline,
+         ceiling=numLimit);
+      kBreaks <- seq(from=baseline,
+         to=numLimit,
+         length.out=rampN+1);
+   }
+   if (verbose) {
+      colorVbreaks <- c(head(colorV, ceiling(length(colorV)/2)),
+         tail(colorV, ceiling(length(colorV)/2)));
+      jamba::printDebug("vals2colorLevels(): ",
+         "kBreaks:\n",
+         format(round(digits=1, kBreaks)),
+         sep=", ",
+         Lrange=c(10,95), Crange=c(40,95),
+         fgText=list("orange", "dodgerblue", colorVbreaks));
+   }
+   kCut <- cut(k,
+      include.lowest=TRUE,
+      breaks=kBreaks);
+   kColor <- unname(colorV[as.numeric(kCut)]);
+   if (length(names(x)) > 0) {
+      names(kColor) <- names(x);
+   }
+   kColor;
+}

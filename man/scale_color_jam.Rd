@@ -53,3 +53,11 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
 }
 }
+\seealso{
+Other jam color functions: \code{\link{closestRcolor}},
+  \code{\link{group2colors}}, \code{\link{jam_pal}},
+  \code{\link{matrix2heatColors}},
+  \code{\link{rainbowJam}}, \code{\link{scale_fill_jam}},
+  \code{\link{theme_jam}}, \code{\link{vals2colorLevels}}
+}
+\concept{jam color functions}

@@ -1,3 +1,11 @@
+# colorjam version 0.0.8.900
+
+## new functions
+
+* `vals2colorLevels()` converts a numeric vector into a color gradient,
+optionally divergent around a baseline, optionally applying the color
+warp using `jamba::warpRamp()` and a `lens` adjustment value.
+
 # colorjam version 0.0.7.900
 
 ## changes
