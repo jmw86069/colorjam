@@ -1323,18 +1323,23 @@ vals2colorLevels <- function
          col <- "Reds";
       }
    }
+   ## If no baseline is provided, infer an appropriate one
+   if (length(baseline) == 0) {
+      if (divergent || min(x, na.rm=TRUE) == max(x, na.rm=TRUE)) {
+         baseline <- 0;
+      } else {
+         baseline <- min(x, na.rm=TRUE);
+      }
+   }
    if (length(numLimit) == 0) {
       if (divergent) {
          numLimit <- max(abs(x-baseline)+baseline, na.rm=TRUE);
       } else {
          numLimit <- max(x, na.rm=TRUE);
       }
-   }
-   if (length(baseline) == 0) {
-      if (divergent) {
-         baseline <- 0;
-      } else {
-         baseline <- min(x, na.rm=TRUE);
+      ## Correct issue when numLimit == baseline
+      if (numLimit == baseline) {
+         numLimit <- baseline + 1;
       }
    }
 

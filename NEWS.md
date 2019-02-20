@@ -1,3 +1,10 @@
+# colorjam version 0.0.9.900
+
+## changes
+
+* `vals2colorLevels()` was updated to handle edge cases where input
+values had no numeric range.
+
 # colorjam version 0.0.8.900
 
 ## new functions
