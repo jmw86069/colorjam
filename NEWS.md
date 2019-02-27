@@ -1,3 +1,15 @@
+# colorjam version 0.0.10.900
+
+* `closestRcolor()` was updated to handle new behavior from `col2hcl()`
+which by default does not assign names to unnamed vectors.
+* `closestRcolor()` now has `method` argument to define the distance
+method (see `stats::dist()`); added optional "LUV" color model. In some
+cases "LUV" has greater sensitivity albeit with less accuracy. In other
+words for large color vectors, "LUV" may produce the most non-repeated
+colors at cost of accuracy, while "hcl" tends to be more accurate but
+sometimes snaps two similar colors to the same closest R color.
+Future work should probably handle greyscale colors separately.
+
 # colorjam version 0.0.9.900
 
 ## changes

@@ -526,11 +526,12 @@ closestRcolor <- function
 (x,
  colorSet=unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
  showPalette=FALSE,
- colorModel=c("hcl"),
+ colorModel=c("hcl","LUV"),
  Hwt=2,
  Cwt=1,
- Lwt=5,
+ Lwt=4,
  warpHue=TRUE,
+ method="maximum",
  returnType=c("color","name","match"),
  verbose=FALSE,
  ...)
@@ -573,7 +574,7 @@ closestRcolor <- function
             dimnames=list(names(a), names(b)));
       }
       xHCL <- jamba::col2hcl(x);
-      colorSetHCL <- jamba::col2hcl(colorSet);
+      colorSetHCL <- jamba::col2hcl(nameVector(colorSet));
 
       ## Adjust H to RYB
       if (warpHue) {
@@ -586,7 +587,12 @@ closestRcolor <- function
       CLm <- rbind(t(xHCL), t(colorSetHCL))[,c("L","C"),drop=FALSE];
       CLm[,"C"] <- CLm[,"C"]*Cwt;
       CLm[,"L"] <- CLm[,"L"]*Lwt;
-      CLdist <- as.matrix(dist(CLm))[colnames(xHCL),colnames(colorSetHCL),drop=FALSE];
+      CLdist <- as.matrix(dist(CLm,
+         method=method))[colnames(xHCL),colnames(colorSetHCL),drop=FALSE];
+      if (verbose) {
+         printDebug("dim(Hdist):", dim(Hdist));
+         printDebug("dim(CLdist):", dim(CLdist));
+      }
       HCLdist <- Hdist * Hwt + CLdist;
       iClosestColorWhich <- apply(HCLdist, 1, which.min);
 
@@ -599,6 +605,30 @@ closestRcolor <- function
       } else {
          newX <- jamba::nameVector(colorSet[iClosestColorWhich],
             colnames(xHCL));
+      }
+   } else if (colorModel %in% "LUV") {
+      ## Use LUV
+      col2LUV <- function(a) {
+         if (length(names(a)) == 0) {
+            names(a) <- makeNames(a);
+         }
+         coords(as(colorspace::hex2RGB(rgb2col(col2rgb(a))), "LUV"));
+      }
+      xLUV <- col2LUV(x);
+      colorSetLUV <- col2LUV(colorSet);
+      LUVdist <- as.matrix(dist(rbind(xLUV,
+         colorSetLUV),
+         method=method))[rownames(xLUV),rownames(colorSetLUV),drop=FALSE];
+      iClosestColorWhich <- apply(LUVdist, 1, which.min);
+      ## Define the proper return value
+      if (returnType %in% "match") {
+         newX <- iClosestColorWhich;
+      } else if (returnType %in% "name") {
+         newX <- jamba::nameVector(rownames(LUVdist)[iClosestColorWhich],
+            rownames(xLUV));
+      } else {
+         newX <- jamba::nameVector(colorSet[iClosestColorWhich],
+            rownames(xLUV));
       }
    }
 

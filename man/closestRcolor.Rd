@@ -5,9 +5,9 @@
 \title{Find the closest R color}
 \usage{
 closestRcolor(x, colorSet = unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
-  showPalette = FALSE, colorModel = c("hcl"), Hwt = 2, Cwt = 1,
-  Lwt = 5, warpHue = TRUE, returnType = c("color", "name", "match"),
-  verbose = FALSE, ...)
+  showPalette = FALSE, colorModel = c("hcl", "LUV"), Hwt = 2,
+  Cwt = 1, Lwt = 4, warpHue = TRUE, method = "maximum",
+  returnType = c("color", "name", "match"), verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{character vector of colors, either in hex format or any
