@@ -5,7 +5,8 @@
 \title{Apply rainbowJam categorical colors to a ggplot2 object}
 \usage{
 scale_color_jam(..., type = "seq", palette = 1, direction = 1,
-  invert = FALSE, darkFactor = 1, sFactor = 1, useGrey = 20)
+  invert = FALSE, darkFactor = 1, sFactor = 1, alpha = 1,
+  useGrey = 20)
 }
 \arguments{
 \item{...}{additional arguments are passed to \code{ggplot2::discrete_scale()}.}
@@ -31,6 +32,9 @@ optional adjustment of the color, by darkness and saturation,
 respectively. Intended when using \code{scale_color_jam()} and
 \code{scale_fill_jam()} where you want the color value to be lighter
 or darker than the fill color, a useful effect for outlines.}
+
+\item{alpha}{numeric value indicating the alpha transparency, on a
+scale of 0 (transparent) to 1 (non-transparent).}
 
 \item{useGrey}{integer value between 0 and 100 indicating the grey
 value, as sent to \code{jamba::setTextContrastColor()}, used only when

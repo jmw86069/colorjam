@@ -5,7 +5,7 @@
 \title{Jam color palette for ggplot2}
 \usage{
 jam_pal(type = "seq", palette = 1, direction = 1, invert = FALSE,
-  darkFactor = 1, sFactor = 1, useGrey = 20)
+  darkFactor = 1, sFactor = 1, alpha = 1, useGrey = 20, ...)
 }
 \arguments{
 \item{type}{character string indicating the colors are sequential
@@ -30,9 +30,14 @@ respectively. Intended when using \code{scale_color_jam()} and
 \code{scale_fill_jam()} where you want the color value to be lighter
 or darker than the fill color, a useful effect for outlines.}
 
+\item{alpha}{numeric value indicating the alpha transparency, on a
+scale of 0 (transparent) to 1 (non-transparent).}
+
 \item{useGrey}{integer value between 0 and 100 indicating the grey
 value, as sent to \code{jamba::setTextContrastColor()}, used only when
 \code{invert=TRUE}.}
+
+\item{...}{additional arguments are passed to \code{rainbowJam()}.}
 }
 \description{
 Jam color palette for ggplot2

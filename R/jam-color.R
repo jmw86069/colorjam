@@ -785,7 +785,7 @@ group2colors <- function
 #'
 #' @export
 theme_jam <- function
-(theme_default=theme_bw,
+(theme_default=ggplot2::theme_bw,
  base_size=18,
  grid.major.size=0.5,
  grid.minor.size=0.25,
@@ -808,13 +808,16 @@ theme_jam <- function
    ##
    ## Anything in '...' is passed to theme(...) in order to customize other
    ## theme options.
+   if (!suppressPackageStartupMessages(require(ggplot2))) {
+      stop("theme_jam() requires the ggplot2 package.");
+   }
    if (resetTheme) {
       tNew <- theme_default(base_size=base_size);
    } else {
-      tNew <- theme_get();
+      tNew <- ggplot2::theme_get();
    }
    tNew <- tNew +
-      theme(
+      ggplot2::theme(
          axis.text.x=element_text(angle=axis.text.x.angle,
             hjust=1),
          strip.text=element_text(
@@ -831,22 +834,22 @@ theme_jam <- function
             size=grid.minor.size));
    if (blankGrid || blankXgrid) {
       if (verbose) {
-         printDebug("theme_jam(): ",
+         jamba::printDebug("theme_jam(): ",
             "blankXgrid");
       }
-      tNew <- tNew + theme(panel.grid.major.x=element_blank(),
+      tNew <- tNew + ggplot2::theme(panel.grid.major.x=element_blank(),
          panel.grid.minor.x=element_blank());
    }
    if (blankGrid || blankYgrid) {
       if (verbose) {
-         printDebug("theme_jam(): ",
+         jamba::printDebug("theme_jam(): ",
             "blankYgrid");
       }
-      tNew <- tNew + theme(panel.grid.major.y=element_blank(),
+      tNew <- tNew + ggplot2::theme(panel.grid.major.y=element_blank(),
          panel.grid.minor.y=element_blank());
    }
    if (length(list(...)) > 0) {
-      tNew <- tNew + theme(...);
+      tNew <- tNew + ggplot2::theme(...);
    }
    invisible(tNew);
 }
@@ -877,6 +880,8 @@ theme_jam <- function
 #'    respectively. Intended when using `scale_color_jam()` and
 #'    `scale_fill_jam()` where you want the color value to be lighter
 #'    or darker than the fill color, a useful effect for outlines.
+#' @param alpha numeric value indicating the alpha transparency, on a
+#'    scale of 0 (transparent) to 1 (non-transparent).
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
@@ -900,6 +905,7 @@ scale_color_jam <- function
  invert=FALSE,
  darkFactor=1,
  sFactor=1,
+ alpha=1,
  useGrey=20)
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
@@ -914,6 +920,7 @@ scale_color_jam <- function
          invert=invert,
          darkFactor=darkFactor,
          sFactor=sFactor,
+         alpha=alpha,
          useGrey=useGrey),
       ...);
 }
@@ -944,6 +951,8 @@ scale_color_jam <- function
 #'    respectively. Intended when using `scale_color_jam()` and
 #'    `scale_fill_jam()` where you want the color value to be lighter
 #'    or darker than the fill color, a useful effect for outlines.
+#' @param alpha numeric value indicating the alpha transparency, on a
+#'    scale of 0 (transparent) to 1 (non-transparent).
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
@@ -959,6 +968,7 @@ scale_fill_jam <- function
  invert=FALSE,
  darkFactor=1,
  sFactor=1,
+ alpha=1,
  useGrey=20)
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
@@ -973,6 +983,7 @@ scale_fill_jam <- function
          invert=invert,
          darkFactor=darkFactor,
          sFactor=sFactor,
+         alpha=alpha,
          useGrey=useGrey),
       ...);
 }
@@ -998,9 +1009,12 @@ scale_fill_jam <- function
 #'    respectively. Intended when using `scale_color_jam()` and
 #'    `scale_fill_jam()` where you want the color value to be lighter
 #'    or darker than the fill color, a useful effect for outlines.
+#' @param alpha numeric value indicating the alpha transparency, on a
+#'    scale of 0 (transparent) to 1 (non-transparent).
 #' @param useGrey integer value between 0 and 100 indicating the grey
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
+#' @param ... additional arguments are passed to `rainbowJam()`.
 #'
 #' @family jam color functions
 #'
@@ -1012,12 +1026,17 @@ jam_pal <- function
  invert=FALSE,
  darkFactor=1,
  sFactor=1,
- useGrey=20)
+ alpha=1,
+ useGrey=20,
+ ...)
 {
    ## Note this function does not specifically require ggplot2
    if (invert) {
       function(n) {
-         pal <- jamba::setTextContrastColor(rainbowJam(n),
+         pal <- jamba::setTextContrastColor(
+            rainbowJam(n,
+               alpha=alpha,
+               ...),
             useGrey=useGrey);
          names(pal) <- NULL;
          pal <- pal[seq_len(n)];
@@ -1028,7 +1047,9 @@ jam_pal <- function
       }
    } else {
       function(n) {
-         pal <- rainbowJam(n);
+         pal <- rainbowJam(n,
+            alpha=alpha,
+            ...);
          if (darkFactor != 1 || sFactor != 1) {
             pal <- jamba::makeColorDarker(pal,
                darkFactor=darkFactor,

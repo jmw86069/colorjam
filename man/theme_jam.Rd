@@ -4,7 +4,7 @@
 \alias{theme_jam}
 \title{Jam default theme for ggplot2}
 \usage{
-theme_jam(theme_default = theme_bw, base_size = 18,
+theme_jam(theme_default = ggplot2::theme_bw, base_size = 18,
   grid.major.size = 0.5, grid.minor.size = 0.25,
   strip.background.colour = "grey30",
   strip.background.fill = "lightgoldenrod1",

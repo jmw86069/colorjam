@@ -1,4 +1,14 @@
+# colorjam version 0.0.11.900
+
+## changes
+
+* `scale_fill_jam()`, `scale_color_jam()`, and `jam_pal()` have
+an argument `alpha` to control alpha transparency, on a scale of
+0 (transparent) to 1 (non-transparent.)
+
 # colorjam version 0.0.10.900
+
+## changes
 
 * `closestRcolor()` was updated to handle new behavior from `col2hcl()`
 which by default does not assign names to unnamed vectors.
