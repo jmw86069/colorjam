@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.12.900</span>
       </span>
     </div>
 
@@ -114,9 +114,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>closestRcolor</span>(<span class='no'>x</span>, <span class='kw'>colorSet</span> <span class='kw'>=</span> <span class='fu'>unvigrep</span>(<span class='st'>"^gr[ae]y($|[0-9]+$)"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/colors'>colors</a></span>()),
-  <span class='kw'>showPalette</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>colorModel</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"hcl"</span>), <span class='kw'>Hwt</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>Cwt</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>Lwt</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>warpHue</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"color"</span>, <span class='st'>"name"</span>, <span class='st'>"match"</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>showPalette</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>colorModel</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"hcl"</span>, <span class='st'>"LUV"</span>), <span class='kw'>Hwt</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>Cwt</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>Lwt</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>warpHue</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"maximum"</span>,
+  <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"color"</span>, <span class='st'>"name"</span>, <span class='st'>"match"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,12 +189,12 @@ although the default values appear to work fairly well.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>closestRcolor</span>(<span class='fu'><a href='rainbowJam.html'>rainbowJam</a></span>(<span class='fl'>12</span>), <span class='kw'>showPalette</span><span class='kw'>=</span><span class='fl'>TRUE</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'colorspace' was built under R version 3.5.2</span></div><div class='img'><img src='closestRcolor-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;     #C02D39FF     #FF6B4BFF     #CE4C19FF     #753807FF     #755600FF 
-#&gt;      "brown3"      "coral2"  "orangered2"  "chocolate4"     "orange4" 
-#&gt;     #598B07FF     #006B20FF     #00D6FFFF     #2E65F9FF     #5A319EFF 
-#&gt; "chartreuse4"   "darkgreen"  "turquoise2"   "royalblue"  "slateblue4" 
-#&gt;     #B532A6FF     #FF4395FF 
-#&gt;     "maroon3"  "violetred1" </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>closestRcolor</span>(<span class='fu'><a href='rainbowJam.html'>rainbowJam</a></span>(<span class='fl'>12</span>), <span class='kw'>showPalette</span><span class='kw'>=</span><span class='fl'>TRUE</span>);</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘colorspace’ was built under R version 3.5.2</span></div><div class='img'><img src='closestRcolor-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;        #C02D39FF        #FF6B4BFF        #CE4C19FF        #753807FF 
+#&gt;         "brown3"         "coral1"        "tomato3"     "chocolate4" 
+#&gt;        #755600FF        #598B07FF        #006B20FF        #00D6FFFF 
+#&gt; "darkgoldenrod4"    "chartreuse4"      "darkgreen"       "skyblue1" 
+#&gt;        #2E65F9FF        #5A319EFF        #B532A6FF        #FF4395FF 
+#&gt;     "royalblue2"     "slateblue4"       "magenta3"     "violetred1" </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

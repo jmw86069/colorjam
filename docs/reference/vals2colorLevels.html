@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.12.900</span>
       </span>
     </div>
 
@@ -198,17 +198,17 @@ data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Start with an example numeric vector</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>nameVector</span>(-<span class='fl'>5</span>:<span class='fl'>10</span>);
-<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>));</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in seq.default(from = 2 * baseline - numLimit, to = numLimit, length.out = rampN +     1): 'from' must be a finite number</span></div><div class='input'>
+<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>));</div><div class='img'><img src='vals2colorLevels-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># decrease the number of gradient colors</span>
-<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>, <span class='kw'>rampN</span><span class='kw'>=</span><span class='fl'>15</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in seq.default(from = 2 * baseline - numLimit, to = numLimit, length.out = rampN +     1): 'from' must be a finite number</span></div><div class='input'>
+<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>, <span class='kw'>rampN</span><span class='kw'>=</span><span class='fl'>15</span>))</div><div class='img'><img src='vals2colorLevels-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change the baseline</span>
-<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>, <span class='kw'>baseline</span><span class='kw'>=</span>-<span class='fl'>2</span>));</div><div class='input'>
+<span class='fu'>showColors</span>(<span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>, <span class='kw'>baseline</span><span class='kw'>=</span>-<span class='fl'>2</span>));</div><div class='img'><img src='vals2colorLevels-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># adjust the gradient using lens</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/par'>par</a></span>(<span class='st'>"mar"</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span>));
 <span class='fu'>imageByColors</span>(<span class='fu'>rbindList</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='fu'>nameVector</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>5</span>,-<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>5</span>)), <span class='kw'>function</span>(<span class='no'>lens</span>){
    <span class='fu'>vals2colorLevels</span>(<span class='no'>x</span>, <span class='kw'>rampN</span><span class='kw'>=</span><span class='fl'>25</span>, <span class='kw'>lens</span><span class='kw'>=</span><span class='no'>lens</span>);
-})));</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in seq.default(from = 2 * baseline - numLimit, to = numLimit, length.out = rampN +     1): 'from' must be a finite number</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/title'>title</a></span>(<span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"color lens factor"</span>, <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"numeric value"</span>,
-   <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"Effects of warping the color gradient"</span>);</div><div class='img'><img src='vals2colorLevels-1.png' alt='' width='700' height='433' /></div><div class='input'>
+})));</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/title'>title</a></span>(<span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"color lens factor"</span>, <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"numeric value"</span>,
+   <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"Effects of warping the color gradient"</span>);</div><div class='img'><img src='vals2colorLevels-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

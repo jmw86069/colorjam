@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.12.900</span>
       </span>
     </div>
 
@@ -114,7 +114,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>scale_color_jam</span>(<span class='no'>...</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"seq"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>invert</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>darkFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>sFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>useGrey</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
+  <span class='kw'>invert</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>darkFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>sFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>useGrey</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,6 +157,11 @@ respectively. Intended when using <code>scale_color_jam()</code> and
 or darker than the fill color, a useful effect for outlines.</p></td>
     </tr>
     <tr>
+      <th>alpha</th>
+      <td><p>numeric value indicating the alpha transparency, on a
+scale of 0 (transparent) to 1 (non-transparent).</p></td>
+    </tr>
+    <tr>
       <th>useGrey</th>
       <td><p>integer value between 0 and 100 indicating the grey
 value, as sent to <code><a href='https://www.rdocumentation.org/packages/jamba/topics/setTextContrastColor'>jamba::setTextContrastColor()</a></code>, used only when
@@ -185,7 +191,7 @@ distinct set of categorical colors than <code><a href='https://ggplot2.tidyverse
 
    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>d</span> + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_hue.html'>scale_color_hue</a></span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_hue()"</span>));
    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>d</span> + <span class='fu'>scale_color_jam</span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_jam()"</span>));
-}</div><div class='img'><img src='scale_color_jam-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='scale_color_jam-2.png' alt='' width='700' height='433' /></div></pre>
+}</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘ggplot2’ was built under R version 3.5.2</span></div><div class='img'><img src='scale_color_jam-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='scale_color_jam-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -8,8 +8,8 @@ theme_jam(theme_default = ggplot2::theme_bw, base_size = 18,
   grid.major.size = 0.5, grid.minor.size = 0.25,
   strip.background.colour = "grey30",
   strip.background.fill = "lightgoldenrod1",
-  panel.grid.major.colour = "grey60",
-  panel.grid.minor.colour = "grey80", axis.text.x.angle = 60,
+  panel.grid.major.colour = "grey80",
+  panel.grid.minor.colour = "grey90", axis.text.x.angle = 60,
   blankGrid = FALSE, blankXgrid = FALSE, blankYgrid = FALSE,
   resetTheme = TRUE, verbose = FALSE, ...)
 }
@@ -56,6 +56,16 @@ This function applies some default theme settings to ggplot2, mainly
 taking away the default grey newspaper background color, also rotates the
 x-axis label text to 60 degrees, to accomodate longer labels without
 overlaps.
+}
+\examples{
+if (suppressPackageStartupMessages(require(ggplot2))) {
+   dsamp <- diamonds[sample(nrow(diamonds), 1000),];
+   (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+
+   print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
+   print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \\ntheme_jam()"));
+}
+
 }
 \seealso{
 Other jam color functions: \code{\link{closestRcolor}},

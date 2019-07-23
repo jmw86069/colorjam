@@ -783,6 +783,15 @@ group2colors <- function
 #'
 #' @family jam color functions
 #'
+#' @examples
+#' if (suppressPackageStartupMessages(require(ggplot2))) {
+#'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
+#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+#'
+#'    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
+#'    print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \ntheme_jam()"));
+#' }
+#'
 #' @export
 theme_jam <- function
 (theme_default=ggplot2::theme_bw,
@@ -791,8 +800,8 @@ theme_jam <- function
  grid.minor.size=0.25,
  strip.background.colour="grey30",
  strip.background.fill="lightgoldenrod1",
- panel.grid.major.colour="grey60",
- panel.grid.minor.colour="grey80",
+ panel.grid.major.colour="grey80",
+ panel.grid.minor.colour="grey90",
  axis.text.x.angle=60,
  blankGrid=FALSE,
  blankXgrid=FALSE,

@@ -1,3 +1,11 @@
+# colorjam version 0.0.12.900
+
+## changes
+
+* `theme_jam()` was updated to make the major and minor grid
+lines a lighter shade of gray, so they have less interference
+with text labels on a plot panel.
+
 # colorjam version 0.0.11.900
 
 ## changes
