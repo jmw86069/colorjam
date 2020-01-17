@@ -1110,13 +1110,32 @@ jam_pal <- function
 #'    When set to `NULL` the `numLimitFactor` is used to define
 #'    the `numLimit`.
 #' @param baseline numeric value to define the numeric baseline, used
-#'    when `divergent=FALSE`.
+#'    when `divergent=FALSE`. Values are recycled to `ncol(x)` to be
+#'    applied to each column individually.
+#' @param color_below_baseline color used when numeric value is
+#'    below the `baseline`. Values are recycled to `ncol(x)` to be
+#'    applied to each column individually. When `color_below_baseline`
+#'    is `NULL`, the first color in the color ramp is used for all
+#'    values below the baseline.
 #' @param divergent logical indicating whether to apply colors to the numeric
 #'    range symmetric around zero.
 #' @param rampN integer value to define the number of color breaks for
 #'    each color gradient.
+#' @param trimRamp numeric vector with two values, used by
+#'    `jamba::getColorRamp()` to trim the intermediate color gradient before
+#'    creating the final color ramp with length `rampN`. For example,
+#'    by default `jamba::getColorRamp()` creates a color gradient with
+#'    15 colorr, defined by argument `gradientN=15`, so the argument
+#'    `trimRamp=c(4,2)` will trim the first 4 colors and the last 2 colors
+#'    from the 15-color gradient, before generating the final color
+#'    gradient with length `rampN`. The `trimRamp` argument is especially
+#'    useful to remove the leading white color, or to trim the first
+#'    few colors to ensure the first color in the gradient is visibly
+#'    different from the background color defined by `defaultBaseColor`.
 #' @param verbose logical indicating whether to print verbose output.
-#' @param ... additional arguments are ignored.
+#' @param ... additional arguments are passed to `jamba::getColorRamp()`
+#'    for additional customization. These arguments are handled across
+#'    all columns, and not a column-by-column basis.
 #'
 #' @family jam matrix functions
 #' @family jam color functions
@@ -1148,8 +1167,10 @@ matrix2heatColors <- function
  numLimitFactor=0.95,
  numLimit=NULL,
  baseline=0,
+ color_below_baseline="#FFFFFF",
  divergent=FALSE,
  rampN=15,
+ trimRamp=c(0, 0),
  verbose=FALSE,
 ...)
 {
@@ -1210,6 +1231,9 @@ matrix2heatColors <- function
    baseline <- jamba::nameVector(rep(baseline,
       length.out=ncol(x)),
       xNames);
+   color_below_baseline <- jamba::nameVector(rep(color_below_baseline,
+      length.out=ncol(x)),
+      xNames);
    numLimit <- jamba::nameVector(rep(numLimit,
       length.out=ncol(x)),
       xNames);
@@ -1244,11 +1268,13 @@ matrix2heatColors <- function
          k <- jamba::noiseFloor(k,
             minimum=-numLimit[i],
             ceiling=numLimit[i]);
-         kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
+         kRamp <- jamba::getColorRamp(colorV[[i]],
             defaultBaseColor=defaultBaseColor[i],
-            n=rampN[i]),
+            lens=lens[i],
             divergent=TRUE,
-            lens=lens[i]);
+            n=rampN[i],
+            trimRamp=trimRamp,
+            ...);
          if (verbose) {
             printDebug("matrix2heatColors(): ",
                "divergent:", divergent,
@@ -1266,12 +1292,20 @@ matrix2heatColors <- function
          ## one-directional color ramp
          k <- jamba::noiseFloor(k,
             minimum=baseline[i],
+            newValue=baseline[i]-1,
             ceiling=numLimit[i]);
-         kRamp <- jamba::warpRamp(jamba::getColorRamp(colorV[[i]],
+         kRamp <- jamba::getColorRamp(colorV[[i]],
             defaultBaseColor=defaultBaseColor[i],
-            n=rampN[i]),
+            lens=lens[i],
             divergent=FALSE,
-            lens=lens[i]);
+            n=rampN[i],
+            trimRamp=trimRamp,
+            ...);
+         if (length(color_below_baseline[i]) == 0) {
+            kRamp <- c(kRamp[1], kRamp);
+         } else {
+            kRamp <- c(color_below_baseline[i], kRamp);
+         }
          if (verbose) {
             printDebug("matrix2heatColors(): ",
                "divergent:", divergent[i],
@@ -1281,9 +1315,10 @@ matrix2heatColors <- function
          }
          kCut <- cut(k,
             include.lowest=TRUE,
-            breaks=seq(from=baseline[i],
-               to=numLimit[i],
-               length.out=rampN[i]+1));
+            breaks=c(baseline[i]-1,
+               seq(from=baseline[i],
+                  to=numLimit[i],
+                  length.out=rampN[i]+1)));
          kColor <- kRamp[kCut];
       }
       kColor;
