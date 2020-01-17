@@ -4,9 +4,16 @@
 \alias{group2colors}
 \title{Assign colors to vector of group labels}
 \usage{
-group2colors(x, alpha = 1, colorFunc = rainbowJam, colorSub = NULL,
-  sortFunc = jamba::mixedSort, useGradient = FALSE, verbose = FALSE,
-  ...)
+group2colors(
+  x,
+  alpha = 1,
+  colorFunc = rainbowJam,
+  colorSub = NULL,
+  sortFunc = jamba::mixedSort,
+  useGradient = FALSE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{character or factor vector representing group membership.}
@@ -65,10 +72,14 @@ jamba::showColors(list(abcde=abcde,
 
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{jam_pal}}, \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
-  \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{jam_pal}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}

@@ -4,8 +4,17 @@
 \alias{jam_pal}
 \title{Jam color palette for ggplot2}
 \usage{
-jam_pal(type = "seq", palette = 1, direction = 1, invert = FALSE,
-  darkFactor = 1, sFactor = 1, alpha = 1, useGrey = 20, ...)
+jam_pal(
+  type = "seq",
+  palette = 1,
+  direction = 1,
+  invert = FALSE,
+  darkFactor = 1,
+  sFactor = 1,
+  alpha = 1,
+  useGrey = 20,
+  ...
+)
 }
 \arguments{
 \item{type}{character string indicating the colors are sequential
@@ -43,11 +52,14 @@ value, as sent to \code{jamba::setTextContrastColor()}, used only when
 Jam color palette for ggplot2
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{group2colors}},
-  \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
-  \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}

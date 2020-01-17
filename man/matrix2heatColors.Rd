@@ -4,11 +4,23 @@
 \alias{matrix2heatColors}
 \title{Convert numeric matrix to heatmap colors}
 \usage{
-matrix2heatColors(x, colorV = group2colors(colnames(x)),
-  defaultBaseColor = "#FFFFFF", transformFunc = c, lens = 0,
-  shareLimit = TRUE, numLimitFactor = 0.95, numLimit = NULL,
-  baseline = 0, divergent = FALSE, rampN = 15, verbose = FALSE,
-  ...)
+matrix2heatColors(
+  x,
+  colorV = group2colors(colnames(x)),
+  defaultBaseColor = "#FFFFFF",
+  transformFunc = c,
+  lens = 0,
+  shareLimit = TRUE,
+  numLimitFactor = 0.95,
+  numLimit = NULL,
+  baseline = 0,
+  color_below_baseline = "#FFFFFF",
+  divergent = FALSE,
+  rampN = 15,
+  trimRamp = c(0, 0),
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{numeric matrix. If there are no \code{colnames(x)} they will
@@ -41,7 +53,14 @@ When set to \code{NULL} the \code{numLimitFactor} is used to define
 the \code{numLimit}.}
 
 \item{baseline}{numeric value to define the numeric baseline, used
-when \code{divergent=FALSE}.}
+when \code{divergent=FALSE}. Values are recycled to \code{ncol(x)} to be
+applied to each column individually.}
+
+\item{color_below_baseline}{color used when numeric value is
+below the \code{baseline}. Values are recycled to \code{ncol(x)} to be
+applied to each column individually. When \code{color_below_baseline}
+is \code{NULL}, the first color in the color ramp is used for all
+values below the baseline.}
 
 \item{divergent}{logical indicating whether to apply colors to the numeric
 range symmetric around zero.}
@@ -49,9 +68,23 @@ range symmetric around zero.}
 \item{rampN}{integer value to define the number of color breaks for
 each color gradient.}
 
+\item{trimRamp}{numeric vector with two values, used by
+\code{jamba::getColorRamp()} to trim the intermediate color gradient before
+creating the final color ramp with length \code{rampN}. For example,
+by default \code{jamba::getColorRamp()} creates a color gradient with
+15 colorr, defined by argument \code{gradientN=15}, so the argument
+\code{trimRamp=c(4,2)} will trim the first 4 colors and the last 2 colors
+from the 15-color gradient, before generating the final color
+gradient with length \code{rampN}. The \code{trimRamp} argument is especially
+useful to remove the leading white color, or to trim the first
+few colors to ensure the first color in the gradient is visibly
+different from the background color defined by \code{defaultBaseColor}.}
+
 \item{verbose}{logical indicating whether to print verbose output.}
 
-\item{...}{additional arguments are ignored.}
+\item{...}{additional arguments are passed to \code{jamba::getColorRamp()}
+for additional customization. These arguments are handled across
+all columns, and not a column-by-column basis.}
 }
 \description{
 Convert numeric matrix to heatmap colors
@@ -85,11 +118,15 @@ jamba::imageByColors(
 
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{group2colors}}, \code{\link{jam_pal}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
-  \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{jam_pal}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}
 \concept{jam matrix functions}

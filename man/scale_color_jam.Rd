@@ -4,9 +4,17 @@
 \alias{scale_color_jam}
 \title{Apply rainbowJam categorical colors to a ggplot2 object}
 \usage{
-scale_color_jam(..., type = "seq", palette = 1, direction = 1,
-  invert = FALSE, darkFactor = 1, sFactor = 1, alpha = 1,
-  useGrey = 20)
+scale_color_jam(
+  ...,
+  type = "seq",
+  palette = 1,
+  direction = 1,
+  invert = FALSE,
+  darkFactor = 1,
+  sFactor = 1,
+  alpha = 1,
+  useGrey = 20
+)
 }
 \arguments{
 \item{...}{additional arguments are passed to \code{ggplot2::discrete_scale()}.}
@@ -44,7 +52,7 @@ value, as sent to \code{jamba::setTextContrastColor()}, used only when
 Apply rainbowJam categorical colors to a ggplot2 object
 }
 \details{
-This function provides a function in the format \code{scale_color_*}
+This function provides a function in the format \verb{scale_color_*}
 to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_color_hue()}.
 }
@@ -58,10 +66,14 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 }
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{group2colors}}, \code{\link{jam_pal}},
-  \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_fill_jam}},
-  \code{\link{theme_jam}}, \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{jam_pal}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}

@@ -4,9 +4,18 @@
 \alias{vals2colorLevels}
 \title{Apply color gradient to numeric values}
 \usage{
-vals2colorLevels(x, divergent = TRUE, col = "RdBu_r",
-  defaultBaseColor = "#FFFFFF", lens = 0, numLimit = NULL,
-  baseline = NULL, rampN = 25, verbose = FALSE, ...)
+vals2colorLevels(
+  x,
+  divergent = TRUE,
+  col = "RdBu_r",
+  defaultBaseColor = "#FFFFFF",
+  lens = 0,
+  numLimit = NULL,
+  baseline = NULL,
+  rampN = 25,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{numeric vector}
@@ -76,10 +85,14 @@ title(ylab="color lens factor", xlab="numeric value",
 
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{group2colors}}, \code{\link{jam_pal}},
-  \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{jam_pal}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()}
 }
 \concept{jam color functions}

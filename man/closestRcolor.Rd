@@ -4,10 +4,20 @@
 \alias{closestRcolor}
 \title{Find the closest R color}
 \usage{
-closestRcolor(x, colorSet = unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
-  showPalette = FALSE, colorModel = c("hcl", "LUV"), Hwt = 2,
-  Cwt = 1, Lwt = 4, warpHue = TRUE, method = "maximum",
-  returnType = c("color", "name", "match"), verbose = FALSE, ...)
+closestRcolor(
+  x,
+  colorSet = unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
+  showPalette = FALSE,
+  colorModel = c("hcl", "LUV"),
+  Hwt = 2,
+  Cwt = 1,
+  Lwt = 4,
+  warpHue = TRUE,
+  method = "maximum",
+  returnType = c("color", "name", "match"),
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{character vector of colors, either in hex format or any
@@ -57,10 +67,14 @@ closestRcolor(rainbowJam(12), showPalette=TRUE);
 
 }
 \seealso{
-Other jam color functions: \code{\link{group2colors}},
-  \code{\link{jam_pal}}, \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}}, \code{\link{theme_jam}},
-  \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{group2colors}()},
+\code{\link{jam_pal}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{theme_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}

@@ -4,14 +4,23 @@
 \alias{theme_jam}
 \title{Jam default theme for ggplot2}
 \usage{
-theme_jam(theme_default = ggplot2::theme_bw, base_size = 18,
-  grid.major.size = 0.5, grid.minor.size = 0.25,
+theme_jam(
+  theme_default = ggplot2::theme_bw,
+  base_size = 18,
+  grid.major.size = 0.5,
+  grid.minor.size = 0.25,
   strip.background.colour = "grey30",
   strip.background.fill = "lightgoldenrod1",
   panel.grid.major.colour = "grey80",
-  panel.grid.minor.colour = "grey90", axis.text.x.angle = 60,
-  blankGrid = FALSE, blankXgrid = FALSE, blankYgrid = FALSE,
-  resetTheme = TRUE, verbose = FALSE, ...)
+  panel.grid.minor.colour = "grey90",
+  axis.text.x.angle = 60,
+  blankGrid = FALSE,
+  blankXgrid = FALSE,
+  blankYgrid = FALSE,
+  resetTheme = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{theme_default}{function representing a ggplot2 theme.}
@@ -63,16 +72,19 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
 
    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
-   print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \\ntheme_jam()"));
+   print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \ntheme_jam()"));
 }
 
 }
 \seealso{
-Other jam color functions: \code{\link{closestRcolor}},
-  \code{\link{group2colors}}, \code{\link{jam_pal}},
-  \code{\link{matrix2heatColors}},
-  \code{\link{rainbowJam}}, \code{\link{scale_color_jam}},
-  \code{\link{scale_fill_jam}},
-  \code{\link{vals2colorLevels}}
+Other jam color functions: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{jam_pal}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam}()},
+\code{\link{scale_color_jam}()},
+\code{\link{scale_fill_jam}()},
+\code{\link{vals2colorLevels}()}
 }
 \concept{jam color functions}
