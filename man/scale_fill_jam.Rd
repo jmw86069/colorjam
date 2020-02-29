@@ -59,9 +59,11 @@ distinct set of categorical colors than \code{ggplot2::scale_fill_hue()}.
 \seealso{
 Other jam color functions: 
 \code{\link{closestRcolor}()},
+\code{\link{color_pie}()},
 \code{\link{group2colors}()},
 \code{\link{jam_pal}()},
 \code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam_v1}()},
 \code{\link{rainbowJam}()},
 \code{\link{scale_color_jam}()},
 \code{\link{theme_jam}()},

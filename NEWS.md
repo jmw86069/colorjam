@@ -1,3 +1,31 @@
+# colorjam version 0.0.13.900
+
+## Substantial changes to rainbowJam()
+
+* `rainbowJam()` was refactored to address longstanding
+critique that the colors were too muddy. New logic
+is present in `rainbowJam()` and the previous function
+is available with `rainbowJam_v1()` for backward
+compatibility. The new colors are much brighter and
+will need testing over time to evaluate the effects on
+downstream uses. That said, the colors are so much
+improved, it seems reasonable to replace the previous
+function for now.
+
+## Other changes
+
+* The R files were slightly refactored to split functions into
+different files.
+
+## New function
+
+* `color_pie()` is a simple function to display colors in
+pie chart form, which is helpful to assess the first and
+last color in a rainbow color ramp. In fact, `color_pie()`
+might be moved into `jamba::showColors()` as an optional
+output format. Current challenge is how to label each ring,
+when the input is a list of color vectors.
+
 # colorjam version 0.0.12.900
 
 ## changes

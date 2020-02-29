@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>rainbow categorical colors using varied luminance and chroma — rainbowJam • colorjam</title>
+<title>rainbow categorical colors using varied luminance and chroma — rainbowJam_v1 • colorjam</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="rainbow categorical colors using varied luminance and chroma — rainbowJam" />
+<meta property="og:title" content="rainbow categorical colors using varied luminance and chroma — rainbowJam_v1" />
 <meta property="og:description" content="rainbow categorical colors using varied luminance and chroma" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,31 +109,32 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>rainbow categorical colors using varied luminance and chroma</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jmw86069/colorjam/blob/master/R/colorjam-rainbowjam.R'><code>R/colorjam-rainbowjam.R</code></a></small>
-    <div class="hidden name"><code>rainbowJam.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/jmw86069/colorjam/blob/master/R/jam-color.R'><code>R/jam-color.R</code></a></small>
+    <div class="hidden name"><code>rainbowJam_v1.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>rainbow categorical colors using varied luminance and chroma</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rainbowJam</span>(
+    <pre class="usage"><span class='fu'>rainbowJam_v1</span>(
   <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>nfloor</span> <span class='kw'>=</span> <span class='fl'>4</span>,
   <span class='kw'>hues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>Hstart</span> <span class='kw'>=</span> <span class='fl'>12.2</span>,
-  <span class='kw'>warpHue</span> <span class='kw'>=</span> (<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>hues</span>) <span class='kw'>==</span> <span class='fl'>0</span>),
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"-1"</span>),
-  <span class='kw'>hue_pad_percent</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>Cvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>120</span>, <span class='fl'>150</span>, <span class='fl'>140</span>, <span class='fl'>120</span>, <span class='fl'>104</span>),
-  <span class='kw'>Lvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>, <span class='fl'>68</span>, <span class='fl'>90</span>, <span class='fl'>54</span>, <span class='fl'>76</span>, <span class='fl'>61</span>),
+  <span class='kw'>Cvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>75</span>, <span class='fl'>95</span>, <span class='fl'>80</span>, <span class='fl'>65</span>, <span class='fl'>72</span>, <span class='fl'>80</span>),
+  <span class='kw'>Lvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>62</span>, <span class='fl'>83</span>, <span class='fl'>69</span>, <span class='fl'>58</span>, <span class='fl'>65</span>, <span class='fl'>74</span>),
   <span class='kw'>Crange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Lrange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>Cgrey</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"jam.Cgrey"</span>),
+  <span class='kw'>Cgrey</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>Hstart</span> <span class='kw'>=</span> <span class='fl'>12.2</span>,
+  <span class='kw'>warpHue</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>doTest</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>nameStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"n"</span>, <span class='st'>"none"</span>, <span class='st'>"hcl"</span>, <span class='st'>"color"</span>, <span class='st'>"closestRcolor"</span>),
-  <span class='kw'>h1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>, <span class='fl'>120</span>, <span class='fl'>240</span>, <span class='fl'>270</span>, <span class='fl'>360</span>),
-  <span class='kw'>h2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>150</span>, <span class='fl'>180</span>, <span class='fl'>220</span>, <span class='fl'>290</span>, <span class='fl'>360</span>),
+  <span class='kw'>sFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>darkFactor</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>nameStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"hcl"</span>, <span class='st'>"colors"</span>),
+  <span class='kw'>h1</span> <span class='kw'>=</span> <span class='fu'><a href='h2hwOptions.html'>h2hwOptions</a></span>()$<span class='no'>h1</span>,
+  <span class='kw'>h2</span> <span class='kw'>=</span> <span class='fu'><a href='h2hwOptions.html'>h2hwOptions</a></span>()$<span class='no'>h2</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
@@ -146,17 +147,25 @@
       <td><p>integer number of categorical colors to return</p></td>
     </tr>
     <tr>
+      <th>alpha</th>
+      <td><p>numeric alpha transparency of colors, values ranging from
+0 to 1. If multiple values are supplied, they are applied in order to
+the categorical colors returned.</p></td>
+    </tr>
+    <tr>
+      <th>nfloor</th>
+      <td><p>the minimum number of effective color slices taken from the
+hue color wheel, primarily used as an aesthetic choice so the first two
+colors will be reasonably consistent when choosing 1, 2, 3, 4, or 5
+categorical colors.</p></td>
+    </tr>
+    <tr>
       <th>hues</th>
       <td><p>optional numeric vector of hues to use, only useful when the
 exact hues should be used instead of taking slices along a hue color
 wheel. Note that to use hue values with no modification, one should
 also set <code>warpHue=FALSE</code>, otherwise the given hues are assumed to
 warped hue values.</p></td>
-    </tr>
-    <tr>
-      <th>Hstart</th>
-      <td><p>the hue to use for the first hue value in the color sequence.
-Standard red has a hue 12.2, which is the default for this function.</p></td>
     </tr>
     <tr>
       <th>Cvals, Lvals</th>
@@ -177,6 +186,11 @@ Crange and Lrange values can help produce categorical colors on a
 dark or light background, by changing the range of values being used.</p></td>
     </tr>
     <tr>
+      <th>Hstart</th>
+      <td><p>the hue to use for the first hue value in the color sequence.
+Standard red has a hue 12.2, which is the default for this function.</p></td>
+    </tr>
+    <tr>
       <th>doTest</th>
       <td><p>boolen indicating whether to perform a visual test for
 the <code>n</code> number of colors produced, which helps judge the
@@ -184,10 +198,16 @@ visual distinctiveness of different combinations of dark and light
 colors.</p></td>
     </tr>
     <tr>
-      <th>alpha</th>
-      <td><p>numeric alpha transparency of colors, values ranging from
-0 to 1. If multiple values are supplied, they are applied in order to
-the categorical colors returned.</p></td>
+      <th>sFactor, darkFactor</th>
+      <td><p>parameters sent to <code><a href='https://rdrr.io/pkg/jamba/man/makeColorDarker.html'>jamba::makeColorDarker</a></code>
+if either is not equal to 1. Setting <code>darkFactor=2</code> is a quick
+way of generating categorical border colors, for example drawing a
+colored border around categorical colors. Alternatively, setting
+<code>sFactor=-2, darkFactor=-2</code> can be used to desaturate and lighten
+colors used for the background area of a rectangle. The <code>alpha</code>
+transparency parameter can also be helpful, however not all graphics
+devices support transparency, in which case it is more robust to define
+the exact color.</p></td>
     </tr>
     <tr>
       <th>nameStyle</th>
@@ -206,25 +226,6 @@ red-green-blue color space to produce the actual R color.</p></td>
     <tr>
       <th>verbose</th>
       <td><p>logical whether to print verbose output</p></td>
-    </tr>
-    <tr>
-      <th>nfloor</th>
-      <td><p>the minimum number of effective color slices taken from the
-hue color wheel, primarily used as an aesthetic choice so the first two
-colors will be reasonably consistent when choosing 1, 2, 3, 4, or 5
-categorical colors.</p></td>
-    </tr>
-    <tr>
-      <th>sFactor, darkFactor</th>
-      <td><p>parameters sent to <code><a href='https://rdrr.io/pkg/jamba/man/makeColorDarker.html'>jamba::makeColorDarker</a></code>
-if either is not equal to 1. Setting <code>darkFactor=2</code> is a quick
-way of generating categorical border colors, for example drawing a
-colored border around categorical colors. Alternatively, setting
-<code>sFactor=-2, darkFactor=-2</code> can be used to desaturate and lighten
-colors used for the background area of a rectangle. The <code>alpha</code>
-transparency parameter can also be helpful, however not all graphics
-devices support transparency, in which case it is more robust to define
-the exact color.</p></td>
     </tr>
     </table>
 
@@ -258,23 +259,19 @@ hues recognized by <code><a href='https://rdrr.io/r/grDevices/hcl.html'>hcl()</a
 <code><a href='group2colors.html'>group2colors</a>()</code>,
 <code><a href='jam_pal.html'>jam_pal</a>()</code>,
 <code><a href='matrix2heatColors.html'>matrix2heatColors</a>()</code>,
-<code><a href='rainbowJam_v1.html'>rainbowJam_v1</a>()</code>,
+<code><a href='rainbowJam.html'>rainbowJam</a>()</code>,
 <code><a href='scale_color_jam.html'>scale_color_jam</a>()</code>,
 <code><a href='scale_fill_jam.html'>scale_fill_jam</a>()</code>,
 <code><a href='theme_jam.html'>theme_jam</a>()</code>,
 <code><a href='vals2colorLevels.html'>vals2colorLevels</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>rainbowJam</span>(<span class='fl'>12</span>);</div><div class='output co'>#&gt;         1         2         3         4         5         6         7         8 
-#&gt; "#D14362" "#FF7178" "#FFA98C" "#E15400" "#FFA200" "#C98800" "#718100" "#00CC77" 
-#&gt;         9        10        11        12 
-#&gt; "#00FCFF" "#0086FF" "#95B2FF" "#A978FF" </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>rainbowJam_v1</span>(<span class='fl'>12</span>);</div><div class='output co'>#&gt;  [1] "#C02D39FF" "#FF6B4BFF" "#CE4C19FF" "#753807FF" "#755600FF" "#598B07FF"
+#&gt;  [7] "#006B20FF" "#00D6FFFF" "#405FFCFF" "#7C298CFF" "#C53090FF" "#FF4489FF"</div><div class='input'>
 <span class='co'># show colors</span>
-<span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'>rainbowJam</span>(<span class='fl'>10</span>));</div><div class='img'><img src='rainbowJam-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># show colors</span>
-<span class='fu'><a href='color_pie.html'>color_pie</a></span>(<span class='fu'>rainbowJam</span>(<span class='fl'>10</span>));</div><div class='img'><img src='rainbowJam-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'>rainbowJam_v1</span>(<span class='fl'>12</span>));</div><div class='img'><img src='rainbowJam_v1-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># be fancy and label colors using the closest R named color</span>
-<span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='fu'>rainbowJam</span>(<span class='fl'>6</span>, <span class='kw'>nameStyle</span><span class='kw'>=</span><span class='st'>"closestRcolor"</span>)));</div><div class='img'><img src='rainbowJam-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'>rainbowJam_v1</span>(<span class='fl'>12</span>, <span class='kw'>nameStyle</span><span class='kw'>=</span><span class='st'>"colors"</span>));</div><div class='img'><img src='rainbowJam_v1-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

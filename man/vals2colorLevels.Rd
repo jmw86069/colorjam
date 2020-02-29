@@ -66,7 +66,7 @@ data.
 }
 \examples{
 # Start with an example numeric vector
-x <- nameVector(-5:10);
+x <- jamba::nameVector(-5:10);
 showColors(vals2colorLevels(x));
 
 # decrease the number of gradient colors
@@ -87,9 +87,11 @@ title(ylab="color lens factor", xlab="numeric value",
 \seealso{
 Other jam color functions: 
 \code{\link{closestRcolor}()},
+\code{\link{color_pie}()},
 \code{\link{group2colors}()},
 \code{\link{jam_pal}()},
 \code{\link{matrix2heatColors}()},
+\code{\link{rainbowJam_v1}()},
 \code{\link{rainbowJam}()},
 \code{\link{scale_color_jam}()},
 \code{\link{scale_fill_jam}()},
