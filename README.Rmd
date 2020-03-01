@@ -7,8 +7,8 @@ knitr::opts_chunk$set(
   collapse=TRUE,
   warning=FALSE,
   message=FALSE,
-  comment="#>"
-#,fig.path="README-"
+  comment="#>",
+  fig.path="man/figures/README-"
 );
 ```
 # colorjam <img src="man/figures/colorjam_logo.png" width="133px" height="154px" align="right" style="padding-left:10px;background-color:white;" />

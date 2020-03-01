@@ -48,7 +48,7 @@ will use the function `jamba::showColors()` to display the colors.
 showColors(rainbowJam(5));
 ```
 
-![plot of chunk cat5](figure/cat5-1.png)
+![plot of chunk cat5](man/figures/README-cat5-1.png)
 
 To illustrate the effect of increasing categorical colors,
 we will create a list of categorical colors with increasing `n`.
@@ -62,7 +62,7 @@ showColors(colorList,
    main="Red-Yellow-Blue color wheel (default colorjam)");
 ```
 
-![plot of chunk cat_list_ryb](figure/cat_list_ryb-1.png)
+![plot of chunk cat_list_ryb](man/figures/README-cat_list_ryb-1.png)
 
 By default, colorjam uses a "warped" color wheel, which produces
 Red-Yellow-Blue equally spaced. The effect is color additive,
@@ -81,7 +81,7 @@ showColors(colorList2,
    main="Red-Green-Blue color wheel (base R)");
 ```
 
-![plot of chunk cat_list_rgb](figure/cat_list_rgb-1.png)
+![plot of chunk cat_list_rgb](man/figures/README-cat_list_rgb-1.png)
 
 ### Color-splitting
 
@@ -100,7 +100,7 @@ showColors(list(colorSet=rep(colorSet, each=4),
    main="Color split into 4 additional subsets.");
 ```
 
-![plot of chunk color_split](figure/color_split-1.png)
+![plot of chunk color_split](man/figures/README-color_split-1.png)
 
 The color gradient can be tuned to increase or reduce the contrast
 between the light and dark colors:
@@ -125,7 +125,7 @@ showColors(list(colorSet=rep(colorSet, each=4),
    main="Colors adjusted with gradientWtFactor");
 ```
 
-![plot of chunk color_split_wt](figure/color_split_wt-1.png)
+![plot of chunk color_split_wt](man/figures/README-color_split_wt-1.png)
 
 ### Assigning colors to groups
 
@@ -163,7 +163,7 @@ print(data.frame(groupLabels, groupColors));
 showColors(groupColors);
 ```
 
-![plot of chunk group_colors](figure/group_colors-1.png)
+![plot of chunk group_colors](man/figures/README-group_colors-1.png)
 
 Colors are assigned in order, after sorting with `jamba::mixedSort()`,
 which provides alphanumeric sorting. However, if the input vector is
@@ -182,7 +182,7 @@ groupColorsSplit <- group2colors(groupLabels,
 showColors(groupColorsSplit);
 ```
 
-![plot of chunk group_colors_split](figure/group_colors_split-1.png)
+![plot of chunk group_colors_split](man/figures/README-group_colors_split-1.png)
 
 ### ggplot2 color functions
 
@@ -209,7 +209,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 }
 ```
 
-![plot of chunk ggplot_functions](figure/ggplot_functions-1.png)
+![plot of chunk ggplot_functions](man/figures/README-ggplot_functions-1.png)
 
 Some plots use `"fill"` and `"colour"` properties, where the `"colour"`
 defines an outline. In this case, the colors can be adjusted to be
@@ -227,7 +227,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 }
 ```
 
-![plot of chunk ggplot_functions_outline](figure/ggplot_functions_outline-1.png)
+![plot of chunk ggplot_functions_outline](man/figures/README-ggplot_functions_outline-1.png)
 
 ### Alternate ggplot2 theme
 
@@ -245,7 +245,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 }
 ```
 
-![plot of chunk ggplot2_theme](figure/ggplot2_theme-1.png)
+![plot of chunk ggplot2_theme](man/figures/README-ggplot2_theme-1.png)
 
 Notably, this function provides some common arguments which can
 be customized.
@@ -270,7 +270,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 }
 ```
 
-![plot of chunk ggplot2_theme_figure](figure/ggplot2_theme_figure-1.png)
+![plot of chunk ggplot2_theme_figure](man/figures/README-ggplot2_theme_figure-1.png)
 
 ### Naming colors
 
@@ -289,7 +289,7 @@ closestRcolor(rainbowJam(12),
    showPalette=TRUE);
 ```
 
-![plot of chunk color_names](figure/color_names-1.png)
+![plot of chunk color_names](man/figures/README-color_names-1.png)
 
 ```
 #>               1               2               3               4 
