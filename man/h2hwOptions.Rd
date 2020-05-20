@@ -9,6 +9,7 @@ h2hwOptions(
   h2,
   h1default = c(0, 60, 120, 240, 360),
   h2default = c(0, 120, 180, 240, 360),
+  preset = c("dichromat", "none", "ryb", "rgb", "ryb2"),
   reset = FALSE,
   verbose = FALSE,
   ...
@@ -24,6 +25,16 @@ h2hwOptions(
 \item{h1default, h2default}{numeric vector of color hue values to use when
 h1 or h2 are NULL, respectively. The default values are
 included here as a function parameter here for visibility.}
+
+\item{preset}{\code{character} string indicating whether to define the
+\code{h1}, and \code{h2} values based upon named presets: \code{"none"} no change;
+\code{"ryb"} red-yellow-blue; \code{"dichromat"} color wheel that omits green,
+therefore provides relatively even spacing of color-blind-friendly
+colors based upon simulated output as produced by
+\code{dichromat::dichromat()} package; \code{"rgb"} red-green-blue which
+is the default color wheel used in R; \code{"ryb2"} alternate red-yellow-blue
+that slightly over-emphasizes yellow at the expense/benefit of
+even less green.}
 
 \item{reset}{logical whether to reset \code{h1} and \code{h2} values to the defaults,
 as defined in \code{h1defaults} and \code{h2defaults}, respectively.}
@@ -47,17 +58,17 @@ non-linear, meaning it warps (bends) the colors.
 
 The purpose of using \code{options()} to store the color hue is to make it
 easy to re-use the settings across multiple function calls. The related
-reason for this function \code{\link[=h2hwOptions]{h2hwOptions()}} is to make it clear the
+reason for this function \code{h2hwOptions()} is to make it clear the
 default values, and make it clear how to update and review the current
 settings.
 
-Together the vector \code{h1} and \code{h2} are used by \code{\link[stats:approx]{stats::approx()}} to
+Together the vector \code{h1} and \code{h2} are used by \code{stats::approx()} to
 convert from the value ranges in \code{h1} to the corresponding value
 ranges in \code{h2}. Using this mechanism, one could define ranges which
 effectively remove entire slices of the color wheel.
 
 To disable the warped hue mechanism, set \code{h2} equal to \code{h1} for example
-\code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{\link[stats:approx]{stats::approx()}}
+\code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{stats::approx()}
 to interpret every hue as a 1:1 relationship with the warped hue.
 }
 \examples{

@@ -96,11 +96,15 @@ rainbowJam <- function
  warpHue=(length(hues) == 0),
  direction=c("1", "-1"),
  hue_pad_percent=10,
- Cvals=c(100, 120, 150, 140, 120, 104),
- Lvals=c( 50,  68,  90,  54,  76,  61),
+ Cvals=c(130, 150, 160, 150, 220, 120),
+ Lvals=c(54, 90, 64, 50, 84, 65),
+ #Cvals=c(100, 120, 150, 140, 120, 104) + 30,
+ #Lvals=c( 50,  68,  90,  54,  76,  61),
+ #Lvals=c(50, 90, 68, 54, 76, 61),
  Crange=NULL,
  Lrange=NULL,
  Cgrey=getOption("jam.Cgrey"),
+ preset=c("none", "dichromat", "ryb2", "ryb", "rgb"),
  doTest=FALSE,
  alpha=1,
  nameStyle=c("n",
@@ -108,8 +112,11 @@ rainbowJam <- function
     "hcl",
     "color",
     "closestRcolor"),
- h1=c(0,60,120,240,270,360),
- h2=c(0,150,180,220,290,360),
+ h1=h2hwOptions()$h1,
+ h2=h2hwOptions()$h2,
+ #h1=c(0,60,120,240,270,360),
+ #h2=c(0,150,180,220,290,360),
+ do_hue_pad=FALSE,
  verbose=FALSE,
  ...)
 {
@@ -122,10 +129,20 @@ rainbowJam <- function
    ##
    nameStyle <- match.arg(nameStyle);
    direction <- match.arg(direction);
+   preset <- match.arg(preset);
+   if (!"none" %in% preset) {
+      h2hwOptions(preset=preset);
+   }
    if ("-1" %in% direction) {
       direction <- -1;
    } else {
       direction <- 1;
+   }
+   if (length(do_hue_pad) == 0) {
+      do_hue_pad <- FALSE;
+   }
+   if (!do_hue_pad) {
+      hue_pad_percent <- 0;
    }
    warpHue <- (warpHue);
    if (doTest) {
@@ -142,18 +159,23 @@ rainbowJam <- function
       ##   This logic is applied for any (multiple of 6) + 1, defined by
       ##   (n %% 6) == 1
       ## - same when the last color is 4
-      hue_pad <- (
-         ((n %% 6) == 1)*(floor(n/6)+0) +
-         ((n %% 6) == 4)*(floor(n/6)+1) +
-         ((n %% 6) == 5)*(floor(n/6)+1) +
-         ((n %% 6) == 0)*(floor(n/6)+0)
-      );
+      if (do_hue_pad) {
+         hue_pad <- (
+            ((n %% 6) == 1)*(floor(n/6)+0) +
+            ((n %% 6) == 4)*(floor(n/6)+1) +
+            ((n %% 6) == 5)*(floor(n/6)+1) +
+            ((n %% 6) == 0)*(floor(n/6)+0)
+         );
+      } else {
+         hue_pad <- 0;
+      }
 
       ## requested_n is the number of hues to create
       ## - always at least n hues
-      ## - always at least 5 hues
+      ## - always at least 4 hues
       ## - pad using hue_pad to reduce first,last color similarity
-      requested_n <- max(c(5,
+      #requested_n <- max(c(5,
+      requested_n <- max(c(4,
          n + hue_pad,
          ceiling(n * (1 + hue_pad_percent/100)),
          n));
@@ -205,10 +227,12 @@ rainbowJam <- function
             jamba::printDebug("rainbowJam(): ",
                "Using h1default,h2default");
          }
-         h1 <- c(0, 20,  60, 120, 240, 360);
-         h2 <- c(0, 80, 120, 180, 240, 360);
-         h1 <- c(0,22,60,120,240,270,360);
-         h2 <- c(0,80,150,180,220,290,360);
+         if (1 == 2) {
+            h1 <- c(0, 20,  60, 120, 240, 360);
+            h2 <- c(0, 80, 120, 180, 240, 360);
+            h1 <- c(0,22,60,120,240,270,360);
+            h2 <- c(0,80,150,180,220,290,360);
+         }
       }
       hues <- hw2h(hues,
          h1=h1,

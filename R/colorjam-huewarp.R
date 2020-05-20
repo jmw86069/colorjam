@@ -12,17 +12,17 @@
 #'
 #' The purpose of using `options()` to store the color hue is to make it
 #' easy to re-use the settings across multiple function calls. The related
-#' reason for this function [h2hwOptions()] is to make it clear the
+#' reason for this function `h2hwOptions()` is to make it clear the
 #' default values, and make it clear how to update and review the current
 #' settings.
 #'
-#' Together the vector `h1` and `h2` are used by [stats::approx()] to
+#' Together the vector `h1` and `h2` are used by `stats::approx()` to
 #' convert from the value ranges in `h1` to the corresponding value
 #' ranges in `h2`. Using this mechanism, one could define ranges which
 #' effectively remove entire slices of the color wheel.
 #'
 #' To disable the warped hue mechanism, set `h2` equal to `h1` for example
-#' `h2hwOptions(h2=h2hwOptions()$h1)`. Doing so will cause [stats::approx()]
+#' `h2hwOptions(h2=h2hwOptions()$h1)`. Doing so will cause `stats::approx()`
 #' to interpret every hue as a 1:1 relationship with the warped hue.
 #'
 #' @param h1 NULL or numeric vector of color hue values, sequential between
@@ -32,6 +32,15 @@
 #' @param h1default,h2default numeric vector of color hue values to use when
 #'    h1 or h2 are NULL, respectively. The default values are
 #'    included here as a function parameter here for visibility.
+#' @param preset `character` string indicating whether to define the
+#'    `h1`, and `h2` values based upon named presets: `"none"` no change;
+#'    `"ryb"` red-yellow-blue; `"dichromat"` color wheel that omits green,
+#'    therefore provides relatively even spacing of color-blind-friendly
+#'    colors based upon simulated output as produced by
+#'    `dichromat::dichromat()` package; `"rgb"` red-green-blue which
+#'    is the default color wheel used in R; `"ryb2"` alternate red-yellow-blue
+#'    that slightly over-emphasizes yellow at the expense/benefit of
+#'    even less green.
 #' @param reset logical whether to reset `h1` and `h2` values to the defaults,
 #'    as defined in `h1defaults` and `h2defaults`, respectively.
 #' @param verbose logical whether to print verbose output
@@ -55,6 +64,7 @@ h2hwOptions <- function
  h2,
  h1default=c(0, 60,120,240,360),
  h2default=c(0,120,180,240,360),
+ preset=c("dichromat", "none", "ryb", "rgb", "ryb2"),
  reset=FALSE,
  verbose=FALSE,
  ...)
@@ -65,9 +75,27 @@ h2hwOptions <- function
    ## h1 <- c(0,  60, 120, 240, 300, 340, 360);
    ## h2 <- c(0, 100, 160, 240, 330, 350, 360);
    ## These default values further expand colors from blue to purple
-   if (length(reset) && reset) {
-      h1 <- formals(h2hwOptions)$h1defaults;
-      h2 <- formals(h2hwOptions)$h2defaults;
+   preset <- match.arg(preset);
+   if ((length(reset) > 0 && reset) || ("ryb" %in% preset)) {
+      h1 <- eval(formals(colorjam::h2hwOptions)$h1default);
+      h2 <- eval(formals(h2hwOptions)$h2default);
+      if (verbose) {
+         jamba::printDebug("h2hwOptions(): ",
+            c("preset '", "ryb", "', reset=TRUE"), sep="");
+      }
+   } else if ("dichromat" %in% preset) {
+      h1 <- c(0, 8,   30,    65,   120,   200,   240,   260,   280,   330, 360);
+      h2 <- c(0, 0, 79.1, 118.7, 118.7, 118.7, 126.6, 185.9, 304.6, 344.2, 360);
+      if (verbose) {
+         jamba::printDebug("h2hwOptions(): ",
+            c("preset '", "dichromat", "'"), sep="");
+      }
+   } else if ("rgb" %in% preset) {
+      h1 <- c(0, 360);
+      h2 <- c(0, 360);
+   } else if ("ryb2" %in% preset) {
+      h1 <- c(0, 22,  60, 120, 240, 270, 360);
+      h2 <- c(0, 80, 150, 180, 220, 290, 360);
    }
    if (!missing(h1)) {
       if (length(h1) == 0 || !jamba::igrepHas("numeric|integer", class(h1))) {
@@ -163,6 +191,7 @@ h2hw <- function
    ## of 1 to 360
    hNew <- approx(x=h1,
       y=h2,
+      ties="ordered",
       xout=(h %% 360))$y;
    return(hNew);
 }
@@ -213,8 +242,18 @@ hw2h <- function
    ## maps weighted hue to an unweighted hue, based upon the guidepoints
    ## given by h1 (reference hue) and h2 (weighted hue), on a scale
    ## of 1 to 360
+   if (length(h1) == 0 || length(h2) == 0) {
+      h1h2 <- h2hwOptions();
+      if (length(h1) == 0) {
+         h1 <- h1h2$h1;
+      }
+      if (length(hs) == 0) {
+         h2 <- h1h2$h2;
+      }
+   }
    hNew <- approx(x=h2,
       y=h1,
+      ties="ordered",
       xout=(h %% 360))$y;
    return(hNew);
 }

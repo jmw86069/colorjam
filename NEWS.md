@@ -1,3 +1,68 @@
+# colorjam version 0.0.14.900
+
+## more changes to rainbowJam()
+
+There will almost certainly be more changes, after
+using the updated `rainbowJam()` for a while and
+experiencing the cascade effects. For now, I had
+to make some changes, to force me to continue making
+more changes as needed.
+
+After using the updated `rainbowJam()` for a few months,
+a few things became clear:
+
+* Red-orange-yellow as the first three colors, is not terrible,
+but has substantial problems when trying to split
+into light-dark variations. The dark-yellow and light-orange
+were nearly identical. (Also R is not great at keeping the hue
+for orange consistent when adjusting luminance. Nobody will
+hear this feedback, that's okay.)
+* The use of green and variations of green, are problematic
+with color-blind viewers, making the whole function
+not ideal, if a substantial user base doesn't see beautiful
+colors at the end.
+* Ultimately there were too many cases where I would
+call `rainbowJam(n + 20)` and hand-pick colors from the set.
+That is almost exactly the problem I was originally trying
+to solve with `rainbowJam()`, which means the function
+was failing.
+* Last is a small thing, `rainbowJam()` padded the end of
+the hue sequence to avoid having similar first and last color,
+with identical C,L values. When that happened, it added an
+aggressive hue pad so the colors would still differ. Long
+story short, there weren't enough beautiful purples and pinks.
+
+Overall changes:
+
+* `h2hwOptions()` defines custom color wheels, by adjusting
+the hue from rgb to any non-linear sequence. It has new argument
+`preset` with some named shortcut options: `"rgb"` the R default;
+`"ryb"` the previous red-yellow-blue, which still includes green;
+`"dichromat"` new option that removes green altogether, and spaces
+the remaining hues based upon my perceived consistent visible
+distinctiveness between steps. I tried to adjust for effects
+simulated by `dichromat::dichromat()` for the three types
+it provides.
+* `h2hwOptions()` new default is `preset="dichromat"`! Substantial
+change, no more green colors. To change back call `h2hwOptions(preset="ryb")`
+or `h2hwOptions(preset="rgb")`. *shudder*
+* `rainbowJam()` argument `Cvals` was uniformly increased by 30. It
+turns out the conversion from HCL already handles values too high,
+by favoring luminance over chroma -- meaning when we request a certain
+brightness, we get that brighness even at the expense of lower
+chroma (saturation.) Thus most of the work is done by the `Lvals`
+luminance, and the chroma should generally be as high as feasible
+with few adjustments.
+* `rainbowJam()` by default does not pad the last hue color. Instead
+the `preset="dichromat"` default in `h2hwOptions()` adjusts the
+hues from 300 to 360 (which were almost nearly identical pink anyway)
+to take up less of the color wheel.
+* `rainbowJam()` flipped the 2nd and 3rd values in `Lvals`. Even when
+calling `rainbowJam(4, preset="ryb2")`, it won't give the same results
+as before this update, without also changing the 2nd and 3rd values in
+`Lvals`. I realize, only I care.
+
+
 # colorjam version 0.0.13.900
 
 ## Substantial changes to rainbowJam()

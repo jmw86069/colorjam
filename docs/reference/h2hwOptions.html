@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.13.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.14.900</span>
       </span>
     </div>
 
@@ -122,6 +122,7 @@
   <span class='no'>h2</span>,
   <span class='kw'>h1default</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>, <span class='fl'>120</span>, <span class='fl'>240</span>, <span class='fl'>360</span>),
   <span class='kw'>h2default</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>120</span>, <span class='fl'>180</span>, <span class='fl'>240</span>, <span class='fl'>360</span>),
+  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dichromat"</span>, <span class='st'>"none"</span>, <span class='st'>"ryb"</span>, <span class='st'>"rgb"</span>, <span class='st'>"ryb2"</span>),
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
@@ -145,6 +146,18 @@
       <td><p>numeric vector of color hue values to use when
 h1 or h2 are NULL, respectively. The default values are
 included here as a function parameter here for visibility.</p></td>
+    </tr>
+    <tr>
+      <th>preset</th>
+      <td><p><code>character</code> string indicating whether to define the
+<code>h1</code>, and <code>h2</code> values based upon named presets: <code>"none"</code> no change;
+<code>"ryb"</code> red-yellow-blue; <code>"dichromat"</code> color wheel that omits green,
+therefore provides relatively even spacing of color-blind-friendly
+colors based upon simulated output as produced by
+<code><a href='https://rdrr.io/pkg/dichromat/man/dichromat.html'>dichromat::dichromat()</a></code> package; <code>"rgb"</code> red-green-blue which
+is the default color wheel used in R; <code>"ryb2"</code> alternate red-yellow-blue
+that slightly over-emphasizes yellow at the expense/benefit of
+even less green.</p></td>
     </tr>
     <tr>
       <th>reset</th>
@@ -189,18 +202,18 @@ to interpret every hue as a 1:1 relationship with the warped hue.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>h2hwOptions</span>()</div><div class='output co'>#&gt; $h1
-#&gt; [1]   0  60 120 240 360
+#&gt;  [1]   0   8  30  65 120 200 240 260 280 330 360
 #&gt; 
 #&gt; $h2
-#&gt; [1]   0 120 180 240 360
-#&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>60</span>)</div><div class='output co'>#&gt; [1] 120</div><div class='input'>
+#&gt;  [1]   0.0   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2 360.0
+#&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>60</span>)</div><div class='output co'>#&gt; [1] 113.0429</div><div class='input'>
 <span class='fu'>h2hwOptions</span>(<span class='kw'>h1</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>,<span class='fl'>120</span>,<span class='fl'>240</span>,<span class='fl'>300</span>,<span class='fl'>360</span>),
    <span class='kw'>h2</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>120</span>,<span class='fl'>180</span>,<span class='fl'>240</span>,<span class='fl'>280</span>,<span class='fl'>360</span>))</div><div class='output co'>#&gt; $h1
-#&gt; [1]   0  60 120 240 300 360
+#&gt;  [1]   0   8  30  65 120 200 240 260 280 330 360
 #&gt; 
 #&gt; $h2
-#&gt; [1]   0 120 180 240 280 360
-#&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>300</span>)</div><div class='output co'>#&gt; [1] 280</div><div class='input'>
+#&gt;  [1]   0.0   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2 360.0
+#&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>300</span>)</div><div class='output co'>#&gt; [1] 320.44</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
