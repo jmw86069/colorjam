@@ -5,12 +5,14 @@
 \title{Get hue color warp options}
 \usage{
 h2hwOptions(
-  h1,
-  h2,
+  h1 = getOption("h2hw.h1"),
+  h2 = getOption("h2hw.h2"),
   h1default = c(0, 60, 120, 240, 360),
   h2default = c(0, 120, 180, 240, 360),
-  preset = c("dichromat", "none", "ryb", "rgb", "ryb2"),
+  preset = c("none", "dichromat", "ryb", "rgb", "ryb2"),
+  default_preset = "dichromat",
   reset = FALSE,
+  setOptions = c("ifnull", "TRUE", "FALSE"),
   verbose = FALSE,
   ...
 )
@@ -36,8 +38,17 @@ is the default color wheel used in R; \code{"ryb2"} alternate red-yellow-blue
 that slightly over-emphasizes yellow at the expense/benefit of
 even less green.}
 
-\item{reset}{logical whether to reset \code{h1} and \code{h2} values to the defaults,
-as defined in \code{h1defaults} and \code{h2defaults}, respectively.}
+\item{default_preset}{\code{character} string indicating which value
+in \code{preset} should be used as the default when \code{reset=FALSE} and
+\code{h1} and/or \code{h2} are not defined in \code{options()}.}
+
+\item{reset}{logical whether to reset \code{h1} and \code{h2} values to the default
+values as defined in \code{h1default} and \code{h2default}. When \code{reset=TRUE}
+all other \code{preset} and \code{default_preset} arguments are ignored.}
+
+\item{setOptions}{\code{character} or \code{logical} indicating whether to
+update \code{options()} for \code{"h2hw.h1"} and \code{"h2hw.h2"}. When \code{"ifnull"}
+the \code{options()} are only updated if they were previously \code{NULL}.}
 
 \item{verbose}{logical whether to print verbose output}
 }

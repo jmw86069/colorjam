@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.14.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15.900</span>
       </span>
     </div>
 
@@ -118,12 +118,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>h2hwOptions</span>(
-  <span class='no'>h1</span>,
-  <span class='no'>h2</span>,
+  <span class='kw'>h1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"h2hw.h1"</span>),
+  <span class='kw'>h2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"h2hw.h2"</span>),
   <span class='kw'>h1default</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>, <span class='fl'>120</span>, <span class='fl'>240</span>, <span class='fl'>360</span>),
   <span class='kw'>h2default</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>120</span>, <span class='fl'>180</span>, <span class='fl'>240</span>, <span class='fl'>360</span>),
-  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dichromat"</span>, <span class='st'>"none"</span>, <span class='st'>"ryb"</span>, <span class='st'>"rgb"</span>, <span class='st'>"ryb2"</span>),
+  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"dichromat"</span>, <span class='st'>"ryb"</span>, <span class='st'>"rgb"</span>, <span class='st'>"ryb2"</span>),
+  <span class='kw'>default_preset</span> <span class='kw'>=</span> <span class='st'>"dichromat"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>setOptions</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ifnull"</span>, <span class='st'>"TRUE"</span>, <span class='st'>"FALSE"</span>),
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
@@ -160,9 +162,22 @@ that slightly over-emphasizes yellow at the expense/benefit of
 even less green.</p></td>
     </tr>
     <tr>
+      <th>default_preset</th>
+      <td><p><code>character</code> string indicating which value
+in <code>preset</code> should be used as the default when <code>reset=FALSE</code> and
+<code>h1</code> and/or <code>h2</code> are not defined in <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>reset</th>
-      <td><p>logical whether to reset <code>h1</code> and <code>h2</code> values to the defaults,
-as defined in <code>h1defaults</code> and <code>h2defaults</code>, respectively.</p></td>
+      <td><p>logical whether to reset <code>h1</code> and <code>h2</code> values to the default
+values as defined in <code>h1default</code> and <code>h2default</code>. When <code>reset=TRUE</code>
+all other <code>preset</code> and <code>default_preset</code> arguments are ignored.</p></td>
+    </tr>
+    <tr>
+      <th>setOptions</th>
+      <td><p><code>character</code> or <code>logical</code> indicating whether to
+update <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> for <code>"h2hw.h1"</code> and <code>"h2hw.h2"</code>. When <code>"ifnull"</code>
+the <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> are only updated if they were previously <code>NULL</code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -209,10 +224,10 @@ to interpret every hue as a 1:1 relationship with the warped hue.</p>
 #&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>60</span>)</div><div class='output co'>#&gt; [1] 113.0429</div><div class='input'>
 <span class='fu'>h2hwOptions</span>(<span class='kw'>h1</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>,<span class='fl'>120</span>,<span class='fl'>240</span>,<span class='fl'>300</span>,<span class='fl'>360</span>),
    <span class='kw'>h2</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>120</span>,<span class='fl'>180</span>,<span class='fl'>240</span>,<span class='fl'>280</span>,<span class='fl'>360</span>))</div><div class='output co'>#&gt; $h1
-#&gt;  [1]   0   8  30  65 120 200 240 260 280 330 360
+#&gt; [1]   0  60 120 240 300 360
 #&gt; 
 #&gt; $h2
-#&gt;  [1]   0.0   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2 360.0
+#&gt; [1]   0 120 180 240 280 360
 #&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span>(<span class='fl'>300</span>)</div><div class='output co'>#&gt; [1] 320.44</div><div class='input'>
 </div></pre>
   </div>

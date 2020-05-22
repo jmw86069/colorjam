@@ -516,9 +516,9 @@ group2colors <- function
    }
 
    ## Apply colors to the input data
-   xColorsNew <- xColors[as.character(x)];
+   xColorsNew <- xColors[match(as.character(x), names(xColors))];
    if (useGradient) {
-      xColorsNew <- color2gradient(xColorsNew,
+      xColorsNew <- jamba::color2gradient(xColorsNew,
          ...);
    }
    if (length(names(x)) > 0) {

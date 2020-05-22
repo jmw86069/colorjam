@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.14.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15.900</span>
       </span>
     </div>
 
@@ -124,8 +124,8 @@
   <span class='kw'>warpHue</span> <span class='kw'>=</span> (<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>hues</span>) <span class='kw'>==</span> <span class='fl'>0</span>),
   <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"-1"</span>),
   <span class='kw'>hue_pad_percent</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>Cvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>130</span>, <span class='fl'>150</span>, <span class='fl'>160</span>, <span class='fl'>150</span>, <span class='fl'>220</span>, <span class='fl'>120</span>),
-  <span class='kw'>Lvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>54</span>, <span class='fl'>90</span>, <span class='fl'>64</span>, <span class='fl'>50</span>, <span class='fl'>84</span>, <span class='fl'>65</span>),
+  <span class='kw'>Cvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>140</span>, <span class='fl'>150</span>, <span class='fl'>160</span>, <span class='fl'>130</span>, <span class='fl'>200</span>, <span class='fl'>100</span>),
+  <span class='kw'>Lvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>47</span>, <span class='fl'>85</span>, <span class='fl'>62</span>, <span class='fl'>42</span>, <span class='fl'>77</span>, <span class='fl'>54</span>),
   <span class='kw'>Crange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Lrange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Cgrey</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"jam.Cgrey"</span>),
@@ -268,9 +268,9 @@ hues recognized by <code><a href='https://rdrr.io/r/grDevices/hcl.html'>hcl()</a
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>rainbowJam</span>(<span class='fl'>12</span>);</div><div class='output co'>#&gt;         1         2         3         4         5         6         7         8 
-#&gt; "#EA4347" "#FFAB82" "#FF6A00" "#BC6300" "#00ECFF" "#0A9FFF" "#4374FF" "#CFCEFF" 
+#&gt; "#D92029" "#FF9D72" "#FF6400" "#9F5200" "#00D6FF" "#0382EA" "#005EFF" "#C1BFFF" 
 #&gt;         9        10        11        12 
-#&gt; "#A571FF" "#9E2AFF" "#FF10FF" "#FF49DA" </div><div class='input'>
+#&gt; "#9F6AFF" "#8617F9" "#FF1BFF" "#DF3AB4" </div><div class='input'>
 <span class='co'># show colors</span>
 <span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'>rainbowJam</span>(<span class='fl'>10</span>));</div><div class='img'><img src='rainbowJam-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># show colors</span>

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.14.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15.900</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>theme_jam</span>(
-  <span class='kw'>theme_default</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_bw</a></span>,
+  <span class='kw'>theme_default</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/ggplot2/man/ggtheme.html'>theme_bw</a></span>,
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>18</span>,
   <span class='kw'>grid.major.size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
   <span class='kw'>grid.minor.size</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
@@ -189,7 +189,7 @@ specific settings defined in this function will be applied.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments are passed to <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> in
+      <td><p>additional arguments are passed to <code><a href='https://rdrr.io/pkg/ggplot2/man/theme.html'>ggplot2::theme()</a></code> in
 order to allow custom settings beyond what this function provides.</p></td>
     </tr>
     </table>
@@ -217,10 +217,10 @@ overlaps.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>ggplot2</span>))) {
    <span class='no'>dsamp</span> <span class='kw'>&lt;-</span> <span class='no'>diamonds</span>[<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>diamonds</span>), <span class='fl'>1000</span>),];
-   (<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>dsamp</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>carat</span>, <span class='no'>price</span>)) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>colour</span><span class='kw'>=</span><span class='no'>cut</span>), <span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>));
+   (<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/ggplot.html'>ggplot</a></span>(<span class='no'>dsamp</span>, <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span>(<span class='no'>carat</span>, <span class='no'>price</span>)) + <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/geom_point.html'>geom_point</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/aes.html'>aes</a></span>(<span class='kw'>colour</span><span class='kw'>=</span><span class='no'>cut</span>), <span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>));
 
-   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>d</span> + <span class='fu'><a href='scale_color_jam.html'>scale_color_jam</a></span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_jam()"</span>));
-   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>d</span> + <span class='fu'><a href='scale_color_jam.html'>scale_color_jam</a></span>() + <span class='fu'>theme_jam</span>() + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_jam() + \ntheme_jam()"</span>));
+   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>d</span> + <span class='fu'><a href='scale_color_jam.html'>scale_color_jam</a></span>() + <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_jam()"</span>));
+   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>d</span> + <span class='fu'><a href='scale_color_jam.html'>scale_color_jam</a></span>() + <span class='fu'>theme_jam</span>() + <span class='fu'><a href='https://rdrr.io/pkg/ggplot2/man/labs.html'>ggtitle</a></span>(<span class='st'>"scale_color_jam() + \ntheme_jam()"</span>));
 }</div><div class='img'><img src='theme_jam-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='theme_jam-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

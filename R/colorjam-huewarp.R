@@ -41,8 +41,15 @@
 #'    is the default color wheel used in R; `"ryb2"` alternate red-yellow-blue
 #'    that slightly over-emphasizes yellow at the expense/benefit of
 #'    even less green.
-#' @param reset logical whether to reset `h1` and `h2` values to the defaults,
-#'    as defined in `h1defaults` and `h2defaults`, respectively.
+#' @param default_preset `character` string indicating which value
+#'    in `preset` should be used as the default when `reset=FALSE` and
+#'    `h1` and/or `h2` are not defined in `options()`.
+#' @param reset logical whether to reset `h1` and `h2` values to the default
+#'    values as defined in `h1default` and `h2default`. When `reset=TRUE`
+#'    all other `preset` and `default_preset` arguments are ignored.
+#' @param setOptions `character` or `logical` indicating whether to
+#'    update `options()` for `"h2hw.h1"` and `"h2hw.h2"`. When `"ifnull"`
+#'    the `options()` are only updated if they were previously `NULL`.
 #' @param verbose logical whether to print verbose output
 #'
 #' @return list with names `h1` and `h2` containing numeric vectors
@@ -60,12 +67,14 @@
 #'
 #' @export
 h2hwOptions <- function
-(h1,
- h2,
+(h1=getOption("h2hw.h1"),
+ h2=getOption("h2hw.h2"),
  h1default=c(0, 60,120,240,360),
  h2default=c(0,120,180,240,360),
- preset=c("dichromat", "none", "ryb", "rgb", "ryb2"),
+ preset=c("none", "dichromat", "ryb", "rgb", "ryb2"),
+ default_preset="dichromat",
  reset=FALSE,
+ setOptions=c("ifnull", "TRUE", "FALSE"),
  verbose=FALSE,
  ...)
 {
@@ -76,57 +85,87 @@ h2hwOptions <- function
    ## h2 <- c(0, 100, 160, 240, 330, 350, 360);
    ## These default values further expand colors from blue to purple
    preset <- match.arg(preset);
-   if ((length(reset) > 0 && reset) || ("ryb" %in% preset)) {
-      h1 <- eval(formals(colorjam::h2hwOptions)$h1default);
-      h2 <- eval(formals(h2hwOptions)$h2default);
-      if (verbose) {
-         jamba::printDebug("h2hwOptions(): ",
-            c("preset '", "ryb", "', reset=TRUE"), sep="");
-      }
-   } else if ("dichromat" %in% preset) {
-      h1 <- c(0, 8,   30,    65,   120,   200,   240,   260,   280,   330, 360);
-      h2 <- c(0, 0, 79.1, 118.7, 118.7, 118.7, 126.6, 185.9, 304.6, 344.2, 360);
-      if (verbose) {
-         jamba::printDebug("h2hwOptions(): ",
-            c("preset '", "dichromat", "'"), sep="");
-      }
-   } else if ("rgb" %in% preset) {
-      h1 <- c(0, 360);
-      h2 <- c(0, 360);
-   } else if ("ryb2" %in% preset) {
-      h1 <- c(0, 22,  60, 120, 240, 270, 360);
-      h2 <- c(0, 80, 150, 180, 220, 290, 360);
+   if (length(setOptions) > 0 && is.logical(setOptions)) {
+      setOptions <- as.character(setOptions);
    }
-   if (!missing(h1)) {
-      if (length(h1) == 0 || !jamba::igrepHas("numeric|integer", class(h1))) {
-         h1 <- h1default;
+   setOptions <- match.arg(setOptions);
+   h1h2_undefined <- (length(h1) == 0 || length(h2) == 0);
+   if (verbose) {
+      jamba::printDebug("h2hwOptions(): ",
+         "h1h2_undefined:", h1h2_undefined);
+   }
+   ## Order of operation:
+   ## 1. reset=TRUE forces h1=h1default and h2=h2default
+   ## 2. preset="something" forces h1, h2 to appropriate preset values
+   ## 3. preset="none" and h1h2_undefined, uses default_preset
+   ## 4. preset="none" and !h1h2_undefined uses h1,h2 as provided
+
+   get_presets <- function(preset, verbose=FALSE) {
+      if ("ryb" %in% preset) {
+         h1 <- eval(formals(h2hwOptions)$h1default);
+         h2 <- eval(formals(h2hwOptions)$h2default);
+         if (verbose) {
+            jamba::printDebug("h2hwOptions(): ",
+               c("preset '", "ryb", "', reset=TRUE"), sep="");
+         }
+      } else if ("dichromat" %in% preset) {
+         h1 <- c(0, 8, 30,   65,    120,   200,   240,   260,   280,   330,   360);
+         h2 <- c(0, 0, 79.1, 118.7, 118.7, 118.7, 126.6, 185.9, 304.6, 344.2, 360);
+         if (verbose) {
+            jamba::printDebug("h2hwOptions(): ",
+               c("preset '", "dichromat", "'"), sep="");
+         }
+      } else if ("ryb2" %in% preset) {
+         h1 <- c(0, 22,  60, 120, 240, 270, 360);
+         h2 <- c(0, 80, 150, 180, 220, 290, 360);
+      } else {
+      #} else if ("rgb" %in% preset) {
+         h1 <- c(0, 360);
+         h2 <- c(0, 360);
       }
+      return(list(h1=h1, h2=h2));
+   }
+
+   if (length(reset) > 0 && reset) {
+      h1 <- h1default;
+      h2 <- h2default;
+   } else if (!"none" %in% preset) {
+      ## use preset values
+      h1h2_presets <- get_presets(preset, verbose);
+      h1 <- h1h2_presets$h1;
+      h2 <- h1h2_presets$h2;
+   } else if (h1h2_undefined) {
+      ## use default_preset
+      preset_avail <- setdiff(eval(formals(h2hwOptions)$preset), "none");
+      if (length(default_preset) == 0) {
+         default_preset <- head(preset_avail, 1);
+      }
+      if (!default_preset %in% eval(formals(h2hwOptions)$preset)) {
+         stop(paste0("default_preset must be one value from preset: ",
+            paste(paste0("'", preset_avail, "'"), collapse=", ")));
+      }
+      h1h2_presets <- get_presets(default_preset, verbose);
+      h1 <- h1h2_presets$h1;
+      h2 <- h1h2_presets$h2;
+   } else {
+      ## use getOption()
+      ## h1,h2 as provided in function call
+   }
+
+   ## Integrity check of h1,h2 values
+   if (length(h1) != length(h2) || length(h1) < 2) {
+      stop("h1,h2 values are not valid: must have length(h1) >= 2, and length(h1)==length(h2)");
+   }
+   if (max(round(h1)) < 360 || max(round(h2)) < 360) {
+      stop("h1,h2 values are not valid: must have max(h1)==360 and max(h2)==360");
+   }
+
+   if ("TRUE" %in% setOptions || (h1h2_undefined && "ifnull" %in% setOptions)) {
       if (verbose) {
          jamba::printDebug("h2hwOptions(): ",
-            "Defining h2hw.h1=", h1);
+            "Updated options()");
       }
       options("h2hw.h1"=h1);
-   } else {
-      h1 <- getOption("h2hw.h1", default=h1default);
-      if (length(h1) == 0 || !jamba::igrepHas("numeric|integer", class(h1))) {
-         h1 <- h1default;
-      }
-      options("h2hw.h1"=h1);
-   }
-   if (!missing(h2)) {
-      if (length(h2) == 0 || !jamba::igrepHas("numeric|integer", class(h2))) {
-         h2 <- h2default;
-      }
-      if (verbose) {
-         jamba::printDebug("h2hwOptions(): ",
-            "Defining h2hw.h2=", h2);
-      }
-      options("h2hw.h2"=h2);
-   } else {
-      h2 <- getOption("h2hw.h2", default=h2default);
-      if (length(h2) == 0 || !jamba::igrepHas("numeric|integer", class(h2))) {
-         h2 <- h2default;
-      }
       options("h2hw.h2"=h2);
    }
    list(h1=h1,

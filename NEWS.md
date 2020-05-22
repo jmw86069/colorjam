@@ -1,3 +1,25 @@
+# colorjam version 0.0.15.900
+
+## changes to existing functions
+
+* `rainbowJam()` arguments `Lvals` and `Cvals` were
+manually adjusted based upon initial usage and feedback.
+* `h2hwOptions()` was refactored to have a cleaner workflow.
+It explicitly defines `getOptions()` in default argument
+values, which can be replace by defining `preset`. There
+is new argument `default_preset` so the first time
+this function is called, it knows which preset to use
+for initial values.
+
+## bug fixes
+
+* `group2colors()` fixed a longstanding bug where
+input values that contain `""` would return `NA`
+with `NA` name. This occurs from
+referencing a vector using name `""` which R forces
+to return `NA`. Instead `group2colors()` now uses
+`match(x, names(colors))` which works properly.
+
 # colorjam version 0.0.14.900
 
 ## more changes to rainbowJam()
