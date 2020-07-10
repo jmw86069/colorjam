@@ -223,11 +223,18 @@ h2hw <- function
 (h,
  h1=h2hwOptions()$h1,
  h2=h2hwOptions()$h2,
+ preset=NULL,
  ...)
 {
    ## maps hue to a weighted hue, based upon the guidepoints
    ## given by h1 (reference hue) and h2 (weighted hue), on a scale
    ## of 1 to 360
+   if (length(preset) > 0) {
+      h1h2 <- h2hwOptions(preset=preset,
+         setOptions="FALSE");
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
+   }
    hNew <- approx(x=h1,
       y=h2,
       ties="ordered",
@@ -276,19 +283,17 @@ hw2h <- function
 (h,
  h1=h2hwOptions()$h1,
  h2=h2hwOptions()$h2,
+ preset=NULL,
  ...)
 {
    ## maps weighted hue to an unweighted hue, based upon the guidepoints
    ## given by h1 (reference hue) and h2 (weighted hue), on a scale
    ## of 1 to 360
-   if (length(h1) == 0 || length(h2) == 0) {
-      h1h2 <- h2hwOptions();
-      if (length(h1) == 0) {
-         h1 <- h1h2$h1;
-      }
-      if (length(hs) == 0) {
-         h2 <- h1h2$h2;
-      }
+   if (length(preset) > 0) {
+      h1h2 <- h2hwOptions(preset=preset,
+         setOptions="FALSE");
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
    }
    hNew <- approx(x=h2,
       y=h1,

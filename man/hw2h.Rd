@@ -4,7 +4,7 @@
 \alias{hw2h}
 \title{Convert warped hue to standard hue}
 \usage{
-hw2h(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, ...)
+hw2h(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, preset = NULL, ...)
 }
 \arguments{
 \item{h}{numeric vector of color hues between 0 and 360. These hues do

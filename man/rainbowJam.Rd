@@ -6,41 +6,57 @@
 \usage{
 rainbowJam(
   n = NULL,
-  hues = NULL,
   Hstart = 12.2,
-  warpHue = (length(hues) == 0),
-  direction = c("1", "-1"),
-  hue_pad_percent = 10,
+  alpha = 1,
+  hues = NULL,
+  warpHue = NULL,
+  preset = c("dichromat", "ryb", "ryb2", "rgb", "none"),
+  h1 = NULL,
+  h2 = NULL,
   Cvals = c(140, 150, 160, 130, 200, 100),
   Lvals = c(47, 85, 62, 42, 77, 54),
   Crange = NULL,
   Lrange = NULL,
-  Cgrey = getOption("jam.Cgrey"),
-  preset = c("none", "dichromat", "ryb2", "ryb", "rgb"),
-  doTest = FALSE,
-  alpha = 1,
-  nameStyle = c("n", "none", "hcl", "color", "closestRcolor"),
-  h1 = h2hwOptions()$h1,
-  h2 = h2hwOptions()$h2,
+  phase = 1,
+  direction = c("1", "-1"),
   do_hue_pad = FALSE,
+  hue_pad_percent = 50,
+  nameStyle = c("none", "n", "hcl", "color", "closestRcolor"),
+  doTest = FALSE,
   verbose = FALSE,
   ...
 )
 }
 \arguments{
-\item{n}{integer number of categorical colors to return}
+\item{n}{\code{integer} number of categorical colors to return}
 
-\item{hues}{optional numeric vector of hues to use, only useful when the
+\item{Hstart}{\code{numeric} hue to use for the first hue value in the
+color sequence. Standard red has a hue 12.2, which is the default.}
+
+\item{alpha}{\code{numeric} alpha transparency of colors, values ranging from
+0 to 1. If multiple values are supplied, they are applied in order to
+the categorical colors returned.}
+
+\item{hues}{\code{numeric} vector of hues to use, only useful when the
 exact hues should be used instead of taking slices along a hue color
-wheel. Note that to use hue values with no modification, one should
-also set \code{warpHue=FALSE}, otherwise the given hues are assumed to
-warped hue values.}
+wheel. By default, \code{warpHue=FALSE} if not otherwise defined, when
+\code{hues} is supplied. However, then \code{warpHue=TRUE} then the \code{hues}
+will be adjusted using \code{h2hw()}.}
 
-\item{Hstart}{the hue to use for the first hue value in the color sequence.
-Standard red has a hue 12.2, which is the default for this function.}
+\item{warpHue}{\code{logical} indicating whether to apply a custom color wheel,
+which "warps" the hue using \code{h2hwOptions()}, by applying either
+\code{preset}, or specific \code{h1} and \code{h2} arguments.}
 
-\item{Cvals, Lvals}{vector of chroma (C) and luminance (L) values to be
-cycled when creating colors along the vector of color hues. These
+\item{preset}{\code{character} string passed to \code{h2hwOptions()} to
+define the color wheel, only used when \code{warpHue=TRUE}.}
+
+\item{h1, h2}{\code{numeric} vectors as used by \code{h2hw()} and \code{hw2h()} to
+convert from warped hues to standard hues. The default values define
+red-yellow-blue (additive) color space, which is converted to
+red-green-blue color space to produce the actual R color.}
+
+\item{Cvals, Lvals}{\code{numeric} vector of chroma (C) and luminance (L) values
+to be cycled when creating colors along the vector of color hues. These
 values are intended to maximize visual distinctiveness of adjacent and
 nearly-adjacent colors. For example, varying from bright to dark may
 provide additional distinction between two similar color hues.}
@@ -53,41 +69,38 @@ highest Cvals value maps to the last value in Crange. Varying the
 Crange and Lrange values can help produce categorical colors on a
 dark or light background, by changing the range of values being used.}
 
-\item{doTest}{boolen indicating whether to perform a visual test for
-the \code{n} number of colors produced, which helps judge the
-visual distinctiveness of different combinations of dark and light
-colors.}
+\item{phase}{\code{integer} value which indicates the first value to use
+from the sequence of \code{Cvals},\code{Lvals} values, where \code{phase=1} starts
+with the first value for each, \code{phase=2} starts with the second
+value from each, etc. When \code{phase} is negative, the order of
+\code{Cvals} and \code{Lvals} is reversed.}
 
-\item{alpha}{numeric alpha transparency of colors, values ranging from
-0 to 1. If multiple values are supplied, they are applied in order to
-the categorical colors returned.}
+\item{direction}{\code{character} value indicating the direction to travel
+around the color wheel, where \code{"1"} travels forward (red-yellow-blue),
+and \code{"-1"} travels in reverse (red-blue-yellow).}
 
-\item{nameStyle}{character value indicating how to name the output
+\item{do_hue_pad}{\code{logical} indicating whether to apply padding to
+the color hue sequence, intended mainly so the last color hue
+in a sequence is less similar to the first color hue in the
+sequence.}
+
+\item{hue_pad_percent}{\code{numeric} value between 0 and 100, used when
+\code{do_hue_pad} to apply a padding between the first and last color
+hues.}
+
+\item{nameStyle}{\code{character} value indicating how to name the output
 colors: "none" returns colors with no names; "hcl" assigns names with
 the color number prefix, followed by H, C, L values; "colors" names the
 vector by the hex color code.}
 
-\item{h1, h2}{numeric vectors as used by \code{\link[=h2hw]{h2hw()}} and \code{\link[=hw2h]{hw2h()}} to
-convert from warped hues to standard hues. The default values define
-red-yellow-blue (additive) color space, which is converted to
-red-green-blue color space to produce the actual R color.}
+\item{doTest}{\code{logical} indicating whether to perform a visual test for
+the \code{n} number of colors produced, which helps judge the
+visual distinctiveness of different combinations of dark and light
+colors.}
 
-\item{verbose}{logical whether to print verbose output}
+\item{verbose}{\code{logical} whether to print verbose output}
 
-\item{nfloor}{the minimum number of effective color slices taken from the
-hue color wheel, primarily used as an aesthetic choice so the first two
-colors will be reasonably consistent when choosing 1, 2, 3, 4, or 5
-categorical colors.}
-
-\item{sFactor, darkFactor}{parameters sent to \code{jamba::makeColorDarker}
-if either is not equal to 1. Setting \code{darkFactor=2} is a quick
-way of generating categorical border colors, for example drawing a
-colored border around categorical colors. Alternatively, setting
-\code{sFactor=-2, darkFactor=-2} can be used to desaturate and lighten
-colors used for the background area of a rectangle. The \code{alpha}
-transparency parameter can also be helpful, however not all graphics
-devices support transparency, in which case it is more robust to define
-the exact color.}
+\item{...}{additional arguments are ignored.}
 }
 \value{
 vector of colors

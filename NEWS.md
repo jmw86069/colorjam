@@ -1,3 +1,41 @@
+# colorjam version 0.0.16.900
+
+## new functions
+
+* `blend_colors()` performs paint color mixing, very close
+to subtractive color blending with some modifications to
+account for red-yellow-blue color wheel. It can mix more
+than two colors, and accounts for color transparency.
+This function currently performs better than any other
+color mixing function I am aware of in R -- judged by
+the tendency to return what is "expected" in more
+cases than not.
+* `mean_angle()` takes a vector of angles in degrees,
+optionally with weights, and returns the average angle
+along with the new radius. Internally it takes the
+average unit vector (scaled by weights if supplied).
+
+## changes to existing functions
+
+* `rainbowJam()` was modified to clean up the internal workflow.
+Specifically, the argument `preset` is more prominent,
+making it easy to call `rainbowJam(5, preset="ryb")` for
+example. The hue padding was also modified to reduce most
+cases to zero padding -- this padding added separation
+between the first and last color hues in a sequence,
+to prevent them from being too similar when the `Cvals`
+and `Lvals` sequence was not optimal.
+* `rainbowJam()` new argument `phase` allows shifting
+the `Cvals`,`Lvals` sequence by steps, or to reverse the
+sequence, in order to create more varied color sets.
+* `h2hw()` and `hw2h()` functions have new argument
+`preset` which calls `h2hwOptions()` and uses the appropriate
+color wheel. This change makes it easier to convert
+color hues with `h2hw(60, preset="ryb")` to convert
+default RGB yellow (hue=60) to RYB yellow (hue=120).
+* `closestRcolor()` argument `preset` defaults to `ryb`,
+to avoid using `dichromat` for closest-color calculations.
+
 # colorjam version 0.0.15.900
 
 ## changes to existing functions

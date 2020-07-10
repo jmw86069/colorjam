@@ -6,13 +6,15 @@
 \usage{
 closestRcolor(
   x,
-  colorSet = unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
+  colorSet = colors(),
+  C_min = 20,
   showPalette = FALSE,
   colorModel = c("hcl", "LUV"),
   Hwt = 2,
   Cwt = 1,
   Lwt = 4,
   warpHue = TRUE,
+  preset = "rgb",
   method = "maximum",
   returnType = c("color", "name", "match"),
   verbose = FALSE,

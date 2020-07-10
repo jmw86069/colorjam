@@ -57,21 +57,31 @@ showColors(rainbowJam(5));
 To illustrate the effect of increasing categorical colors,
 we will create a list of categorical colors with increasing `n`.
 
-```{r, cat_list_ryb}
+```{r, cat_list_dichromat}
 colorList <- lapply(nameVector(c(5, 10, 20)), function(n){
    rainbowJam(n);
 });
 showColors(colorList,
-   main="Red-Yellow-Blue color wheel (default colorjam)");
+   main="Dichromat color wheel (default colorjam)");
 ```
 
 By default, colorjam uses a "warped" color wheel, which produces
-Red-Yellow-Blue equally spaced. The effect is color additive,
-which is beneficial when blending colors as well as selecting
-categorical colors.
+a dichromat (color blind friendly) color wheel.
+
+There are several custom color wheel "presets", for example
+red-yellow-blue color wheel can be used with `preset="ryb"`.
+
+```{r, cat_list_ryb}
+colorList1 <- lapply(nameVector(c(5, 8, 16)), function(n){
+   rainbowJam(n, preset="ryb", hue_pad_percent=100, do_hue_pad=TRUE);
+});
+showColors(colorList1,
+   main="Red-Yellow-Blue color wheel (previous default rainbowJam)");
+```
 
 To view Red-Green-Blue colors using the default color wheel
-in base R, supply `warpHue=FALSE` as shown below:
+in base R, supply `warpHue=FALSE` as shown below, or use
+`preset="rgb"` to define the red-green-blue color wheel.
 
 ```{r, cat_list_rgb}
 colorList2 <- lapply(nameVector(c(5, 10, 20)), function(n){
@@ -80,6 +90,39 @@ colorList2 <- lapply(nameVector(c(5, 10, 20)), function(n){
 showColors(colorList2,
    main="Red-Green-Blue color wheel (base R)");
 ```
+
+### Color-blending (new in version 0.0.16.900)
+
+The color wheel red-yellow-blue is particularly effective
+for color-mixing operations. The function `blend_colors()`
+has some useful features:
+
+* Paint color mixing style (blue + yellow = green)
+* Able to mix more than two colors
+* Accounts for color transparency during mixing
+
+The argument `do_plot=TRUE` will plot a visual summary
+of the mixing results.
+
+```{r, blend_colors1, fig.width=3, fig.height=3}
+blent1 <- blend_colors(c("red", "blue"), do_plot=TRUE);
+blent2 <- blend_colors(c("gold", "blue"), do_plot=TRUE);
+blent3 <- blend_colors(c("gold", "red"), do_plot=TRUE);
+
+blent4 <- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);
+blent5 <- blend_colors(c("red", "green4"), do_plot=TRUE);
+blent6 <- blend_colors(c("blue", "darkorange"), do_plot=TRUE);
+
+blent7 <- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);
+
+blent8 <- blend_colors(c("red1", "red3", "blue"), do_plot=TRUE);
+blent9 <- blend_colors(c("red1", "blue1", "blue4"), do_plot=TRUE);
+
+blent10 <- blend_colors(c("blue", "ivory"), do_plot=TRUE);
+blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
+
+```
+
 
 ### Color-splitting
 

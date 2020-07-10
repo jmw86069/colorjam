@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.16.900</span>
       </span>
     </div>
 
@@ -119,23 +119,23 @@
 
     <pre class="usage"><span class='fu'>rainbowJam</span>(
   <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Hstart</span> <span class='kw'>=</span> <span class='fl'>12.2</span>,
-  <span class='kw'>warpHue</span> <span class='kw'>=</span> (<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>hues</span>) <span class='kw'>==</span> <span class='fl'>0</span>),
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"-1"</span>),
-  <span class='kw'>hue_pad_percent</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>hues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>warpHue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dichromat"</span>, <span class='st'>"ryb"</span>, <span class='st'>"ryb2"</span>, <span class='st'>"rgb"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>h1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>h2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Cvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>140</span>, <span class='fl'>150</span>, <span class='fl'>160</span>, <span class='fl'>130</span>, <span class='fl'>200</span>, <span class='fl'>100</span>),
   <span class='kw'>Lvals</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>47</span>, <span class='fl'>85</span>, <span class='fl'>62</span>, <span class='fl'>42</span>, <span class='fl'>77</span>, <span class='fl'>54</span>),
   <span class='kw'>Crange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Lrange</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>Cgrey</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"jam.Cgrey"</span>),
-  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"dichromat"</span>, <span class='st'>"ryb2"</span>, <span class='st'>"ryb"</span>, <span class='st'>"rgb"</span>),
-  <span class='kw'>doTest</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>nameStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"n"</span>, <span class='st'>"none"</span>, <span class='st'>"hcl"</span>, <span class='st'>"color"</span>, <span class='st'>"closestRcolor"</span>),
-  <span class='kw'>h1</span> <span class='kw'>=</span> <span class='fu'><a href='h2hwOptions.html'>h2hwOptions</a></span>()$<span class='no'>h1</span>,
-  <span class='kw'>h2</span> <span class='kw'>=</span> <span class='fu'><a href='h2hwOptions.html'>h2hwOptions</a></span>()$<span class='no'>h2</span>,
+  <span class='kw'>phase</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"-1"</span>),
   <span class='kw'>do_hue_pad</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hue_pad_percent</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>nameStyle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"n"</span>, <span class='st'>"hcl"</span>, <span class='st'>"color"</span>, <span class='st'>"closestRcolor"</span>),
+  <span class='kw'>doTest</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>...</span>
 )</pre>
@@ -145,25 +145,49 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>n</th>
-      <td><p>integer number of categorical colors to return</p></td>
-    </tr>
-    <tr>
-      <th>hues</th>
-      <td><p>optional numeric vector of hues to use, only useful when the
-exact hues should be used instead of taking slices along a hue color
-wheel. Note that to use hue values with no modification, one should
-also set <code>warpHue=FALSE</code>, otherwise the given hues are assumed to
-warped hue values.</p></td>
+      <td><p><code>integer</code> number of categorical colors to return</p></td>
     </tr>
     <tr>
       <th>Hstart</th>
-      <td><p>the hue to use for the first hue value in the color sequence.
-Standard red has a hue 12.2, which is the default for this function.</p></td>
+      <td><p><code>numeric</code> hue to use for the first hue value in the
+color sequence. Standard red has a hue 12.2, which is the default.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p><code>numeric</code> alpha transparency of colors, values ranging from
+0 to 1. If multiple values are supplied, they are applied in order to
+the categorical colors returned.</p></td>
+    </tr>
+    <tr>
+      <th>hues</th>
+      <td><p><code>numeric</code> vector of hues to use, only useful when the
+exact hues should be used instead of taking slices along a hue color
+wheel. By default, <code>warpHue=FALSE</code> if not otherwise defined, when
+<code>hues</code> is supplied. However, then <code>warpHue=TRUE</code> then the <code>hues</code>
+will be adjusted using <code><a href='h2hw.html'>h2hw()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>warpHue</th>
+      <td><p><code>logical</code> indicating whether to apply a custom color wheel,
+which "warps" the hue using <code><a href='h2hwOptions.html'>h2hwOptions()</a></code>, by applying either
+<code>preset</code>, or specific <code>h1</code> and <code>h2</code> arguments.</p></td>
+    </tr>
+    <tr>
+      <th>preset</th>
+      <td><p><code>character</code> string passed to <code><a href='h2hwOptions.html'>h2hwOptions()</a></code> to
+define the color wheel, only used when <code>warpHue=TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>h1, h2</th>
+      <td><p><code>numeric</code> vectors as used by <code><a href='h2hw.html'>h2hw()</a></code> and <code><a href='hw2h.html'>hw2h()</a></code> to
+convert from warped hues to standard hues. The default values define
+red-yellow-blue (additive) color space, which is converted to
+red-green-blue color space to produce the actual R color.</p></td>
     </tr>
     <tr>
       <th>Cvals, Lvals</th>
-      <td><p>vector of chroma (C) and luminance (L) values to be
-cycled when creating colors along the vector of color hues. These
+      <td><p><code>numeric</code> vector of chroma (C) and luminance (L) values
+to be cycled when creating colors along the vector of color hues. These
 values are intended to maximize visual distinctiveness of adjacent and
 nearly-adjacent colors. For example, varying from bright to dark may
 provide additional distinction between two similar color hues.</p></td>
@@ -179,54 +203,53 @@ Crange and Lrange values can help produce categorical colors on a
 dark or light background, by changing the range of values being used.</p></td>
     </tr>
     <tr>
-      <th>doTest</th>
-      <td><p>boolen indicating whether to perform a visual test for
-the <code>n</code> number of colors produced, which helps judge the
-visual distinctiveness of different combinations of dark and light
-colors.</p></td>
+      <th>phase</th>
+      <td><p><code>integer</code> value which indicates the first value to use
+from the sequence of <code>Cvals</code>,<code>Lvals</code> values, where <code>phase=1</code> starts
+with the first value for each, <code>phase=2</code> starts with the second
+value from each, etc. When <code>phase</code> is negative, the order of
+<code>Cvals</code> and <code>Lvals</code> is reversed.</p></td>
     </tr>
     <tr>
-      <th>alpha</th>
-      <td><p>numeric alpha transparency of colors, values ranging from
-0 to 1. If multiple values are supplied, they are applied in order to
-the categorical colors returned.</p></td>
+      <th>direction</th>
+      <td><p><code>character</code> value indicating the direction to travel
+around the color wheel, where <code>"1"</code> travels forward (red-yellow-blue),
+and <code>"-1"</code> travels in reverse (red-blue-yellow).</p></td>
+    </tr>
+    <tr>
+      <th>do_hue_pad</th>
+      <td><p><code>logical</code> indicating whether to apply padding to
+the color hue sequence, intended mainly so the last color hue
+in a sequence is less similar to the first color hue in the
+sequence.</p></td>
+    </tr>
+    <tr>
+      <th>hue_pad_percent</th>
+      <td><p><code>numeric</code> value between 0 and 100, used when
+<code>do_hue_pad</code> to apply a padding between the first and last color
+hues.</p></td>
     </tr>
     <tr>
       <th>nameStyle</th>
-      <td><p>character value indicating how to name the output
+      <td><p><code>character</code> value indicating how to name the output
 colors: "none" returns colors with no names; "hcl" assigns names with
 the color number prefix, followed by H, C, L values; "colors" names the
 vector by the hex color code.</p></td>
     </tr>
     <tr>
-      <th>h1, h2</th>
-      <td><p>numeric vectors as used by <code><a href='h2hw.html'>h2hw()</a></code> and <code><a href='hw2h.html'>hw2h()</a></code> to
-convert from warped hues to standard hues. The default values define
-red-yellow-blue (additive) color space, which is converted to
-red-green-blue color space to produce the actual R color.</p></td>
+      <th>doTest</th>
+      <td><p><code>logical</code> indicating whether to perform a visual test for
+the <code>n</code> number of colors produced, which helps judge the
+visual distinctiveness of different combinations of dark and light
+colors.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>logical whether to print verbose output</p></td>
+      <td><p><code>logical</code> whether to print verbose output</p></td>
     </tr>
     <tr>
-      <th>nfloor</th>
-      <td><p>the minimum number of effective color slices taken from the
-hue color wheel, primarily used as an aesthetic choice so the first two
-colors will be reasonably consistent when choosing 1, 2, 3, 4, or 5
-categorical colors.</p></td>
-    </tr>
-    <tr>
-      <th>sFactor, darkFactor</th>
-      <td><p>parameters sent to <code><a href='https://rdrr.io/pkg/jamba/man/makeColorDarker.html'>jamba::makeColorDarker</a></code>
-if either is not equal to 1. Setting <code>darkFactor=2</code> is a quick
-way of generating categorical border colors, for example drawing a
-colored border around categorical colors. Alternatively, setting
-<code>sFactor=-2, darkFactor=-2</code> can be used to desaturate and lighten
-colors used for the background area of a rectangle. The <code>alpha</code>
-transparency parameter can also be helpful, however not all graphics
-devices support transparency, in which case it is more robust to define
-the exact color.</p></td>
+      <th>...</th>
+      <td><p>additional arguments are ignored.</p></td>
     </tr>
     </table>
 
@@ -267,10 +290,8 @@ hues recognized by <code><a href='https://rdrr.io/r/grDevices/hcl.html'>hcl()</a
 <code><a href='vals2colorLevels.html'>vals2colorLevels</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>rainbowJam</span>(<span class='fl'>12</span>);</div><div class='output co'>#&gt;         1         2         3         4         5         6         7         8 
-#&gt; "#D92029" "#FF9D72" "#FF6400" "#9F5200" "#00D6FF" "#0382EA" "#005EFF" "#C1BFFF" 
-#&gt;         9        10        11        12 
-#&gt; "#9F6AFF" "#8617F9" "#FF1BFF" "#DF3AB4" </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>rainbowJam</span>(<span class='fl'>12</span>);</div><div class='output co'>#&gt;  [1] "#D92029" "#FF9C74" "#FF6300" "#A34F00" "#00D9FF" "#0084E9" "#0061FF"
+#&gt;  [8] "#B8C1FF" "#956FFF" "#7D24FA" "#FF65FF" "#D43FCD"</div><div class='input'>
 <span class='co'># show colors</span>
 <span class='kw pkg'>jamba</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span>(<span class='fu'>rainbowJam</span>(<span class='fl'>10</span>));</div><div class='img'><img src='rainbowJam-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># show colors</span>

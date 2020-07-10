@@ -52,17 +52,30 @@ colorList <- lapply(nameVector(c(5, 10, 20)), function(n){
    rainbowJam(n);
 });
 showColors(colorList,
-   main="Red-Yellow-Blue color wheel (default colorjam)");
+   main="Dichromat color wheel (default colorjam)");
+```
+
+![](man/figures/README-cat_list_dichromat-1.png)<!-- -->
+
+By default, colorjam uses a “warped” color wheel, which produces a
+dichromat (color blind friendly) color wheel.
+
+There are several custom color wheel “presets”, for example
+red-yellow-blue color wheel can be used with `preset="ryb"`.
+
+``` r
+colorList1 <- lapply(nameVector(c(5, 8, 16)), function(n){
+   rainbowJam(n, preset="ryb", hue_pad_percent=100, do_hue_pad=TRUE);
+});
+showColors(colorList1,
+   main="Red-Yellow-Blue color wheel (previous default rainbowJam)");
 ```
 
 ![](man/figures/README-cat_list_ryb-1.png)<!-- -->
 
-By default, colorjam uses a “warped” color wheel, which produces
-Red-Yellow-Blue equally spaced. The effect is color additive, which is
-beneficial when blending colors as well as selecting categorical colors.
-
 To view Red-Green-Blue colors using the default color wheel in base R,
-supply `warpHue=FALSE` as shown below:
+supply `warpHue=FALSE` as shown below, or use `preset="rgb"` to define
+the red-green-blue color wheel.
 
 ``` r
 colorList2 <- lapply(nameVector(c(5, 10, 20)), function(n){
@@ -73,6 +86,89 @@ showColors(colorList2,
 ```
 
 ![](man/figures/README-cat_list_rgb-1.png)<!-- -->
+
+### Color-blending (new in version 0.0.16.900)
+
+The color wheel red-yellow-blue is particularly effective for
+color-mixing operations. The function `blend_colors()` has some useful
+features:
+
+  - Paint color mixing style (blue + yellow = green)
+  - Able to mix more than two colors
+  - Accounts for color transparency during mixing
+
+The argument `do_plot=TRUE` will plot a visual summary of the mixing
+results.
+
+``` r
+blent1 <- blend_colors(c("red", "blue"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-1.png)<!-- -->
+
+``` r
+blent2 <- blend_colors(c("gold", "blue"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-2.png)<!-- -->
+
+``` r
+blent3 <- blend_colors(c("gold", "red"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-3.png)<!-- -->
+
+``` r
+
+blent4 <- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-4.png)<!-- -->
+
+``` r
+blent5 <- blend_colors(c("red", "green4"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-5.png)<!-- -->
+
+``` r
+blent6 <- blend_colors(c("blue", "darkorange"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-6.png)<!-- -->
+
+``` r
+
+blent7 <- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-7.png)<!-- -->
+
+``` r
+
+blent8 <- blend_colors(c("red1", "red3", "blue"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-8.png)<!-- -->
+
+``` r
+blent9 <- blend_colors(c("red1", "blue1", "blue4"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-9.png)<!-- -->
+
+``` r
+
+blent10 <- blend_colors(c("blue", "ivory"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-10.png)<!-- -->
+
+``` r
+blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
+```
+
+![](man/figures/README-blend_colors1-11.png)<!-- -->
 
 ### Color-splitting
 
@@ -135,18 +231,18 @@ names(groupLabels) <- makeNames(groupLabels);
 groupColors <- group2colors(groupLabels);
 print(data.frame(groupLabels, groupColors));
 #>             groupLabels groupColors
-#> Wildtype_v1    Wildtype     #4A8BFF
-#> Wildtype_v2    Wildtype     #4A8BFF
-#> Wildtype_v3    Wildtype     #4A8BFF
-#> Knockout_v1    Knockout     #EA4347
-#> Knockout_v2    Knockout     #EA4347
-#> Knockout_v3    Knockout     #EA4347
-#> Knockout_v4    Knockout     #EA4347
-#> Knockout_v5    Knockout     #EA4347
-#> Treated_v1      Treated     #FFCD00
-#> Treated_v2      Treated     #FFCD00
-#> Treated_v3      Treated     #FFCD00
-#> Treated_v4      Treated     #FFCD00
+#> Wildtype_v1    Wildtype     #0091FF
+#> Wildtype_v2    Wildtype     #0091FF
+#> Wildtype_v3    Wildtype     #0091FF
+#> Knockout_v1    Knockout     #D92029
+#> Knockout_v2    Knockout     #D92029
+#> Knockout_v3    Knockout     #D92029
+#> Knockout_v4    Knockout     #D92029
+#> Knockout_v5    Knockout     #D92029
+#> Treated_v1      Treated     #FFB600
+#> Treated_v2      Treated     #FFB600
+#> Treated_v3      Treated     #FFB600
+#> Treated_v4      Treated     #FFB600
 showColors(groupColors);
 ```
 
@@ -270,12 +366,12 @@ closestRcolor(rainbowJam(12),
 
 ![](man/figures/README-color_names-1.png)<!-- -->
 
-    #>               1               2               3               4               5 
-    #>        "brown2"   "lightsalmon"         "coral"   "darkorange3"         "cyan2" 
-    #>               6               7               8               9              10 
-    #>    "dodgerblue"    "royalblue1"      "lavender" "mediumpurple1"       "purple1" 
-    #>              11              12 
-    #>       "magenta"       "maroon1"
+    #>          #D92029          #FF9C74          #FF6300          #A34F00 
+    #>     "firebrick3"    "lightsalmon"         "tomato"         "sienna" 
+    #>          #00D9FF          #0084E9          #0061FF          #B8C1FF 
+    #>     "turquoise2"    "dodgerblue2"     "royalblue2"   "lightskyblue" 
+    #>          #956FFF          #7D24FA          #FF65FF          #D43FCD 
+    #> "lightslateblue"        "purple2"        "orchid1"       "magenta3"
 
 Of course, not all hex colors have a close match in the named R colors,
 but the closest color is returned nonetheless.

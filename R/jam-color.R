@@ -304,13 +304,15 @@ rainbowJam_v1 <- function
 #' @export
 closestRcolor <- function
 (x,
- colorSet=unvigrep("^gr[ae]y($|[0-9]+$)", colors()),
+ colorSet=colors(),
+ C_min=20,
  showPalette=FALSE,
  colorModel=c("hcl","LUV"),
  Hwt=2,
  Cwt=1,
  Lwt=4,
  warpHue=TRUE,
+ preset="rgb",
  method="maximum",
  returnType=c("color","name","match"),
  verbose=FALSE,
@@ -336,6 +338,11 @@ closestRcolor <- function
    if (length(names(origX)) == 0) {
       names(origX) <- jamba::makeNames(origX);
    }
+
+   if (length(C_min) > 0 && C_min > 0) {
+      colorSet <- colorSet[col2hcl(colorSet)["C",] >= C_min];
+   }
+
    if (returnType %in% "name" && length(names(colorSet)) == 0) {
       names(colorSet) <- jamba::makeNames(colorSet);
    }
@@ -358,8 +365,10 @@ closestRcolor <- function
 
       ## Adjust H to RYB
       if (warpHue) {
-         xHCL["H",] <- h2hw(xHCL["H",]);
-         colorSetHCL["H",] <- h2hw(colorSetHCL["H",]);
+         xHCL["H",] <- h2hw(xHCL["H",],
+            preset=preset);
+         colorSetHCL["H",] <- h2hw(colorSetHCL["H",],
+            preset=preset);
       }
 
       Hdist <- angDist(a=xHCL["H",], b=colorSetHCL["H",])/180*100;

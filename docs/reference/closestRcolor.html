@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.15.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.16.900</span>
       </span>
     </div>
 
@@ -119,13 +119,15 @@
 
     <pre class="usage"><span class='fu'>closestRcolor</span>(
   <span class='no'>x</span>,
-  <span class='kw'>colorSet</span> <span class='kw'>=</span> <span class='fu'>unvigrep</span>(<span class='st'>"^gr[ae]y($|[0-9]+$)"</span>, <span class='fu'><a href='https://rdrr.io/r/grDevices/colors.html'>colors</a></span>()),
+  <span class='kw'>colorSet</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/colors.html'>colors</a></span>(),
+  <span class='kw'>C_min</span> <span class='kw'>=</span> <span class='fl'>20</span>,
   <span class='kw'>showPalette</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>colorModel</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hcl"</span>, <span class='st'>"LUV"</span>),
   <span class='kw'>Hwt</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>Cwt</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>Lwt</span> <span class='kw'>=</span> <span class='fl'>4</span>,
   <span class='kw'>warpHue</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>preset</span> <span class='kw'>=</span> <span class='st'>"rgb"</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"maximum"</span>,
   <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"color"</span>, <span class='st'>"name"</span>, <span class='st'>"match"</span>),
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -207,12 +209,12 @@ although the default values appear to work fairly well.</p>
 <code><a href='vals2colorLevels.html'>vals2colorLevels</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>closestRcolor</span>(<span class='fu'><a href='rainbowJam.html'>rainbowJam</a></span>(<span class='fl'>12</span>), <span class='kw'>showPalette</span><span class='kw'>=</span><span class='fl'>TRUE</span>);</div><div class='img'><img src='closestRcolor-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;                 1                 2                 3                 4 
-#&gt;      "firebrick3"     "lightsalmon"          "tomato"          "sienna" 
-#&gt;                 5                 6                 7                 8 
-#&gt; "darkolivegreen3"     "dodgerblue2"      "royalblue2"        "lavender" 
-#&gt;                 9                10                11                12 
-#&gt;   "mediumpurple2"         "purple2"         "magenta"         "maroon2" </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>closestRcolor</span>(<span class='fu'><a href='rainbowJam.html'>rainbowJam</a></span>(<span class='fl'>12</span>), <span class='kw'>showPalette</span><span class='kw'>=</span><span class='fl'>TRUE</span>);</div><div class='img'><img src='closestRcolor-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt;          #D92029          #FF9C74          #FF6300          #A34F00 
+#&gt;     "firebrick3"    "lightsalmon"         "tomato"         "sienna" 
+#&gt;          #00D9FF          #0084E9          #0061FF          #B8C1FF 
+#&gt;     "turquoise2"    "dodgerblue2"     "royalblue2"   "lightskyblue" 
+#&gt;          #956FFF          #7D24FA          #FF65FF          #D43FCD 
+#&gt; "lightslateblue"        "purple2"        "orchid1"       "magenta3" </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
