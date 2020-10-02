@@ -1,3 +1,11 @@
+# colorjam version 0.0.17.900
+
+## bug fixes
+
+* `mean_angle()` had bare reference to `jamba::deg2rad()` which
+was fixed. This fixed an error in `blend_colors()` when the
+`jamba` was not attached.
+
 # colorjam version 0.0.16.900
 
 ## new functions

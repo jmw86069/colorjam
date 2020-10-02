@@ -232,7 +232,7 @@ mean_angle <- function
       xCeiling=1,
       lens=lens);
 
-   x_deg <- rad2deg(atan2(x=xy_mean["y"], y=xy_mean["x"])) %% 360;
+   x_deg <- jamba::rad2deg(atan2(x=xy_mean["y"], y=xy_mean["x"])) %% 360;
 
    if (do_plot) {
       jamba::nullPlot(xlim=c(-1,1),
