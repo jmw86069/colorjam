@@ -64,6 +64,13 @@
 #'    chroma (saturation) using the mean chroma values of the input
 #'    colors. When `c_weight=0` the chroma uses the radius returned
 #'    by the mean color wheel angle.
+#' @param c_floor `numeric` value indicating the `C` chroma HCL value
+#'    below which a color is considered to be "grey" and unsaturated.
+#'    When this happens, the hue contribution is set to 0.001 relative
+#'    to other colors being blended. This correction is done because
+#'    every color is assigned one `H` hue value in HCL, even when
+#'    the `C` chroma (saturation) is zero, therefore these colors
+#'    effectively have no `H` hue.
 #' @param ... additional arguments are ignored.
 #'
 #' @examples
@@ -94,6 +101,7 @@ blend_colors <- function
  do_plot=FALSE,
  lens=0,
  c_weight=0.2,
+ c_floor=12,
  ...)
 {
    ## 1. Convert colors to ryb
@@ -102,6 +110,10 @@ blend_colors <- function
    ## 3. convert to rgb
    #x <- jamba::nameVector(c("red", "yellow", "blue"));
    preset <- match.arg(preset);
+   if (length(c_floor) == 0) {
+      c_floor <- 0;
+   }
+   c_floor <- head(c_floor, 1);
 
    ## handle list input
    if (is.list(x)) {
@@ -125,8 +137,8 @@ blend_colors <- function
    x_w <- jamba::col2alpha(x);
 
    x_HCL <- jamba::col2hcl(x);
-   x_w_use <- ifelse(x_HCL["C",] < 12,
-      x_w - x_w,
+   x_w_use <- ifelse(x_HCL["C",] <= c_floor,
+      x_w - x_w*0.999,
       ifelse(x_HCL["C",] < 20,
          x_w - x_w * 0.8,
          x_w));
@@ -144,6 +156,9 @@ blend_colors <- function
       h2=h1h2$h2);
 
    ## mean hue angle
+   if (all(x_w_use == 0)) {
+      x_w_use <- rep(0.001, length(x_w_use));
+   }
    h_ryb_mean_v <- mean_angle(h_ryb,
       lens=lens,
       w=x_w_use);

@@ -12,6 +12,7 @@ blend_colors(
   do_plot = FALSE,
   lens = 0,
   c_weight = 0.2,
+  c_floor = 12,
   ...
 )
 }
@@ -33,6 +34,14 @@ after averaging color wheel angles.}
 chroma (saturation) using the mean chroma values of the input
 colors. When \code{c_weight=0} the chroma uses the radius returned
 by the mean color wheel angle.}
+
+\item{c_floor}{\code{numeric} value indicating the \code{C} chroma HCL value
+below which a color is considered to be "grey" and unsaturated.
+When this happens, the hue contribution is set to 0.001 relative
+to other colors being blended. This correction is done because
+every color is assigned one \code{H} hue value in HCL, even when
+the \code{C} chroma (saturation) is zero, therefore these colors
+effectively have no \code{H} hue.}
 
 \item{...}{additional arguments are ignored.}
 }

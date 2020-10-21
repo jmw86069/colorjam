@@ -1,3 +1,14 @@
+# colorjam version 0.0.18.900
+
+## bug fixes / enhancements
+
+* `blend_colors()` was updated to handle blending entirely grey sets 
+of colors. Previously they failed to blend because the lack of any
+color saturation also have them zero weight.
+* `blend_colors()` new argument `c_floor` defines the `C` chroma
+color saturation floor, below which a color is considered to have
+no color hue. Technically it is given hue weight 0.0001.
+
 # colorjam version 0.0.17.900
 
 ## bug fixes
