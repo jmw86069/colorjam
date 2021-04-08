@@ -72,16 +72,17 @@ jamba::showColors(list(abcde=abcde,
 
 }
 \seealso{
-Other jam color functions: 
+Other colorjam core: 
+\code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
-\code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
 \code{\link{rainbowJam}()},
-\code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()},
+\code{\link{subset_colors}()}
+
+Other colorjam assignment: 
+\code{\link{col_div_xf}()},
+\code{\link{col_linear_xf}()},
+\code{\link{matrix2heatColors}()},
 \code{\link{vals2colorLevels}()}
 }
-\concept{jam color functions}
+\concept{colorjam assignment}
+\concept{colorjam core}

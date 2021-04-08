@@ -1,4 +1,93 @@
-# colorjam version 0.0.18.900
+# colorjam 0.0.19.900
+
+Several new functions, and two new data objects with color
+gradients; pkgdown site documentation was updated
+to showcase several new visual examples in for
+the new color functions.
+
+## changes to existing functions
+
+* `scale_color_jam()`, `scale_fill_jam()` and `jam_pal()` have a new
+argument `preset` which is passed along to `rainbowJam()` to
+define the color hue wheel preset. The default `preset="dichromat"`
+uses color blind friendly color hue wheel (mainly by omitting green).
+The full rainbow can be used with `preset="ryb"` which uses
+the enhanced red-yellow-blue color hue wheel, where green
+is a secondary color between yellow and blue. The default
+R red-green-blue color hue wheel can be used with `preset="rgb"`
+although this palette is optimal for computer monitor use of RGB,
+and not at all optimal for human perception, even
+among those who can see the full rainbow of color hues.
+
+
+## new functions
+
+* `subset_colors()` is a subset function for a vector of R colors,
+which allows rapid operations on any RGB, HCL, or HSV attribute.
+* `col_div_xf()` produces a color function that maps numeric
+values to divergent color gradient. Its arguments define the
+numeric range, and optional floor. The floor is a range below
+which the absolute numeric value is assigned the middle color,
+useful to represent visual whether a point meets a numeric
+threshold. This function is motivated to be used with argument `"col"`
+in `ComplexHeatmap::Heatmap()`, to define a numeric range
+with zero as the fixed mid-point associated with divergent
+colors.
+The name of the function is derived as follows:
+
+    * `col` matching the argument in `ComplexHeatmap::Heatmap()` `"col"`
+    * `div` for divergent colors
+    * `x` for the `x`-defined numeric range
+    * `f` for ability to apply a numeric floor
+
+* `col_linear_xf()` is the linear/sequential color equivalent
+to `col_div_xf()`. It is useful for two features:
+
+    * define a fixed numeric ceiling for color assignment
+    * define optional numeric floor, below which numeric values are assigned
+    the first color, which is usually the blank color in the color gradient.
+
+* `make_jam_divergent()` creates a divergent color gradient with
+lite (white) or dark (black) middle color as appropriate. It can
+recognize one of the new Jam gradients from `jam_linear` or `jam_divergent
+(see below).
+* `twostep_gradient()` is a simple but fairly exciting new function
+that produces a linear/sequential color gradient - which means it
+proceeds from a baseline color to the saturated color - while also
+applying two intermediate color gradients to improve visual
+perception. Most gradients from `RColorBrewer` employ this technique
+to expand the range of colors, and to improve visibility of
+each color step by varying both the brightness, and the color hue.
+See examples for visual illustrations.
+
+
+## new color objects
+
+Two new color gradient objects are added, and are still under some
+development as they are being used to gain feedback. They are both
+motivated by the use case of providing color gradients for
+genome sequence coverage heatmaps, provided by `"platjam"` package
+which extends Bioconductor `EnrichedHeatmap`, itself an extension
+by author of `ComplexHeatmap`.
+
+These colors aim to provide color-blind-friendly color gradients,
+while providing some utility of categorical coloring for different
+panels of a coverage heatmap. Essentially these colors avoid the
+range of green hues, which vastly improves visual distinctiveness
+for the three color blindness forms emulated by
+`dichromat::dichromat()`.
+
+* `jam_linear` is a new R `list` object that contains a set of
+linear color gradients with white background color. These are
+intended to be paired with `jam_divergent`. The names in `jam_linear`
+are also used in `jam_divergent`.
+* `jam_divergent` is a new R `list` object that contains a set of
+divergent color gradients with black background color to distinguish
+itself from `jam_linear`. The names in `jam_divergent` are also
+used in `jam_linear`.
+
+
+# colorjam 0.0.18.900
 
 ## bug fixes / enhancements
 
@@ -9,7 +98,7 @@ color saturation also have them zero weight.
 color saturation floor, below which a color is considered to have
 no color hue. Technically it is given hue weight 0.0001.
 
-# colorjam version 0.0.17.900
+# colorjam 0.0.17.900
 
 ## bug fixes
 
@@ -17,7 +106,7 @@ no color hue. Technically it is given hue weight 0.0001.
 was fixed. This fixed an error in `blend_colors()` when the
 `jamba` was not attached.
 
-# colorjam version 0.0.16.900
+# colorjam 0.0.16.900
 
 ## new functions
 
@@ -55,7 +144,7 @@ default RGB yellow (hue=60) to RYB yellow (hue=120).
 * `closestRcolor()` argument `preset` defaults to `ryb`,
 to avoid using `dichromat` for closest-color calculations.
 
-# colorjam version 0.0.15.900
+# colorjam 0.0.15.900
 
 ## changes to existing functions
 
@@ -77,7 +166,7 @@ referencing a vector using name `""` which R forces
 to return `NA`. Instead `group2colors()` now uses
 `match(x, names(colors))` which works properly.
 
-# colorjam version 0.0.14.900
+# colorjam 0.0.14.900
 
 ## more changes to rainbowJam()
 
@@ -142,7 +231,7 @@ as before this update, without also changing the 2nd and 3rd values in
 `Lvals`. I realize, only I care.
 
 
-# colorjam version 0.0.13.900
+# colorjam 0.0.13.900
 
 ## Substantial changes to rainbowJam()
 
@@ -170,7 +259,7 @@ might be moved into `jamba::showColors()` as an optional
 output format. Current challenge is how to label each ring,
 when the input is a list of color vectors.
 
-# colorjam version 0.0.12.900
+# colorjam 0.0.12.900
 
 ## changes
 
@@ -178,7 +267,7 @@ when the input is a list of color vectors.
 lines a lighter shade of gray, so they have less interference
 with text labels on a plot panel.
 
-# colorjam version 0.0.11.900
+# colorjam 0.0.11.900
 
 ## changes
 
@@ -186,7 +275,7 @@ with text labels on a plot panel.
 an argument `alpha` to control alpha transparency, on a scale of
 0 (transparent) to 1 (non-transparent.)
 
-# colorjam version 0.0.10.900
+# colorjam 0.0.10.900
 
 ## changes
 
@@ -200,14 +289,14 @@ colors at cost of accuracy, while "hcl" tends to be more accurate but
 sometimes snaps two similar colors to the same closest R color.
 Future work should probably handle greyscale colors separately.
 
-# colorjam version 0.0.9.900
+# colorjam 0.0.9.900
 
 ## changes
 
 * `vals2colorLevels()` was updated to handle edge cases where input
 values had no numeric range.
 
-# colorjam version 0.0.8.900
+# colorjam 0.0.8.900
 
 ## new functions
 
@@ -215,7 +304,7 @@ values had no numeric range.
 optionally divergent around a baseline, optionally applying the color
 warp using `jamba::warpRamp()` and a `lens` adjustment value.
 
-# colorjam version 0.0.7.900
+# colorjam 0.0.7.900
 
 ## changes
 
@@ -227,7 +316,7 @@ import implementation in R.
 * `matrix2heatColors()` to apply color gradient to each column in a matrix,
 where each column has its own color scale.
 
-# colorjam version 0.0.5.900
+# colorjam 0.0.5.900
 
 ## additions
 
@@ -236,7 +325,7 @@ where each column has its own color scale.
 Guidance from R Package Development and R central docs is cryptic on
 this point.
 
-# colorjam version 0.0.4.900
+# colorjam 0.0.4.900
 
 ## new functions
 
@@ -251,7 +340,7 @@ to the Github jamba package.
 * Updated `closestRcolor()` to fix a small bug with name handling
 of the output.
 
-# colorjam version 0.0.3.900
+# colorjam 0.0.3.900
 
 ## new functions
 

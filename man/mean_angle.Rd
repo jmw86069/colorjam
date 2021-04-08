@@ -50,3 +50,12 @@ color saturation.
 mean_angle(c(120, 45), do_plot=TRUE);
 
 }
+\seealso{
+Other colorjam hue warp: 
+\code{\link{approx_degrees}()},
+\code{\link{display_degrees}()},
+\code{\link{h2hwOptions}()},
+\code{\link{h2hw}()},
+\code{\link{hw2h}()}
+}
+\concept{colorjam hue warp}

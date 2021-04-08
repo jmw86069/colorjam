@@ -25,6 +25,8 @@
 #' `h2hwOptions(h2=h2hwOptions()$h1)`. Doing so will cause `stats::approx()`
 #' to interpret every hue as a 1:1 relationship with the warped hue.
 #'
+#' @family colorjam hue warp
+#'
 #' @param h1 NULL or numeric vector of color hue values, sequential between
 #'    0 and 360.
 #' @param h2 NULL or numeric vector of color hue values, sequential between
@@ -71,7 +73,7 @@ h2hwOptions <- function
  h2=getOption("h2hw.h2"),
  h1default=c(0, 60,120,240,360),
  h2default=c(0,120,180,240,360),
- preset=c("none", "dichromat", "ryb", "rgb", "ryb2"),
+ preset=c("none", "dichromat", "ryb", "rgb", "ryb2", "ryb3"),
  default_preset="dichromat",
  reset=FALSE,
  setOptions=c("ifnull", "TRUE", "FALSE"),
@@ -118,6 +120,10 @@ h2hwOptions <- function
       } else if ("ryb2" %in% preset) {
          h1 <- c(0, 22,  60, 120, 240, 270, 360);
          h2 <- c(0, 80, 150, 180, 220, 290, 360);
+      } else if ("ryb3" %in% preset) {
+         h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
+            223.1, 263.2, 277.2, 307.7, 345.3, 372.2);
+         h2 <- seq(from=0, to=360, length.out=13) + 12.2;
       } else {
       #} else if ("rgb" %in% preset) {
          h1 <- c(0, 360);
@@ -153,11 +159,13 @@ h2hwOptions <- function
    }
 
    ## Integrity check of h1,h2 values
-   if (length(h1) != length(h2) || length(h1) < 2) {
-      stop("h1,h2 values are not valid: must have length(h1) >= 2, and length(h1)==length(h2)");
-   }
-   if (max(round(h1)) < 360 || max(round(h2)) < 360) {
-      stop("h1,h2 values are not valid: must have max(h1)==360 and max(h2)==360");
+   if (1 == 2) {
+      if (length(h1) != length(h2) || length(h1) < 2) {
+         stop("h1,h2 values are not valid: must have length(h1) >= 2, and length(h1)==length(h2)");
+      }
+      if (max(round(h1)) < 360 || max(round(h2)) < 360) {
+         stop("h1,h2 values are not valid: must have max(h1)==360 and max(h2)==360");
+      }
    }
 
    if ("TRUE" %in% setOptions || (h1h2_undefined && "ifnull" %in% setOptions)) {
@@ -191,16 +199,16 @@ h2hwOptions <- function
 #' blue). The color yellow has hue=60 in RGB space, so the call to
 #' `hw2h(60)` results in `120`, which is the hue in RYB space.
 #'
-#' @param h numeric vector of color hues between 0 and 360. These hues do
+#' @family colorjam hue warp
+#'
+#' @param h `numeric` vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
-#' @param h1,h2 vector of color hues, which by default are defined in
+#' @param h1,h2 `numeric` vector of color hues, which by default are defined in
 #'    [h2hwOptions()], but allowed here in cases where the global options
 #'    should be overridden but not modified.
 #'
-#' @return numeric vector of hue values after applying the hue warp
+#' @return `numeric` vector of hue values after applying the hue warp
 #'    operation.
-#'
-#' @return numeric vector of warped color hues.
 #'
 #' @examples
 #' ## Yellow when using an RGB color wheel is 60 degrees,
@@ -214,7 +222,6 @@ h2hwOptions <- function
 #' huesBY;
 #' warpedHuesBY <- h2hw(huesBY);
 #' warpedHuesBY;
-#' warpedHues <- h2hw(hues);
 #'
 #' @family hue warp functions
 #'
@@ -235,10 +242,13 @@ h2hw <- function
       h1 <- h1h2$h1;
       h2 <- h1h2$h2;
    }
-   hNew <- approx(x=h1,
-      y=h2,
-      ties="ordered",
-      xout=(h %% 360))$y;
+   hNew <- approx_degrees(h1,
+      h2,
+      h)
+   #hNew <- approx(x=h1,
+   #   y=h2,
+   #   ties="ordered",
+   #   xout=(h %% 360))$y;
    return(hNew);
 }
 
@@ -247,7 +257,7 @@ h2hw <- function
 #' Convert warped hue to standard hue using the hue warp vectors
 #'
 #' This function is intended to convert from a vector of warped hue values to
-#' the hues defined by the vectors returned by \code{h2hwOptions}.
+#' the hues defined by the vectors returned by h2hwOptions()`.
 #' The intent is to convert colors in RYB space into RGB space by default.
 #'
 #' One example of input would be to supply a uniformly spaced set of color
@@ -257,15 +267,18 @@ h2hw <- function
 #'
 #' The default mappings convert RYB (red, yellow, blue) to RGB (red, green,
 #' blue). The color yellow has hue=120 in RYB space, so the call to
-#' \code{h2hw(120)} results in 60, which is the hue in RGB space.
+#' `h2hw(120)` results in 60, which is the hue in RGB space.
 #'
-#' @param h numeric vector of color hues between 0 and 360. These hues do
+#' @family colorjam hue warp
+#'
+#' @param h `numeric` vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
-#' @param h1,h2 vector of color hues, which by default are defined in
-#'    [h2hwOptions()], but allowed here in cases where the global options
+#' @param h1,h2 `numeric` vector of color hues, which by default are defined in
+#'    `h2hwOptions()`, but allowed here in cases where the global options
 #'    should be overridden but not modified.
 #'
-#' @return numeric vector of color hues.
+#' @return `numeric` vector of hue values after applying the hue warp
+#'    operation.
 #'
 #' @examples
 #' # It can be useful to create a uniform sequence of angles in warped

@@ -7,22 +7,23 @@
 hw2h(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, preset = NULL, ...)
 }
 \arguments{
-\item{h}{numeric vector of color hues between 0 and 360. These hues do
+\item{h}{\code{numeric} vector of color hues between 0 and 360. These hues do
 not need to be in sequential order.}
 
-\item{h1, h2}{vector of color hues, which by default are defined in
-\code{\link[=h2hwOptions]{h2hwOptions()}}, but allowed here in cases where the global options
+\item{h1, h2}{\code{numeric} vector of color hues, which by default are defined in
+\code{h2hwOptions()}, but allowed here in cases where the global options
 should be overridden but not modified.}
 }
 \value{
-numeric vector of color hues.
+\code{numeric} vector of hue values after applying the hue warp
+operation.
 }
 \description{
 Convert warped hue to standard hue using the hue warp vectors
 }
 \details{
 This function is intended to convert from a vector of warped hue values to
-the hues defined by the vectors returned by \code{h2hwOptions}.
+the hues defined by the vectors returned by h2hwOptions()`.
 The intent is to convert colors in RYB space into RGB space by default.
 
 One example of input would be to supply a uniformly spaced set of color
@@ -45,8 +46,16 @@ hues;
 
 }
 \seealso{
+Other colorjam hue warp: 
+\code{\link{approx_degrees}()},
+\code{\link{display_degrees}()},
+\code{\link{h2hwOptions}()},
+\code{\link{h2hw}()},
+\code{\link{mean_angle}()}
+
 Other hue warp functions: 
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()}
 }
+\concept{colorjam hue warp}
 \concept{hue warp functions}

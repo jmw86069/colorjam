@@ -124,17 +124,4 @@ jamba::showColors(rainbowJam_v1(12));
 jamba::showColors(rainbowJam_v1(12, nameStyle="colors"));
 
 }
-\seealso{
-Other jam color functions: 
-\code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
-\code{\link{group2colors}()},
-\code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam}()},
-\code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()},
-\code{\link{vals2colorLevels}()}
-}
-\concept{jam color functions}
+\concept{colorjam deprecated}

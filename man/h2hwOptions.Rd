@@ -9,7 +9,7 @@ h2hwOptions(
   h2 = getOption("h2hw.h2"),
   h1default = c(0, 60, 120, 240, 360),
   h2default = c(0, 120, 180, 240, 360),
-  preset = c("none", "dichromat", "ryb", "rgb", "ryb2"),
+  preset = c("none", "dichromat", "ryb", "rgb", "ryb2", "ryb3"),
   default_preset = "dichromat",
   reset = FALSE,
   setOptions = c("ifnull", "TRUE", "FALSE"),
@@ -92,8 +92,16 @@ h2hw(300)
 
 }
 \seealso{
+Other colorjam hue warp: 
+\code{\link{approx_degrees}()},
+\code{\link{display_degrees}()},
+\code{\link{h2hw}()},
+\code{\link{hw2h}()},
+\code{\link{mean_angle}()}
+
 Other hue warp functions: 
 \code{\link{h2hw}()},
 \code{\link{hw2h}()}
 }
+\concept{colorjam hue warp}
 \concept{hue warp functions}

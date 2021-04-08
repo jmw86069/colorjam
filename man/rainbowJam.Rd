@@ -10,7 +10,7 @@ rainbowJam(
   alpha = 1,
   hues = NULL,
   warpHue = NULL,
-  preset = c("dichromat", "ryb", "ryb2", "rgb", "none"),
+  preset = c("dichromat", "ryb", "ryb2", "ryb3", "rgb", "none"),
   h1 = NULL,
   h2 = NULL,
   Cvals = c(140, 150, 160, 130, 200, 100),
@@ -103,7 +103,7 @@ colors.}
 \item{...}{additional arguments are ignored.}
 }
 \value{
-vector of colors
+\code{character} vector of categorical colors
 }
 \description{
 rainbow categorical colors using varied luminance and chroma
@@ -142,16 +142,10 @@ jamba::showColors(names(rainbowJam(6, nameStyle="closestRcolor")));
 
 }
 \seealso{
-Other jam color functions: 
+Other colorjam core: 
+\code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
 \code{\link{group2colors}()},
-\code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
-\code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{subset_colors}()}
 }
-\concept{jam color functions}
+\concept{colorjam core}

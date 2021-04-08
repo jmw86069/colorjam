@@ -77,16 +77,9 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
 }
 \seealso{
-Other jam color functions: 
-\code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
-\code{\link{group2colors}()},
+Other colorjam ggplot2: 
 \code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
-\code{\link{rainbowJam}()},
 \code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{scale_fill_jam}()}
 }
-\concept{jam color functions}
+\concept{colorjam ggplot2}

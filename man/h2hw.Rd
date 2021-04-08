@@ -7,18 +7,16 @@
 h2hw(h, h1 = h2hwOptions()$h1, h2 = h2hwOptions()$h2, preset = NULL, ...)
 }
 \arguments{
-\item{h}{numeric vector of color hues between 0 and 360. These hues do
+\item{h}{\code{numeric} vector of color hues between 0 and 360. These hues do
 not need to be in sequential order.}
 
-\item{h1, h2}{vector of color hues, which by default are defined in
+\item{h1, h2}{\code{numeric} vector of color hues, which by default are defined in
 \code{\link[=h2hwOptions]{h2hwOptions()}}, but allowed here in cases where the global options
 should be overridden but not modified.}
 }
 \value{
-numeric vector of hue values after applying the hue warp
+\code{numeric} vector of hue values after applying the hue warp
 operation.
-
-numeric vector of warped color hues.
 }
 \description{
 Convert standard hue to warped hue using the hue warp vectors
@@ -51,12 +49,19 @@ huesBY <- jamba::col2hcl(c("blue", "yellow"))["H",];
 huesBY;
 warpedHuesBY <- h2hw(huesBY);
 warpedHuesBY;
-warpedHues <- h2hw(hues);
 
 }
 \seealso{
+Other colorjam hue warp: 
+\code{\link{approx_degrees}()},
+\code{\link{display_degrees}()},
+\code{\link{h2hwOptions}()},
+\code{\link{hw2h}()},
+\code{\link{mean_angle}()}
+
 Other hue warp functions: 
 \code{\link{h2hwOptions}()},
 \code{\link{hw2h}()}
 }
+\concept{colorjam hue warp}
 \concept{hue warp functions}

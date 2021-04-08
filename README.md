@@ -375,3 +375,219 @@ closestRcolor(rainbowJam(12),
 
 Of course, not all hex colors have a close match in the named R colors,
 but the closest color is returned nonetheless.
+
+### Fixed color gradients (new in version 0.0.19.900, as of 08-Apr-2021)
+
+Two new fixed gradients were added, motivated by the need for
+linear/sequential and divergent color gradients that are also color
+blindness friendly.
+
+The linear/sequential gradients in `jam_linear` use a white baseline
+color, to distinguish them from divergent gradients. However the same
+names are used in `jam_linear` and `jam_divergent`.
+
+``` r
+jamba::showColors(jam_linear)
+```
+
+![](man/figures/README-jam_linear_1-1.png)<!-- -->
+
+The divergent color gradients in `jam_divergent` use a black background,
+to be distinguished from the linear gradients. However they use the same
+names, so that they can be paired as appropriate.
+
+``` r
+jamba::showColors(jam_divergent)
+```
+
+![](man/figures/README-jam_divergent_1-1.png)<!-- -->
+
+The motivating example is showing genome sequence coverage heatmaps from
+something like a ChIP-seq experiment. The coverage data itself would use
+a linear gradient. If experimental data were compared to control data,
+using subtraction for example, the resulting coverage would use a
+divergent gradient with the same primary name as the coverage. An
+example would be `"jam_linear$firebrick"` for coverage, and
+`"jam_divergent$firebrick_skyblue"` for coverage difference.
+
+See either the `"platjam" R package (jmw86069/platjam) or the main
+package it extends from Bioconductor,`“EnrichedHeatmap”`, from the
+author of the amazing package`“ComplexHeatmap”\`.
+
+### Color gradient manipulations
+
+Two new functions provide some interesting and useful features.
+
+`twostep_gradient()` makes an “enhanced” linear/sequential gradient by
+combining the visual effects of two color gradients together. This
+technique is widely used, and famously demonstrated by Dr. Brewer in the
+R package `RColorBrewer` in her use of linear color gradients that also
+employ a subtle hue color shift to improve visible clarity between color
+steps.
+
+Essentially the function takes two colors, produces a linear gradient
+for each individually, then blends them using a gradually increasing
+weight along the steps. The argument `debug=TRUE` will create a plot
+showing each individual color, then the final blended result. The
+example below uses `"orange2"` and `"firebrick"` and produces a much
+more visibly distinctive linear gradient.
+
+``` r
+ts1 <- twostep_gradient("orange2", "firebrick", n=11, debug=TRUE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+title("orange2 + firebrick");
+```
+
+![](man/figures/README-twostep_1-1.png)<!-- -->
+
+``` r
+ts2 <- twostep_gradient("aquamarine", "dodgerblue", n=11, debug=TRUE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+title("aquamarine + dodgerblue");
+```
+
+![](man/figures/README-twostep_2-1.png)<!-- -->
+
+`make_jam_divergent()` is the next color gradient function in the chain,
+intended to combine two linear gradients into one divergent gradient. It
+is useful in that it accepts a single color, the name of a known color
+gradient, or a vector of colors for each “half” of the divergent color
+gradient. Oh and it can use a lite or dark baseline color.
+
+The first use case is to combine the colors from `twostep_gradient()`:
+
+``` r
+ts1ts2 <- make_jam_divergent(list(ts2=ts2),
+   list(ts1=ts1),
+   n=21)
+jamba::showColors(ts1ts2)
+```
+
+![](man/figures/README-div_1-1.png)<!-- -->
+
+Another example re-creates a widely used yellow-black-purple color
+gradient, by first expanding each linear gradient, then combines them.
+
+For kicks, we use single colors to create a comparable “flat” one-step
+divergent gradient, which is still quite nice.
+
+``` r
+gr1d <- twostep_gradient("slateblue1", "purple", debug=TRUE, lite=FALSE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+```
+
+![](man/figures/README-div_2-1.png)<!-- -->
+
+``` r
+gr2d <- twostep_gradient("darkorange", "gold", debug=TRUE, lite=FALSE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+```
+
+![](man/figures/README-div_2-2.png)<!-- -->
+
+``` r
+div12d <- make_jam_divergent(list(gr1d=gr1d), list(gr2d=gr2d))
+
+div12dflat <- make_jam_divergent("purple", "gold", lite=FALSE)
+jamba::showColors(list(
+   flat=div12dflat[[1]],
+   twostep=div12d[[1]]))
+title("Comparison of flat 'purple-black-yellow' to twostep_gradient()")
+```
+
+![](man/figures/README-div_2-3.png)<!-- -->
+
+It becomes more clear when using a light background. Note that
+`jam_make_divergent()` does a fairly good job already with just one
+color on each “side”.
+
+``` r
+gr1 <- twostep_gradient("slateblue", "purple", debug=TRUE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+```
+
+![](man/figures/README-div_3-1.png)<!-- -->
+
+``` r
+gr2 <- twostep_gradient("gold", "darkorange", debug=TRUE)
+#>       w1    w2
+#> 1  1.000 0.000
+#> 2  1.000 0.000
+#> 3  0.838 0.162
+#> 4  0.686 0.314
+#> 5  0.544 0.456
+#> 6  0.414 0.586
+#> 7  0.296 0.704
+#> 8  0.192 0.808
+#> 9  0.105 0.895
+#> 10 0.037 0.963
+#> 11 0.000 1.000
+```
+
+![](man/figures/README-div_3-2.png)<!-- -->
+
+``` r
+div12 <- make_jam_divergent(list(gr1=gr1), list(gr2=gr2))
+div12flat <- make_jam_divergent("purple", "gold")
+jamba::showColors(list(
+   flat=div12flat[[1]],
+   twostep=div12[[1]]))
+title("Comparison of flat 'purple-black-yellow' to twostep_gradient(),\nwith light baseline color")
+```
+
+![](man/figures/README-div_3-3.png)<!-- -->

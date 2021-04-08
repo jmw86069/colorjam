@@ -73,7 +73,7 @@
 #'
 #' @return vector of colors
 #'
-#' @family jam color functions
+#' @family colorjam deprecated
 #'
 #' @examples
 #' rainbowJam_v1(12);
@@ -296,7 +296,7 @@ rainbowJam_v1 <- function
 #'    in `colorSet`.
 #' @param verbose logical whether to print verbose output
 #'
-#' @family jam color functions
+#' @family colorjam core
 #'
 #' @examples
 #' closestRcolor(rainbowJam(12), showPalette=TRUE);
@@ -478,7 +478,8 @@ closestRcolor <- function
 #' @param verbose logical indicating whether to print verbose output.
 #' @param ... additional parameters are passed to `colorFunc`
 #'
-#' @family jam color functions
+#' @family colorjam core
+#' @family colorjam assignment
 #'
 #' @examples
 #' abcde <- group2colors(letters[1:5]);
@@ -570,7 +571,7 @@ group2colors <- function
 #' @param ... additional arguments are passed to `ggplot2::theme()` in
 #'    order to allow custom settings beyond what this function provides.
 #'
-#' @family jam color functions
+#' @family colorjam ggplot2
 #'
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
@@ -684,7 +685,7 @@ theme_jam <- function
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
 #'
-#' @family jam color functions
+#' @family colorjam ggplot2
 #'
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
@@ -704,7 +705,8 @@ scale_color_jam <- function
  darkFactor=1,
  sFactor=1,
  alpha=1,
- useGrey=20)
+ useGrey=20,
+ preset="dichromat")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (suppressPackageStartupMessages(!require(ggplot2))) {
@@ -719,7 +721,8 @@ scale_color_jam <- function
          darkFactor=darkFactor,
          sFactor=sFactor,
          alpha=alpha,
-         useGrey=useGrey),
+         useGrey=useGrey,
+         preset=preset),
       ...);
 }
 
@@ -755,7 +758,7 @@ scale_color_jam <- function
 #'    value, as sent to `jamba::setTextContrastColor()`, used only when
 #'    `invert=TRUE`.
 #'
-#' @family jam color functions
+#' @family colorjam ggplot2
 #'
 #' @export
 scale_fill_jam <- function
@@ -767,7 +770,8 @@ scale_fill_jam <- function
  darkFactor=1,
  sFactor=1,
  alpha=1,
- useGrey=20)
+ useGrey=20,
+ preset="dichromat")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (suppressPackageStartupMessages(!require(ggplot2))) {
@@ -782,7 +786,8 @@ scale_fill_jam <- function
          darkFactor=darkFactor,
          sFactor=sFactor,
          alpha=alpha,
-         useGrey=useGrey),
+         useGrey=useGrey,
+         preset=preset),
       ...);
 }
 
@@ -814,7 +819,7 @@ scale_fill_jam <- function
 #'    `invert=TRUE`.
 #' @param ... additional arguments are passed to `rainbowJam()`.
 #'
-#' @family jam color functions
+#' @family colorjam ggplot2
 #'
 #' @export
 jam_pal <- function
@@ -826,6 +831,7 @@ jam_pal <- function
  sFactor=1,
  alpha=1,
  useGrey=20,
+ preset="dichromat",
  ...)
 {
    ## Note this function does not specifically require ggplot2
@@ -834,6 +840,7 @@ jam_pal <- function
          pal <- jamba::setTextContrastColor(
             rainbowJam(n,
                alpha=alpha,
+               preset=preset,
                ...),
             useGrey=useGrey);
          names(pal) <- NULL;
@@ -847,6 +854,7 @@ jam_pal <- function
       function(n) {
          pal <- rainbowJam(n,
             alpha=alpha,
+            preset=preset,
             ...);
          if (darkFactor != 1 || sFactor != 1) {
             pal <- jamba::makeColorDarker(pal,
@@ -926,8 +934,7 @@ jam_pal <- function
 #'    for additional customization. These arguments are handled across
 #'    all columns, and not a column-by-column basis.
 #'
-#' @family jam matrix functions
-#' @family jam color functions
+#' @family colorjam assignment
 #'
 #' @examples
 #' set.seed(123);
@@ -1126,6 +1133,13 @@ matrix2heatColors <- function
 #' to warp the color ramp, for example using `jamba::warpRamp()` in order
 #' to adjust the color gradient relative to the numeric range of the
 #' data.
+#'
+#' Note that the function `col_div_xf()` and `col_linear_xf()` may
+#' be preferable to this function. Those functions assign colors
+#' to specific numeric values, instead of assigning colors between
+#' numeric break points.
+#'
+#' @family colorjam assignment
 #'
 #' @param x numeric vector
 #' @param divergent logical indicating whether the numeric values

@@ -63,6 +63,11 @@ that take a vector of numeric values, and apply a color gradient
 to warp the color ramp, for example using \code{jamba::warpRamp()} in order
 to adjust the color gradient relative to the numeric range of the
 data.
+
+Note that the function \code{col_div_xf()} and \code{col_linear_xf()} may
+be preferable to this function. Those functions assign colors
+to specific numeric values, instead of assigning colors between
+numeric break points.
 }
 \examples{
 # Start with an example numeric vector
@@ -85,16 +90,11 @@ title(ylab="color lens factor", xlab="numeric value",
 
 }
 \seealso{
-Other jam color functions: 
-\code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
+Other colorjam assignment: 
+\code{\link{col_div_xf}()},
+\code{\link{col_linear_xf}()},
 \code{\link{group2colors}()},
-\code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
-\code{\link{rainbowJam}()},
-\code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()}
+\code{\link{matrix2heatColors}()}
 }
+\concept{colorjam assignment}
 \concept{jam color functions}

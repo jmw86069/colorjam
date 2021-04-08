@@ -48,6 +48,8 @@
 #' A suitable workaround in this case is to use
 #' `blend_colors(c("yellow", "deeppink4"))`.
 #'
+#' @family colorjam core
+#'
 #' @return `character` vector with blended color; when input `x`
 #'    is a `list` the returned vector will have length `length(x)`.
 #'
@@ -204,6 +206,8 @@ blend_colors <- function
 #' operations, the resulting color saturation is adjusted using the `lens`
 #' argument, the default `lens=-5` has a tendency to increase intermediate
 #' color saturation.
+#'
+#' @family colorjam hue warp
 #'
 #' @return `numeric` vector that contains
 #'    * `degree` the mean angle in degrees

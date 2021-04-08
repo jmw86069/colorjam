@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.18.900
+Version: 0.0.19.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -13,7 +13,8 @@ Depends: R (>= 3.0.0),
     jamba
 Imports:
 Suggests: ggplot2,
-   colorspace
+   colorspace,
+   circlize
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

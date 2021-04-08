@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.16.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.19.900</span>
       </span>
     </div>
 
@@ -88,7 +92,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/jmw86069/colorjam">
+  <a href="http://github.com/jmw86069/colorjam/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -106,18 +110,335 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/jmw86069/colorjam/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='http://github.com/jmw86069/colorjam/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="colorjam-0019900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.19.900">
+<a href="#colorjam-0019900" class="anchor"></a>colorjam 0.0.19.900</h1>
+<p>Several new functions, and two new data objects with color gradients; pkgdown site documentation was updated to showcase several new visual examples in for the new color functions.</p>
+<div id="changes-to-existing-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-existing-functions" class="anchor"></a>changes to existing functions</h2>
+<ul>
+<li>
+<code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>, <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code> and <code><a href="../reference/jam_pal.html">jam_pal()</a></code> have a new argument <code>preset</code> which is passed along to <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> to define the color hue wheel preset. The default <code>preset="dichromat"</code> uses color blind friendly color hue wheel (mainly by omitting green). The full rainbow can be used with <code>preset="ryb"</code> which uses the enhanced red-yellow-blue color hue wheel, where green is a secondary color between yellow and blue. The default R red-green-blue color hue wheel can be used with <code>preset="rgb"</code> although this palette is optimal for computer monitor use of RGB, and not at all optimal for human perception, even among those who can see the full rainbow of color hues.</li>
+</ul>
+</div>
+<div id="new-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions" class="anchor"></a>new functions</h2>
+<ul>
+<li><p><code><a href="../reference/subset_colors.html">subset_colors()</a></code> is a subset function for a vector of R colors, which allows rapid operations on any RGB, HCL, or HSV attribute.</p></li>
+<li>
+<p><code><a href="../reference/col_div_xf.html">col_div_xf()</a></code> produces a color function that maps numeric values to divergent color gradient. Its arguments define the numeric range, and optional floor. The floor is a range below which the absolute numeric value is assigned the middle color, useful to represent visual whether a point meets a numeric threshold. This function is motivated to be used with argument <code>"col"</code> in <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">ComplexHeatmap::Heatmap()</a></code>, to define a numeric range with zero as the fixed mid-point associated with divergent colors. The name of the function is derived as follows:</p>
+<ul>
+<li>
+<code>col</code> matching the argument in <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html">ComplexHeatmap::Heatmap()</a></code> <code>"col"</code>
+</li>
+<li>
+<code>div</code> for divergent colors</li>
+<li>
+<code>x</code> for the <code>x</code>-defined numeric range</li>
+<li>
+<code>f</code> for ability to apply a numeric floor</li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/col_linear_xf.html">col_linear_xf()</a></code> is the linear/sequential color equivalent to <code><a href="../reference/col_div_xf.html">col_div_xf()</a></code>. It is useful for two features:</p>
+<ul>
+<li>define a fixed numeric ceiling for color assignment</li>
+<li>define optional numeric floor, below which numeric values are assigned the first color, which is usually the blank color in the color gradient.</li>
+</ul>
+</li>
+<li><p><code><a href="../reference/make_jam_divergent.html">make_jam_divergent()</a></code> creates a divergent color gradient with lite (white) or dark (black) middle color as appropriate. It can recognize one of the new Jam gradients from <code>jam_linear</code> or `jam_divergent (see below).</p></li>
+<li><p><code><a href="../reference/twostep_gradient.html">twostep_gradient()</a></code> is a simple but fairly exciting new function that produces a linear/sequential color gradient - which means it proceeds from a baseline color to the saturated color - while also applying two intermediate color gradients to improve visual perception. Most gradients from <code>RColorBrewer</code> employ this technique to expand the range of colors, and to improve visibility of each color step by varying both the brightness, and the color hue. See examples for visual illustrations.</p></li>
+</ul>
+</div>
+<div id="new-color-objects" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-color-objects" class="anchor"></a>new color objects</h2>
+<p>Two new color gradient objects are added, and are still under some development as they are being used to gain feedback. They are both motivated by the use case of providing color gradients for genome sequence coverage heatmaps, provided by <code>"platjam"</code> package which extends Bioconductor <code>EnrichedHeatmap</code>, itself an extension by author of <code>ComplexHeatmap</code>.</p>
+<p>These colors aim to provide color-blind-friendly color gradients, while providing some utility of categorical coloring for different panels of a coverage heatmap. Essentially these colors avoid the range of green hues, which vastly improves visual distinctiveness for the three color blindness forms emulated by <code><a href="https://rdrr.io/pkg/dichromat/man/dichromat.html">dichromat::dichromat()</a></code>.</p>
+<ul>
+<li>
+<code>jam_linear</code> is a new R <code>list</code> object that contains a set of linear color gradients with white background color. These are intended to be paired with <code>jam_divergent</code>. The names in <code>jam_linear</code> are also used in <code>jam_divergent</code>.</li>
+<li>
+<code>jam_divergent</code> is a new R <code>list</code> object that contains a set of divergent color gradients with black background color to distinguish itself from <code>jam_linear</code>. The names in <code>jam_divergent</code> are also used in <code>jam_linear</code>.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0018900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.18.900">
+<a href="#colorjam-0018900" class="anchor"></a>colorjam 0.0.18.900</h1>
+<div id="bug-fixes--enhancements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes--enhancements" class="anchor"></a>bug fixes / enhancements</h2>
+<ul>
+<li>
+<code><a href="../reference/blend_colors.html">blend_colors()</a></code> was updated to handle blending entirely grey sets of colors. Previously they failed to blend because the lack of any color saturation also have them zero weight.</li>
+<li>
+<code><a href="../reference/blend_colors.html">blend_colors()</a></code> new argument <code>c_floor</code> defines the <code>C</code> chroma color saturation floor, below which a color is considered to have no color hue. Technically it is given hue weight 0.0001.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0017900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.17.900">
+<a href="#colorjam-0017900" class="anchor"></a>colorjam 0.0.17.900</h1>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/mean_angle.html">mean_angle()</a></code> had bare reference to <code><a href="https://rdrr.io/pkg/jamba/man/deg2rad.html">jamba::deg2rad()</a></code> which was fixed. This fixed an error in <code><a href="../reference/blend_colors.html">blend_colors()</a></code> when the <code>jamba</code> was not attached.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0016900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.16.900">
+<a href="#colorjam-0016900" class="anchor"></a>colorjam 0.0.16.900</h1>
+<div id="new-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-1" class="anchor"></a>new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/blend_colors.html">blend_colors()</a></code> performs paint color mixing, very close to subtractive color blending with some modifications to account for red-yellow-blue color wheel. It can mix more than two colors, and accounts for color transparency. This function currently performs better than any other color mixing function I am aware of in R – judged by the tendency to return what is “expected” in more cases than not.</li>
+<li>
+<code><a href="../reference/mean_angle.html">mean_angle()</a></code> takes a vector of angles in degrees, optionally with weights, and returns the average angle along with the new radius. Internally it takes the average unit vector (scaled by weights if supplied).</li>
+</ul>
+</div>
+<div id="changes-to-existing-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-existing-functions-1" class="anchor"></a>changes to existing functions</h2>
+<ul>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> was modified to clean up the internal workflow. Specifically, the argument <code>preset</code> is more prominent, making it easy to call <code><a href="../reference/rainbowJam.html">rainbowJam(5, preset="ryb")</a></code> for example. The hue padding was also modified to reduce most cases to zero padding – this padding added separation between the first and last color hues in a sequence, to prevent them from being too similar when the <code>Cvals</code> and <code>Lvals</code> sequence was not optimal.</li>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> new argument <code>phase</code> allows shifting the <code>Cvals</code>,<code>Lvals</code> sequence by steps, or to reverse the sequence, in order to create more varied color sets.</li>
+<li>
+<code><a href="../reference/h2hw.html">h2hw()</a></code> and <code><a href="../reference/hw2h.html">hw2h()</a></code> functions have new argument <code>preset</code> which calls <code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code> and uses the appropriate color wheel. This change makes it easier to convert color hues with <code><a href="../reference/h2hw.html">h2hw(60, preset="ryb")</a></code> to convert default RGB yellow (hue=60) to RYB yellow (hue=120).</li>
+<li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> argument <code>preset</code> defaults to <code>ryb</code>, to avoid using <code>dichromat</code> for closest-color calculations.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0015900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.15.900">
+<a href="#colorjam-0015900" class="anchor"></a>colorjam 0.0.15.900</h1>
+<div id="changes-to-existing-functions-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-existing-functions-2" class="anchor"></a>changes to existing functions</h2>
+<ul>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> arguments <code>Lvals</code> and <code>Cvals</code> were manually adjusted based upon initial usage and feedback.</li>
+<li>
+<code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code> was refactored to have a cleaner workflow. It explicitly defines <code>getOptions()</code> in default argument values, which can be replace by defining <code>preset</code>. There is new argument <code>default_preset</code> so the first time this function is called, it knows which preset to use for initial values.</li>
+</ul>
+</div>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/group2colors.html">group2colors()</a></code> fixed a longstanding bug where input values that contain <code>""</code> would return <code>NA</code> with <code>NA</code> name. This occurs from referencing a vector using name <code>""</code> which R forces to return <code>NA</code>. Instead <code><a href="../reference/group2colors.html">group2colors()</a></code> now uses <code><a href="https://rdrr.io/r/base/match.html">match(x, names(colors))</a></code> which works properly.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0014900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.14.900">
+<a href="#colorjam-0014900" class="anchor"></a>colorjam 0.0.14.900</h1>
+<div id="more-changes-to-rainbowjam" class="section level2">
+<h2 class="hasAnchor">
+<a href="#more-changes-to-rainbowjam" class="anchor"></a>more changes to rainbowJam()</h2>
+<p>There will almost certainly be more changes, after using the updated <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> for a while and experiencing the cascade effects. For now, I had to make some changes, to force me to continue making more changes as needed.</p>
+<p>After using the updated <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> for a few months, a few things became clear:</p>
+<ul>
+<li>Red-orange-yellow as the first three colors, is not terrible, but has substantial problems when trying to split into light-dark variations. The dark-yellow and light-orange were nearly identical. (Also R is not great at keeping the hue for orange consistent when adjusting luminance. Nobody will hear this feedback, that’s okay.)</li>
+<li>The use of green and variations of green, are problematic with color-blind viewers, making the whole function not ideal, if a substantial user base doesn’t see beautiful colors at the end.</li>
+<li>Ultimately there were too many cases where I would call <code><a href="../reference/rainbowJam.html">rainbowJam(n + 20)</a></code> and hand-pick colors from the set. That is almost exactly the problem I was originally trying to solve with <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code>, which means the function was failing.</li>
+<li>Last is a small thing, <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> padded the end of the hue sequence to avoid having similar first and last color, with identical C,L values. When that happened, it added an aggressive hue pad so the colors would still differ. Long story short, there weren’t enough beautiful purples and pinks.</li>
+</ul>
+<p>Overall changes:</p>
+<ul>
+<li>
+<code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code> defines custom color wheels, by adjusting the hue from rgb to any non-linear sequence. It has new argument <code>preset</code> with some named shortcut options: <code>"rgb"</code> the R default; <code>"ryb"</code> the previous red-yellow-blue, which still includes green; <code>"dichromat"</code> new option that removes green altogether, and spaces the remaining hues based upon my perceived consistent visible distinctiveness between steps. I tried to adjust for effects simulated by <code><a href="https://rdrr.io/pkg/dichromat/man/dichromat.html">dichromat::dichromat()</a></code> for the three types it provides.</li>
+<li>
+<code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code> new default is <code>preset="dichromat"</code>! Substantial change, no more green colors. To change back call <code><a href="../reference/h2hwOptions.html">h2hwOptions(preset="ryb")</a></code> or <code><a href="../reference/h2hwOptions.html">h2hwOptions(preset="rgb")</a></code>. <em>shudder</em>
+</li>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> argument <code>Cvals</code> was uniformly increased by 30. It turns out the conversion from HCL already handles values too high, by favoring luminance over chroma – meaning when we request a certain brightness, we get that brighness even at the expense of lower chroma (saturation.) Thus most of the work is done by the <code>Lvals</code> luminance, and the chroma should generally be as high as feasible with few adjustments.</li>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> by default does not pad the last hue color. Instead the <code>preset="dichromat"</code> default in <code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code> adjusts the hues from 300 to 360 (which were almost nearly identical pink anyway) to take up less of the color wheel.</li>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> flipped the 2nd and 3rd values in <code>Lvals</code>. Even when calling <code><a href="../reference/rainbowJam.html">rainbowJam(4, preset="ryb2")</a></code>, it won’t give the same results as before this update, without also changing the 2nd and 3rd values in <code>Lvals</code>. I realize, only I care.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0013900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.13.900">
+<a href="#colorjam-0013900" class="anchor"></a>colorjam 0.0.13.900</h1>
+<div id="substantial-changes-to-rainbowjam" class="section level2">
+<h2 class="hasAnchor">
+<a href="#substantial-changes-to-rainbowjam" class="anchor"></a>Substantial changes to rainbowJam()</h2>
+<ul>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> was refactored to address longstanding critique that the colors were too muddy. New logic is present in <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> and the previous function is available with <code><a href="../reference/rainbowJam_v1.html">rainbowJam_v1()</a></code> for backward compatibility. The new colors are much brighter and will need testing over time to evaluate the effects on downstream uses. That said, the colors are so much improved, it seems reasonable to replace the previous function for now.</li>
+</ul>
+</div>
+<div id="other-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-changes" class="anchor"></a>Other changes</h2>
+<ul>
+<li>The R files were slightly refactored to split functions into different files.</li>
+</ul>
+</div>
+<div id="new-function" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-function" class="anchor"></a>New function</h2>
+<ul>
+<li>
+<code><a href="../reference/color_pie.html">color_pie()</a></code> is a simple function to display colors in pie chart form, which is helpful to assess the first and last color in a rainbow color ramp. In fact, <code><a href="../reference/color_pie.html">color_pie()</a></code> might be moved into <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html">jamba::showColors()</a></code> as an optional output format. Current challenge is how to label each ring, when the input is a list of color vectors.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0012900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.12.900">
+<a href="#colorjam-0012900" class="anchor"></a>colorjam 0.0.12.900</h1>
+<div id="changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes" class="anchor"></a>changes</h2>
+<ul>
+<li>
+<code><a href="../reference/theme_jam.html">theme_jam()</a></code> was updated to make the major and minor grid lines a lighter shade of gray, so they have less interference with text labels on a plot panel.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0011900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.11.900">
+<a href="#colorjam-0011900" class="anchor"></a>colorjam 0.0.11.900</h1>
+<div id="changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-1" class="anchor"></a>changes</h2>
+<ul>
+<li>
+<code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code>, <code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>, and <code><a href="../reference/jam_pal.html">jam_pal()</a></code> have an argument <code>alpha</code> to control alpha transparency, on a scale of 0 (transparent) to 1 (non-transparent.)</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0010900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.10.900">
+<a href="#colorjam-0010900" class="anchor"></a>colorjam 0.0.10.900</h1>
+<div id="changes-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-2" class="anchor"></a>changes</h2>
+<ul>
+<li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> was updated to handle new behavior from <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html">col2hcl()</a></code> which by default does not assign names to unnamed vectors.</li>
+<li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> now has <code>method</code> argument to define the distance method (see <code><a href="https://rdrr.io/r/stats/dist.html">stats::dist()</a></code>); added optional “LUV” color model. In some cases “LUV” has greater sensitivity albeit with less accuracy. In other words for large color vectors, “LUV” may produce the most non-repeated colors at cost of accuracy, while “hcl” tends to be more accurate but sometimes snaps two similar colors to the same closest R color. Future work should probably handle greyscale colors separately.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-009900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.9.900">
+<a href="#colorjam-009900" class="anchor"></a>colorjam 0.0.9.900</h1>
+<div id="changes-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-3" class="anchor"></a>changes</h2>
+<ul>
+<li>
+<code><a href="../reference/vals2colorLevels.html">vals2colorLevels()</a></code> was updated to handle edge cases where input values had no numeric range.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-008900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.8.900">
+<a href="#colorjam-008900" class="anchor"></a>colorjam 0.0.8.900</h1>
+<div id="new-functions-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-2" class="anchor"></a>new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/vals2colorLevels.html">vals2colorLevels()</a></code> converts a numeric vector into a color gradient, optionally divergent around a baseline, optionally applying the color warp using <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html">jamba::warpRamp()</a></code> and a <code>lens</code> adjustment value.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-007900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.7.900">
+<a href="#colorjam-007900" class="anchor"></a>colorjam 0.0.7.900</h1>
+<div id="changes-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-4" class="anchor"></a>changes</h2>
+<ul>
+<li>Added more function prefixes “jamba::” to avoid handle the inconsistent import implementation in R.</li>
+</ul>
+</div>
+<div id="new-functions-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-3" class="anchor"></a>new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/matrix2heatColors.html">matrix2heatColors()</a></code> to apply color gradient to each column in a matrix, where each column has its own color scale.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-005900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.5.900">
+<a href="#colorjam-005900" class="anchor"></a>colorjam 0.0.5.900</h1>
+<div id="additions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additions" class="anchor"></a>additions</h2>
+<ul>
+<li>A README.Rmd file was created with a basic walkthrough for colorjam.</li>
+<li>DESCRIPTION was changed to move “jamba” to the “Depends:” field. Guidance from R Package Development and R central docs is cryptic on this point.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-004900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.4.900">
+<a href="#colorjam-004900" class="anchor"></a>colorjam 0.0.4.900</h1>
+<div id="new-functions-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-4" class="anchor"></a>new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/theme_jam.html">theme_jam()</a></code> which provides a Jam-specific ggplot2 default.</li>
+<li>
+<code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>, <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code>, and <code><a href="../reference/jam_pal.html">jam_pal()</a></code> provide categorical colors and fills, respectively, using <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code>.</li>
+</ul>
+</div>
+<div id="bug-fixes-and-enhancements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-and-enhancements" class="anchor"></a>bug fixes and enhancements</h2>
+<ul>
+<li>Updated DESCRIPTION to include proper “Remotes” entry pointing to the Github jamba package.</li>
+<li>Updated <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> to fix a small bug with name handling of the output.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-003900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.3.900">
+<a href="#colorjam-003900" class="anchor"></a>colorjam 0.0.3.900</h1>
+<div id="new-functions-5" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-5" class="anchor"></a>new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/group2colors.html">group2colors()</a></code> takes a vector of group labels and assigns categorical colors, by default using <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> but which can be substituted with other color functions as needed. It maintains order of factor levels, otherwise uses <code><a href="https://rdrr.io/pkg/jamba/man/mixedSort.html">jamba::mixedSort()</a></code> to order unique labels before assigning colors.</li>
+<li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> finds the closest named R color from <code><a href="https://rdrr.io/r/grDevices/colors.html">colors()</a></code> and returns that name. It can also be given a custom color vector, and will return the closest color for each color in the input list.</li>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> is the key categorical color function for the JAM package suite. It uses Red-Yellow-Blue color wheel, and uses a pattern of alternating Chroma (color saturation) and Luminance (visible brightness) to maximize the difference between adjacent colors.</li>
+</ul>
+</div>
+</div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -129,7 +450,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

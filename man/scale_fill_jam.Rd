@@ -13,7 +13,8 @@ scale_fill_jam(
   darkFactor = 1,
   sFactor = 1,
   alpha = 1,
-  useGrey = 20
+  useGrey = 20,
+  preset = "dichromat"
 )
 }
 \arguments{
@@ -57,16 +58,9 @@ to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_fill_hue()}.
 }
 \seealso{
-Other jam color functions: 
-\code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
-\code{\link{group2colors}()},
+Other colorjam ggplot2: 
 \code{\link{jam_pal}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
-\code{\link{rainbowJam}()},
 \code{\link{scale_color_jam}()},
-\code{\link{theme_jam}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{theme_jam}()}
 }
-\concept{jam color functions}
+\concept{colorjam ggplot2}

@@ -80,9 +80,9 @@
 #' @param verbose `logical` whether to print verbose output
 #' @param ... additional arguments are ignored.
 #'
-#' @return vector of colors
+#' @return `character` vector of categorical colors
 #'
-#' @family jam color functions
+#' @family colorjam core
 #'
 #' @examples
 #' rainbowJam(12);
@@ -103,7 +103,7 @@ rainbowJam <- function
  alpha=1,
  hues=NULL,
  warpHue=NULL,
- preset=c("dichromat", "ryb", "ryb2", "rgb", "none"),
+ preset=c("dichromat", "ryb", "ryb2", "ryb3", "rgb", "none"),
  h1=NULL,
  h2=NULL,
  Cvals=c(140, 150, 160, 130, 200, 100),
@@ -400,7 +400,7 @@ rainbowJam <- function
 #' layers of a pie chart, in order to help compare colors
 #' from each vector in the list.
 #'
-#' @family jam color functions
+#' @family colorjam display
 #'
 #' @param colors `vector` of R colors.
 #' @param border `vector` of R colors used to draw a border around

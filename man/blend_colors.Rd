@@ -120,3 +120,11 @@ blend_colors(c("deeppink4", "gold"), do_plot=TRUE)
 blend_colors(c("blue4", "darkorange1"), do_plot=TRUE)
 
 }
+\seealso{
+Other colorjam core: 
+\code{\link{closestRcolor}()},
+\code{\link{group2colors}()},
+\code{\link{rainbowJam}()},
+\code{\link{subset_colors}()}
+}
+\concept{colorjam core}

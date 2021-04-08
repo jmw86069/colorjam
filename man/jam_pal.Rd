@@ -13,6 +13,7 @@ jam_pal(
   sFactor = 1,
   alpha = 1,
   useGrey = 20,
+  preset = "dichromat",
   ...
 )
 }
@@ -52,16 +53,9 @@ value, as sent to \code{jamba::setTextContrastColor()}, used only when
 Jam color palette for ggplot2
 }
 \seealso{
-Other jam color functions: 
-\code{\link{closestRcolor}()},
-\code{\link{color_pie}()},
-\code{\link{group2colors}()},
-\code{\link{matrix2heatColors}()},
-\code{\link{rainbowJam_v1}()},
-\code{\link{rainbowJam}()},
+Other colorjam ggplot2: 
 \code{\link{scale_color_jam}()},
 \code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{theme_jam}()}
 }
-\concept{jam color functions}
+\concept{colorjam ggplot2}

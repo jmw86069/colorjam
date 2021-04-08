@@ -1,0 +1,32 @@
+template:
+  params:
+    bootswatch: cosmo
+reference:
+- title: Core colorjam functions
+  desc: Most frequently used colorjam functions
+  contents:
+  - has_concept("colorjam core")
+- title: Colorjam data
+  desc: Jam linear and divergent gradient data
+  contents:
+  - has_concept("colorjam data")
+- title: Colorjam ggplot2 functions
+  desc: Functions that apply colorjam to ggplot2 objects
+  contents:
+  - has_concept("colorjam ggplot2")
+- title: Colorjam gradients
+  desc: Functions to create and manipulate linear and divergent color gradients
+  contents:
+  - has_concept("colorjam gradients")
+- title: Colorjam assignment
+  desc: Functions that assign colors to numeric vector or matrix data, or to character vectors
+  contents:
+  - has_concept("colorjam assignment")
+- title: Colorjam display
+  desc: Functions to display colors for visual review
+  contents:
+  - has_concept("colorjam display")
+- title: Colorjam hue warp
+  desc: Functions to adjust hue color wheel for RGB, RYB, dichromat and other specifics
+  contents:
+  - has_concept("colorjam hue warp")
