@@ -188,6 +188,7 @@ Other colorjam assignment:
 \code{\link{col_linear_xf}()},
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
+\code{\link{rainbowJamMulti}()},
 \code{\link{vals2colorLevels}()}
 }
 \concept{colorjam assignment}

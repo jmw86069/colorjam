@@ -1,3 +1,22 @@
+# colorjam 0.0.20.900
+
+## changes to existing functions
+
+* `rainbowJam()` arguments `Lvals` and `Cvals` were updated,
+making the categorical palette brighter overall,
+with more color saturation, and visible distinction
+in neighboring colors at higher `n` values. The
+examples in `rainbowJam()` were updated to show a
+before and after comparison.
+
+## new experimental function
+
+* `rainbowJamMulti()` is intended to extend `rainbowJam()`
+specifically when a list of categorical colors should be
+created at once, in a way that prevents duplicate colors.
+
+
+
 # colorjam 0.0.19.900
 
 Several new functions, and two new data objects with color

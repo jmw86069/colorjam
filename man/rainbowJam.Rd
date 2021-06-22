@@ -13,8 +13,8 @@ rainbowJam(
   preset = c("dichromat", "ryb", "ryb2", "ryb3", "rgb", "none"),
   h1 = NULL,
   h2 = NULL,
-  Cvals = c(140, 150, 160, 130, 200, 100),
-  Lvals = c(47, 85, 62, 42, 77, 54),
+  Cvals = c(200, 120, 160, 90, 180, 150),
+  Lvals = c(44, 88, 74, 58, 80, 65),
   Crange = NULL,
   Lrange = NULL,
   phase = 1,
@@ -139,6 +139,15 @@ color_pie(rainbowJam(10));
 
 # be fancy and label colors using the closest R named color
 jamba::showColors(names(rainbowJam(6, nameStyle="closestRcolor")));
+
+# comparison of version 0.0.19.900 and update with version 0.0.20.900
+cat19 <- rainbowJam(n=12,
+   Cvals=c(140, 150, 160, 130, 200, 100),
+   Lvals=c( 47,  85,  62,  42,  77,  54))
+cat20 <- rainbowJam(n=12,
+   Cvals=c(200, 120, 160,  90, 180, 150),
+   Lvals=c( 44,  88,  74,  58,  80,  65))
+jamba::showColors(list(version19=cat19, version20=cat20))
 
 }
 \seealso{
