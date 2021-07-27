@@ -59,12 +59,14 @@ distinct set of categorical colors than \code{ggplot2::scale_color_hue()}.
 }
 \examples{
 if (suppressPackageStartupMessages(require(ggplot2))) {
-   dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-   (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+   dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+   d <- ggplot2::ggplot(dsamp, ggplot2::aes(carat, price)) +
+      ggplot2::geom_point(ggplot2::aes(colour=cut), size=4);
 
-   print(d + scale_color_hue() + ggtitle("scale_color_hue()"));
-   print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
+   print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
+   print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
 }
+
 }
 \seealso{
 Other colorjam ggplot2: 

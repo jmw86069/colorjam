@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.19.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.21.900</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/jmw86069/colorjam/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -114,13 +114,49 @@
       <small>Source: <a href='http://github.com/jmw86069/colorjam/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="colorjam-0021900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.21.900">
+<a href="#colorjam-0021900" class="anchor"></a>colorjam 0.0.21.900</h1>
+<div id="changes-to-existing-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-existing-functions" class="anchor"></a>changes to existing functions</h2>
+<ul>
+<li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> and <code><a href="../reference/twostep_gradient.html">twostep_gradient()</a></code> were updated to use proper package prefixing to the <code>jamba</code> package.</li>
+<li>
+<code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code> and <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code> no longer <code><a href="https://ggplot2.tidyverse.org">require(ggplot2)</a></code>, and use <code><a href="https://rdrr.io/pkg/jamba/man/check_pkg_installed.html">jamba::check_pkg_installed()</a></code> to test whether ggplot2 is available. Added examples for both.</li>
+<li>
+<code><a href="../reference/theme_jam.html">theme_jam()</a></code> no longer <code><a href="https://ggplot2.tidyverse.org">require(ggplot2)</a></code> and now properly calls <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_classic()</a></code> with argument <code>resetTheme=TRUE</code>.</li>
+</ul>
+</div>
+</div>
+    <div id="colorjam-0020900" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.20.900">
+<a href="#colorjam-0020900" class="anchor"></a>colorjam 0.0.20.900</h1>
+<div id="changes-to-existing-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-to-existing-functions-1" class="anchor"></a>changes to existing functions</h2>
+<ul>
+<li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> arguments <code>Lvals</code> and <code>Cvals</code> were updated, making the categorical palette brighter overall, with more color saturation, and visible distinction in neighboring colors at higher <code>n</code> values. The examples in <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> were updated to show a before and after comparison.</li>
+</ul>
+</div>
+<div id="new-experimental-function" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-experimental-function" class="anchor"></a>new experimental function</h2>
+<ul>
+<li>
+<code><a href="../reference/rainbowJamMulti.html">rainbowJamMulti()</a></code> is intended to extend <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> specifically when a list of categorical colors should be created at once, in a way that prevents duplicate colors.</li>
+</ul>
+</div>
+</div>
     <div id="colorjam-0019900" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.19.900">
 <a href="#colorjam-0019900" class="anchor"></a>colorjam 0.0.19.900</h1>
 <p>Several new functions, and two new data objects with color gradients; pkgdown site documentation was updated to showcase several new visual examples in for the new color functions.</p>
-<div id="changes-to-existing-functions" class="section level2">
+<div id="changes-to-existing-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-existing-functions" class="anchor"></a>changes to existing functions</h2>
+<a href="#changes-to-existing-functions-2" class="anchor"></a>changes to existing functions</h2>
 <ul>
 <li>
 <code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>, <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code> and <code><a href="../reference/jam_pal.html">jam_pal()</a></code> have a new argument <code>preset</code> which is passed along to <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> to define the color hue wheel preset. The default <code>preset="dichromat"</code> uses color blind friendly color hue wheel (mainly by omitting green). The full rainbow can be used with <code>preset="ryb"</code> which uses the enhanced red-yellow-blue color hue wheel, where green is a secondary color between yellow and blue. The default R red-green-blue color hue wheel can be used with <code>preset="rgb"</code> although this palette is optimal for computer monitor use of RGB, and not at all optimal for human perception, even among those who can see the full rainbow of color hues.</li>
@@ -208,9 +244,9 @@
 <code><a href="../reference/mean_angle.html">mean_angle()</a></code> takes a vector of angles in degrees, optionally with weights, and returns the average angle along with the new radius. Internally it takes the average unit vector (scaled by weights if supplied).</li>
 </ul>
 </div>
-<div id="changes-to-existing-functions-1" class="section level2">
+<div id="changes-to-existing-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-existing-functions-1" class="anchor"></a>changes to existing functions</h2>
+<a href="#changes-to-existing-functions-3" class="anchor"></a>changes to existing functions</h2>
 <ul>
 <li>
 <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> was modified to clean up the internal workflow. Specifically, the argument <code>preset</code> is more prominent, making it easy to call <code><a href="../reference/rainbowJam.html">rainbowJam(5, preset="ryb")</a></code> for example. The hue padding was also modified to reduce most cases to zero padding – this padding added separation between the first and last color hues in a sequence, to prevent them from being too similar when the <code>Cvals</code> and <code>Lvals</code> sequence was not optimal.</li>
@@ -226,9 +262,9 @@
     <div id="colorjam-0015900" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.15.900">
 <a href="#colorjam-0015900" class="anchor"></a>colorjam 0.0.15.900</h1>
-<div id="changes-to-existing-functions-2" class="section level2">
+<div id="changes-to-existing-functions-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-to-existing-functions-2" class="anchor"></a>changes to existing functions</h2>
+<a href="#changes-to-existing-functions-4" class="anchor"></a>changes to existing functions</h2>
 <ul>
 <li>
 <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> arguments <code>Lvals</code> and <code>Cvals</code> were manually adjusted based upon initial usage and feedback.</li>

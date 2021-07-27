@@ -69,10 +69,11 @@ overlaps.
 \examples{
 if (suppressPackageStartupMessages(require(ggplot2))) {
    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-   (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+   d <- ggplot(dsamp, aes(carat, price)) +
+      geom_point(aes(colour=cut), size=2);
 
    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
-   print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \ntheme_jam()"));
+   print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + theme_jam()"));
 }
 
 }

@@ -828,7 +828,7 @@ twostep_gradient <- function
       color1hcl["C",] <- jamba::noiseFloor(color1hcl["C",],
          minimum=160);
       color1 <- jamba::hcl2col(color1hcl)
-      showColors(c(color1, color2))
+      jamba::showColors(c(color1, color2))
    }
    if (length(defaultBaseColor) == 0) {
       if (lite) {

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.19.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.21.900</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,7 +94,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/jmw86069/colorjam/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -211,22 +211,23 @@ numeric break points.</p>
 <code><a href='col_div_xf.html'>col_div_xf</a>()</code>,
 <code><a href='col_linear_xf.html'>col_linear_xf</a>()</code>,
 <code><a href='group2colors.html'>group2colors</a>()</code>,
-<code><a href='matrix2heatColors.html'>matrix2heatColors</a>()</code></p></div>
+<code><a href='matrix2heatColors.html'>matrix2heatColors</a>()</code>,
+<code><a href='rainbowJamMulti.html'>rainbowJamMulti</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Start with an example numeric vector</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/nameVector.html'>nameVector</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>;
-<span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>;
+<span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>;
 </div><div class='img'><img src='vals2colorLevels-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># decrease the number of gradient colors</span>
-<span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span>, rampN<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span>, rampN<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='vals2colorLevels-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># change the baseline</span>
-<span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span>, baseline<span class='op'>=</span><span class='op'>-</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>;
+<span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span>, baseline<span class='op'>=</span><span class='op'>-</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>;
 </div><div class='img'><img src='vals2colorLevels-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># adjust the gradient using lens</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='st'>"mar"</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>;
-<span class='fu'><a href='https://rdrr.io/pkg/jamba/man/imageByColors.html'>imageByColors</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/rbindList.html'>rbindList</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/nameVector.html'>nameVector</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>lens</span><span class='op'>)</span><span class='op'>{</span>
+<span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/imageByColors.html'>imageByColors</a></span><span class='op'>(</span><span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/rbindList.html'>rbindList</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/nameVector.html'>nameVector</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>,<span class='op'>-</span><span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>lens</span><span class='op'>)</span><span class='op'>{</span>
    <span class='fu'>vals2colorLevels</span><span class='op'>(</span><span class='va'>x</span>, rampN<span class='op'>=</span><span class='fl'>25</span>, lens<span class='op'>=</span><span class='va'>lens</span><span class='op'>)</span>;
 <span class='op'>}</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>;
 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span><span class='op'>(</span>ylab<span class='op'>=</span><span class='st'>"color lens factor"</span>, xlab<span class='op'>=</span><span class='st'>"numeric value"</span>,

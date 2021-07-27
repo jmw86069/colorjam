@@ -340,7 +340,7 @@ closestRcolor <- function
    }
 
    if (length(C_min) > 0 && C_min > 0) {
-      colorSet <- colorSet[col2hcl(colorSet)["C",] >= C_min];
+      colorSet <- colorSet[jamba::col2hcl(colorSet)["C",] >= C_min];
    }
 
    if (returnType %in% "name" && length(names(colorSet)) == 0) {
@@ -361,7 +361,7 @@ closestRcolor <- function
             dimnames=list(names(a), names(b)));
       }
       xHCL <- jamba::col2hcl(x);
-      colorSetHCL <- jamba::col2hcl(nameVector(colorSet));
+      colorSetHCL <- jamba::col2hcl(jamba::nameVector(colorSet));
 
       ## Adjust H to RYB
       if (warpHue) {
@@ -399,9 +399,9 @@ closestRcolor <- function
       ## Use LUV
       col2LUV <- function(a) {
          if (length(names(a)) == 0) {
-            names(a) <- makeNames(a);
+            names(a) <- jamba::makeNames(a);
          }
-         coords(as(colorspace::hex2RGB(rgb2col(col2rgb(a))), "LUV"));
+         coords(as(colorspace::hex2RGB(jamba::rgb2col(grDevices::col2rgb(a))), "LUV"));
       }
       xLUV <- col2LUV(x);
       colorSetLUV <- col2LUV(colorSet);
@@ -576,10 +576,11 @@ group2colors <- function
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
 #'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+#'    d <- ggplot(dsamp, aes(carat, price)) +
+#'       geom_point(aes(colour=cut), size=2);
 #'
 #'    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
-#'    print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + \ntheme_jam()"));
+#'    print(d + scale_color_jam() + theme_jam() + ggtitle("scale_color_jam() + theme_jam()"));
 #' }
 #'
 #' @export
@@ -607,28 +608,28 @@ theme_jam <- function
    ##
    ## Anything in '...' is passed to theme(...) in order to customize other
    ## theme options.
-   if (!suppressPackageStartupMessages(require(ggplot2))) {
+   if (!jamba::check_pkg_installed("ggplot2")) {
       stop("theme_jam() requires the ggplot2 package.");
    }
    if (resetTheme) {
-      tNew <- theme_default(base_size=base_size);
+      tNew <- ggplot2::theme_classic(base_size=base_size);
    } else {
       tNew <- ggplot2::theme_get();
    }
    tNew <- tNew +
       ggplot2::theme(
-         axis.text.x=element_text(angle=axis.text.x.angle,
+         axis.text.x=ggplot2::element_text(angle=axis.text.x.angle,
             hjust=1),
-         strip.text=element_text(
+         strip.text=ggplot2::element_text(
             colour=jamba::setTextContrastColor(strip.background.fill),
          ),
-         strip.background=element_rect(
+         strip.background=ggplot2::element_rect(
             colour=strip.background.colour,
             fill=strip.background.fill),
-         panel.grid.major=element_line(
+         panel.grid.major=ggplot2::element_line(
             colour=panel.grid.major.colour,
             size=grid.major.size),
-         panel.grid.minor=element_line(
+         panel.grid.minor=ggplot2::element_line(
             colour=panel.grid.minor.colour,
             size=grid.minor.size));
    if (blankGrid || blankXgrid) {
@@ -636,16 +637,16 @@ theme_jam <- function
          jamba::printDebug("theme_jam(): ",
             "blankXgrid");
       }
-      tNew <- tNew + ggplot2::theme(panel.grid.major.x=element_blank(),
-         panel.grid.minor.x=element_blank());
+      tNew <- tNew + ggplot2::theme(panel.grid.major.x=ggplot2::element_blank(),
+         panel.grid.minor.x=ggplot2::element_blank());
    }
    if (blankGrid || blankYgrid) {
       if (verbose) {
          jamba::printDebug("theme_jam(): ",
             "blankYgrid");
       }
-      tNew <- tNew + ggplot2::theme(panel.grid.major.y=element_blank(),
-         panel.grid.minor.y=element_blank());
+      tNew <- tNew + ggplot2::theme(panel.grid.major.y=ggplot2::element_blank(),
+         panel.grid.minor.y=ggplot2::element_blank());
    }
    if (length(list(...)) > 0) {
       tNew <- tNew + ggplot2::theme(...);
@@ -689,12 +690,14 @@ theme_jam <- function
 #'
 #' @examples
 #' if (suppressPackageStartupMessages(require(ggplot2))) {
-#'    dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-#'    (d <- ggplot(dsamp, aes(carat, price)) + geom_point(aes(colour=cut), size=2));
+#'    dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+#'    d <- ggplot2::ggplot(dsamp, ggplot2::aes(carat, price)) +
+#'       ggplot2::geom_point(ggplot2::aes(colour=cut), size=4);
 #'
-#'    print(d + scale_color_hue() + ggtitle("scale_color_hue()"));
-#'    print(d + scale_color_jam() + ggtitle("scale_color_jam()"));
+#'    print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
+#'    print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
 #' }
+#'
 #' @export
 scale_color_jam <- function
 (...,
@@ -709,10 +712,10 @@ scale_color_jam <- function
  preset="dichromat")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
-   if (suppressPackageStartupMessages(!require(ggplot2))) {
+   if (!jamba::check_pkg_installed("ggplot2")) {
       stop("scale_color_jam() requires the ggplot2 package.");
    }
-   discrete_scale("colour",
+   ggplot2::discrete_scale("colour",
       "jam",
       jam_pal(type=type,
          palette=palette,
@@ -760,6 +763,18 @@ scale_color_jam <- function
 #'
 #' @family colorjam ggplot2
 #'
+#' @examples
+#' if (suppressPackageStartupMessages(require(ggplot2))) {
+#'    dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+#'    d <- ggplot2::ggplot(dsamp, ggplot2::aes(carat, price)) +
+#'     ggplot2::geom_point(ggplot2::aes(colour=cut, bg=cut), pch=21, size=4);
+#'
+#'    print(d +
+#'       scale_color_jam(darkFactor=1.5) +
+#'       scale_fill_jam() +
+#'       ggplot2::ggtitle("scale_color_jam(darkFactor=1.5) + scale_fill_jam()"));
+#' }
+#'
 #' @export
 scale_fill_jam <- function
 (...,
@@ -774,10 +789,10 @@ scale_fill_jam <- function
  preset="dichromat")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
-   if (suppressPackageStartupMessages(!require(ggplot2))) {
+   if (!jamba::check_pkg_installed("ggplot2")) {
       stop("scale_fill_jam() requires the ggplot2 package.");
    }
-   discrete_scale("fill",
+   ggplot2::discrete_scale("fill",
       "jam",
       jam_pal(type=type,
          palette=palette,
@@ -1043,7 +1058,7 @@ matrix2heatColors <- function
       length.out=ncol(x)),
       xNames);
 
-   xColors <- do.call(cbind, lapply(nameVector(colnames(x)), function(i){
+   xColors <- do.call(cbind, lapply(jamba::nameVector(colnames(x)), function(i){
       k <- (transformFunc(x[,i]));
       if (verbose) {
          jamba::printDebug("matrix2heatColors():", i,
@@ -1172,17 +1187,17 @@ matrix2heatColors <- function
 #' @examples
 #' # Start with an example numeric vector
 #' x <- jamba::nameVector(-5:10);
-#' showColors(vals2colorLevels(x));
+#' jamba::showColors(vals2colorLevels(x));
 #'
 #' # decrease the number of gradient colors
-#' showColors(vals2colorLevels(x, rampN=15))
+#' jamba::showColors(vals2colorLevels(x, rampN=15))
 #'
 #' # change the baseline
-#' showColors(vals2colorLevels(x, baseline=-2));
+#' jamba::showColors(vals2colorLevels(x, baseline=-2));
 #'
 #' # adjust the gradient using lens
 #' par("mar"=c(5,5,4,2));
-#' imageByColors(rbindList(lapply(nameVector(c(-5,-2,0,2,5)), function(lens){
+#' jamba::imageByColors(jamba::rbindList(lapply(jamba::nameVector(c(-5,-2,0,2,5)), function(lens){
 #'    vals2colorLevels(x, rampN=25, lens=lens);
 #' })));
 #' title(ylab="color lens factor", xlab="numeric value",

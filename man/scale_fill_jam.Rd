@@ -57,6 +57,19 @@ This function provides a function in the format \verb{scale_fill_*}
 to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_fill_hue()}.
 }
+\examples{
+if (suppressPackageStartupMessages(require(ggplot2))) {
+   dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+   d <- ggplot2::ggplot(dsamp, ggplot2::aes(carat, price)) +
+    ggplot2::geom_point(ggplot2::aes(colour=cut, bg=cut), pch=21, size=4);
+
+   print(d +
+      scale_color_jam(darkFactor=1.5) +
+      scale_fill_jam() +
+      ggplot2::ggtitle("scale_color_jam(darkFactor=1.5) + scale_fill_jam()"));
+}
+
+}
 \seealso{
 Other colorjam ggplot2: 
 \code{\link{jam_pal}()},

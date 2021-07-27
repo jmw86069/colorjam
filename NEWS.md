@@ -1,3 +1,15 @@
+# colorjam 0.0.21.900
+
+## changes to existing functions
+
+* `closestRcolor()` and `twostep_gradient()` were updated
+to use proper package prefixing to the `jamba` package.
+* `scale_color_jam()` and `scale_fill_jam()` no longer `require(ggplot2)`,
+and use `jamba::check_pkg_installed()` to test whether ggplot2 is
+available. Added examples for both.
+* `theme_jam()` no longer `require(ggplot2)` and now properly
+calls `ggplot2::theme_classic()` with argument `resetTheme=TRUE`.
+
 # colorjam 0.0.20.900
 
 ## changes to existing functions

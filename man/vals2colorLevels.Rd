@@ -72,17 +72,17 @@ numeric break points.
 \examples{
 # Start with an example numeric vector
 x <- jamba::nameVector(-5:10);
-showColors(vals2colorLevels(x));
+jamba::showColors(vals2colorLevels(x));
 
 # decrease the number of gradient colors
-showColors(vals2colorLevels(x, rampN=15))
+jamba::showColors(vals2colorLevels(x, rampN=15))
 
 # change the baseline
-showColors(vals2colorLevels(x, baseline=-2));
+jamba::showColors(vals2colorLevels(x, baseline=-2));
 
 # adjust the gradient using lens
 par("mar"=c(5,5,4,2));
-imageByColors(rbindList(lapply(nameVector(c(-5,-2,0,2,5)), function(lens){
+jamba::imageByColors(jamba::rbindList(lapply(jamba::nameVector(c(-5,-2,0,2,5)), function(lens){
    vals2colorLevels(x, rampN=25, lens=lens);
 })));
 title(ylab="color lens factor", xlab="numeric value",
