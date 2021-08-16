@@ -13,7 +13,9 @@ jam_pal(
   sFactor = 1,
   alpha = 1,
   useGrey = 20,
-  preset = "dichromat",
+  h1 = NULL,
+  h2 = NULL,
+  preset = "custom",
   ...
 )
 }

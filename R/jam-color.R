@@ -312,9 +312,9 @@ closestRcolor <- function
  Cwt=1,
  Lwt=4,
  warpHue=TRUE,
- preset="rgb",
+ preset="ryb",
  method="maximum",
- returnType=c("color","name","match"),
+ returnType=c("color", "name", "match"),
  verbose=FALSE,
  ...)
 {
@@ -696,6 +696,7 @@ theme_jam <- function
 #'
 #'    print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
 #'    print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
+#'    print(d + scale_color_jam(preset="ryb") + ggplot2::ggtitle("scale_color_jam(preset='ryb')"));
 #' }
 #'
 #' @export
@@ -709,7 +710,9 @@ scale_color_jam <- function
  sFactor=1,
  alpha=1,
  useGrey=20,
- preset="dichromat")
+ h1=NULL,
+ h2=NULL,
+ preset="custom")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -725,6 +728,8 @@ scale_color_jam <- function
          sFactor=sFactor,
          alpha=alpha,
          useGrey=useGrey,
+         h1=h1,
+         h2=h2,
          preset=preset),
       ...);
 }
@@ -786,7 +791,9 @@ scale_fill_jam <- function
  sFactor=1,
  alpha=1,
  useGrey=20,
- preset="dichromat")
+ h1=NULL,
+ h2=NULL,
+ preset="custom")
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -802,6 +809,8 @@ scale_fill_jam <- function
          sFactor=sFactor,
          alpha=alpha,
          useGrey=useGrey,
+         h1=h1,
+         h2=h2,
          preset=preset),
       ...);
 }
@@ -846,7 +855,9 @@ jam_pal <- function
  sFactor=1,
  alpha=1,
  useGrey=20,
- preset="dichromat",
+ h1=NULL,
+ h2=NULL,
+ preset="custom",
  ...)
 {
    ## Note this function does not specifically require ggplot2
@@ -856,6 +867,8 @@ jam_pal <- function
             rainbowJam(n,
                alpha=alpha,
                preset=preset,
+               h1=h1,
+               h2=h2,
                ...),
             useGrey=useGrey);
          names(pal) <- NULL;
@@ -870,6 +883,8 @@ jam_pal <- function
          pal <- rainbowJam(n,
             alpha=alpha,
             preset=preset,
+            h1=h1,
+            h2=h2,
             ...);
          if (darkFactor != 1 || sFactor != 1) {
             pal <- jamba::makeColorDarker(pal,

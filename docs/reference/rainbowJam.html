@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.21.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.22.900</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@
   alpha <span class='op'>=</span> <span class='fl'>1</span>,
   hues <span class='op'>=</span> <span class='cn'>NULL</span>,
   warpHue <span class='op'>=</span> <span class='cn'>NULL</span>,
-  preset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dichromat"</span>, <span class='st'>"ryb"</span>, <span class='st'>"ryb2"</span>, <span class='st'>"ryb3"</span>, <span class='st'>"rgb"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  preset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"custom"</span><span class='op'>)</span>,
   h1 <span class='op'>=</span> <span class='cn'>NULL</span>,
   h2 <span class='op'>=</span> <span class='cn'>NULL</span>,
   Cvals <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>120</span>, <span class='fl'>160</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>150</span><span class='op'>)</span>,
@@ -136,7 +136,7 @@
   phase <span class='op'>=</span> <span class='fl'>1</span>,
   direction <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1"</span>, <span class='st'>"-1"</span><span class='op'>)</span>,
   do_hue_pad <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  hue_pad_percent <span class='op'>=</span> <span class='fl'>50</span>,
+  hue_pad_percent <span class='op'>=</span> <span class='fl'>0</span>,
   nameStyle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"n"</span>, <span class='st'>"hcl"</span>, <span class='st'>"color"</span>, <span class='st'>"closestRcolor"</span><span class='op'>)</span>,
   doTest <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -288,8 +288,8 @@ hues recognized by <code><a href='https://rdrr.io/r/grDevices/hcl.html'>hcl()</a
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>rainbowJam</span><span class='op'>(</span><span class='fl'>12</span><span class='op'>)</span>;
-</div><div class='output co'>#&gt;  [1] "#E90000" "#FFB195" "#FF8400" "#C37C00" "#00DDFF" "#00A3FF" "#0036FF"
-#&gt;  [8] "#C9CFFF" "#B595FF" "#9877EB" "#FE84FF" "#FF00FF"</div><div class='input'>
+</div><div class='output co'>#&gt;  [1] "#E90000" "#FFB194" "#FF8500" "#C07E00" "#00DBFF" "#00A0FF" "#001FFF"
+#&gt;  [8] "#CFCDFF" "#BF91FF" "#9D75EA" "#FF64FF" "#FF00E9"</div><div class='input'>
 <span class='co'># show colors</span>
 <span class='fu'>jamba</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jamba/man/showColors.html'>showColors</a></span><span class='op'>(</span><span class='fu'>rainbowJam</span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>;
 </div><div class='img'><img src='rainbowJam-1.png' alt='' width='700' height='433' /></div><div class='input'>

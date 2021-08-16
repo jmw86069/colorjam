@@ -11,6 +11,8 @@ color_pie(
   radius = 1.5,
   label_radius = radius * 0.75,
   add = FALSE,
+  init.angle = NULL,
+  clockwise = TRUE,
   ...
 )
 }

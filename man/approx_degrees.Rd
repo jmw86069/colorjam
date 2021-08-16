@@ -4,7 +4,7 @@
 \alias{approx_degrees}
 \title{Interpolation for degree angles}
 \usage{
-approx_degrees(h1, h2, h = NULL, digits = 5, ...)
+approx_degrees(h1, h2, h = NULL, digits = 5, verbose = FALSE, ...)
 }
 \arguments{
 \item{h1}{\code{numeric} vector of degree angles, which should

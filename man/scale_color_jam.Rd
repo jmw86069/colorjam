@@ -14,7 +14,9 @@ scale_color_jam(
   sFactor = 1,
   alpha = 1,
   useGrey = 20,
-  preset = "dichromat"
+  h1 = NULL,
+  h2 = NULL,
+  preset = "custom"
 )
 }
 \arguments{
@@ -65,6 +67,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
    print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
    print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
+   print(d + scale_color_jam(preset="ryb") + ggplot2::ggtitle("scale_color_jam(preset='ryb')"));
 }
 
 }

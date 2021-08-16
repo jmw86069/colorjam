@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.19.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.22.900</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,7 +94,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/jmw86069/colorjam/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -120,7 +120,7 @@
     <p>Interpolation for degree angles</p>
     </div>
 
-    <pre class="usage"><span class='fu'>approx_degrees</span><span class='op'>(</span><span class='va'>h1</span>, <span class='va'>h2</span>, h <span class='op'>=</span> <span class='cn'>NULL</span>, digits <span class='op'>=</span> <span class='fl'>5</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>approx_degrees</span><span class='op'>(</span><span class='va'>h1</span>, <span class='va'>h2</span>, h <span class='op'>=</span> <span class='cn'>NULL</span>, digits <span class='op'>=</span> <span class='fl'>5</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,16 +212,16 @@ angle in "to".</p>
 
 <span class='co'># apply no transform</span>
 <span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fl'>0</span>, h2<span class='op'>=</span><span class='fl'>0</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1]   0  90 180 270</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 0 0 0 0</div><div class='input'>
 <span class='co'># apply 180 degree transform</span>
 <span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fl'>0</span>, h2<span class='op'>=</span><span class='fl'>180</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 180 270   0  90</div><div class='input'><span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fl'>180</span>, h2<span class='op'>=</span><span class='fl'>0</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 180 270   0  90</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 180 180 180 180</div><div class='input'><span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fl'>180</span>, h2<span class='op'>=</span><span class='fl'>0</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0 0 0 0</div><div class='input'>
 <span class='co'># flip the direction</span>
 <span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>360</span><span class='op'>)</span>, h2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>359</span>, <span class='fl'>0</span><span class='op'>)</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1]   0 270 180  90</div><div class='input'><span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>360</span><span class='op'>)</span>, h2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>359</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>90</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1]  90   0 270 180</div><div class='input'><span class='fu'>approx_degrees</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>360</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>90</span>, h2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>359</span>, <span class='fl'>0</span><span class='op'>)</span>, h<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1]  90   0 270 180</div><div class='input'>
+</div><div class='output co'>#&gt; [1]  NA   0 270 180</div><div class='input'>
 </div><div class='img'><img src='approx_degrees-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

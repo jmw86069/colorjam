@@ -83,70 +83,86 @@ approx_degrees <- function
  h2,
  h=NULL,
  digits=5,
+ verbose=FALSE,
  ...)
 {
    #h2 <- h2[c(7:12, 1:7)]
-   h1 <- round(digits=digits,
-      h1 %% 360);
-   h2 <- round(digits=digits,
-      h2 %% 360);
-   h1h2df <- unique(data.frame(h1, h2)[order(h1),,drop=FALSE]);
-   h1 <- h1h2df$h1;
-   h2 <- h1h2df$h2;
+   if (length(digits) > 0) {
+      h1 <- round(digits=digits, h1)
+      h2 <- round(digits=digits, h2)
+   }
+   #h1dir <- unique(sign(diff(h1)));
 
-   h1head <- (head(h1, 1) > 0);
-   h1tail <- (tail(h1, 1) < 360);
-   if (h1head) {
-      if (h1tail) {
-         h1 <- c(tail(h1, 1) - 360, h1, head(h1, 1) + 360)
-         h2 <- c(tail(h2, 1), h2, head(h2, 1))
-         if (length(h2) == 3) {
-            h2 <- h2 + c(-360, 0, 360);
+   # force h1 to increasing order
+   h1h2df1 <- jamba::mixedSortDF(byCols="h1",
+      data.frame(h1=h1,
+         h2=h2))
+   if (verbose) {
+      jamba::printDebug("approx_degrees() :",
+         "h1h2df1:");
+      print(h1h2df1);
+   }
+   h2diff <- diff(h1h2df1$h2);
+   if (length(h2diff) > 0) {
+      h2dir <- as.numeric(names(head(
+         tcount(sign(diff(h1h2df1$h2))), 1)));
+   } else {
+      h2dir <- 1;
+   }
+
+   if (head(h1h2df1$h1, 1) > 0) {
+      h1 <- c(tail(h1h2df1$h1, 1) - 360, h1);
+      if (h2dir > 0) {
+         if (tail(h1h2df1$h2, 1) > head(h1h2df1$h2, 1)) {
+            h2 <- c(tail(h1h2df1$h2, 1) - 360, h2);
+         } else {
+            h2 <- c(tail(h1h2df1$h2, 1), h2);
          }
       } else {
-         h1 <- c(tail(h1, 1) - 360, h1)
-         h2 <- c(tail(h2, 1), h2)
-      }
-      h1h2df <- data.frame(h1, h2);
-   } else if (h1tail) {
-      h1 <- c(h1, head(h1, 1) + 360)
-      h2 <- c(h2, head(h2, 1))
-      if (length(h2) == 2) {
-         h2[2] <- h2[2] + 360;
-      }
-      h1h2df <- data.frame(h1, h2);
-   }
-   h2diff <- diff(h2);
-   h2diffdegrees <- h2diff %% 360;
-   h2diffdegrees <- ifelse(h2diffdegrees > 180, -(360 - h2diffdegrees), h2diffdegrees)
-   #data.frame(h2diff, h2diffdegrees)
-   h2diffsign <- sign(h2diff);
-   h2diffsigntc <- jamba::tcount(h2diffsign);
-   if (length(h2diffsigntc) == 2) {
-      h2direction <- as.numeric(names(tail(h2diffsigntc, 1)));
-      h2flips <- which(h2diffsign == h2direction);
-      for (h2flip in h2flips) {
-         h2seq <- seq_len(h2flip)
-         if (h2direction == -1) {
-            h2[h2seq] <- h2[h2seq] - 360;
+         if (tail(h1h2df1$h2, 1) < head(h1h2df1$h2, 1)) {
+            h2 <- c(tail(h1h2df1$h2, 1) + 360, h2);
          } else {
-            h2[h2seq] <- h2[h2seq] + 360;
+            h2 <- c(tail(h1h2df1$h2, 1), h2);
          }
       }
    }
-   h1h2df$h2_new <- h2;
+   if (tail(h1h2df1$h1, 1) < 360) {
+      h1 <- c(h1, head(h1h2df1$h1, 1) + 360);
+      if (h2dir > 0) {
+         if (head(h1h2df1$h2, 1) < tail(h1h2df1$h2, 1)) {
+            h2 <- c(h2, head(h1h2df1$h2, 1) + 360);
+         } else {
+            h2 <- c(h2, head(h1h2df1$h2, 1));
+         }
+      } else {
+         if (head(h1h2df1$h2, 1) > tail(h1h2df1$h2, 1)) {
+            h2 <- c(h2, head(h1h2df1$h2, 1) - 360);
+         } else {
+            h2 <- c(h2, head(h1h2df1$h2, 1));
+         }
+      }
+   }
+   h1h2df2 <- data.frame(h1=h1, h2=h2)
+   if (verbose) {
+      jamba::printDebug("approx_degrees() :",
+         "h1h2df2:");
+      print(h1h2df2);
+   }
 
-   if (length(h) == 0) {
-      h_new <- approxfun(x=h1,
-         y=h2,
-         ties="ordered");
-   } else {
-      h_new <- approx(x=h1,
+   # define approx() function that includes %% 360
+   # to limit output angles between 0 and 360
+   h_fun <- function(h) {
+      h_new <- approx(
+         x=h1,
          y=h2,
          ties="ordered",
          xout=(h %% 360))$y %% 360;
+      return(h_new);
    }
-   h_new;
+   if (length(h) > 0) {
+      return(h_fun(h))
+   }
+   return(h_fun);
 }
 
 #' Display degree angles around a unit circle

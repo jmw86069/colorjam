@@ -14,7 +14,7 @@ closestRcolor(
   Cwt = 1,
   Lwt = 4,
   warpHue = TRUE,
-  preset = "rgb",
+  preset = "ryb",
   method = "maximum",
   returnType = c("color", "name", "match"),
   verbose = FALSE,

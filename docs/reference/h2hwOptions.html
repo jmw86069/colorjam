@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.19.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.22.900</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,7 +94,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="http://github.com/jmw86069/colorjam/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -123,12 +123,13 @@
     <pre class="usage"><span class='fu'>h2hwOptions</span><span class='op'>(</span>
   h1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"h2hw.h1"</span><span class='op'>)</span>,
   h2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"h2hw.h2"</span><span class='op'>)</span>,
-  h1default <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span>, <span class='fl'>120</span>, <span class='fl'>240</span>, <span class='fl'>360</span><span class='op'>)</span>,
-  h2default <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>120</span>, <span class='fl'>180</span>, <span class='fl'>240</span>, <span class='fl'>360</span><span class='op'>)</span>,
-  preset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"dichromat"</span>, <span class='st'>"ryb"</span>, <span class='st'>"rgb"</span>, <span class='st'>"ryb2"</span>, <span class='st'>"ryb3"</span><span class='op'>)</span>,
+  preset <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"colorjam.preset"</span>, <span class='st'>"custom"</span><span class='op'>)</span>,
+  preset_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"custom"</span>, <span class='st'>"none"</span>, <span class='st'>"dichromat"</span>, <span class='st'>"rgb"</span>, <span class='st'>"ryb"</span>, <span class='st'>"ryb1"</span>, <span class='st'>"ryb2"</span>, <span class='st'>"ryb3"</span><span class='op'>)</span>,
   default_preset <span class='op'>=</span> <span class='st'>"dichromat"</span>,
   reset <span class='op'>=</span> <span class='cn'>FALSE</span>,
   setOptions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ifnull"</span>, <span class='st'>"TRUE"</span>, <span class='st'>"FALSE"</span><span class='op'>)</span>,
+  h1default <span class='op'>=</span> <span class='cn'>NULL</span>,
+  h2default <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -138,31 +139,41 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>h1</th>
-      <td><p>NULL or numeric vector of color hue values, sequential between
-0 and 360.</p></td>
+      <td><p><code>numeric</code> vector of color hue values which represent
+the "from" hue angles, also referred to as "hue warp" or "hw"
+values. One example of a typical operation: one may want to
+know the R hue for a particular red-yellow-blue hue.
+In this scenario the <code>h1</code> "hue warp" is the red-yellow-blue hue,
+and the "hue" is the R typical hue used in <code><a href='https://colorspace.R-Forge.R-project.org//reference/polarLUV.html'>colorspace::polarLUV()</a></code>
+<code><a href='https://rdrr.io/r/grDevices/hcl.html'>grDevices::hcl()</a></code>, and <code><a href='https://farver.data-imaginist.com/reference/convert_colour.html'>farver::convert_colour()</a></code>. For
+evenly-spaced red-yellow-blue colors, one would define a sequence
+of "hue warp" values from 0 to 360, then convert them to
+the default hue used by other R functions.</p></td>
     </tr>
     <tr>
       <th>h2</th>
-      <td><p>NULL or numeric vector of color hue values, sequential between
-0 and 360.</p></td>
-    </tr>
-    <tr>
-      <th>h1default, h2default</th>
-      <td><p>numeric vector of color hue values to use when
-h1 or h2 are NULL, respectively. The default values are
-included here as a function parameter here for visibility.</p></td>
+      <td><p><code>numeric</code> vector of color hue values which represent
+the "to" hue angles, also referred to as "hue" or "h".</p></td>
     </tr>
     <tr>
       <th>preset</th>
-      <td><p><code>character</code> string indicating whether to define the
-<code>h1</code>, and <code>h2</code> values based upon named presets: <code>"none"</code> no change;
-<code>"ryb"</code> red-yellow-blue; <code>"dichromat"</code> color wheel that omits green,
-therefore provides relatively even spacing of color-blind-friendly
-colors based upon simulated output as produced by
-<code><a href='https://rdrr.io/pkg/dichromat/man/dichromat.html'>dichromat::dichromat()</a></code> package; <code>"rgb"</code> red-green-blue which
-is the default color wheel used in R; <code>"ryb2"</code> alternate red-yellow-blue
-that slightly over-emphasizes yellow at the expense/benefit of
-even less green.</p></td>
+      <td><p><code>character</code> string indicating whether to define
+<code>h1</code>, and <code>h2</code> values based upon named presets:</p><ul>
+<li><p><code>"custom"</code> uses values defined in <code><a href='https://rdrr.io/r/base/options.html'>options("h2hw.h1")</a></code>
+and <code><a href='https://rdrr.io/r/base/options.html'>options("h2hw.h2")</a></code> if they exist, otherwise <code>default_preset</code>.</p></li>
+<li><p><code>"ryb"</code> red-yellow-blue;
+<code>"dichromat"</code> color wheel intended to be color-blind friendly
+based upon simulated output as from the  <code><a href='https://rdrr.io/pkg/dichromat/man/dichromat.html'>dichromat::dichromat()</a></code> package;</p></li>
+<li><p><code>"rgb"</code> or <code>"none"</code> both use the hue defined in R as red-green-blue;</p></li>
+<li><p><code>"ryb1"</code>,<code>"ryb2"</code>,<code>"ryb3"</code> experimental red-yellow-blue alternatives
+that continue to modify the effect of the huge blue-green range
+of hue angles.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>preset_names</th>
+      <td><p><code>character</code> vector of valid <code>preset</code> values,
+included only to make the values visible in the function arguments.</p></td>
     </tr>
     <tr>
       <th>default_preset</th>
@@ -183,6 +194,11 @@ update <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> 
 the <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> are only updated if they were previously <code>NULL</code>.</p></td>
     </tr>
     <tr>
+      <th>h1default, h2default</th>
+      <td><p>deprecated and ignored in this version
+of the function.</p></td>
+    </tr>
+    <tr>
       <th>verbose</th>
       <td><p>logical whether to print verbose output</p></td>
     </tr>
@@ -194,24 +210,35 @@ the <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> are
 of hues between 0 and 360.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function simply retrieves the vector of hues in normal hue color
-space, and warped color space. It is intended to convert from something
-like a color wheel defined by RGB (red, green blue) where red=0, green=120,
-and blue=240, to a color wheel like RYB (red, yellow, blue) where red=0,
-yellow=120, and blue=240, (green becomes 180). This conversion is
-non-linear, meaning it warps (bends) the colors.</p>
-<p>The purpose of using <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> to store the color hue is to make it
-easy to re-use the settings across multiple function calls. The related
-reason for this function <code>h2hwOptions()</code> is to make it clear the
-default values, and make it clear how to update and review the current
-settings.</p>
-<p>Together the vector <code>h1</code> and <code>h2</code> are used by <code><a href='https://rdrr.io/r/stats/approxfun.html'>stats::approx()</a></code> to
-convert from the value ranges in <code>h1</code> to the corresponding value
-ranges in <code>h2</code>. Using this mechanism, one could define ranges which
-effectively remove entire slices of the color wheel.</p>
-<p>To disable the warped hue mechanism, set <code>h2</code> equal to <code>h1</code> for example
-<code>h2hwOptions(h2=h2hwOptions()$h1)</code>. Doing so will cause <code><a href='https://rdrr.io/r/stats/approxfun.html'>stats::approx()</a></code>
-to interpret every hue as a 1:1 relationship with the warped hue.</p>
+    <p>This function retrieves, and/or defines, the <code>h1</code> and <code>h2</code>
+hue vectors used to convert between <code>h1</code> "hue warp", and
+<code>h2</code> "default hue". The "default" hue is used by standard R
+functions such as <code><a href='https://colorspace.R-Forge.R-project.org//reference/polarLUV.html'>colorspace::polarLUV()</a></code>
+<code><a href='https://rdrr.io/r/grDevices/hcl.html'>grDevices::hcl()</a></code>, and <code><a href='https://farver.data-imaginist.com/reference/convert_colour.html'>farver::convert_colour()</a></code>,
+based upon the red-green-blue color wheel in typical computer
+video displays.</p>
+<p>The <code>h1</code> values may represent colors on red-yellow-blue color wheel
+hue, while <code>h2</code> represents the corresponding hue in R "default hue"
+space. The conversion is non-linear, therefore it warps (bends) the
+color range accordingly.</p>
+<p>The output values from this function are used with <code><a href='approx_degrees.html'>approx_degrees()</a></code>
+which either performs the conversion, or returns a function to
+perform the conversion.</p>
+<p>There are three <code><a href='https://rdrr.io/r/base/options.html'>options()</a></code> used when available, intended to help
+custom states to have persistence across other function calls.</p><ol>
+<li><p><code><a href='https://rdrr.io/r/base/options.html'>options("colorjam.preset")</a></code> which keeps track of the current
+color warp preset.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/options.html'>options("h2hw.h1")</a></code> defines the <code>h1</code> value.</p></li>
+<li><p><code>optinos("h2hw.h2")</code> defines the <code>h2</code> value.</p></li>
+</ol>
+
+<p>Note that <code><a href='https://rdrr.io/r/base/options.html'>options("h2hw.h1")</a></code> and <code><a href='https://rdrr.io/r/base/options.html'>options("h2hw.h2")</a></code> are only
+used when <code>preset="custom"</code>, otherwise the named preset will
+be used as first priority.</p>
+<p>To disable the warped hue mechanic, set <code>preset="none"</code> or define
+<code>h1 = h2</code> so the conversion is always 1:1.</p>
+<p>When <code>preset="custom"</code> and <code>h1</code> and <code>h2</code> are not defined, the
+preset is set to the value of <code>default_preset</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other colorjam hue warp: 
@@ -227,19 +254,19 @@ to interpret every hue as a 1:1 relationship with the warped hue.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>h2hwOptions</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $h1
-#&gt;  [1]   0   8  30  65 120 200 240 260 280 330 360
+#&gt; [1]   8  30  65 120 200 240 260 280 330
 #&gt; 
 #&gt; $h2
-#&gt;  [1]   0.0   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2 360.0
+#&gt; [1]   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2
 #&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span><span class='op'>(</span><span class='fl'>60</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 113.0429</div><div class='input'>
 <span class='fu'>h2hwOptions</span><span class='op'>(</span>h1<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span>,<span class='fl'>120</span>,<span class='fl'>240</span>,<span class='fl'>300</span>,<span class='fl'>360</span><span class='op'>)</span>,
    h2<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>120</span>,<span class='fl'>180</span>,<span class='fl'>240</span>,<span class='fl'>280</span>,<span class='fl'>360</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $h1
-#&gt; [1]   0  60 120 240 300 360
+#&gt; [1]   8  30  65 120 200 240 260 280 330
 #&gt; 
 #&gt; $h2
-#&gt; [1]   0 120 180 240 280 360
+#&gt; [1]   0.0  79.1 118.7 118.7 118.7 126.6 185.9 304.6 344.2
 #&gt; </div><div class='input'><span class='fu'><a href='h2hw.html'>h2hw</a></span><span class='op'>(</span><span class='fl'>300</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 320.44</div><div class='input'>
 </div></pre>

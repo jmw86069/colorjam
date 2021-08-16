@@ -7,36 +7,48 @@
 h2hwOptions(
   h1 = getOption("h2hw.h1"),
   h2 = getOption("h2hw.h2"),
-  h1default = c(0, 60, 120, 240, 360),
-  h2default = c(0, 120, 180, 240, 360),
-  preset = c("none", "dichromat", "ryb", "rgb", "ryb2", "ryb3"),
+  preset = getOption("colorjam.preset", "custom"),
+  preset_names = c("custom", "none", "dichromat", "rgb", "ryb", "ryb1", "ryb2", "ryb3"),
   default_preset = "dichromat",
   reset = FALSE,
   setOptions = c("ifnull", "TRUE", "FALSE"),
+  h1default = NULL,
+  h2default = NULL,
   verbose = FALSE,
   ...
 )
 }
 \arguments{
-\item{h1}{NULL or numeric vector of color hue values, sequential between
-0 and 360.}
+\item{h1}{\code{numeric} vector of color hue values which represent
+the "from" hue angles, also referred to as "hue warp" or "hw"
+values. One example of a typical operation: one may want to
+know the R hue for a particular red-yellow-blue hue.
+In this scenario the \code{h1} "hue warp" is the red-yellow-blue hue,
+and the "hue" is the R typical hue used in \code{colorspace::polarLUV()}
+\code{grDevices::hcl()}, and \code{farver::convert_colour()}. For
+evenly-spaced red-yellow-blue colors, one would define a sequence
+of "hue warp" values from 0 to 360, then convert them to
+the default hue used by other R functions.}
 
-\item{h2}{NULL or numeric vector of color hue values, sequential between
-0 and 360.}
+\item{h2}{\code{numeric} vector of color hue values which represent
+the "to" hue angles, also referred to as "hue" or "h".}
 
-\item{h1default, h2default}{numeric vector of color hue values to use when
-h1 or h2 are NULL, respectively. The default values are
-included here as a function parameter here for visibility.}
+\item{preset}{\code{character} string indicating whether to define
+\code{h1}, and \code{h2} values based upon named presets:
+\itemize{
+\item \code{"custom"} uses values defined in \code{options("h2hw.h1")}
+and \code{options("h2hw.h2")} if they exist, otherwise \code{default_preset}.
+\item \code{"ryb"} red-yellow-blue;
+\code{"dichromat"} color wheel intended to be color-blind friendly
+based upon simulated output as from the  \code{dichromat::dichromat()} package;
+\item \code{"rgb"} or \code{"none"} both use the hue defined in R as red-green-blue;
+\item \code{"ryb1"},\code{"ryb2"},\code{"ryb3"} experimental red-yellow-blue alternatives
+that continue to modify the effect of the huge blue-green range
+of hue angles.
+}}
 
-\item{preset}{\code{character} string indicating whether to define the
-\code{h1}, and \code{h2} values based upon named presets: \code{"none"} no change;
-\code{"ryb"} red-yellow-blue; \code{"dichromat"} color wheel that omits green,
-therefore provides relatively even spacing of color-blind-friendly
-colors based upon simulated output as produced by
-\code{dichromat::dichromat()} package; \code{"rgb"} red-green-blue which
-is the default color wheel used in R; \code{"ryb2"} alternate red-yellow-blue
-that slightly over-emphasizes yellow at the expense/benefit of
-even less green.}
+\item{preset_names}{\code{character} vector of valid \code{preset} values,
+included only to make the values visible in the function arguments.}
 
 \item{default_preset}{\code{character} string indicating which value
 in \code{preset} should be used as the default when \code{reset=FALSE} and
@@ -50,6 +62,9 @@ all other \code{preset} and \code{default_preset} arguments are ignored.}
 update \code{options()} for \code{"h2hw.h1"} and \code{"h2hw.h2"}. When \code{"ifnull"}
 the \code{options()} are only updated if they were previously \code{NULL}.}
 
+\item{h1default, h2default}{deprecated and ignored in this version
+of the function.}
+
 \item{verbose}{logical whether to print verbose output}
 }
 \value{
@@ -60,27 +75,41 @@ of hues between 0 and 360.
 Get hue color warp options used to convert to and from warped hues
 }
 \details{
-This function simply retrieves the vector of hues in normal hue color
-space, and warped color space. It is intended to convert from something
-like a color wheel defined by RGB (red, green blue) where red=0, green=120,
-and blue=240, to a color wheel like RYB (red, yellow, blue) where red=0,
-yellow=120, and blue=240, (green becomes 180). This conversion is
-non-linear, meaning it warps (bends) the colors.
+This function retrieves, and/or defines, the \code{h1} and \code{h2}
+hue vectors used to convert between \code{h1} "hue warp", and
+\code{h2} "default hue". The "default" hue is used by standard R
+functions such as \code{colorspace::polarLUV()}
+\code{grDevices::hcl()}, and \code{farver::convert_colour()},
+based upon the red-green-blue color wheel in typical computer
+video displays.
 
-The purpose of using \code{options()} to store the color hue is to make it
-easy to re-use the settings across multiple function calls. The related
-reason for this function \code{h2hwOptions()} is to make it clear the
-default values, and make it clear how to update and review the current
-settings.
+The \code{h1} values may represent colors on red-yellow-blue color wheel
+hue, while \code{h2} represents the corresponding hue in R "default hue"
+space. The conversion is non-linear, therefore it warps (bends) the
+color range accordingly.
 
-Together the vector \code{h1} and \code{h2} are used by \code{stats::approx()} to
-convert from the value ranges in \code{h1} to the corresponding value
-ranges in \code{h2}. Using this mechanism, one could define ranges which
-effectively remove entire slices of the color wheel.
+The output values from this function are used with \code{approx_degrees()}
+which either performs the conversion, or returns a function to
+perform the conversion.
 
-To disable the warped hue mechanism, set \code{h2} equal to \code{h1} for example
-\code{h2hwOptions(h2=h2hwOptions()$h1)}. Doing so will cause \code{stats::approx()}
-to interpret every hue as a 1:1 relationship with the warped hue.
+There are three \code{options()} used when available, intended to help
+custom states to have persistence across other function calls.
+\enumerate{
+\item \code{options("colorjam.preset")} which keeps track of the current
+color warp preset.
+\item \code{options("h2hw.h1")} defines the \code{h1} value.
+\item \code{optinos("h2hw.h2")} defines the \code{h2} value.
+}
+
+Note that \code{options("h2hw.h1")} and \code{options("h2hw.h2")} are only
+used when \code{preset="custom"}, otherwise the named preset will
+be used as first priority.
+
+To disable the warped hue mechanic, set \code{preset="none"} or define
+\code{h1 = h2} so the conversion is always 1:1.
+
+When \code{preset="custom"} and \code{h1} and \code{h2} are not defined, the
+preset is set to the value of \code{default_preset}.
 }
 \examples{
 h2hwOptions()

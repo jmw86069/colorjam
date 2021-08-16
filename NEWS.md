@@ -1,3 +1,51 @@
+# colorjam 0.0.22.900
+
+## changes to existing functions
+
+A new hue warp preset is available, a fully corrected "red-yellow-blue"
+gradient which is intended to provide full color complement
+capability. However, `rainbowJam()` is preparing for a larger
+update that focuses on choosing colors within gamut for each
+color hue. The `colorspace` and `farver` color conversion functions
+are able to provide colors outside of gamut but altering some
+components which ultimately change the hue. As a result, the
+hue sequence from `rainbowJam()` is sometimes out of order
+due to that correction. A new method that returns strictly
+correct hue within gamut is being tested and will be applied
+in an upcoming release.
+
+New default `preset="custom"` is used in several functions,
+which will re-use any defined `h1` and `h2` values
+in `options("h2hw.h1")` and `options("h2hw.h2")`,
+otherwise it will use `default_preset="dichromat"`.
+For the default scenario, nothing will change. When
+a custom `h1` and `h2` should be used, it will be easier
+for it to be applied by default. Setting `preset` to any
+named value will override any stored `h1` and `h2` values.
+
+* `rainbowJam()` argument value changed `hue_pad_percent=0`,
+subtle change that means there is less color buffer between
+the first and last color in the hue sequence. This argument
+was most useful as a partial workaround to the color hue
+gamut conversion "bug" in colorspace and farver. Not technically
+a bug, as it is documented behavior, but the output is
+not what one would expect imo.
+* `approx_degrees()` was modified to simplify the logic, and to
+handle special cases like inverted angles, and rotated angles.
+* `h2hwOptions()`, `h2hw()`, `hw2h()`, and `rainbowJam()` default
+argument changed to `preset="custom"` which will preserve any
+pre-existing `h1,h2` values, otherwise a named `preset` will
+take priority and define `h1,h2` values directly.
+* `scale_color_jam()`, `scale_fill_jam()`, `jam_pal()` were updated
+to use `preset="custom"` by default, and to pass `h1` and `h2`
+arguments.
+
+New option:
+
+* `options("colorjam.preset")` as a convenient way to maintain
+the current preset.
+
+
 # colorjam 0.0.21.900
 
 ## changes to existing functions

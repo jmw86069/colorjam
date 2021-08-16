@@ -112,7 +112,7 @@ rainbowJam <- function
  alpha=1,
  hues=NULL,
  warpHue=NULL,
- preset=c("dichromat", "ryb", "ryb2", "ryb3", "rgb", "none"),
+ preset=c("custom"),
  h1=NULL,
  h2=NULL,
  #Cvals=c(140, 150, 160, 130, 200, 100),
@@ -124,7 +124,7 @@ rainbowJam <- function
  phase=1,
  direction=c("1", "-1"),
  do_hue_pad=FALSE,
- hue_pad_percent=50,
+ hue_pad_percent=0,
  nameStyle=c(
     "none",
     "n",
@@ -152,12 +152,20 @@ rainbowJam <- function
       }
    }
    if (length(h1) == 0 || length(h2) == 0) {
-      preset <- match.arg(preset);
+      preset <- match.arg(preset,
+         choices=eval(formals(h2hwOptions)$preset_names));
+      if ("ryb" %in% preset && Hstart == 12.2) {
+         Hstart <- 0
+      }
       h1h2 <- h2hwOptions(preset=preset,
          setOptions="FALSE",
          verbose=verbose);
       h1 <- h1h2$h1;
       h2 <- h1h2$h2;
+      if (verbose) {
+         jamba::printDebug("h1: ", round(digits=2, h1), sep=", ");
+         jamba::printDebug("h2: ", round(digits=2, h2), sep=", ");
+      }
    }
    if ("-1" %in% direction) {
       direction <- -1;
@@ -465,6 +473,8 @@ color_pie <- function
  radius=1.5,
  label_radius=radius*0.75,
  add=FALSE,
+ init.angle=NULL,
+ clockwise=TRUE,
  ...)
 {
    ##
@@ -486,6 +496,8 @@ color_pie <- function
                border=border[[i]],
                lwd=lwd,
                add=(i > 1),
+               init.angle=init.angle,
+               clockwise=clockwise,
                radius=radius_seq[i],
                label_radius=radius_seq[i]*0.92 + radius_diff,
                ...);
@@ -494,12 +506,22 @@ color_pie <- function
                border=border[[i]],
                lwd=lwd,
                add=(i > 1),
+               init.angle=init.angle,
+               clockwise=clockwise,
                radius=radius_seq[i],
                label_radius=radius_seq[i]*0.92 + radius_diff);
          }
       });
       return(invisible(l));
    }
+   if (length(init.angle) == 0) {
+      if (clockwise) {
+         init.angle <- 90 + 360 / length(colors) / 2;
+      } else {
+         init.angle <- 90 - 360 / length(colors) / 2;
+      }
+   }
+
    op <- par(no.readonly=TRUE);
    on.exit(par(op));
    par("xpd"=TRUE);
@@ -516,14 +538,20 @@ color_pie <- function
       labels="",
       lwd=lwd,
       radius=radius,
+      init.angle=init.angle,
+      clockwise=clockwise,
       ...);
    if (length(names(colors)) > 0) {
       par("new"=TRUE);
       par("lwd"=0.001);
       pie(x=rep(1, length.out=length(colors)),
          col="transparent",
+         labels=names(colors),
          border=FALSE,
-         radius=label_radius);
+         init.angle=init.angle,
+         clockwise=clockwise,
+         radius=label_radius,
+         ...);
    }
    invisible(colors);
 }
