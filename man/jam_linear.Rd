@@ -4,7 +4,9 @@
 \name{jam_linear}
 \alias{jam_linear}
 \title{Jam Linear Color Gradients}
-\format{An object of class \code{list} of length 14.}
+\format{
+An object of class \code{list} of length 14.
+}
 \usage{
 jam_linear
 }

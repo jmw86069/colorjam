@@ -37,6 +37,36 @@ including alpha. If the input \code{x} is \code{"red"} then the hex value
 will be converted to \code{"#FF0000FF"}.
 }
 }
+\section{Added by \code{jamba::col2hcl()}}{
+\itemize{
+\item \code{"H"} contains color hue as values from \code{0} to \code{360}.
+\item \code{"C"} contains color chroma (aka saturation) ranging from \code{0} up to \code{200},
+where typical "full saturation" is represented as values above 100.
+\item \code{"L"} contains color luminance (brightness/lightness) ranging from
+\code{0} to \code{100}.
+\item \code{"alpha"} the alpha transparency, ranging from \code{0} (fully transparent)
+to \code{1} (fully opaque, not transparent).
+}
+}
+
+\section{Added by \code{grDevices::col2rgb()}}{
+\itemize{
+\item \code{"red"} contains the red color channel, values range from \code{0} to \code{255}.
+\item \code{"green"} contains the green color channel, values range from \code{0} to \code{255}.
+\item \code{"blue"} contains the blue color channel, values range from \code{0} to \code{255}.
+}
+}
+
+\section{Added by \code{jamba::col2hsv()}}{
+\itemize{
+\item \code{"h"} contains color hue as values from \code{0} to \code{1}. Note these values
+may not map directly to color hue obtained from \code{jamba::col2hcl()}.
+\item \code{"s"} contains color saturation with values from \code{0} to \code{1}.
+\item \code{"v"} contains color vibrance (brightness/lightness) with values
+from \code{0} to \code{1}.
+}
+}
+
 \examples{
 # subset for blue colors
 jamba::showColors(subset_colors(colors(), H > 200 & H < 265 & C > 80))
@@ -88,30 +118,3 @@ Other colorjam core:
 \code{\link{rainbowJam}()}
 }
 \concept{colorjam core}
-\section{Added by \code{jamba::col2hcl()}}{
-\itemize{
-\item \code{"H"} contains color hue as values from \code{0} to \code{360}.
-\item \code{"C"} contains color chroma (aka saturation) ranging from \code{0} up to \code{200},
-where typical "full saturation" is represented as values above 100.
-\item \code{"L"} contains color luminance (brightness/lightness) ranging from
-\code{0} to \code{100}.
-\item \code{"alpha"} the alpha transparency, ranging from \code{0} (fully transparent)
-to \code{1} (fully opaque, not transparent).
-}
-}
-\section{Added by \code{grDevices::col2rgb()}}{
-\itemize{
-\item \code{"red"} contains the red color channel, values range from \code{0} to \code{255}.
-\item \code{"green"} contains the green color channel, values range from \code{0} to \code{255}.
-\item \code{"blue"} contains the blue color channel, values range from \code{0} to \code{255}.
-}
-}
-\section{Added by \code{jamba::col2hsv()}}{
-\itemize{
-\item \code{"h"} contains color hue as values from \code{0} to \code{1}. Note these values
-may not map directly to color hue obtained from \code{jamba::col2hcl()}.
-\item \code{"s"} contains color saturation with values from \code{0} to \code{1}.
-\item \code{"v"} contains color vibrance (brightness/lightness) with values
-from \code{0} to \code{1}.
-}
-}

@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.22.900
+Version: 0.0.22.950
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -22,4 +22,4 @@ Remotes: github::jmw86069/jamba
 URL: http://github.com/jmw86069/colorjam
 BugReports: http://github.com/jmw86069/colorjam/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2

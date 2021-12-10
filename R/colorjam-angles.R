@@ -105,7 +105,7 @@ approx_degrees <- function
    h2diff <- diff(h1h2df1$h2);
    if (length(h2diff) > 0) {
       h2dir <- as.numeric(names(head(
-         tcount(sign(diff(h1h2df1$h2))), 1)));
+         jamba::tcount(sign(diff(h1h2df1$h2))), 1)));
    } else {
       h2dir <- 1;
    }

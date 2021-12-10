@@ -1,3 +1,20 @@
+# colorjam 0.0.22.950
+
+## bug fixes
+
+* `approx_degrees()` was calling `tcount()` from the `jamba`
+package, and because the `jamba` package is listed as "Depends"
+its functions are loaded and available to `colorjam` once
+it is loaded. However, for some curious reason in R internals,
+when the function is called directly `colorjam::approx_degrees()`
+it does not import `jamba` functions, therefore `jamba::tcount()`
+is not available, and it throws an error. The issue was
+reported via the `venndir` package, where default usage of
+`venndir` causes an error for the most basic operations.
+The workaround is to load colorjam or jamba first, however
+the real fix is to include package prefix here.
+
+
 # colorjam 0.0.22.900
 
 ## changes to existing functions

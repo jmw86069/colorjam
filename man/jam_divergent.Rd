@@ -4,7 +4,9 @@
 \name{jam_divergent}
 \alias{jam_divergent}
 \title{Jam Divergent Color Gradients}
-\format{An object of class \code{list} of length 14.}
+\format{
+An object of class \code{list} of length 14.
+}
 \usage{
 jam_divergent
 }
