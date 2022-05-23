@@ -123,8 +123,10 @@ blend_colors(c("blue4", "darkorange1"), do_plot=TRUE)
 \seealso{
 Other colorjam core: 
 \code{\link{closestRcolor}()},
+\code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},
+\code{\link{sort_colors}()},
 \code{\link{subset_colors}()}
 }
 \concept{colorjam core}

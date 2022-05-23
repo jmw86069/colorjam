@@ -1,3 +1,74 @@
+# colorjam 0.0.23.900
+
+* bumped dependency `jamba (>= 0.0.83.900)` to include `hsl2col()`, `col2hsl()`
+
+## changes to existing functions
+
+* `subset_colors()` now calls `colors_to_df()` to create a `data.frame`,
+any of whose columns can be used to sort colors.
+
+## new functions
+
+* `colors_to_df()` convert vector of colors to `data.frame` with column
+values representing several common colorspace formats. Note that
+HSL color dimensions have prefix `"hsl_"`, for example `"hsl_h"`,
+`"hsl_s"`, and `"hsl_l"`.
+
+   * For some reason, the H hue values in HCL
+    do not match the hue values in HSL, despite both being angles with
+    range `c(0, 360)`. Fun.
+    * It is a non-linear conversion of hue which makes sense,
+    it appears that HSV, HSL, and RGB share the same "color wheel",
+    derived from the red-green-blue maxima used for computer monitors.
+    HCL added an offset +12.2 degrees to every color, probably so color
+    sorting would always have variations of red appearing first, near zero,
+    avoiding some colors being -0.1 and sorting last with hue 359.9.
+    * Surprising that the hue sort order is not shared between HCL and HSL,
+    although it is probably caused by conversion of low-chroma/saturation
+    colors, with underlying numeric rounding errors. It could be that
+    HCL is based upon perception, giving slightly stronger weight to the
+    perceptiveness of certain color components.
+
+* `sort_colors()` applied sort criteria to data returned by `colors_to_df()`.
+
+## HSL color update (preparation)
+
+I anticipate the `rainbowJam()` function will shift from using HCL,
+instead to using HSL for color selection.
+
+Summary of thought process so far:
+
+* HCL colors "out of gamut" are capped by each color channel, causing
+the hue returned to differ from the hue requested in HCL color space.
+* HCL has the benefit that in general, the C and L values can be used
+to determine perceptive color difference between colors, allowing one
+to set a minimum perceived color difference threshold. However,
+every color hue has a different color gamut of allowable C and L values,
+making it difficult to apply consistent rules to each color hue.
+* HSL has the benefit that all "full saturation colors" for each hue has
+the same coordinate (S=100, L=50), however there is no guarantee that
+surrounding colors have consistent perceptual difference.
+* `rainbowJam()` uses "tricked out" C and L sequences, that request
+higher C chroma than possible for most hues, causing it to return
+higher saturation than typical. Meanwhile the L values help create
+6 distinct colors for every hue.
+* The downside is the hue is often
+different than requested, causing problems with the `n` is high,
+sometimes a series of colors have nearly identical hue due to
+the conversion issues described above.
+* Also, practically speaking, colors like `"yellow"` are effectively
+lost, since it is brighter with higher chroma than other color hues
+No C,L sequence could permit using yellow and other color hues with
+these C and L values. Large swaths of beautiful colors would never
+be chosen for categorical color sets, and we just cannot have that.
+Cue the "de Blob" video game cut scene.
+* So the hope is to use HSL, and S,L value sequence to fill the gap.
+* Surprisingly, HSL hues have different spacing than HCL hues, which
+means even a red-yellow-blue color wheel will require new color warp
+adjustments.
+
+
+
 # colorjam 0.0.22.950
 
 ## bug fixes

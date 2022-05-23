@@ -1,3 +1,17 @@
+
+## TODO 22may2022
+
+* Migrate `platjam::design2colors()` here.
+
+   * Intended to take `data.frame` with group, subgroup,
+   and create a `list` of colors for each column, either
+   with named `character` color vectors named by value,
+   or color `functions` for `numeric` columns, as created
+   by `circlize::colorRamp2()`.
+
+* Implement HSL color space for categorical colors, slowly replacing
+HCL colorspace in `rainbowJam()`.
+
 ## TODO
 
 * Add optional parameter to `group2colors()` which applies

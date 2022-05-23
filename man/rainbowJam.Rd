@@ -154,7 +154,9 @@ jamba::showColors(list(version19=cat19, version20=cat20))
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
+\code{\link{sort_colors}()},
 \code{\link{subset_colors}()}
 }
 \concept{colorjam core}

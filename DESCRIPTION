@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.22.950
+Version: 0.0.23.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -10,7 +10,7 @@ Description: Jam Color manipulation functions, rainbow categorical colors
     re-usable named vector of colors for consistency across plots,
     convert data.frame to color, subsetColors.
 Depends: R (>= 3.0.0),
-    jamba (>= 0.0.64.900)
+    jamba (>= 0.0.82.900)
 Imports:
 Suggests: ggplot2,
    colorspace,

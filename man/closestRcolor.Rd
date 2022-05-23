@@ -71,8 +71,10 @@ closestRcolor(rainbowJam(12), showPalette=TRUE);
 \seealso{
 Other colorjam core: 
 \code{\link{blend_colors}()},
+\code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},
+\code{\link{sort_colors}()},
 \code{\link{subset_colors}()}
 }
 \concept{colorjam core}
