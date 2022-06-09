@@ -6,6 +6,19 @@
 
 * `subset_colors()` now calls `colors_to_df()` to create a `data.frame`,
 any of whose columns can be used to sort colors.
+* `theme_jam()` changes:
+
+   * new argument `strip.text.size` with default `ggplot2::rel(0.8)`
+   to help adjust facet panel strip text font size directly.
+   * new argument `panel.border` to make adjustments convenient,
+   by default panels now have thin dark gray outline.
+   Set `panel.border=NULL` to hide the border.
+
+* `scale_color_jam()`, `scale_fill_jam()`, `jam_pal()`:
+
+   * new argument `darken` is `logical`, when `darken=TRUE` it automatically
+   sets `darkFactor` and `sFactor` to reasonable values for subtle darkening.
+   This option is convenient for slightly darker outlines around points.
 
 ## new functions
 
