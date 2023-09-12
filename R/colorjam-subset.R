@@ -328,10 +328,7 @@ colors_to_df <- function
          stringsAsFactors=FALSE,
          check.names=FALSE,
          num=seq_along(x),
-         hex=farver::encode_colour(
-            alpha=alpha,
-            farver::decode_colour(x,
-               alpha=alpha))
+         hex=rgb2col(col2rgb(x))
       );
       if (length(names(x)) > 0) {
          x_df$name <- names(x);

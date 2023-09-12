@@ -436,6 +436,9 @@ col_linear_xf <- function
 #' jamba::showColors(jg1)
 #' showDichromat(jg1)
 #'
+#' jg1b <- make_jam_divergent("royalblue", main="Supplied as one color")
+#' jamba::showColors(jg1b)
+#'
 #' jg2 <- make_jam_divergent("slateblue", "firebrick", n=21)
 #' jamba::showColors(jg2)
 #' showDichromat(jg2)
@@ -444,13 +447,17 @@ col_linear_xf <- function
 #' jamba::showColors(jg3)
 #' showDichromat(jg3)
 #'
+#' # Compare manually assembled Blues-Reds to "RdBu_r"
 #' jg4 <- make_jam_divergent("Blues", "Reds", lite=TRUE, n=21)
 #' jamba::showColors(c(jg4,
-#'    list(BuRd=jamba::getColorRamp("RdBu_r", n=21))))
+#'    list(RdBu_r=jamba::getColorRamp("RdBu_r", n=21))))
 #'
-#' jg5 <- make_jam_divergent("inferno", "dodgerblue1", lite=FALSE, n=21, gradientWtFactor=1)
+#' # show "inferno"
+#' jg5 <- make_jam_divergent("inferno", lite=FALSE, n=21, gradientWtFactor=1)
 #' jamba::showColors(jg5)
 #'
+#' # Optional ComplexHeatmap
+#' if (jamba::check_pkg_installed("ComplexHeatmap")) {
 #' xseq <- seq(from=-1, to=1, by=0.1);
 #' mseq <- matrix(xseq, ncol=1);
 #' m <- mseq %*% t(mseq);
@@ -477,41 +484,26 @@ col_linear_xf <- function
 #'       color_bar="discrete"),
 #'    col=jg2[[1]])
 #' hm1 + hm2
-#'
-#' # same as above but showing where to use lens
-#' hm3 <- ComplexHeatmap::Heatmap(m[,1:10],
-#'    cluster_columns=FALSE,
-#'    cluster_rows=FALSE,
-#'    row_names_side="left",
-#'    border=TRUE,
-#'    heatmap_legend_param=list(
-#'       border=TRUE,
-#'       at=seq(from=-1, to=1, by=0.25),
-#'       color_bar="discrete"),
-#'    col=jamba::getColorRamp(jg3[[1]], divergent=TRUE, lens=2))
-#'
-#' hm4 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
-#'    cluster_columns=FALSE,
-#'    cluster_rows=FALSE,
-#'    border=TRUE,
-#'    heatmap_legend_param=list(
-#'       border=TRUE,
-#'       at=seq(from=-1, to=1, by=0.25),
-#'       color_bar="discrete"),
-#'    col=jamba::getColorRamp(jg2[[1]], divergent=TRUE, lens=2))
-#' hm3 + hm4
+#' }
 #'
 #' @param linear1 `character` input consisting of one of:
-#'    a single R color; a single color gradient name; or a vector
-#'    of R colors. When supplying a vector of colors, the order
-#'    is expected to be from blank to maximum color.
+#'    * a single `character` R color
+#'    * a single `character` color gradient name
+#'    * a `character` vector of R colors. When supplying a vector of colors,
+#'    the order is expected to be from blank to maximum color
 #' @param linear2 `character` input consisting of one of:
-#'    a single R color; a single color gradient name; or a vector
-#'    of R colors. When supplying a vector of colors, the order
-#'    is expected to be from blank to maximum color.
+#'    * a single `character` R color
+#'    * `NULL` in which case the color(s) defined by `linear1` are
+#'    passed to `color_complement()`
+#'    * a single `character` color gradient name
+#'    * a `character` vector of R colors. When supplying a vector of colors,
+#'    the order is expected to be from blank to maximum color
 #' @param lite `logical` indicating whether the middle color
 #'    should be lite (white), or when `lite=FALSE` the middle
-#'    color will be dark (black).
+#'    color will be dark (black). When `linear1` or `linear2` are provided
+#'    as a named color gradient, such as `"Reds"` or `"Blues"`, that
+#'    gradient is used as-is, even if the gradient is designed with
+#'    a light (or dark) neutral color, therefore ignoring `lite`.
 #' @param n `integer` number of final colors to produce. Note that
 #'    `n` must be an odd number, in order to preserve the middle color.
 #' @param ... additional arguments are passed to functions called
@@ -520,7 +512,7 @@ col_linear_xf <- function
 #' @export
 make_jam_divergent <- function
 (linear1,
- linear2,
+ linear2=NULL,
  lite=TRUE,
  n=21,
  ...)
@@ -533,24 +525,34 @@ make_jam_divergent <- function
       length(lite),
       length(n)));
    linear1 <- rep(linear1, length.out=n_out);
-   linear2 <- rep(linear2, length.out=n_out);
+   if (length(linear2) == 0) {
+      # try to determine complementary color
+      linear2 <- tryCatch({
+         color_complement(linear1)
+      }, error=function(e){
+         NULL
+      })
+      linear2 <- list();
+   } else {
+      linear2 <- rep(linear2, length.out=n_out);
+   }
    lite <- rep(lite, length.out=n_out);
    n <- rep(n, length.out=n_out);
 
    get_jam_gradient <- function(x, lite=TRUE, n=11, ...) {
-      if (length(x) == 1 && x %in% names(jam_linear)) {
-         if (lite) {
-            xcolors <- jam_linear[[x]];
+      if (length(x) == 1 && x %in% names(colorjam::jam_linear)) {
+         if (TRUE %in% lite) {
+            xcolors <- colorjam::jam_linear[[x]];
          } else {
-            xwhich <- match(x, gsub("_.+", "", names(jam_divergent)));
-            xcolors <- jam_divergent[[xwhich]];
+            xwhich <- match(x, gsub("_.+", "", names(colorjam::jam_divergent)));
+            xcolors <- colorjam::jam_divergent[[xwhich]];
             xcolors <- rev(head(xcolors, ceiling(length(xcolors)/2)));
          }
          jamba::getColorRamp(xcolors,
             n=n,
             ...)
       } else {
-         if (lite) {
+         if (TRUE %in% lite) {
             defaultBaseColor <- "white";
          } else {
             defaultBaseColor <- "black";
@@ -593,21 +595,34 @@ make_jam_divergent <- function
             lite=lite[k],
             n=nk,
             ...)), -1);
-      gr2 <- get_jam_gradient(linear2[[k]],
-         lite=lite[k],
-         n=nk,
-         ...);
-      if (1 == 2) {
-         if (lite[k]) {
-            gr1 <- head(rev(jam_linear[[linear1[k]]]), -1)
-            gr2 <- jam_linear[[linear2[k]]];
+      if (length(linear2) < k || length(linear2[[k]]) == 0) {
+         if (TRUE %in% lite) {
+            defaultBaseColor <- "white";
          } else {
-            n1 <- jamba::vigrep(paste0("^", linear1[k], "_"), names(jam_divergent));
-            n2 <- jamba::vigrep(paste0("_", linear2[k], "$"), names(jam_divergent));
-            gr1 <- head(jam_divergent[[n1]], 10)
-            gr2 <- tail(jam_divergent[[n2]], 11)
+            defaultBaseColor <- "black";
          }
+         gr2 <- c(defaultBaseColor,
+            rev(colorRampPalette(
+               color_complement(colorRampPalette(gr1)(3)))(nk - 1)))
+      } else {
+         gr2 <- get_jam_gradient(linear2[[k]],
+            lite=lite[k],
+            n=nk,
+            ...);
       }
+      # if (1 == 2) {
+      #    if (lite[k]) {
+      #       gr1 <- head(rev(colorjam::jam_linear[[linear1[k]]]), -1)
+      #       gr2 <- colorjam::jam_linear[[linear2[k]]];
+      #    } else {
+      #       n1 <- jamba::vigrep(paste0("^", linear1[k], "_"),
+      #          names(colorjam::jam_divergent));
+      #       n2 <- jamba::vigrep(paste0("_", linear2[k], "$"),
+      #          names(colorjam::jam_divergent));
+      #       gr1 <- head(colorjam::jam_divergent[[n1]], 10)
+      #       gr2 <- tail(colorjam::jam_divergent[[n2]], 11)
+      #    }
+      # }
       gr12 <- c(gr1, gr2);
       if (n == 0) {
          gr12 <- jamba::getColorRamp(gr12,

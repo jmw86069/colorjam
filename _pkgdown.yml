@@ -30,3 +30,7 @@ reference:
   desc: Functions to adjust hue color wheel for RGB, RYB, dichromat and other specifics
   contents:
   - has_concept("colorjam hue warp")
+- title: Colorjam deprecated functions
+  desc: Functions to be removed in future versions
+  contents:
+  - has_concept("colorjam deprecated")

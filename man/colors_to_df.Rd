@@ -87,6 +87,7 @@ Other colorjam sort:
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{color_complement}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},
 \code{\link{sort_colors}()},

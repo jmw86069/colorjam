@@ -15,9 +15,8 @@ scale_color_jam(
   darken = FALSE,
   alpha = 1,
   useGrey = 20,
-  h1 = NULL,
-  h2 = NULL,
-  preset = "custom"
+  preset = getOption("colorjam.preset", "dichromat2"),
+  step = getOption("colorjam.step", "v24")
 )
 }
 \arguments{

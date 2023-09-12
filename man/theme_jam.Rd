@@ -14,6 +14,7 @@ theme_jam(
   strip.text.size = ggplot2::rel(0.8),
   panel.grid.major.colour = "grey80",
   panel.grid.minor.colour = "grey90",
+  panel.background = ggplot2::element_rect(fill = "white", colour = NA),
   panel.border = ggplot2::element_rect(fill = NA, colour = "grey15"),
   axis.text.x.angle = 60,
   blankGrid = FALSE,
@@ -43,9 +44,10 @@ define direct or relative text font size, respectively.}
 \item{panel.grid.major.colour, panel.grid.minor.colour}{\code{character}
 colors for the major and minor grid lines, respectively.}
 
-\item{panel.border}{\code{element_rect} or \code{NULL} indicating the type of
-border to draw around each plot panel. When set to \code{NULL} the
-default is used for the \code{theme_default}.}
+\item{panel.background, panel.border}{\code{element_rect} or \code{NULL}
+indicating the type of background or border
+to draw around each plot panel. When set to \code{NULL} it is
+set to \code{ggplot2::element_blank()} which displays nothing.}
 
 \item{axis.text.x.angle}{\code{numeric} degrees to rotate the x-axis
 labels, apparently starts at 0 (horizontal) and goes

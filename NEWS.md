@@ -1,3 +1,178 @@
+# colorjam 0.0.24.900
+
+This version of colorjam turned into a bit of a refactor:
+
+* Color wheels are now stored as "presets":
+
+    * presets are stored within the colorjam environment
+    * preset names are given by `colorjam_presets()`
+    * preset values are accessed by `colorjam_presets("dichromat")`
+    * new presets are registered with `add_colorjam_preset()`
+    * the preset can be defined with `options("colorjam.preset")`
+
+* Rainbow colors are adjusted by Chroma/Luminance "steps":
+
+    * "steps" are stored in the colorjam environment
+    * Each step is a `list` with `numeric` vectors named `"C"` and `"L"`,
+    each with values within the range: `c(0, 100)`.
+    * steps are accessed with `colorjam_steps()`, `colorjam_steps("v24")`
+    * new steps are registered with `add_colorjam_step()`
+    * the steps can be defined with `options("colorjam.step")`
+    * Background:
+    
+        * `rainbowJam()` used arguments `Cvals` and `Lvals` to apply
+        a sequence of luminance/chroma values to a series of color hues.
+        The variation in C and L values was intended to maximize
+        visual distinctiveness of consecutive colors.
+        In fact, this process was the inspiration for `colorjam`,
+        to make rainbow catgorical colors more visually distinctive
+        than comparable functions that notably intend to produce colors
+        as similar as possible. Different motivations.
+        * `colorspace::rainbow_hcl(n, c, l)` accepts only one value per
+        `c` and `l` argument
+        * `grDevices::rainbow()` uses the non-uniform `hsv` color space,
+        and accepts multiple values for arguments `s` and `v`.
+        (To be fair, the `hcl.colors()`
+
+* Altogether `rainbowJam()` defines categorical colors with two core elements:
+
+    * `"preset"`: color wheel with starting color, to define the color hues.
+    * `"steps"`: series of Chroma/Luminance values to apply to color hues.
+
+* Starting color:
+
+    * The RGB color wheel classically "starts with" red.
+    * It could be because the first color in the visible spectra
+    ("ROY G. BIV": red, orange, yellow, green, blue, indigo, violet) is red.
+    However, in a color "wheel" the colors are rolled back on themselves,
+    so any color can be placed at the top. Red is traditional.
+    * After very heavy usage of this package, it became clear that assigning
+    categorical colors to statistical designs was not ideal.
+    Specifically, we standardized experiment designs so that "the control"
+    for each experiment factor is the first value in each column.
+    
+        * Some examples: `c("Control", "Dexamethasone", "Etoposide")`;
+        `c("Wildtype", "ADAM19_Knockout")`;
+        `c("Time0", "Time1", "Time2", "Time3")`
+        * The first group was always colored bright red;
+        subsequent groups were assigned orange, yellow, blue, purple.
+        * Dr. Ayland Letsinger asked why we didn't start with yellow
+        instead of red, so the control group would have a neutral color?
+        Brilliant.
+
+    * The new presets include:
+    
+        * `"dichromat2"` which starts with gold, proceeds in reverse to
+        red, purple, blue. (There is no green in the dichromat color wheel.)
+        * `"ybr"` derived by `"ryb"` except it starts with yellow,
+        proceeds "forward" to green, blue, purple, then red.
+
+* Added `cli` package dependency for improved messaging, particularly for
+deprecated function arguments.
+
+## Bug fixes
+
+* Added missing package prefix with internal references to `jam_linear`
+and `jam_divergent` data objects.
+
+## changes to existing functions
+
+* `rainbowJam()`
+
+    * argument `preset` is the primary definition of color wheel
+    * arguments `Cvals`,`Lvals`,`Crange`,`Lrange` are deprecated
+    (frankly, who is affected though, only me)
+    * arguments `h1`,`h2` are deprecated and ignored in favor of `preset`.
+    To use custom `h1`,`h2` they must be added to new preset then referred
+    by name.
+    * new argument `step` defines the sequence of `C` and `L` values
+    
+        * steps from specific previous versions of colorjam are available:
+        `"v19"`, `"v20"`, `"v23"`, and `"v24"`.
+        * steps were adjusted to minimize out of bounds colors, which
+        `colorspace` and `farver` handle by adjusting other color channels;
+        sometimes substantially changing the output color hue.
+        This change sometimes caused the color hue sequence to reverse itself
+        to accommodate the requested `C` and `L` values, and was the driving
+        use case for the refactored arguments `preset` and `steps`.
+
+* `color_pie()`
+
+    * text labels are rotated parallel to each pie wedge
+    * text labels use `jamba::shadowText()` and `jamba::setTextContrastColor()`
+    * default radius is now 1.1, to fit most plot devices.
+
+* `closestRcolor()`
+
+    * New argument `Cgrey` to recognize when input `x` colors are greyscale,
+    in which case they are matched with colors from `colorSet` which are
+    below `C_min` Chroma saturation. By default, color matching is much
+    improved when using a mix of saturated and unsaturated colors.
+
+* `scale_color_jam()`,`scale_fill_jam()`,`jam_pal()`
+
+    * ggplot2-related functions dropped arguments `h1`,`h2` (before they
+    could be used), and added argument `step`.
+    * default `preset="dichromat2` consistent with `rainbowJam()`.
+
+* `h2hw()`,`hw2h()`,`h2hwOptions()`
+
+    * new argument default `preset=getOption("colorjam.preset", "custom")`
+    behaves as previous `preset="custom"` except that it now honors
+    when the option `"colorjam.preset"` is defined.
+    * The only two exceptions to `preset` are with `blend_colors()` and
+    `closestRcolor()` which both default to `"ryb"` because those specific
+    use cases favor using the red-yellow-blue color wheel.
+
+* `approx_degrees()`
+
+    * refactored to improve handling of discontinuous angles,
+    for example when the mapped color wheel wraps above 360 degrees,
+    or below 0 degrees.
+
+* `make_jam_divergent()`
+
+    * New behavior: When `linear2` is not supplied, it calls
+    `color_complement()` to determine a reasonable opposing color,
+    so one can call `make_jam_divergent("red")` and it will provide
+    a reasonable
+
+## new functions
+
+* `adjust_hue_warp()`
+
+    * helper function to rotate or reverse a color wheel by way of
+    the color hue warp. Maybe eventually the colors can start at gold/yellow
+    and continue either to red or blue, so that the first assigned
+    color will be more "neutral" (yellow) since the first group
+    in a statistical comparison is typically the control.
+    People have suggested the default color for a control group not
+    be brightest red.
+
+* `colorjam_preset()`,`add_colorjam_preset()`
+
+    * manages recognized colorjam color hue presets, which allows for
+    custom preset names without modifying the package code.
+    * intended to register (or delete) colorjam named presets, which
+    are custom color wheels.
+
+* `colorjam_step()`,`add_colorjam_step()`
+
+    * A "step" is a sequence of Luminance/Chroma values intended to
+    maximize visual distinctiveness of consecutive colors.
+    * The purpose of storing steps in the colorjam environment is to
+    allow a convenient way to select a step sequence rather than by
+    defining individual C and L values during the function call.
+    * Specifically, the steps are driven by the change to start colors
+    near yellow, rather than starting at red. For color sequences starting
+    at red, early colors should generally be darker; for sequences starting
+    at yellow or gold, the early colors should generally be lighter.
+
+* `h2hwOptions()`
+
+    * now calls `colorjam_presets()` instead of using internal values.
+
+
 # colorjam 0.0.23.900
 
 * bumped dependency `jamba (>= 0.0.83.900)` to include `hsl2col()`, `col2hsl()`

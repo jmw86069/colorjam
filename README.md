@@ -1,28 +1,52 @@
 
 # colorjam <img src="man/figures/colorjam_logo.png" width="133px" height="154px" align="right" style="padding-left:10px;background-color:white;" />
 
-The goal of colorjam is to provide useful color manipulation functions
-for R data visualization.
+## Why colorjam?
 
-It includes methods to generate dynamic categorical colors of arbitrary
-length, providing as much visual separation between adjacent colors as
-currently feasible.
+`colorjam` provides visually distinct categorical colors of arbitrary
+length, using an optimized pattern of chroma/luminance values.
+
+- **Scalable**. Generate visually distinct categorical colors of
+  arbitrary length.
+- **Color-blindness friendly**. Caveat: No set of colors can be
+  represented perfectly for all types of color blindness. However the
+  default color wheel in `colorjam` was optimized for maximal visual
+  distinction between colors, informed by the three major types of color
+  blindness simulated by the fantastic R package `dichromat()`.
+- **Optimized for experiment design**. The first color default is gold,
+  for experiment design factors that encode the control/reference as the
+  first factor level. This reference is assigned the neutral color
+  “gold” rather than bright red.
+- **Flexible**. The color wheel can be changed to red-yellow-blue
+  (painting), red-green-blue (default for computer monitors), or
+  customized completely. The chroma/luminance step functions can be
+  re-ordered or customized as well.
 
 ## Installation
 
-To install colorjam, use the `devtools` package installer:
+To install colorjam, you may use the `remotes` package:
 
-> devtools::install\_github(“jmw86069/colorjam”);
+``` r
+remotes::install_github("jmw86069/colorjam");
+```
 
-Note that colorjam Depends upon the “jamba” package for some
-manipulations.
+OR, we recommend the package `pacman` which helps keep the package
+updated:
+
+``` r
+### if necessary, install pacman:
+# install.packages("pacman")
+library(pacman)
+p_load_current_gh("jmw86069/colorjam")
+```
+
+The `colorjam` package is being prepared for CRAN in the “near” future.
 
 ## Command reference
 
-A full command reference is provided using the `pkgdown::build_site()`
-function, and is available here:
+The full command reference is available here:
 
-[Full command reference](https://jmw86069.github.io/colorjam)
+[`colorjam` command reference](https://jmw86069.github.io/colorjam)
 
 ## Quick start with colorjam
 
@@ -34,6 +58,8 @@ library(jamba);
 ```
 
 ### Categorical colors
+
+#### dichromat
 
 First generate some basic categorical colors, `n=5` colors. We will use
 the function `jamba::showColors()` to display the colors.
@@ -48,54 +74,103 @@ To illustrate the effect of increasing categorical colors, we will
 create a list of categorical colors with increasing `n`.
 
 ``` r
-colorList <- lapply(nameVector(c(5, 10, 20)), function(n){
-   rainbowJam(n);
+colorList <- lapply(nameVector(c(12, 6, 3)), function(n){
+   rainbowJam(n, nameStyle="n");
 });
-showColors(colorList,
+color_pie(colorList,
    main="Dichromat color wheel (default colorjam)");
 ```
 
 ![](man/figures/README-cat_list_dichromat-1.png)<!-- -->
 
-By default, colorjam uses a “warped” color wheel, which produces a
-dichromat (color blind friendly) color wheel.
+By default, colorjam uses a “dichromat” color wheel, which produces
+color blindness friendly colors by avoiding a subset of colors that are
+not visually distinct for the three major types of color blindness.
 
-There are several custom color wheel “presets”, for example
-red-yellow-blue color wheel can be used with `preset="ryb"`.
+#### red-yellow-blue
+
+The recommended “full rainbow” color wheel is “red-yellow-blue”,
+distinctly different from the “red-green-blue” color wheel used in
+computer monitor color generation, and which underpins the majority of
+color functions in R.
+
+The red-yellow-blue color wheel can be selected with:
+
+- `preset="ryb"` for red-yellow-blue
+- `preset="ryb2"` for red-yellow-blue that starts with yellow (shiown
+  below).
 
 ``` r
-colorList1 <- lapply(nameVector(c(5, 8, 16)), function(n){
-   rainbowJam(n, preset="ryb", hue_pad_percent=100, do_hue_pad=TRUE);
+colorList1 <- lapply(nameVector(c(16, 8, 5)), function(n){
+   rainbowJam(n, preset="ryb2");
 });
-showColors(colorList1,
-   main="Red-Yellow-Blue color wheel (previous default rainbowJam)");
+color_pie(colorList1,
+   main="Red-Yellow-Blue color wheel (starting at yellow)");
 ```
 
 ![](man/figures/README-cat_list_ryb-1.png)<!-- -->
 
-To view Red-Green-Blue colors using the default color wheel in base R,
-supply `warpHue=FALSE` as shown below, or use `preset="rgb"` to define
-the red-green-blue color wheel.
+The benefit to starting color assignment with yellow is notable when the
+first category in a set is considered the reference or control group.
+For example, in a treatment study, the treatments are often encoded in
+an order `c("Control", "Dexamethasone", "Etoposide")` so that
+`"Control"` appears first. This order helps define statistical
+comparisons where terms are compared to `"Control"`. As such, assigning
+a neutral color to the control term is quite convenient.
+
+Previous versions of colorjam used a red-yellow-blue color wheel
+starting with red.
 
 ``` r
-colorList2 <- lapply(nameVector(c(5, 10, 20)), function(n){
-   rainbowJam(n, warpHue=FALSE);
+colorList1 <- lapply(nameVector(c(16, 8, 5)), function(n){
+   rainbowJam(n, preset="ryb", step="v23", nameStyle="n");
 });
-showColors(colorList2,
+color_pie(colorList1,
+   main="Red-Yellow-Blue color wheel (previous default rainbowJam)");
+```
+
+![](man/figures/README-cat_list_ryb_prev-1.png)<!-- -->
+
+#### red-green-blue
+
+Similarly, the default color wheel “red-green-blue” can be used:
+
+- `preset="rgb"` the default RGB color wheel
+- `preset="rgb2"` the default RGB color wheel, starting with yellow
+
+The main reason not to use RGB is that so much of the color wheel is
+green-blue, and green-blue are the most difficult to distinguish from
+other colors with color blindness sensitive viewers.
+
+``` r
+colorList2 <- lapply(nameVector(c(20, 10, 5)), function(n){
+   rainbowJam(n, preset="rgb2");
+});
+color_pie(colorList2,
+   main="Red-Green-Blue color wheel (starting at yellow)");
+```
+
+![](man/figures/README-cat_list_rgb2-1.png)<!-- -->
+
+``` r
+colorList2 <- lapply(nameVector(c(20, 10, 5)), function(n){
+   rainbowJam(n, preset="rgb", step="v23");
+});
+color_pie(colorList2,
    main="Red-Green-Blue color wheel (base R)");
 ```
 
 ![](man/figures/README-cat_list_rgb-1.png)<!-- -->
 
-### Color-blending (new in version 0.0.16.900)
+### Color-blending
 
 The color wheel red-yellow-blue is particularly effective for
-color-mixing operations. The function `blend_colors()` has some useful
-features:
+color-mixing. The function `blend_colors()` has some useful features:
 
-  - Paint color mixing style (blue + yellow = green)
-  - Able to mix more than two colors
-  - Accounts for color transparency during mixing
+- **Paint-style blending**. blue + yellow = green. (For default RGB:
+  blue + yellow = grey)
+- **Scalable for multiple colors**. Able to mix more than two colors.
+- **Transparency-aware**. Accounts for color transparency during mixing.
 
 The argument `do_plot=TRUE` will plot a visual summary of the mixing
 results.
@@ -120,55 +195,30 @@ blent3 <- blend_colors(c("gold", "red"), do_plot=TRUE);
 
 ``` r
 
-blent4 <- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);
+# blent4 <- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);
+# blent5 <- blend_colors(c("red", "green4"), do_plot=TRUE);
+# blent6 <- blend_colors(c("blue", "darkorange"), do_plot=TRUE);
+# 
+# blent7 <- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);
+
+blent8 <- blend_colors(c("red1", "red3", "blue"), do_plot=TRUE);
 ```
 
 ![](man/figures/README-blend_colors1-4.png)<!-- -->
 
 ``` r
-blent5 <- blend_colors(c("red", "green4"), do_plot=TRUE);
+blent9 <- blend_colors(c("red1", "blue1", "blue4"), do_plot=TRUE);
 ```
 
 ![](man/figures/README-blend_colors1-5.png)<!-- -->
 
 ``` r
-blent6 <- blend_colors(c("blue", "darkorange"), do_plot=TRUE);
-```
 
-![](man/figures/README-blend_colors1-6.png)<!-- -->
-
-``` r
-
-blent7 <- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);
-```
-
-![](man/figures/README-blend_colors1-7.png)<!-- -->
-
-``` r
-
-blent8 <- blend_colors(c("red1", "red3", "blue"), do_plot=TRUE);
-```
-
-![](man/figures/README-blend_colors1-8.png)<!-- -->
-
-``` r
-blent9 <- blend_colors(c("red1", "blue1", "blue4"), do_plot=TRUE);
-```
-
-![](man/figures/README-blend_colors1-9.png)<!-- -->
-
-``` r
-
-blent10 <- blend_colors(c("blue", "ivory"), do_plot=TRUE);
-```
-
-![](man/figures/README-blend_colors1-10.png)<!-- -->
-
-``` r
+# blent10 <- blend_colors(c("blue", "ivory"), do_plot=TRUE);
 blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
 ```
 
-![](man/figures/README-blend_colors1-11.png)<!-- -->
+![](man/figures/README-blend_colors1-6.png)<!-- -->
 
 ### Color-splitting
 
@@ -181,133 +231,74 @@ group, then splitting those colors by a sub-grouping.
 ``` r
 colorSet <- rainbowJam(5);
 colorSet4 <- color2gradient(colorSet, n=4);
-showColors(list(colorSet=rep(colorSet, each=4),
-   colorSet4=unname(colorSet4)),
+color_pie(list(
+   colorSet4=unname(colorSet4),
+   colorSet=rep(colorSet, each=4)),
    main="Color split into 4 additional subsets.");
 ```
 
 ![](man/figures/README-color_split-1.png)<!-- -->
 
-The color gradient can be tuned to increase or reduce the contrast
-between the light and dark colors:
+The intensity of the color gradient is adjusted with `dex`, the darkness
+expansion factor.
 
 ``` r
 colorSet <- rainbowJam(5);
 colorSet4a <- color2gradient(colorSet,
    n=4,
-   gradientWtFactor=1/4);
+   dex=1/2);
 colorSet4c <- color2gradient(colorSet,
    n=4,
-   gradientWtFactor=1);
+   dex=3);
 colorSet4b <- color2gradient(colorSet,
    n=4,
-   gradientWtFactor=2);
-showColors(list(colorSet=rep(colorSet, each=4),
-   `gradientWtFactor=1/4`=unname(colorSet4a),
-   `gradientWtFactor=2/3\n(default)`=unname(colorSet4),
-   `gradientWtFactor=1`=unname(colorSet4c),
-   `gradientWtFactor=2`=unname(colorSet4b)),
-   main="Colors adjusted with gradientWtFactor");
+   dex=10);
+color_pie(list(
+   `dex=10`=unname(colorSet4b),
+   `dex=3`=unname(colorSet4c),
+   `dex=1\n(default)`=unname(colorSet4),
+   `dex=1/2`=unname(colorSet4a),
+   colorSet=rep(colorSet, each=4)),
+   main="Intensity of the gradient is adjusted with 'dex'\n(darkness expansion factor)");
 ```
 
 ![](man/figures/README-color_split_wt-1.png)<!-- -->
 
-### Assigning colors to groups
+### ggplot2 colors
 
-The function `group2colors()` takes a vector of group labels, and
-assigns categorical colors using `rainbowJam()`. To illustrate the
-process, each group will have a different number of replicates.
-
-I use the helper function “makeNames()” which creates unique names for
-each vector item. Typically the names represent sample identifiers of
-some kind. The names are retained in the output color vector, which can
-be helpful to ensure data is in the correct order during a sequence of
-analysis steps.
-
-``` r
-groupLabels <- rep(c("Wildtype", "Knockout", "Treated"),
-   c(3, 5, 4));
-names(groupLabels) <- makeNames(groupLabels);
-groupColors <- group2colors(groupLabels);
-print(data.frame(groupLabels, groupColors));
-#>             groupLabels groupColors
-#> Wildtype_v1    Wildtype     #0091FF
-#> Wildtype_v2    Wildtype     #0091FF
-#> Wildtype_v3    Wildtype     #0091FF
-#> Knockout_v1    Knockout     #D92029
-#> Knockout_v2    Knockout     #D92029
-#> Knockout_v3    Knockout     #D92029
-#> Knockout_v4    Knockout     #D92029
-#> Knockout_v5    Knockout     #D92029
-#> Treated_v1      Treated     #FFB600
-#> Treated_v2      Treated     #FFB600
-#> Treated_v3      Treated     #FFB600
-#> Treated_v4      Treated     #FFB600
-showColors(groupColors);
-```
-
-![](man/figures/README-group_colors-1.png)<!-- -->
-
-Colors are assigned in order, after sorting with `jamba::mixedSort()`,
-which provides alphanumeric sorting. However, if the input vector is a
-factor, the order of factor levels is maintained.
-
-Sometimes it is helpful to split the colors by replicate using a color
-gradient, using `jamba::color2gradient()`. This technique is helpful
-when trying to make replicates visually distinct in a data
-visualization.
-
-``` r
-groupColorsSplit <- group2colors(groupLabels,
-   useGradient=TRUE);
-showColors(groupColorsSplit);
-```
-
-![](man/figures/README-group_colors_split-1.png)<!-- -->
-
-### ggplot2 color functions
-
-There are a couple color functions useful with ggplot2.
-
-  - scale\_color\_jam() defines categorical colors to the ggplot2
-    `colour` property.
-  - scale\_fill\_jam() defines categorical colors to the ggplot2 `fill`
-    property.
-
-These functions can be used directly in ggplot2 calls:
+- `scale_color_jam()` defines categorical colors for ggplot2 `colour`
+- `scale_fill_jam()` defines categorical colors for ggplot2 `fill`
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
-   dsamp <- diamonds[sample(nrow(diamonds), 1000),];
-   d <- ggplot(dsamp, aes(carat, price)) +
-      geom_point(aes(colour=cut, fill=cut), size=4, shape=21);
+   dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+   d <- ggplot2::ggplot(dsamp, ggplot2::aes(carat, price)) +
+      ggplot2::geom_point(ggplot2::aes(colour=cut, fill=cut), size=4, shape=21);
    
    d +
       scale_color_jam() +
       scale_fill_jam() +
-      ggtitle("scale_color_jam()");
+      ggplot2::ggtitle("scale_color_jam()");
 }
 ```
 
 ![](man/figures/README-ggplot_functions-1.png)<!-- -->
 
-Some plots use `"fill"` and `"colour"` properties, where the `"colour"`
-defines an outline. In this case, the colors can be adjusted to be
-lighter or darker using the `darkFactor` argument. The effect is to make
-the outline color slightly darker, and the fill color slightly brighter.
+Colors can be adjusted for darkness, saturation, to make interesting
+point shapes:
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
    d +
       scale_color_jam(darkFactor=1.5) +
       scale_fill_jam(darkFactor=-1.2) +
-      ggtitle("Adjustment using 'darkFactor'");
+      ggplot2::ggtitle("Adjustment using 'darkFactor'");
 }
 ```
 
 ![](man/figures/README-ggplot_functions_outline-1.png)<!-- -->
 
-### Alternate ggplot2 theme
+### Custom ggplot2 theme
 
 An alternative ggplot2 theme is provided, which by default does not use
 the newspaper-grey background color.
@@ -317,31 +308,24 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
    d +
       scale_color_jam(darkFactor=1.5) +
       scale_fill_jam(darkFactor=-1.2) +
-      ggtitle("theme_jam()") +
+      ggplot2::ggtitle("theme_jam()") +
       theme_jam()
 }
 ```
 
 ![](man/figures/README-ggplot2_theme-1.png)<!-- -->
 
-Notably, this function provides some common arguments which can be
-customized.
+This function provides some common arguments to customize:
 
-  - `base_size` = The default font size in points.
-  - `blankGrid` = boolean which removes all background grid lines,
-    alternatively use `blankXgrid` or `blankYgrid` for control of either
-    the x-axis or y-axis, respectively.
-
-For example, when creating figures for presentation slides or other
-documents, it can be helpful to make the font substantially larger than
-would be comfortable on a computer screen.
+- `base_size`: The default font size in points.
+- `blankGrid`: `logical` which removes all background grid lines.
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
    d +
       scale_color_jam(darkFactor=1.5) +
       scale_fill_jam(darkFactor=-1.2) +
-      ggtitle("theme_jam()") +
+      ggplot2::ggtitle("theme_jam()") +
       theme_jam(base_size=24)
 }
 ```
@@ -350,35 +334,36 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
 ### Naming colors
 
-A small but useful function `closestRcolor()` takes a vector of colors,
-and returns a vector of the closest R color name based upon the colors
-defined by `colors()`.
+`closestRcolor()` is used to assign a color name, matching the closest
+reference color in a vector. The method uses HCL color space with the
+red-yellow-blue color wheel, and custom weighting for H, C, and L color
+channels.
 
-The name is sometimes easier to remember and re-use than the hex format.
+It even matches greyscale colors properly, ignoring the unused “hue”
+channel when saturation is very low.
 
-The function has an optional argument `showPalette=TRUE` which will plot
-the original colors as well as the closest R color for comparison.
+The argument `showPalette=TRUE` will plot the original colors and the
+closest R colors for comparison.
 
 ``` r
-closestRcolor(rainbowJam(12),
+closestRcolor(c(rainbowJam(12), "grey"),
    showPalette=TRUE);
 ```
 
 ![](man/figures/README-color_names-1.png)<!-- -->
 
-    #>          #D92029          #FF9C74          #FF6300          #A34F00 
-    #>     "firebrick3"    "lightsalmon"         "tomato"         "sienna" 
-    #>          #00D9FF          #0084E9          #0061FF          #B8C1FF 
-    #>     "turquoise2"    "dodgerblue2"     "royalblue2"   "lightskyblue" 
-    #>          #956FFF          #7D24FA          #FF65FF          #D43FCD 
-    #> "lightslateblue"        "purple2"        "orchid1"       "magenta3"
+    #>          #F7C53E          #C35E00          #FF8A66          #DC726B 
+    #>          "gold2"     "chocolate3"        "salmon1"  "palevioletred" 
+    #>          #FF89BA          #E86CED          #E9C0FF          #9169F9 
+    #> "palevioletred1"        "orchid2"          "plum1" "lightslateblue" 
+    #>          #AFA5FF          #8891EE          #95C3FF          #43AAFF 
+    #>     "steelblue1" "cornflowerblue"       "skyblue1"     "steelblue2" 
+    #>             grey 
+    #>           "gray"
 
-Of course, not all hex colors have a close match in the named R colors,
-but the closest color is returned nonetheless.
+### Pre-defined color gradients (08-Apr-2021)
 
-### Fixed color gradients (new in version 0.0.19.900, as of 08-Apr-2021)
-
-Two new fixed gradients were added, motivated by the need for
+Two pre-defined gradients were added, motivated by the need for
 linear/sequential and divergent color gradients that are also color
 blindness friendly.
 
@@ -402,35 +387,22 @@ jamba::showColors(jam_divergent)
 
 ![](man/figures/README-jam_divergent_1-1.png)<!-- -->
 
-The motivating example is showing genome sequence coverage heatmaps from
-something like a ChIP-seq experiment. The coverage data itself would use
-a linear gradient. If experimental data were compared to control data,
-using subtraction for example, the resulting coverage would use a
-divergent gradient with the same primary name as the coverage. An
-example would be `"jam_linear$firebrick"` for coverage, and
-`"jam_divergent$firebrick_skyblue"` for coverage difference.
+The driving use case was to display genome sequence coverage heatmaps
+with slightly different colors for each type of signal. We wanted linear
+and divergent color gradients to use in tandem, for example
+`"jam_linear$firebrick"` and `"jam_divergent$firebrick_skyblue"`.
 
-See either the `"platjam" R package (jmw86069/platjam) or the main
-package it extends from Bioconductor,`“EnrichedHeatmap”`, from the
-author of the amazing package`“ComplexHeatmap”\`.
+### Color gradients
 
-### Color gradient manipulations
+#### Two-step linear gradients
 
 Two new functions provide some interesting and useful features.
 
-`twostep_gradient()` makes an “enhanced” linear/sequential gradient by
-combining the visual effects of two color gradients together. This
-technique is widely used, and famously demonstrated by Dr. Brewer in the
-R package `RColorBrewer` in her use of linear color gradients that also
-employ a subtle hue color shift to improve visible clarity between color
-steps.
+`twostep_gradient()` combines two linear gradients into one linear
+gradient, increasing the visual distinction across the gradient. It is
+easier to show than to explain.
 
-Essentially the function takes two colors, produces a linear gradient
-for each individually, then blends them using a gradually increasing
-weight along the steps. The argument `debug=TRUE` will create a plot
-showing each individual color, then the final blended result. The
-example below uses `"orange2"` and `"firebrick"` and produces a much
-more visibly distinctive linear gradient.
+Two linear gradients, based upon orange and red, are combined:
 
 ``` r
 ts1 <- twostep_gradient("orange2", "firebrick", n=11, debug=TRUE)
@@ -451,6 +423,8 @@ title("orange2 + firebrick");
 
 ![](man/figures/README-twostep_1-1.png)<!-- -->
 
+Two linear gradients, based upon aquamarine and blue, are combined:
+
 ``` r
 ts2 <- twostep_gradient("aquamarine", "dodgerblue", n=11, debug=TRUE)
 #>       w1    w2
@@ -470,13 +444,10 @@ title("aquamarine + dodgerblue");
 
 ![](man/figures/README-twostep_2-1.png)<!-- -->
 
-`make_jam_divergent()` is the next color gradient function in the chain,
-intended to combine two linear gradients into one divergent gradient. It
-is useful in that it accepts a single color, the name of a known color
-gradient, or a vector of colors for each “half” of the divergent color
-gradient. Oh and it can use a lite or dark baseline color.
+#### Custom divergent gradients
 
-The first use case is to combine the colors from `twostep_gradient()`:
+`make_jam_divergent()` combines two linear gradients, using the two
+gradients created above:
 
 ``` r
 ts1ts2 <- make_jam_divergent(list(ts2=ts2),
@@ -486,108 +457,3 @@ jamba::showColors(ts1ts2)
 ```
 
 ![](man/figures/README-div_1-1.png)<!-- -->
-
-Another example re-creates a widely used yellow-black-purple color
-gradient, by first expanding each linear gradient, then combines them.
-
-For kicks, we use single colors to create a comparable “flat” one-step
-divergent gradient, which is still quite nice.
-
-``` r
-gr1d <- twostep_gradient("slateblue1", "purple", debug=TRUE, lite=FALSE)
-#>       w1    w2
-#> 1  1.000 0.000
-#> 2  1.000 0.000
-#> 3  0.838 0.162
-#> 4  0.686 0.314
-#> 5  0.544 0.456
-#> 6  0.414 0.586
-#> 7  0.296 0.704
-#> 8  0.192 0.808
-#> 9  0.105 0.895
-#> 10 0.037 0.963
-#> 11 0.000 1.000
-```
-
-![](man/figures/README-div_2-1.png)<!-- -->
-
-``` r
-gr2d <- twostep_gradient("darkorange", "gold", debug=TRUE, lite=FALSE)
-#>       w1    w2
-#> 1  1.000 0.000
-#> 2  1.000 0.000
-#> 3  0.838 0.162
-#> 4  0.686 0.314
-#> 5  0.544 0.456
-#> 6  0.414 0.586
-#> 7  0.296 0.704
-#> 8  0.192 0.808
-#> 9  0.105 0.895
-#> 10 0.037 0.963
-#> 11 0.000 1.000
-```
-
-![](man/figures/README-div_2-2.png)<!-- -->
-
-``` r
-div12d <- make_jam_divergent(list(gr1d=gr1d), list(gr2d=gr2d))
-
-div12dflat <- make_jam_divergent("purple", "gold", lite=FALSE)
-jamba::showColors(list(
-   flat=div12dflat[[1]],
-   twostep=div12d[[1]]))
-title("Comparison of flat 'purple-black-yellow' to twostep_gradient()")
-```
-
-![](man/figures/README-div_2-3.png)<!-- -->
-
-It becomes more clear when using a light background. Note that
-`jam_make_divergent()` does a fairly good job already with just one
-color on each “side”.
-
-``` r
-gr1 <- twostep_gradient("slateblue", "purple", debug=TRUE)
-#>       w1    w2
-#> 1  1.000 0.000
-#> 2  1.000 0.000
-#> 3  0.838 0.162
-#> 4  0.686 0.314
-#> 5  0.544 0.456
-#> 6  0.414 0.586
-#> 7  0.296 0.704
-#> 8  0.192 0.808
-#> 9  0.105 0.895
-#> 10 0.037 0.963
-#> 11 0.000 1.000
-```
-
-![](man/figures/README-div_3-1.png)<!-- -->
-
-``` r
-gr2 <- twostep_gradient("gold", "darkorange", debug=TRUE)
-#>       w1    w2
-#> 1  1.000 0.000
-#> 2  1.000 0.000
-#> 3  0.838 0.162
-#> 4  0.686 0.314
-#> 5  0.544 0.456
-#> 6  0.414 0.586
-#> 7  0.296 0.704
-#> 8  0.192 0.808
-#> 9  0.105 0.895
-#> 10 0.037 0.963
-#> 11 0.000 1.000
-```
-
-![](man/figures/README-div_3-2.png)<!-- -->
-
-``` r
-div12 <- make_jam_divergent(list(gr1=gr1), list(gr2=gr2))
-div12flat <- make_jam_divergent("purple", "gold")
-jamba::showColors(list(
-   flat=div12flat[[1]],
-   twostep=div12[[1]]))
-title("Comparison of flat 'purple-black-yellow' to twostep_gradient(),\nwith light baseline color")
-```
-
-![](man/figures/README-div_3-3.png)<!-- -->

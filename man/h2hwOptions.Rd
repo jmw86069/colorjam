@@ -11,9 +11,7 @@ h2hwOptions(
   preset_names = c("custom", "none", "dichromat", "rgb", "ryb", "ryb1", "ryb2", "ryb3"),
   default_preset = "dichromat",
   reset = FALSE,
-  setOptions = c("ifnull", "TRUE", "FALSE"),
-  h1default = NULL,
-  h2default = NULL,
+  setOptions = c("FALSE", "TRUE", "ifnull"),
   verbose = FALSE,
   ...
 )
@@ -38,13 +36,18 @@ the "to" hue angles, also referred to as "hue" or "h".}
 \itemize{
 \item \code{"custom"} uses values defined in \code{options("h2hw.h1")}
 and \code{options("h2hw.h2")} if they exist, otherwise \code{default_preset}.
-\item \code{"ryb"} red-yellow-blue;
-\code{"dichromat"} color wheel intended to be color-blind friendly
-based upon simulated output as from the  \code{dichromat::dichromat()} package;
-\item \code{"rgb"} or \code{"none"} both use the hue defined in R as red-green-blue;
-\item \code{"ryb1"},\code{"ryb2"},\code{"ryb3"} experimental red-yellow-blue alternatives
-that continue to modify the effect of the huge blue-green range
-of hue angles.
+\item other \code{character} values obtained by \code{colorjam_presets()}, some
+examples include:
+\itemize{
+\item \code{"dichromat"} (default) color wheel intended to be color-blind
+friendly by omitting much of the green color region from the color
+wheel, and by reviewing output by \code{dichromat::dichromat()}
+\item \code{"ryb"} basic red-yellow-blue color wheel
+\item \code{"ryb1"},\code{"ryb2"},\code{"ryb3"} experimental red-yellow-blue
+alternative color wheels designed to emphasize various features
+in the red-orange-yellow-green range to varying degrees.
+\item \code{"rgb"} for the default R red-green-blue color wheel
+}
 }}
 
 \item{preset_names}{\code{character} vector of valid \code{preset} values,
@@ -62,9 +65,6 @@ all other \code{preset} and \code{default_preset} arguments are ignored.}
 update \code{options()} for \code{"h2hw.h1"} and \code{"h2hw.h2"}. When \code{"ifnull"}
 the \code{options()} are only updated if they were previously \code{NULL}.}
 
-\item{h1default, h2default}{deprecated and ignored in this version
-of the function.}
-
 \item{verbose}{logical whether to print verbose output}
 }
 \value{
@@ -72,44 +72,51 @@ list with names \code{h1} and \code{h2} containing numeric vectors
 of hues between 0 and 360.
 }
 \description{
-Get hue color warp options used to convert to and from warped hues
+Get hue color warp options used to convert color wheels
 }
 \details{
-This function retrieves, and/or defines, the \code{h1} and \code{h2}
+This function retrieves and/or defines, the \code{h1} and \code{h2}
 hue vectors used to convert between \code{h1} "hue warp", and
-\code{h2} "default hue". The "default" hue is used by standard R
-functions such as \code{colorspace::polarLUV()}
-\code{grDevices::hcl()}, and \code{farver::convert_colour()},
-based upon the red-green-blue color wheel in typical computer
-video displays.
+\code{h2} "actual hue".
 
-The \code{h1} values may represent colors on red-yellow-blue color wheel
-hue, while \code{h2} represents the corresponding hue in R "default hue"
-space. The conversion is non-linear, therefore it warps (bends) the
-color range accordingly.
+The "actual" hue is used by standard R #' functions such as
+\code{colorspace::polarLUV()}, \code{grDevices::hcl()}, and
+\code{farver::convert_colour()}.
 
-The output values from this function are used with \code{approx_degrees()}
-which either performs the conversion, or returns a function to
-perform the conversion.
+The mapping from \code{h1} to \code{h2} allows customization of the spacing
+and order of colors, which allows emulation of a red-yellow-blue
+color wheel for example.
 
-There are three \code{options()} used when available, intended to help
-custom states to have persistence across other function calls.
-\enumerate{
-\item \code{options("colorjam.preset")} which keeps track of the current
-color warp preset.
-\item \code{options("h2hw.h1")} defines the \code{h1} value.
-\item \code{optinos("h2hw.h2")} defines the \code{h2} value.
+The \code{h1} represents the color hue in terms of a degree angle ranging
+from 0 to 360 - a full circle - for the observer. It is then
+transformed to \code{h2} for use in generating actual R colors.
+\itemize{
+\item \code{colorjam_presets()} lists all recognized colorjam presets.
+\item \code{add_colorjam_preset()} will add or overwrite a colorjam preset by name.
 }
 
-Note that \code{options("h2hw.h1")} and \code{options("h2hw.h2")} are only
-used when \code{preset="custom"}, otherwise the named preset will
-be used as first priority.
+In general, most colorjam functions with argument \code{preset} will
+follow this progression:
+\itemize{
+\item Argument \code{preset=getOption("colorjam.preset", "custom")}
+which uses \code{preset} when defined, otherwise \code{"custom"}.
+\item When this option matches a recognized preset name, the
+corresponding \code{h1},\code{h2} values are used.
+\item When \code{preset="custom"}, arguments \code{h1},\code{h2} will also
+poll \code{getOption("h2hw.h1")} and \code{getOption("h2hw.h2")} for
+default values.
+\item When neither \code{h1},\code{h2} is defined, the argument
+\code{default_preset="dichromat"} is used to obtain \code{h1},\code{h2} values.
+}
 
-To disable the warped hue mechanic, set \code{preset="none"} or define
-\code{h1 = h2} so the conversion is always 1:1.
+To disable the warped hue mechanic, set \code{preset="rgb"} which
+usess the default R color wheel with no adjustment.
+\subsection{Details}{
 
-When \code{preset="custom"} and \code{h1} and \code{h2} are not defined, the
-preset is set to the value of \code{default_preset}.
+The \code{h1},\code{h2} values are passed to \code{approx_degrees()} to convert
+hue degree angles. See \code{adjust_hue_warp()} for detailed examples
+of manipulating color warp values.
+}
 }
 \examples{
 h2hwOptions()
@@ -122,15 +129,19 @@ h2hw(300)
 }
 \seealso{
 Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
 \code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
 \code{\link{display_degrees}()},
 \code{\link{h2hw}()},
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()}
 
 Other hue warp functions: 
-\code{\link{h2hw}()},
-\code{\link{hw2h}()}
+\code{\link{h2hw}()}
 }
 \concept{colorjam hue warp}
 \concept{hue warp functions}

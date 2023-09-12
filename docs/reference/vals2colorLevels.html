@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,57 +52,77 @@
     <p>Apply color gradient to numeric values</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">vals2colorLevels</span><span class="op">(</span>
-  <span class="va">x</span>,
-  divergent <span class="op">=</span> <span class="cn">TRUE</span>,
-  col <span class="op">=</span> <span class="st">"RdBu_r"</span>,
-  defaultBaseColor <span class="op">=</span> <span class="st">"#FFFFFF"</span>,
-  lens <span class="op">=</span> <span class="fl">0</span>,
-  numLimit <span class="op">=</span> <span class="cn">NULL</span>,
-  baseline <span class="op">=</span> <span class="cn">NULL</span>,
-  rampN <span class="op">=</span> <span class="fl">25</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vals2colorLevels</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  divergent <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"RdBu_r"</span>,</span>
+<span>  defaultBaseColor <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
+<span>  lens <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  numLimit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  baseline <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rampN <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>numeric vector</p></dd>
+
+
 <dt>divergent</dt>
 <dd><p>logical indicating whether the numeric values
 are divergent, by default baseline=0 will center the color
 ramp at zero.</p></dd>
+
+
 <dt>col</dt>
 <dd><p>color value compatible with the <code>col</code> argument of
 <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>. Example include: single color; multiple
 colors; single color ramp name; or a custom color function.</p></dd>
+
+
 <dt>defaultBaseColor</dt>
 <dd><p>character color used as a base color when
 a single color is supplied in <code>col</code>.</p></dd>
+
+
 <dt>lens</dt>
 <dd><p>numeric value sent to <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html" class="external-link">jamba::warpRamp()</a></code>, to define the
 level of color warping to apply to the color gradient, where <code>lens=0</code>
 applies no adjustment.</p></dd>
+
+
 <dt>numLimit</dt>
 <dd><p>numeric value indicating the maximum numeric value,
 where values in <code>x</code> greater than this value are assigned to the
 maximum color. When not defined, and <code>divergent=TRUE</code> it uses
 <code>max(abs(x), na.rm=TRUE)</code>, or <code>divergent=FALSE</code> it uses
 <code>max(x, na.rm=TRUE)</code>.</p></dd>
+
+
 <dt>baseline</dt>
 <dd><p>numeric value indicating the minimum numeric value,
 where values in <code>x</code> less than this value are assigned to the
 minimum color. When not defined, and <code>divergent=TRUE</code> it sets
 <code>baseline=0</code>; when <code>divergent=FALSE</code> it uses <code>min(x, na.rm=TRUE)</code>.</p></dd>
+
+
 <dt>rampN</dt>
 <dd><p>integer number of colors to define for the color
 gradient. Higher values define a smooth color gradient.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical indicating whether to print verbose output.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments are passed to <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -126,32 +146,31 @@ numeric break points.</p>
 <code><a href="matrix2heatColors.html">matrix2heatColors</a>()</code>,
 <code><a href="rainbowJamMulti.html">rainbowJamMulti</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Start with an example numeric vector</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Start with an example numeric vector</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="vals2colorLevels-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># decrease the number of gradient colors</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># decrease the number of gradient colors</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="vals2colorLevels-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># change the baseline</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, baseline<span class="op">=</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># change the baseline</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, baseline<span class="op">=</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="vals2colorLevels-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># adjust the gradient using lens</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/rbindList.html" class="external-link">rbindList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lens</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in">   <span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">25</span>, lens<span class="op">=</span><span class="va">lens</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>ylab<span class="op">=</span><span class="st">"color lens factor"</span>, xlab<span class="op">=</span><span class="st">"numeric value"</span>,</span>
-<span class="r-in">   main<span class="op">=</span><span class="st">"Effects of warping the color gradient"</span><span class="op">)</span>;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># adjust the gradient using lens</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/rbindList.html" class="external-link">rbindList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lens</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">25</span>, lens<span class="op">=</span><span class="va">lens</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>ylab<span class="op">=</span><span class="st">"color lens factor"</span>, xlab<span class="op">=</span><span class="st">"numeric value"</span>,</span></span>
+<span class="r-in"><span>   main<span class="op">=</span><span class="st">"Effects of warping the color gradient"</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="vals2colorLevels-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -166,7 +185,7 @@ numeric break points.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

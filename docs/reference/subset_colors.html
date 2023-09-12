@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,38 +52,50 @@
     <p>Subset a vector of colors using one or more color attributes</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">subset_colors</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">...</span>,
-  alpha <span class="op">=</span> <span class="cn">TRUE</span>,
-  byCols <span class="op">=</span> <span class="cn">NULL</span>,
-  return_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"colors"</span>, <span class="st">"df"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">subset_colors</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  byCols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  return_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"colors"</span>, <span class="st">"df"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p><code>character</code> vector of R colors</p></dd>
+
+
 <dt>...</dt>
 <dd><p>any valid criteria to subset the color <code>data.frame</code>.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p><code>logical</code> indicating whether to retain <code>alpha</code>
 transparency in intermediate operations. When <code>alpha=FALSE</code> then
 all color transparency is ignored, and colors will be returned
 with no transparency.</p></dd>
+
+
 <dt>byCols</dt>
 <dd><p><code>character</code> vector of colnames to sort after the subset
 operation.</p></dd>
+
+
 <dt>return_type</dt>
 <dd><p><code>character</code> string to define the return object,
 where <code>return_type="colors"</code> returns a <code>character</code> vector of colors,
 and <code>return_type="df"</code> returns a <code>data.frame</code> with the additional
 subset colnames included for review.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>character</code> vector of colors that meet the filter criteria.
+    
+
+<p><code>character</code> vector of colors that meet the filter criteria.
 When <code>return_type="df"</code> the returned object is a <code>data.frame</code> with
 the subset columns included for review.</p>
     </div>
@@ -130,29 +142,29 @@ from <code>0</code> to <code>1</code>.</p></li>
 <p>Other colorjam core: 
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
 <code><a href="closestRcolor.html">closestRcolor</a>()</code>,
+<code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="colors_to_df.html">colors_to_df</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="rainbowJam.html">rainbowJam</a>()</code>,
 <code><a href="sort_colors.html">sort_colors</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># subset for blue colors</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">H</span> <span class="op">&gt;</span> <span class="fl">200</span> <span class="op">&amp;</span> <span class="va">H</span> <span class="op">&lt;</span> <span class="fl">265</span> <span class="op">&amp;</span> <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># subset for blue colors</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">H</span> <span class="op">&gt;</span> <span class="fl">200</span> <span class="op">&amp;</span> <span class="va">H</span> <span class="op">&lt;</span> <span class="fl">265</span> <span class="op">&amp;</span> <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># subset for saturated colors</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">120</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># subset for saturated colors</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">120</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># subset for saturated colors then sort by hue</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">120</span>, byCols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H"</span>, <span class="st">"-C"</span>, <span class="st">"-L"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># subset for saturated colors then sort by hue</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">120</span>, byCols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H"</span>, <span class="st">"-C"</span>, <span class="st">"-L"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># review the data.frame itself</span></span>
-<span class="r-in"><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">135</span>, return_type<span class="op">=</span><span class="st">"df"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># review the data.frame itself</span></span></span>
+<span class="r-in"><span><span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">135</span>, return_type<span class="op">=</span><span class="st">"df"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     num       hex         H        C        L alpha red green blue          h</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 33   33 #FF4040FF  12.17399 150.2912 57.37031     1 255    64   64 0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 34   34 #EE3B3BFF  12.17399 140.5642 53.62872     1 238    59   59 0.00000000</span>
@@ -185,39 +197,39 @@ from <code>0</code> to <code>1</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 553 1.0000000 1.0000000   0.00000 100.00000 50.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 554 1.0000000 0.9333333   0.00000 100.00000 46.66667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 555 1.0000000 0.8039216   0.00000 100.00000 40.19608</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># for curiosity, compare H to h</span></span>
-<span class="r-in"><span class="va">colors_df</span> <span class="op">&lt;-</span> <span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">   <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">20</span>,</span>
-<span class="r-in">   byCols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span><span class="op">)</span>,</span>
-<span class="r-in">   return_type<span class="op">=</span><span class="st">"df"</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">h</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">H</span>,</span>
-<span class="r-in">   xlab<span class="op">=</span><span class="st">"hsv hue h"</span>,</span>
-<span class="r-in">   ylab<span class="op">=</span><span class="st">"HCL hue H"</span>,</span>
-<span class="r-in">   pch<span class="op">=</span><span class="fl">20</span>,</span>
-<span class="r-in">   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span class="r-in">   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL hue H\nwith hsv hue h"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># for curiosity, compare H to h</span></span></span>
+<span class="r-in"><span><span class="va">colors_df</span> <span class="op">&lt;-</span> <span class="fu">subset_colors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>   byCols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   return_type<span class="op">=</span><span class="st">"df"</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">h</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">H</span>,</span></span>
+<span class="r-in"><span>   xlab<span class="op">=</span><span class="st">"hsv hue h"</span>,</span></span>
+<span class="r-in"><span>   ylab<span class="op">=</span><span class="st">"HCL hue H"</span>,</span></span>
+<span class="r-in"><span>   pch<span class="op">=</span><span class="fl">20</span>,</span></span>
+<span class="r-in"><span>   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL hue H\nwith hsv hue h"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">C</span>,</span>
-<span class="r-in">   xlab<span class="op">=</span><span class="st">"hsv saturation s"</span>,</span>
-<span class="r-in">   ylab<span class="op">=</span><span class="st">"HCL chroma C"</span>,</span>
-<span class="r-in">   pch<span class="op">=</span><span class="fl">20</span>,</span>
-<span class="r-in">   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span class="r-in">   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL C\nwith hsv s"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">C</span>,</span></span>
+<span class="r-in"><span>   xlab<span class="op">=</span><span class="st">"hsv saturation s"</span>,</span></span>
+<span class="r-in"><span>   ylab<span class="op">=</span><span class="st">"HCL chroma C"</span>,</span></span>
+<span class="r-in"><span>   pch<span class="op">=</span><span class="fl">20</span>,</span></span>
+<span class="r-in"><span>   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL C\nwith hsv s"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">v</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">L</span>,</span>
-<span class="r-in">   xlab<span class="op">=</span><span class="st">"hsv vibrance v"</span>,</span>
-<span class="r-in">   ylab<span class="op">=</span><span class="st">"HCL luminance L"</span>,</span>
-<span class="r-in">   pch<span class="op">=</span><span class="fl">20</span>,</span>
-<span class="r-in">   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span class="r-in">   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL L\nwith hsv v"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">colors_df</span><span class="op">$</span><span class="va">v</span>, <span class="va">colors_df</span><span class="op">$</span><span class="va">L</span>,</span></span>
+<span class="r-in"><span>   xlab<span class="op">=</span><span class="st">"hsv vibrance v"</span>,</span></span>
+<span class="r-in"><span>   ylab<span class="op">=</span><span class="st">"HCL luminance L"</span>,</span></span>
+<span class="r-in"><span>   pch<span class="op">=</span><span class="fl">20</span>,</span></span>
+<span class="r-in"><span>   cex<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">s</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>   col<span class="op">=</span><span class="va">colors_df</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of HCL L\nwith hsv v"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="subset_colors-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -232,7 +244,7 @@ from <code>0</code> to <code>1</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

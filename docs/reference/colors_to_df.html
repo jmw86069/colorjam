@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,27 +52,37 @@
     <p>Convert colors to data.frame of color attributes</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">colors_to_df</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, alpha <span class="op">=</span> <span class="cn">TRUE</span>, byCols <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">colors_to_df</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, alpha <span class="op">=</span> <span class="cn">TRUE</span>, byCols <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p><code>character</code> vector of R colors</p></dd>
+
+
 <dt>...</dt>
 <dd><p>any valid criteria to subset the color <code>data.frame</code>.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p><code>logical</code> indicating whether to retain <code>alpha</code>
 transparency in intermediate operations. When <code>alpha=FALSE</code> then
 all color transparency is ignored, and colors will be returned
 with no transparency.</p></dd>
+
+
 <dt>byCols</dt>
 <dd><p><code>character</code> vector of colnames to sort after the subset
 operation.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>data.frame</code> with color attributes as columns.
+    
+
+<p><code>data.frame</code> with color attributes as columns.
 When <code>byCols</code> is defined, the <code>data.frame</code> is sorted using
 <code><a href="https://rdrr.io/pkg/jamba/man/mixedSortDF.html" class="external-link">jamba::mixedSortDF()</a></code>.
 When <code>...</code> is supplied, <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> is applied to subset colors.</p>
@@ -130,11 +140,11 @@ from <code>0</code> to <code>100</code>.</p></li>
 <p>Other colorjam core: 
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
 <code><a href="closestRcolor.html">closestRcolor</a>()</code>,
+<code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="rainbowJam.html">rainbowJam</a>()</code>,
 <code><a href="sort_colors.html">sort_colors</a>()</code>,
 <code><a href="subset_colors.html">subset_colors</a>()</code></p></div>
-    </div>
     </div>
 
   </div>
@@ -149,7 +159,7 @@ from <code>0</code> to <code>100</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

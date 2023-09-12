@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -48,13 +48,151 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.24.900" id="colorjam-0024900">colorjam 0.0.24.900<a class="anchor" aria-label="anchor" href="#colorjam-0024900"></a></h2>
+<p>This version of colorjam turned into a bit of a refactor:</p>
+<ul><li>
+<p>Color wheels are now stored as “presets”:</p>
+<ul><li>presets are stored within the colorjam environment</li>
+<li>preset names are given by <code><a href="../reference/colorjam_presets.html">colorjam_presets()</a></code>
+</li>
+<li>preset values are accessed by <code>colorjam_presets("dichromat")</code>
+</li>
+<li>new presets are registered with <code><a href="../reference/add_colorjam_preset.html">add_colorjam_preset()</a></code>
+</li>
+<li>the preset can be defined with <code>options("colorjam.preset")</code>
+</li>
+</ul></li>
+<li>
+<p>Rainbow colors are adjusted by Chroma/Luminance “steps”:</p>
+<ul><li><p>“steps” are stored in the colorjam environment</p></li>
+<li><p>Each step is a <code>list</code> with <code>numeric</code> vectors named <code>"C"</code> and <code>"L"</code>, each with values within the range: <code>c(0, 100)</code>.</p></li>
+<li><p>steps are accessed with <code><a href="../reference/colorjam_steps.html">colorjam_steps()</a></code>, <code>colorjam_steps("v24")</code></p></li>
+<li><p>new steps are registered with <code><a href="../reference/add_colorjam_step.html">add_colorjam_step()</a></code></p></li>
+<li><p>the steps can be defined with <code>options("colorjam.step")</code></p></li>
+<li>
+<p>Background:</p>
+<ul><li>
+<code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> used arguments <code>Cvals</code> and <code>Lvals</code> to apply a sequence of luminance/chroma values to a series of color hues. The variation in C and L values was intended to maximize visual distinctiveness of consecutive colors. In fact, this process was the inspiration for <code>colorjam</code>, to make rainbow catgorical colors more visually distinctive than comparable functions that notably intend to produce colors as similar as possible. Different motivations.</li>
+<li>
+<code>colorspace::rainbow_hcl(n, c, l)</code> accepts only one value per <code>c</code> and <code>l</code> argument</li>
+<li>
+<code><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">grDevices::rainbow()</a></code> uses the non-uniform <code>hsv</code> color space, and accepts multiple values for arguments <code>s</code> and <code>v</code>. (To be fair, the <code><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors()</a></code>
+</li>
+</ul></li>
+</ul></li>
+<li>
+<p>Altogether <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> defines categorical colors with two core elements:</p>
+<ul><li>
+<code>"preset"</code>: color wheel with starting color, to define the color hues.</li>
+<li>
+<code>"steps"</code>: series of Chroma/Luminance values to apply to color hues.</li>
+</ul></li>
+<li>
+<p>Starting color:</p>
+<ul><li><p>The RGB color wheel classically “starts with” red.</p></li>
+<li><p>It could be because the first color in the visible spectra (“ROY G. BIV”: red, orange, yellow, green, blue, indigo, violet) is red. However, in a color “wheel” the colors are rolled back on themselves, so any color can be placed at the top. Red is traditional.</p></li>
+<li>
+<p>After very heavy usage of this package, it became clear that assigning categorical colors to statistical designs was not ideal. Specifically, we standardized experiment designs so that “the control” for each experiment factor is the first value in each column.</p>
+<ul><li>Some examples: <code>c("Control", "Dexamethasone", "Etoposide")</code>; <code>c("Wildtype", "ADAM19_Knockout")</code>; <code>c("Time0", "Time1", "Time2", "Time3")</code>
+</li>
+<li>The first group was always colored bright red; subsequent groups were assigned orange, yellow, blue, purple.</li>
+<li>Dr. Ayland Letsinger asked why we didn’t start with yellow instead of red, so the control group would have a neutral color? Brilliant.</li>
+</ul></li>
+<li>
+<p>The new presets include:</p>
+<ul><li>
+<code>"dichromat2"</code> which starts with gold, proceeds in reverse to red, purple, blue. (There is no green in the dichromat color wheel.)</li>
+<li>
+<code>"ybr"</code> derived by <code>"ryb"</code> except it starts with yellow, proceeds “forward” to green, blue, purple, then red.</li>
+</ul></li>
+</ul></li>
+<li><p>Added <code>cli</code> package dependency for improved messaging, particularly for deprecated function arguments.</p></li>
+</ul><div class="section level3">
+<h3 id="bug-fixes-0-0-24-900">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-24-900"></a></h3>
+<ul><li>Added missing package prefix with internal references to <code>jam_linear</code> and <code>jam_divergent</code> data objects.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-to-existing-functions-0-0-24-900">changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-24-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/rainbowJam.html">rainbowJam()</a></code></p>
+<ul><li><p>argument <code>preset</code> is the primary definition of color wheel</p></li>
+<li><p>arguments <code>Cvals</code>,<code>Lvals</code>,<code>Crange</code>,<code>Lrange</code> are deprecated (frankly, who is affected though, only me)</p></li>
+<li><p>arguments <code>h1</code>,<code>h2</code> are deprecated and ignored in favor of <code>preset</code>. To use custom <code>h1</code>,<code>h2</code> they must be added to new preset then referred by name.</p></li>
+<li>
+<p>new argument <code>step</code> defines the sequence of <code>C</code> and <code>L</code> values</p>
+<ul><li>steps from specific previous versions of colorjam are available: <code>"v19"</code>, <code>"v20"</code>, <code>"v23"</code>, and <code>"v24"</code>.</li>
+<li>steps were adjusted to minimize out of bounds colors, which <code>colorspace</code> and <code>farver</code> handle by adjusting other color channels; sometimes substantially changing the output color hue. This change sometimes caused the color hue sequence to reverse itself to accommodate the requested <code>C</code> and <code>L</code> values, and was the driving use case for the refactored arguments <code>preset</code> and <code>steps</code>.</li>
+</ul></li>
+</ul></li>
+<li>
+<p><code><a href="../reference/color_pie.html">color_pie()</a></code></p>
+<ul><li>text labels are rotated parallel to each pie wedge</li>
+<li>text labels use <code><a href="https://rdrr.io/pkg/jamba/man/shadowText.html" class="external-link">jamba::shadowText()</a></code> and <code><a href="https://rdrr.io/pkg/jamba/man/setTextContrastColor.html" class="external-link">jamba::setTextContrastColor()</a></code>
+</li>
+<li>default radius is now 1.1, to fit most plot devices.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/closestRcolor.html">closestRcolor()</a></code></p>
+<ul><li>New argument <code>Cgrey</code> to recognize when input <code>x</code> colors are greyscale, in which case they are matched with colors from <code>colorSet</code> which are below <code>C_min</code> Chroma saturation. By default, color matching is much improved when using a mix of saturated and unsaturated colors.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>,<code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code>,<code><a href="../reference/jam_pal.html">jam_pal()</a></code></p>
+<ul><li>ggplot2-related functions dropped arguments <code>h1</code>,<code>h2</code> (before they could be used), and added argument <code>step</code>.</li>
+<li>default <code>preset="dichromat2</code> consistent with <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/h2hw.html">h2hw()</a></code>,<code><a href="../reference/hw2h.html">hw2h()</a></code>,<code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code></p>
+<ul><li>new argument default <code>preset=getOption("colorjam.preset", "custom")</code> behaves as previous <code>preset="custom"</code> except that it now honors when the option <code>"colorjam.preset"</code> is defined.</li>
+<li>The only two exceptions to <code>preset</code> are with <code><a href="../reference/blend_colors.html">blend_colors()</a></code> and <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> which both default to <code>"ryb"</code> because those specific use cases favor using the red-yellow-blue color wheel.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/approx_degrees.html">approx_degrees()</a></code></p>
+<ul><li>refactored to improve handling of discontinuous angles, for example when the mapped color wheel wraps above 360 degrees, or below 0 degrees.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/make_jam_divergent.html">make_jam_divergent()</a></code></p>
+<ul><li>New behavior: When <code>linear2</code> is not supplied, it calls <code><a href="../reference/color_complement.html">color_complement()</a></code> to determine a reasonable opposing color, so one can call <code>make_jam_divergent("red")</code> and it will provide a reasonable</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-functions-0-0-24-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-24-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/adjust_hue_warp.html">adjust_hue_warp()</a></code></p>
+<ul><li>helper function to rotate or reverse a color wheel by way of the color hue warp. Maybe eventually the colors can start at gold/yellow and continue either to red or blue, so that the first assigned color will be more “neutral” (yellow) since the first group in a statistical comparison is typically the control. People have suggested the default color for a control group not be brightest red.</li>
+</ul></li>
+<li>
+<p><code>colorjam_preset()</code>,<code><a href="../reference/add_colorjam_preset.html">add_colorjam_preset()</a></code></p>
+<ul><li>manages recognized colorjam color hue presets, which allows for custom preset names without modifying the package code.</li>
+<li>intended to register (or delete) colorjam named presets, which are custom color wheels.</li>
+</ul></li>
+<li>
+<p><code>colorjam_step()</code>,<code><a href="../reference/add_colorjam_step.html">add_colorjam_step()</a></code></p>
+<ul><li>A “step” is a sequence of Luminance/Chroma values intended to maximize visual distinctiveness of consecutive colors.</li>
+<li>The purpose of storing steps in the colorjam environment is to allow a convenient way to select a step sequence rather than by defining individual C and L values during the function call.</li>
+<li>Specifically, the steps are driven by the change to start colors near yellow, rather than starting at red. For color sequences starting at red, early colors should generally be darker; for sequences starting at yellow or gold, the early colors should generally be lighter.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/h2hwOptions.html">h2hwOptions()</a></code></p>
+<ul><li>now calls <code><a href="../reference/colorjam_presets.html">colorjam_presets()</a></code> instead of using internal values.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.23.900" id="colorjam-0023900">colorjam 0.0.23.900<a class="anchor" aria-label="anchor" href="#colorjam-0023900"></a></h2>
 <ul><li>bumped dependency <code>jamba (&gt;= 0.0.83.900)</code> to include <code><a href="https://rdrr.io/pkg/jamba/man/hsl2col.html" class="external-link">hsl2col()</a></code>, <code><a href="https://rdrr.io/pkg/jamba/man/col2hsl.html" class="external-link">col2hsl()</a></code>
 </li>
 </ul><div class="section level3">
 <h3 id="changes-to-existing-functions-0-0-23-900">changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-23-900"></a></h3>
-<ul><li>
-<code><a href="../reference/subset_colors.html">subset_colors()</a></code> now calls <code><a href="../reference/colors_to_df.html">colors_to_df()</a></code> to create a <code>data.frame</code>, any of whose columns can be used to sort colors.</li>
+<ul><li><p><code><a href="../reference/subset_colors.html">subset_colors()</a></code> now calls <code><a href="../reference/colors_to_df.html">colors_to_df()</a></code> to create a <code>data.frame</code>, any of whose columns can be used to sort colors.</p></li>
+<li>
+<p><code><a href="../reference/theme_jam.html">theme_jam()</a></code> changes:</p>
+<ul><li>new argument <code>strip.text.size</code> with default <code>ggplot2::rel(0.8)</code> to help adjust facet panel strip text font size directly.</li>
+<li>new argument <code>panel.border</code> to make adjustments convenient, by default panels now have thin dark gray outline. Set <code>panel.border=NULL</code> to hide the border.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code>, <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code>, <code><a href="../reference/jam_pal.html">jam_pal()</a></code>:</p>
+<ul><li>new argument <code>darken</code> is <code>logical</code>, when <code>darken=TRUE</code> it automatically sets <code>darkFactor</code> and <code>sFactor</code> to reasonable values for subtle darkening. This option is convenient for slightly darker outlines around points.</li>
+</ul></li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-functions-0-0-23-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-23-900"></a></h3>
@@ -372,7 +510,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

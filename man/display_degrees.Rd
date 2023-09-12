@@ -6,6 +6,7 @@
 \usage{
 display_degrees(
   x,
+  x2 = x,
   add = FALSE,
   col = "darkorange",
   lwd = 2,
@@ -13,19 +14,77 @@ display_degrees(
   clockwise = TRUE,
   r1 = 0,
   r2 = 1,
+  r0 = 1,
+  arrow.length = 0.2,
+  xlim = NULL,
+  ylim = NULL,
+  asp = 1,
   ...
 )
+}
+\arguments{
+\item{x}{\code{numeric} angles in degrees}
+
+\item{x2}{\code{numeric} angles in degrees, optionally used to show
+when an angle changes from \code{x} to \code{x2}.}
+
+\item{add}{\code{logical} indicating whether to add to an existing open
+plot device.}
+
+\item{col}{\code{character} vector of colors recycled to \code{length(x)}.}
+
+\item{lwd}{\code{numeric} line width.}
+
+\item{top_degree}{\code{numeric} the angle in degrees for the top
+(12 o'clock) position of the graph.}
+
+\item{clockwise}{\code{logical} indicating whether angles proceed from
+the \code{top_degree} in clockwise (top, top-right, right, bottom-right,
+bottom, bottom-left, left, top-left, top) or counter-clockwise
+orientation.}
+
+\item{r1, r2}{\code{numeric} radius values for the start and end position
+of each arrow vector drawn.}
+
+\item{r0}{\code{numeric} radius used for the axis with labeled angles.}
+
+\item{arrow.length}{\code{numeric} passed to \code{arrows()} to define the
+arrow head length.}
+
+\item{xlim, ylim}{\code{numeric} x-axis and y-axis plot limits, respectively.
+When not supplied, they automatically use 1.1 times the higher
+value from \code{c(r1, r2, r0, 1)} so that the minimum radius is at
+at least \code{1} unless specified otherwise.}
+
+\item{...}{additional arguments are ignored.}
 }
 \description{
 Display degree angles around a unit circle
 }
 \examples{
-display_degrees(c(0, 45), col=c("red", "blue"))
+display_degrees(c(0, 45, 180, 289),
+   lwd=4,
+   col=c("red", "blue2", "purple3", "gold"))
+
+display_degrees(c(90, 270), col=c("purple", "gold"), r1=0, r2=0.5)
+display_degrees(c(0, 45), col=c("red", "blue"), r1=0.5, r2=1, add=TRUE)
+
+display_degrees(c(90, 270), col=c("purple", "gold"), r1=0, r2=0.5,
+   arrow.length=0)
+display_degrees(c(90, 270), x2=c(100, 280), col=c("purple", "gold"),
+   r1=0.5, r2=1, add=TRUE)
+display_degrees(c(90, 270), x2=c(80, 260), col=c("purple", "gold"),
+   r1=0.5, r2=1, add=TRUE)
 
 }
 \seealso{
 Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
 \code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
 \code{\link{hw2h}()},

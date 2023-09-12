@@ -4,22 +4,33 @@
 \alias{make_jam_divergent}
 \title{Make divergent color gradient}
 \usage{
-make_jam_divergent(linear1, linear2, lite = TRUE, n = 21, ...)
+make_jam_divergent(linear1, linear2 = NULL, lite = TRUE, n = 21, ...)
 }
 \arguments{
 \item{linear1}{\code{character} input consisting of one of:
-a single R color; a single color gradient name; or a vector
-of R colors. When supplying a vector of colors, the order
-is expected to be from blank to maximum color.}
+\itemize{
+\item a single \code{character} R color
+\item a single \code{character} color gradient name
+\item a \code{character} vector of R colors. When supplying a vector of colors,
+the order is expected to be from blank to maximum color
+}}
 
 \item{linear2}{\code{character} input consisting of one of:
-a single R color; a single color gradient name; or a vector
-of R colors. When supplying a vector of colors, the order
-is expected to be from blank to maximum color.}
+\itemize{
+\item a single \code{character} R color
+\item \code{NULL} in which case the color(s) defined by \code{linear1} are
+passed to \code{color_complement()}
+\item a single \code{character} color gradient name
+\item a \code{character} vector of R colors. When supplying a vector of colors,
+the order is expected to be from blank to maximum color
+}}
 
 \item{lite}{\code{logical} indicating whether the middle color
 should be lite (white), or when \code{lite=FALSE} the middle
-color will be dark (black).}
+color will be dark (black). When \code{linear1} or \code{linear2} are provided
+as a named color gradient, such as \code{"Reds"} or \code{"Blues"}, that
+gradient is used as-is, even if the gradient is designed with
+a light (or dark) neutral color, therefore ignoring \code{lite}.}
 
 \item{n}{\code{integer} number of final colors to produce. Note that
 \code{n} must be an odd number, in order to preserve the middle color.}
@@ -67,6 +78,9 @@ jg1 <- make_jam_divergent("royalblue", "orangered")
 jamba::showColors(jg1)
 showDichromat(jg1)
 
+jg1b <- make_jam_divergent("royalblue", main="Supplied as one color")
+jamba::showColors(jg1b)
+
 jg2 <- make_jam_divergent("slateblue", "firebrick", n=21)
 jamba::showColors(jg2)
 showDichromat(jg2)
@@ -75,13 +89,17 @@ jg3 <- make_jam_divergent("slateblue", "firebrick", lite=FALSE, n=21)
 jamba::showColors(jg3)
 showDichromat(jg3)
 
+# Compare manually assembled Blues-Reds to "RdBu_r"
 jg4 <- make_jam_divergent("Blues", "Reds", lite=TRUE, n=21)
 jamba::showColors(c(jg4,
-   list(BuRd=jamba::getColorRamp("RdBu_r", n=21))))
+   list(RdBu_r=jamba::getColorRamp("RdBu_r", n=21))))
 
-jg5 <- make_jam_divergent("inferno", "dodgerblue1", lite=FALSE, n=21, gradientWtFactor=1)
+# show "inferno"
+jg5 <- make_jam_divergent("inferno", lite=FALSE, n=21, gradientWtFactor=1)
 jamba::showColors(jg5)
 
+# Optional ComplexHeatmap
+if (jamba::check_pkg_installed("ComplexHeatmap")) {
 xseq <- seq(from=-1, to=1, by=0.1);
 mseq <- matrix(xseq, ncol=1);
 m <- mseq \%*\% t(mseq);
@@ -108,29 +126,7 @@ hm2 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
       color_bar="discrete"),
    col=jg2[[1]])
 hm1 + hm2
-
-# same as above but showing where to use lens
-hm3 <- ComplexHeatmap::Heatmap(m[,1:10],
-   cluster_columns=FALSE,
-   cluster_rows=FALSE,
-   row_names_side="left",
-   border=TRUE,
-   heatmap_legend_param=list(
-      border=TRUE,
-      at=seq(from=-1, to=1, by=0.25),
-      color_bar="discrete"),
-   col=jamba::getColorRamp(jg3[[1]], divergent=TRUE, lens=2))
-
-hm4 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
-   cluster_columns=FALSE,
-   cluster_rows=FALSE,
-   border=TRUE,
-   heatmap_legend_param=list(
-      border=TRUE,
-      at=seq(from=-1, to=1, by=0.25),
-      color_bar="discrete"),
-   col=jamba::getColorRamp(jg2[[1]], divergent=TRUE, lens=2))
-hm3 + hm4
+}
 
 }
 \seealso{

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,54 +52,65 @@
     <p>rainbow categorical colors using varied luminance and chroma</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">rainbowJam_v1</span><span class="op">(</span>
-  n <span class="op">=</span> <span class="cn">NULL</span>,
-  alpha <span class="op">=</span> <span class="fl">1</span>,
-  nfloor <span class="op">=</span> <span class="fl">4</span>,
-  hues <span class="op">=</span> <span class="cn">NULL</span>,
-  Cvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">95</span>, <span class="fl">80</span>, <span class="fl">65</span>, <span class="fl">72</span>, <span class="fl">80</span><span class="op">)</span>,
-  Lvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">83</span>, <span class="fl">69</span>, <span class="fl">58</span>, <span class="fl">65</span>, <span class="fl">74</span><span class="op">)</span>,
-  Crange <span class="op">=</span> <span class="cn">NULL</span>,
-  Lrange <span class="op">=</span> <span class="cn">NULL</span>,
-  Cgrey <span class="op">=</span> <span class="cn">NULL</span>,
-  Hstart <span class="op">=</span> <span class="fl">12.2</span>,
-  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,
-  doTest <span class="op">=</span> <span class="cn">FALSE</span>,
-  sFactor <span class="op">=</span> <span class="fl">1</span>,
-  darkFactor <span class="op">=</span> <span class="fl">1</span>,
-  nameStyle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"hcl"</span>, <span class="st">"colors"</span><span class="op">)</span>,
-  h1 <span class="op">=</span> <span class="fu"><a href="h2hwOptions.html">h2hwOptions</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">h1</span>,
-  h2 <span class="op">=</span> <span class="fu"><a href="h2hwOptions.html">h2hwOptions</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">h2</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rainbowJam_v1</span><span class="op">(</span></span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  nfloor <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  hues <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Cvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">95</span>, <span class="fl">80</span>, <span class="fl">65</span>, <span class="fl">72</span>, <span class="fl">80</span><span class="op">)</span>,</span>
+<span>  Lvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">62</span>, <span class="fl">83</span>, <span class="fl">69</span>, <span class="fl">58</span>, <span class="fl">65</span>, <span class="fl">74</span><span class="op">)</span>,</span>
+<span>  Crange <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Lrange <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Cgrey <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  Hstart <span class="op">=</span> <span class="fl">12.2</span>,</span>
+<span>  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  doTest <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sFactor <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  darkFactor <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  nameStyle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"hcl"</span>, <span class="st">"colors"</span><span class="op">)</span>,</span>
+<span>  h1 <span class="op">=</span> <span class="fu"><a href="h2hwOptions.html">h2hwOptions</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">h1</span>,</span>
+<span>  h2 <span class="op">=</span> <span class="fu"><a href="h2hwOptions.html">h2hwOptions</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">h2</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>n</dt>
 <dd><p>integer number of categorical colors to return</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>numeric alpha transparency of colors, values ranging from
 0 to 1. If multiple values are supplied, they are applied in order to
 the categorical colors returned.</p></dd>
+
+
 <dt>nfloor</dt>
 <dd><p>the minimum number of effective color slices taken from the
 hue color wheel, primarily used as an aesthetic choice so the first two
 colors will be reasonably consistent when choosing 1, 2, 3, 4, or 5
 categorical colors.</p></dd>
+
+
 <dt>hues</dt>
 <dd><p>optional numeric vector of hues to use, only useful when the
 exact hues should be used instead of taking slices along a hue color
 wheel. Note that to use hue values with no modification, one should
 also set <code>warpHue=FALSE</code>, otherwise the given hues are assumed to
 warped hue values.</p></dd>
+
+
 <dt>Cvals, Lvals</dt>
 <dd><p>vector of chroma (C) and luminance (L) values to be
 cycled when creating colors along the vector of color hues. These
 values are intended to maximize visual distinctiveness of adjacent and
 nearly-adjacent colors. For example, varying from bright to dark may
 provide additional distinction between two similar color hues.</p></dd>
+
+
 <dt>Crange, Lrange</dt>
 <dd><p>vector of two numeric values which define the allowable
 chroma (C) and luminance (L) ranges for <code>Cvals</code> and <code>Lvals</code>
@@ -108,14 +119,20 @@ so the lowest Cvals value maps to the first value in Crange, and the
 highest Cvals value maps to the last value in Crange. Varying the
 Crange and Lrange values can help produce categorical colors on a
 dark or light background, by changing the range of values being used.</p></dd>
+
+
 <dt>Hstart</dt>
 <dd><p>the hue to use for the first hue value in the color sequence.
 Standard red has a hue 12.2, which is the default for this function.</p></dd>
+
+
 <dt>doTest</dt>
 <dd><p>boolen indicating whether to perform a visual test for
 the <code>n</code> number of colors produced, which helps judge the
 visual distinctiveness of different combinations of dark and light
 colors.</p></dd>
+
+
 <dt>sFactor, darkFactor</dt>
 <dd><p>parameters sent to <code><a href="https://rdrr.io/pkg/jamba/man/makeColorDarker.html" class="external-link">jamba::makeColorDarker</a></code>
 if either is not equal to 1. Setting <code>darkFactor=2</code> is a quick
@@ -126,27 +143,36 @@ colors used for the background area of a rectangle. The <code>alpha</code>
 transparency parameter can also be helpful, however not all graphics
 devices support transparency, in which case it is more robust to define
 the exact color.</p></dd>
+
+
 <dt>nameStyle</dt>
 <dd><p>character value indicating how to name the output
 colors: "none" returns colors with no names; "hcl" assigns names with
 the color number prefix, followed by H, C, L values; "colors" names the
 vector by the hex color code.</p></dd>
+
+
 <dt>h1, h2</dt>
 <dd><p>numeric vectors as used by <code><a href="h2hw.html">h2hw()</a></code> and <code><a href="hw2h.html">hw2h()</a></code> to
 convert from warped hues to standard hues. The default values define
 red-yellow-blue (additive) color space, which is converted to
 red-green-blue color space to produce the actual R color.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical whether to print verbose output</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>vector of colors</p>
+    
+
+<p>vector of colors</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function customizes similar functions <code><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">grDevices::rainbow</a></code>,
-<code><a href="https://colorspace.R-Forge.R-project.org//reference/rainbow_hcl.html" class="external-link">colorspace::rainbow_hcl()</a></code>, and <code><a href="https://scales.r-lib.org/reference/hue_pal.html" class="external-link">scales::hue_pal()</a></code> in two main
+<code><a href="https://colorspace.R-Forge.R-project.org/reference/rainbow_hcl.html" class="external-link">colorspace::rainbow_hcl()</a></code>, and <code><a href="https://scales.r-lib.org/reference/hue_pal.html" class="external-link">scales::hue_pal()</a></code> in two main
 ways:</p><ol><li><p>It uses the warped color wheel (see <code><a href="h2hw.html">h2hw()</a></code> which compresses the
 green component of the standard HCL color hue wheel, extending the yellow.</p></li>
 <li><p>It uses a varying luminance and chroma vector which was selected to
@@ -160,22 +186,21 @@ ranges of colors when using the warped hue functions <code><a href="h2hw.html">h
 <code>h2</code> are used to define a mapping from warped hues to standard
 hues recognized by <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">hcl()</a></code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "#DF7779" "#FFAD97" "#EE906A" "#B58232" "#4EA5E5" "#85B7FF" "#8190E6"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "#DF7779" "#FFAD97" "#EE906A" "#B58232" "#57A3E6" "#88B6FF" "#8190E6"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "#C4C3FF" "#AC9BFE" "#977DD0" "#C186E5" "#FF8CDF"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># show colors</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span>;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># show colors</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="rainbowJam_v1-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># be fancy and label colors using the closest R named color</span></span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span>, nameStyle<span class="op">=</span><span class="st">"colors"</span><span class="op">)</span><span class="op">)</span>;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># be fancy and label colors using the closest R named color</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">rainbowJam_v1</span><span class="op">(</span><span class="fl">12</span>, nameStyle<span class="op">=</span><span class="st">"colors"</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="rainbowJam_v1-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -190,7 +215,7 @@ hues recognized by <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="e
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

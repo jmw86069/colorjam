@@ -1,3 +1,29 @@
+## TODO 07sep2023
+
+* Ability to register a new color wheel
+
+   * for example modifying an existing color wheel with `adjust_hue_warp()`
+   then saving it as a named preset.
+   * use `igraph:::.igraph.shapes` as a model, they store graph node shapes
+   in that environment, then provide access `igraph::shapes()` and
+   allow new shapes with `igraph::add_shape()`.
+
+* DONE. port `color_complement()` into this package.
+* `make_jam_divergent()`
+
+   * When argument `linear2` is not supplied, get `color_complement(linear1)`
+   * DONE. Error when using `jam_linear` and `jam_divergent` without
+   package prefix when the colorjam package is not formally loaded.
+
+## TODO 23sep2022
+
+* Migrate `platjam::design2colors()` into this package
+
+   * Consider `color_list` related functions, since `design2colors()`
+   produces a list of colors and color functions.
+   * `merge_color_lists()` would combine two color lists into one, taking
+   either the union of assigned colors, or the first color function, where
+   relevant.
 
 ## TODO 22may2022
 

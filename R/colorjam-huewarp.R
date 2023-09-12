@@ -1,42 +1,47 @@
 
 #' Get hue color warp options
 #'
-#' Get hue color warp options used to convert to and from warped hues
+#' Get hue color warp options used to convert color wheels
 #'
-#' This function retrieves, and/or defines, the `h1` and `h2`
+#' This function retrieves and/or defines, the `h1` and `h2`
 #' hue vectors used to convert between `h1` "hue warp", and
-#' `h2` "default hue". The "default" hue is used by standard R
-#' functions such as `colorspace::polarLUV()`
-#' `grDevices::hcl()`, and `farver::convert_colour()`,
-#' based upon the red-green-blue color wheel in typical computer
-#' video displays.
+#' `h2` "actual hue".
 #'
-#' The `h1` values may represent colors on red-yellow-blue color wheel
-#' hue, while `h2` represents the corresponding hue in R "default hue"
-#' space. The conversion is non-linear, therefore it warps (bends) the
-#' color range accordingly.
+#' The "actual" hue is used by standard R #' functions such as
+#' `colorspace::polarLUV()`, `grDevices::hcl()`, and
+#' `farver::convert_colour()`.
 #'
-#' The output values from this function are used with `approx_degrees()`
-#' which either performs the conversion, or returns a function to
-#' perform the conversion.
+#' The mapping from `h1` to `h2` allows customization of the spacing
+#' and order of colors, which allows emulation of a red-yellow-blue
+#' color wheel for example.
 #'
-#' There are three `options()` used when available, intended to help
-#' custom states to have persistence across other function calls.
+#' The `h1` represents the color hue in terms of a degree angle ranging
+#' from 0 to 360 - a full circle - for the observer. It is then
+#' transformed to `h2` for use in generating actual R colors.
 #'
-#' 1. `options("colorjam.preset")` which keeps track of the current
-#' color warp preset.
-#' 2. `options("h2hw.h1")` defines the `h1` value.
-#' 3. `optinos("h2hw.h2")` defines the `h2` value.
+#' * `colorjam_presets()` lists all recognized colorjam presets.
+#' * `add_colorjam_preset()` will add or overwrite a colorjam preset by name.
 #'
-#' Note that `options("h2hw.h1")` and `options("h2hw.h2")` are only
-#' used when `preset="custom"`, otherwise the named preset will
-#' be used as first priority.
+#' In general, most colorjam functions with argument `preset` will
+#' follow this progression:
+#' * Argument `preset=getOption("colorjam.preset", "custom")`
+#' which uses `preset` when defined, otherwise `"custom"`.
+#' * When this option matches a recognized preset name, the
+#' corresponding `h1`,`h2` values are used.
+#' * When `preset="custom"`, arguments `h1`,`h2` will also
+#' poll `getOption("h2hw.h1")` and `getOption("h2hw.h2")` for
+#' default values.
+#' * When neither `h1`,`h2` is defined, the argument
+#' `default_preset="dichromat"` is used to obtain `h1`,`h2` values.
 #'
-#' To disable the warped hue mechanic, set `preset="none"` or define
-#' `h1 = h2` so the conversion is always 1:1.
+#' To disable the warped hue mechanic, set `preset="rgb"` which
+#' usess the default R color wheel with no adjustment.
 #'
-#' When `preset="custom"` and `h1` and `h2` are not defined, the
-#' preset is set to the value of `default_preset`.
+#' ## Details
+#'
+#' The `h1`,`h2` values are passed to `approx_degrees()` to convert
+#' hue degree angles. See `adjust_hue_warp()` for detailed examples
+#' of manipulating color warp values.
 #'
 #' @family colorjam hue warp
 #'
@@ -56,13 +61,16 @@
 #'    `h1`, and `h2` values based upon named presets:
 #'    * `"custom"` uses values defined in `options("h2hw.h1")`
 #'    and `options("h2hw.h2")` if they exist, otherwise `default_preset`.
-#'    * `"ryb"` red-yellow-blue;
-#'    `"dichromat"` color wheel intended to be color-blind friendly
-#'    based upon simulated output as from the  `dichromat::dichromat()` package;
-#'    * `"rgb"` or `"none"` both use the hue defined in R as red-green-blue;
-#'    * `"ryb1"`,`"ryb2"`,`"ryb3"` experimental red-yellow-blue alternatives
-#'    that continue to modify the effect of the huge blue-green range
-#'    of hue angles.
+#'    * other `character` values obtained by `colorjam_presets()`, some
+#'    examples include:
+#'       * `"dichromat"` (default) color wheel intended to be color-blind
+#'       friendly by omitting much of the green color region from the color
+#'       wheel, and by reviewing output by `dichromat::dichromat()`
+#'       * `"ryb"` basic red-yellow-blue color wheel
+#'       * `"ryb1"`,`"ryb2"`,`"ryb3"` experimental red-yellow-blue
+#'       alternative color wheels designed to emphasize various features
+#'       in the red-orange-yellow-green range to varying degrees.
+#'       * `"rgb"` for the default R red-green-blue color wheel
 #' @param preset_names `character` vector of valid `preset` values,
 #'    included only to make the values visible in the function arguments.
 #' @param default_preset `character` string indicating which value
@@ -74,8 +82,6 @@
 #' @param setOptions `character` or `logical` indicating whether to
 #'    update `options()` for `"h2hw.h1"` and `"h2hw.h2"`. When `"ifnull"`
 #'    the `options()` are only updated if they were previously `NULL`.
-#' @param h1default,h2default deprecated and ignored in this version
-#'    of the function.
 #' @param verbose logical whether to print verbose output
 #'
 #' @return list with names `h1` and `h2` containing numeric vectors
@@ -106,9 +112,9 @@ h2hwOptions <- function
     "ryb3"),
  default_preset="dichromat",
  reset=FALSE,
- setOptions=c("ifnull", "TRUE", "FALSE"),
- h1default=NULL,
- h2default=NULL,
+ setOptions=c("FALSE",
+    "TRUE",
+    "ifnull"),
  verbose=FALSE,
  ...)
 {
@@ -118,10 +124,11 @@ h2hwOptions <- function
    ## h1 <- c(0,  60, 120, 240, 300, 340, 360);
    ## h2 <- c(0, 100, 160, 240, 330, 350, 360);
    ## These default values further expand colors from blue to purple
+   preset_names <- colorjam_presets();
    preset <- match.arg(arg=preset,
-      choices=eval(formals(h2hwOptions)$preset_names));
+      choices=c(preset_names, "custom"))
    default_preset <- match.arg(arg=default_preset,
-      choices=setdiff(eval(formals(h2hwOptions)$preset_names), "custom"));
+      choices=setdiff(preset_names, "custom"));
 
    if (length(setOptions) > 0 && is.logical(setOptions)) {
       setOptions <- as.character(setOptions);
@@ -140,53 +147,7 @@ h2hwOptions <- function
    ## 3. preset="none" and h1h2_undefined, uses default_preset
    ## 4. preset="none" and !h1h2_undefined uses h1,h2 as provided
 
-   get_presets <- function(preset, verbose=FALSE) {
-      if ("ryb" %in% preset) {
-         h2 <- c(0, 30, 60,
-            90, 120, 150,
-            180, 210, 240,
-            270, 300, 330);
-         h1 <- c(12.2, 23, 40,
-            60, 80.9, 107.3,
-            127.7, 180, 245,
-            265, 288, 315);
-      } else if ("ryb1" %in% preset) {
-         h1 <- c(0,  60, 120, 240, 360);
-         h2 <- c(0, 120, 180, 240, 360);
-      } else if ("dichromat" %in% preset) {
-         nudge <- 1e-9;
-         h1 <- c(8, 30,
-            65, 120, 200,
-            240, 260, 280,
-            330);
-         h2 <- c(0, 79.1,
-            118.7+nudge, 118.7+nudge, 118.7+nudge,
-            126.6, 185.9, 304.6,
-            344.2);
-      } else if ("ryb2" %in% preset) {
-         h1 <- c(0, 22,  60, 120, 240, 270, 360);
-         h2 <- c(0, 80, 150, 180, 220, 290, 360);
-      } else if ("ryb3" %in% preset) {
-         h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
-            223.1, 263.2, 277.2, 307.7, 345.3, 372.2);
-         h2 <- seq(from=0, to=360, length.out=13) + 12.2;
-         h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
-            223.1, 263.2, 277.2, 307.7, 345.3);
-         h2 <- head(seq(from=0, to=360, length.out=13), 12) + 12.2;
-      } else if (any(c("none", "rgb") %in% preset)) {
-         h1 <- c(0, 360);
-         h2 <- c(0, 360);
-      } else {
-         stop(paste0("preset not recognized: '", preset, "'"));
-      }
-      if (verbose) {
-         jamba::printDebug("h2hwOptions(): ",
-            c("preset '", preset, "'"), sep="");
-      }
-      return(list(h1=h1, h2=h2));
-   }
-
-   if (length(reset) > 0 && reset) {
+   if (length(reset) > 0 && TRUE %in% reset) {
       preset <- default_preset;
    }
 
@@ -197,13 +158,13 @@ h2hwOptions <- function
    }
    if (!"custom" %in% preset) {
       ## use preset values
-      h1h2_presets <- get_presets(preset,
-         verbose=verbose>1);
-      h1 <- h1h2_presets$h1;
-      h2 <- h1h2_presets$h2;
+      h1h2_list <- colorjam_presets(preset);
+      h1 <- h1h2_list$h1;
+      h2 <- h1h2_list$h2;
    }
 
-   if ("TRUE" %in% setOptions || (h1h2_undefined && "ifnull" %in% setOptions)) {
+   if ("TRUE" %in% setOptions ||
+         (TRUE %in% h1h2_undefined && "ifnull" %in% setOptions)) {
       if (verbose) {
          jamba::printDebug("h2hwOptions(): ",
             "Updated options()");
@@ -212,7 +173,8 @@ h2hwOptions <- function
       options("h2hw.h1"=h1);
       options("h2hw.h2"=h2);
    }
-   list(h1=h1,
+   list(
+      h1=h1,
       h2=h2);
 }
 
@@ -266,9 +228,7 @@ h2hw <- function
 (h,
  h1=NULL,
  h2=NULL,
- #h1=h2hwOptions()$h1,
- #h2=h2hwOptions()$h2,
- preset="custom",
+ preset=getOption("colorjam.preset", "custom"),
  ...)
 {
    ## maps hue to a weighted hue, based upon the guidepoints
@@ -277,8 +237,6 @@ h2hw <- function
    if (length(preset) == 0) {
       preset <- "custom";
    }
-   preset <- match.arg(preset,
-      choices=eval(formals(h2hwOptions)$preset_names));
    if (length(h1) > 0 && length(h2) > 0 && length(h1) == length(h2)) {
       h1h2 <- h2hwOptions(preset=preset,
          h1=h1,
@@ -291,9 +249,10 @@ h2hw <- function
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
 
-   hNew <- approx_degrees(h1,
-      h2,
-      h);
+   hNew <- approx_degrees(h1=h1,
+      h2=h2,
+      preset="custom",
+      h=h);
    #hNew <- approx(x=h1,
    #   y=h2,
    #   ties="ordered",
@@ -320,6 +279,9 @@ h2hw <- function
 #'
 #' @family colorjam hue warp
 #'
+#' @returns `numeric` vector of color hues after applying the transformation
+#'    from `h2` to `h1`.
+#'
 #' @param h `numeric` vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
 #' @param h1,h2 `numeric` vector of color hues, which by default are defined in
@@ -338,7 +300,7 @@ h2hw <- function
 #' hues <- hw2h(warpedHues);
 #' hues;
 #'
-#' @family hue warp functions
+#' @family colorjam hue warp
 #'
 #' @export
 hw2h <- function
@@ -347,7 +309,7 @@ hw2h <- function
  h2=NULL,
  #h1=h2hwOptions()$h1,
  #h2=h2hwOptions()$h2,
- preset="custom",
+ preset=getOption("colorjam.preset", "custom"),
  ...)
 {
    ## maps weighted hue to an unweighted hue, based upon the guidepoints
@@ -356,8 +318,6 @@ hw2h <- function
    if (length(preset) == 0) {
       preset <- "custom";
    }
-   preset <- match.arg(preset,
-      choices=eval(formals(h2hwOptions)$preset_names));
    if (length(h1) > 0 && length(h2) > 0 && length(h1) == length(h2)) {
       h1h2 <- h2hwOptions(preset=preset,
          h1=h1,
@@ -371,9 +331,11 @@ hw2h <- function
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
 
-   hNew <- approx_degrees(h2,
-      h1,
-      h);
+   hNew <- approx_degrees(
+      h1=h2,
+      h2=h1,
+      h=h,
+      preset="custom");
    #hNew <- approx(x=h2,
    #   y=h1,
    #   ties="ordered",
@@ -381,4 +343,316 @@ hw2h <- function
    return(hNew);
 }
 
+#' Adjust the color hue warp effect
+#'
+#' Adjust the color hue warp effect, experimental
+#'
+#' This function is currently being tested as an approach to adjust
+#' the position and order of the warp color hues. For example,
+#' the initial use case is to "rotate" the color wheel so the starting
+#' color is not always red. Also, the color wheel can be reversed
+#' so the color sequence is reversed.
+#'
+#' @family colorjam hue warp
+#'
+#' @returns `list` of color warp angles with elements `"h1"` and `"h2"`,
+#'    suitable for use by `h2hw()` and `hw2h()`.
+#'
+#' @param h1,h2 `numeric` or `NULL`
+#' @param preset `character` string used to define `h1` and `h2` when those
+#'    values are not defined specifically.
+#' @param h1_shift `numeric` angle in degrees to shift the `h1` hue.
+#'    It is recommended to shift `h2` and not `h1`.
+#' @param h2_shift `numeric` angle in degrees to shift the `h2` hue.
+#'    It is recommended to shift `h2` and not `h1`.
+#' @param reverse_h2 `logical` indicating whether to reverse the order
+#'    of values in `h2`.
+#' @param ... additional arguments are ignored.
+#'
+#' @examples
+#' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=0, reverse_h2=FALSE)
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' rj_0 <- rainbowJam(n=24, preset="temp", step="v23")
+#' color_pie(rj_0, radius=1,
+#'    main="dichromat color wheel\nstep='v23'")
+#'
+#' rj_0 <- rainbowJam(n=24, preset="temp", step="v23", phase=c(1,2,4,3,6,5))
+#' color_pie(rj_0, radius=1,
+#'    main="dichromat color wheel\nstep='v23'\ncustom phase")
+#'
+#' n <- 24;
+#' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=-120, reverse_h2=FALSE)
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' rj_120 <- rainbowJam(n=n, preset="temp", step="v23",
+#'    nameStyle="n")
+#' color_pie(rj_120, radius=1,
+#'    main="dichromat color wheel rotated -120 degrees\nstep='v23'")
+#'
+#' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=0, reverse_h2=TRUE)
+#' add_colorjam_preset("temp1", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' rj_0rev <- rainbowJam(n=n, preset="temp1", step='v23')
+#' names(rj_0rev) <- seq_len(n)
+#' color_pie(rj_0rev, radius=1, main="dichromat color wheel (reversed)")
+#'
+#' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=90, reverse_h2=FALSE)
+#' add_colorjam_preset("temp2", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' rj_90 <- rainbowJam(n=n, preset="temp2", step='v23')
+#' color_pie(rj_90, radius=1,
+#'    main="color wheel rotated 90 degrees\nstep='v23'")
+#'
+#' # RGB rotated to start at yellow, then red, then blue
+#' new_h1h2 <- adjust_hue_warp(preset="rgb", h2_shift=-70, reverse_h2=TRUE)
+#' add_colorjam_preset("temp3", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' n <- 10
+#' rgb_rev <- rainbowJam(n=n,
+#'    preset="temp3", step='v24')
+#' color_pie(rgb_rev,
+#'    main="RGB color wheel rotated -30 degrees (reversed)\nstep='v24'")
+#'
+#' # same as above except using ryb3
+#' ryb_h1h2 <- adjust_hue_warp(preset="ryb", h2_shift=-110, reverse_h2=TRUE)
+#' add_colorjam_preset("temp4", h1=ryb_h1h2$h1, h2=ryb_h1h2$h2)
+#' n <- 10
+#' ryb_rev <- rainbowJam(n=n,
+#'    #phase=c(1,4,5,2,6,3),
+#'    preset="temp4", step='v24')
+#' color_pie(ryb_rev,
+#'    main="RYB color wheel rotated -110 degrees (reversed)\nstep='v24'")
+#'
+#' @export
+adjust_hue_warp <- function
+(h1=NULL,
+ h2=NULL,
+ preset=getOption("colorjam.preset", "custom"),
+ h1_shift=0,
+ h2_shift=0,
+ reverse_h2=FALSE,
+ ...)
+{
+   #
+   if (length(preset) == 0) {
+      preset <- "custom";
+   }
+   h1h2 <- h2hwOptions(preset=preset,
+      h1=h1,
+      h2=h2,
+      setOptions="FALSE")
+   h1h2_df <- jamba::mixedSortDF(data.frame(
+      h1=h1h2$h1,
+      h2=h1h2$h2));
+   h1 <- h1h2_df$h1;
+   h2 <- h1h2_df$h2;
 
+   # shift each color vector
+   if (length(h1_shift) > 0) {
+      h1 <- h1 + h1_shift;
+   }
+   if (length(h2_shift) > 0) {
+      h2 <- h2 + h2_shift;
+   }
+
+   # optionally flip h2
+   if (TRUE %in% reverse_h2) {
+      # h2 <- rev(h2)
+      h2 <- 360 - h2
+   }
+
+   return(list(
+      h1=h1,
+      h2=h2))
+
+   # new_h2
+   h2_signs <- sign(diff(h2))
+   h2_sign <- sign(mean(1e-9 + h2_signs[h2_signs != 0]))
+
+   # new_h1
+   h1_min_span <- floor(min(h1)/360) * 360
+   h1_max_span <- ceiling(max(h1)/360) * 360
+   h1_range_span <- ceiling(diff(range(h1))/360 + 1e-10) * 360;
+   new_h1 <- h1;
+   new_h2 <- h2;
+   if (h1_min_span >= 0) {
+      new_h1 <- c(h1 - h1_range_span, new_h1)
+      if (h2_sign >= 0) {
+         new_h2 <- c(h2 - h1_range_span, new_h2)
+      } else {
+         new_h2 <- c(h2 + h1_range_span, new_h2)
+      }
+   }
+   # new_h2;diff(new_h2);
+   if (h1_max_span <= 360) {
+      new_h1 <- c(new_h1, h1 + h1_range_span)
+      if (h2_sign >= 0) {
+         new_h2 <- c(new_h2, h2 + h1_range_span)
+      } else {
+         new_h2 <- c(new_h2, h2 - h1_range_span)
+      }
+   }
+   # new_h1
+   # diff(new_h1)
+   # new_h2
+   # diff(new_h2)
+
+   if (h2_sign >= 0) {
+      new_h2 <- c(h2 - 360, h2, h2 + 360)
+   } else {
+      new_h2 <- c(h2 + 360, h2, h2 - 360)
+   }
+   return(list(
+      h1=new_h1,
+      h2=new_h2))
+}
+
+# model this behavior after igraph::shapes() and .igraph.shapes:
+.colorjam_presets <- new.env();
+.colorjam_presets[["ryb"]] <- list(
+   h1=c(12,  60, 120, 240, 360),
+   h2=c(0, 120, 180, 240, 360));
+.colorjam_presets[["ryb1"]] <- list(
+   h2=c(0, 30, 60,
+      90, 120, 150,
+      180, 210, 240,
+      270, 300, 330),
+   h1=c(12.2, 23, 40,
+      60, 80.9, 107.3,
+      127.7, 180, 245,
+      265, 288, 315));
+# reversed ryb starting at yellow
+.colorjam_presets[["ryb2"]] <- list(
+   h1=c(12.2, 23, 40,
+      60, 81, 107,
+      128, 180, 245,
+      265, 288, 315),
+   h2=c(470, 440, 410,
+      380, 350, 320,
+      290, 260, 230,
+      200, 170, 140));
+# legacy compatibility
+.colorjam_presets[["ryb3"]] <- .colorjam_presets[["ryb"]]
+.colorjam_presets[["rgb"]] <- list(
+   h1=c(0, 360),
+   h2=c(0, 360));
+# reversed rgb starting at yellow
+.colorjam_presets[["rgb2"]] <- list(
+   h1=c(0, 360),
+   h2=c(430, 70));
+.colorjam_presets[["none"]] <- list(
+   h1=c(0, 360),
+   h2=c(0, 360));
+.colorjam_presets[["dichromat"]] <- list(
+   h1=c(8, 30,
+      65, 120, 200,
+      240, 260, 280,
+      330),
+   h2=c(0, 79.1,
+      118.7 - 1e-8, 118.7, 118.7 + 1e-8,
+      118.7 + 2e-8,
+      185.9, 304.6,
+      344.2))
+# reversed dichromat starting at yellow
+.colorjam_presets[["dichromat2"]] <- list(
+   h1=c(8, 30, 65,
+      120, 200, 240,
+      260, 280, 330),
+   h2=c(115, 35.9, -3.7+1e-9,
+      -3.7, -3.7-1e-9, -3.7-2e-9,
+      -70.9, -189.6, -229.2))
+
+#' Colorjam hue warp presets
+#'
+#' Colorjam hue warp presets
+#'
+#' `colorjam_presets()`: list the names of available colorjam presets,
+#' or when a preset name is provided, it returns hue warp data as a
+#' `list` with names `"h1"` and `"h2"` suitable for use by
+#' `h2hw()` and `hw2h()`.
+#'
+#' @returns `character` vector of recognized colorjam presets, or when
+#'    `preset` is provided, it returns a `list` with elements
+#'    `"h1"` and `"h2"` suitable for use with `h2hw()` or `hw2h()`.
+#'
+#' @family colorjam hue warp
+#'
+#' @param preset `NULL` to return a `character` vector of all recognized
+#'    preset names, or `character` string to return specific data associated
+#'    with a recognized preset name.
+#' @param ... additional arguments are ignored.
+#'
+#' @export
+colorjam_presets <- function
+(preset=NULL,
+ ...)
+{
+   #
+   if (length(preset) == 0) {
+      ls(.colorjam_presets)
+   } else {
+      .colorjam_presets[[preset]]
+   }
+}
+
+
+#' Add colorjam hue warp preset
+#'
+#' Add colorjam hue warp preset
+#'
+#' @returns `TRUE`, invisibly.
+#'
+#' @family colorjam hue warp
+#'
+#' @param preset `character` string with the preset name.
+#' @param h1,h2 `numeric` vectors of equal length, or `NULL` to
+#'    remove an existing preset.
+#' @param ... additional arguments are ignored.
+#'
+#' @examples
+#' h1 <- c(8, 30, 65,
+#'    120, 200, 240,
+#'    260, 280, 330)
+#' h2 <- c(115, 35.9, -3.7,
+#'    -3.7, -3.7, -3.7,
+#'    -70.9, -189.6, -229.2)
+#' add_colorjam_preset("dichromat2", h1=h1, h2=h2)
+#' color_pie(rainbowJam(n=10,
+#'    preset="dichromat2",
+#'    h1=h1, h2=h2,
+#'    phase=c(2,1,3,4,5,6)))
+#'
+#' add_colorjam_preset("dichromat2", h1=NULL, h2=NULL)
+#' colorjam_presets()
+#'
+#' @export
+add_colorjam_preset <- function
+(preset,
+ h1,
+ h2,
+ verbose=TRUE,
+ ...)
+{
+   # validate input
+   if (length(h1) != length(h2)) {
+      stop("length(h1) must equal length(h2)");
+   }
+   if (length(h1) == 0) {
+      if (preset %in% ls(.colorjam_presets)) {
+         # remove
+         rm(preset,
+            envir=.colorjam_presets)
+         if (TRUE %in% verbose) {
+            jamba::printDebug("add_colorjam_preset(): ",
+               "removed preset='", preset, "'");
+         }
+      }
+   } else {
+      assign(x=preset,
+         value=list(
+            h1=h1,
+            h2=h2),
+         envir=.colorjam_presets)
+      if (TRUE %in% verbose) {
+         jamba::printDebug("add_colorjam_preset(): ",
+            "added preset='", preset, "'");
+      }
+   }
+   invisible(TRUE)
+}

@@ -7,7 +7,8 @@
 closestRcolor(
   x,
   colorSet = colors(),
-  C_min = 20,
+  C_min = Cgrey,
+  Cgrey = getOption("jam.Cgrey", 5),
   showPalette = FALSE,
   colorModel = c("hcl", "LUV"),
   Hwt = 2,
@@ -25,44 +26,113 @@ closestRcolor(
 \item{x}{character vector of colors, either in hex format or any
 valid color in R.}
 
-\item{colorSet}{vector of colors, by default includes the R colors
-provided by \code{grDevices::colors()} minus the "grey##" greyscale colors,
-however any vector of colors can be used, whether named or not.}
+\item{colorSet}{\code{character} vector of colors, by default includes
+the R colors \code{grDevices::colors()}.}
 
-\item{showPalette}{boolean indicating whether to display the input
+\item{C_min, Cgrey}{\code{numeric} minimum color Chroma filter applied to
+handle greyscale colors. In most practical cases \code{C_min} and \code{Cgrey}
+should be the same value. Note \code{Cgrey} is used as an option in
+\code{jamba::make_styles()}, \code{jamba::applyCLrange()} for similar
+use cases, so it is used here as well: \code{getOption("jamba.Cgrey", 5)}.
+\itemize{
+\item \code{C_min} is applied to \code{colorSet} to require the closest matching
+color to have at least this color Chroma (saturation).
+\item \code{Cgrey} is applied to \code{x} to determine if the input color itself
+is considered greyscale, in which case it should not be matched
+with saturated colors since there is no reliable color hue.
+Instead, the subset of \code{colorSet} with Chroma below \code{C_min} is used
+for color-matching.
+}
+
+Reworded in short:
+\itemize{
+\item Colors in \code{x} with Chroma above \code{Cgrey} are matched with
+colors in \code{colorSet} with Chroma above \code{C_min}.
+\item Colors in \code{x} with Chroma below \code{Cgrey} are matched with
+colors in \code{colorSet} with Chroma below \code{C_min}.
+\item The end result should be that saturated input colors match
+saturated reference colors, and unsaturated input colors match
+unsaturated reference colors.
+}}
+
+\item{Cgrey}{\code{numeric} color Chroma at or below which the input color \code{x}
+is considered to be "grey" (or "gray"), and therefore the color
+hue is no longer matched.}
+
+\item{showPalette}{\code{logical} indicating whether to display the input
 colors and resulting closest matching colors by using
 \code{jamba::showColors()}.}
 
-\item{colorModel}{character color model to use, currently only using
-"hcl", though "rgb" and "ryb" were both tested and judged to perform
-less effectively.}
+\item{colorModel}{\code{character} color model to use:
+\itemize{
+\item \code{"hcl"}: default, uses HCL provided by \code{jamba::col2hcl()} which
+uses the equivalent of \code{colorspace::polarLUV()} and considers
+color hues in terms of 360 degree angles along a color wheel.
+\item \code{"LUV"}: uses CIELUV color space, provided by \code{colorspace::LUV()}
+which encodes the angular color hue in 3-D Cartesian space,
+allowing comparisons using Euclidean distance.
+}}
 
-\item{Hwt, Cwt, Lwt}{relative weights for each dimension of HCL colors,
-respectively.}
+\item{Hwt, Cwt, Lwt}{\code{numeric} relative weights for each dimension of
+HCL colors, for the H, C, and L channels, respectively.}
 
-\item{warpHue}{boolean indicating whether to perform the hue warp
+\item{warpHue}{\code{logical} indicating whether to perform the hue warp
 operation using \code{h2hw()} which improves the ability to match
 colors between orange and green.}
 
-\item{returnType}{character type of data to return: "color" will return
-the actual closest color; "name" will return the name of the closest
-color, or if the \code{colorSet} vector has no names, its values will
-be used; "match" will return an integer vector as an index to colors
-in \code{colorSet}.}
+\item{preset}{\code{character} string to define the color wheel used
+when matching input colors \code{x} to colors in \code{colorSet}.
+This preset is used with \code{h2hw()} and \code{hw2h()}.
+The default \code{preset="ryb"} allows greatest distinction in colors
+without imposing additional restrictions such as by \code{preset="dichromat"}
+which would only match color-safe colors. The purpose here is
+to identify and label colors based upon a reference set of colors.}
 
-\item{verbose}{logical whether to print verbose output}
+\item{method}{\code{character} string passed to \code{stats::dist()}. The default
+\code{method="maximum"} works well for \code{colorModel="hcl"}, and
+assigns distance using the largest distance across
+the three color coordinates H, C, and L. It requires the best
+overall match across all three coordinates rather than any weighted
+combination of coordinate distances. Other methods in testing allowed
+matches of different color hues when luminance and chroma values
+were very similar.
+With  \code{colorModel="LUV"} we recommend using \code{method="euclidean"},
+which seems to work well with projected color coordinates
+L, U, and V. The U, and V coordinates are roughly the angular
+color hue projected into a flat plane, the L describing Luminance.}
+
+\item{returnType}{\code{character} type of data to return:
+\itemize{
+\item \code{"color"} returns the color values in \code{colorSet}, which by default
+are color names from \code{grDevices::colors()}
+\item \code{"name"} returns \code{names(colorSet)} if they exist, otherwise
+values from \code{colorSet}
+\item \code{"match"} returns an integer vector as an index to \code{colorSet}
+}}
+
+\item{verbose}{\code{logical} whether to print verbose output.}
+}
+\value{
+\code{character} vector of colors, optionally customized
+by argument \code{returnType}.
 }
 \description{
 Find the closest R color for a vector of colors
 }
 \details{
 This function is intended as a relatively efficient method to compare
-a set of colors to the named R colors provided by \code{colors()}.
-It has some distinction from similar methods, in that it uses HCL
-color space, unlike similar methods which may use RGB color space.
-It also prioritizes the color hue, then the luminance (visual brightness),
-then chroma (saturation). These weights can be adjusted if necessary
-although the default values appear to work fairly well.
+a set of colors to the named R colors provided by \code{grDevices::colors()}.
+
+Color matching provides substantial improvements over similar functions
+from other R packages. Notably, colors are matched using either
+HCL or LUB color model by default, both of which provide vast
+improvement over RGB color matching, due to better spacing of
+colors, and increased resolution of color hue.
+
+For \code{colorModel="HCL"} the coordinates are weighted to prioritize
+matching color Hue above Chroma and Luminance. The distance method
+by default uses \code{method="maximum"} which also emphasizes the lowest
+distance in any of the three dimensions.
 }
 \examples{
 closestRcolor(rainbowJam(12), showPalette=TRUE);
@@ -71,6 +141,7 @@ closestRcolor(rainbowJam(12), showPalette=TRUE);
 \seealso{
 Other colorjam core: 
 \code{\link{blend_colors}()},
+\code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},

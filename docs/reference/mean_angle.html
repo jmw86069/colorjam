@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,26 +52,38 @@
     <p>Calculate the mean angle</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">mean_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, do_plot <span class="op">=</span> <span class="cn">FALSE</span>, lens <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mean_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, do_plot <span class="op">=</span> <span class="cn">FALSE</span>, lens <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p><code>numeric</code> vector of angles in degrees</p></dd>
+
+
 <dt>w</dt>
 <dd><p><code>numeric</code> vector representing weights</p></dd>
+
+
 <dt>do_plot</dt>
 <dd><p><code>logical</code> indicating whether to create a visual summary plot</p></dd>
+
+
 <dt>lens</dt>
 <dd><p><code>numeric</code> value passed to <code><a href="https://rdrr.io/pkg/jamba/man/warpAroundZero.html" class="external-link">jamba::warpAroundZero()</a></code> to adjust
 the radius</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments are ignored</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>numeric</code> vector that contains</p><ul><li><p><code>degree</code> the mean angle in degrees</p></li>
+    
+
+<p><code>numeric</code> vector that contains</p><ul><li><p><code>degree</code> the mean angle in degrees</p></li>
 <li><p><code>radius</code> the actual radius based upon mean unit vectors</p></li>
 <li><p><code>radius2</code> the adjusted radius using <code><a href="https://rdrr.io/pkg/jamba/man/warpAroundZero.html" class="external-link">jamba::warpAroundZero()</a></code></p></li>
 </ul></div>
@@ -94,21 +106,25 @@ color saturation.</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other colorjam hue warp: 
+<code><a href="add_colorjam_preset.html">add_colorjam_preset</a>()</code>,
+<code><a href="add_colorjam_step.html">add_colorjam_step</a>()</code>,
+<code><a href="adjust_hue_warp.html">adjust_hue_warp</a>()</code>,
 <code><a href="approx_degrees.html">approx_degrees</a>()</code>,
+<code><a href="colorjam_presets.html">colorjam_presets</a>()</code>,
+<code><a href="colorjam_steps.html">colorjam_steps</a>()</code>,
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">mean_angle</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">45</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mean_angle</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">45</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="mean_angle-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        deg     radius    radius2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 82.5000000  0.7933533  0.8944940 </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -123,7 +139,7 @@ color saturation.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

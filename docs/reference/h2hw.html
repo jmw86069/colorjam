@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,22 +52,34 @@
     <p>Convert standard hue to warped hue using the hue warp vectors</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">h2hw</span><span class="op">(</span><span class="va">h</span>, h1 <span class="op">=</span> <span class="cn">NULL</span>, h2 <span class="op">=</span> <span class="cn">NULL</span>, preset <span class="op">=</span> <span class="st">"custom"</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">h2hw</span><span class="op">(</span></span>
+<span>  <span class="va">h</span>,</span>
+<span>  h1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  h2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"custom"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>h</dt>
 <dd><p><code>numeric</code> vector of color hues between 0 and 360. These hues do
 not need to be in sequential order.</p></dd>
+
+
 <dt>h1, h2</dt>
 <dd><p><code>numeric</code> vector of color hues, which by default are defined in
 <code><a href="h2hwOptions.html">h2hwOptions()</a></code>, but allowed here in cases where the global options
 should be overridden but not modified.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>numeric</code> vector of hue values after applying the hue warp
+    
+
+<p><code>numeric</code> vector of hue values after applying the hue warp
 operation.</p>
     </div>
     <div id="details">
@@ -78,7 +90,7 @@ The intent is to convert colors in RGB space into RYB space by default,
 which substantially improves several other color manipulations, such
 as selection of categorical colors, and color blending.</p>
 <p>Note the input hue is considered the "standard" color hue as defined
-by the <code><a href="https://colorspace.R-Forge.R-project.org//reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code> function, ranging between 0 and 360.
+by the <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code> function, ranging between 0 and 360.
 By this standard, 0 is defined as red, 120 is defined as green, and
 240 is defined as blue.</p>
 <p>The default mappings convert RGB (red, green, blue) to RYB (red, yellow,
@@ -88,34 +100,37 @@ blue). The color yellow has hue=60 in RGB space, so the call to
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other colorjam hue warp: 
+<code><a href="add_colorjam_preset.html">add_colorjam_preset</a>()</code>,
+<code><a href="add_colorjam_step.html">add_colorjam_step</a>()</code>,
+<code><a href="adjust_hue_warp.html">adjust_hue_warp</a>()</code>,
 <code><a href="approx_degrees.html">approx_degrees</a>()</code>,
+<code><a href="colorjam_presets.html">colorjam_presets</a>()</code>,
+<code><a href="colorjam_steps.html">colorjam_steps</a>()</code>,
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code></p>
 <p>Other hue warp functions: 
-<code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
-<code><a href="hw2h.html">hw2h</a>()</code></p></div>
-    </div>
+<code><a href="h2hwOptions.html">h2hwOptions</a>()</code></p></div>
     </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Yellow when using an RGB color wheel is 60 degrees,</span></span>
-<span class="r-in"><span class="co">## but on an RYB color wheel is 120 degrees.</span></span>
-<span class="r-in"><span class="fu">h2hw</span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Yellow when using an RGB color wheel is 60 degrees,</span></span></span>
+<span class="r-in"><span><span class="co">## but on an RYB color wheel is 120 degrees.</span></span></span>
+<span class="r-in"><span><span class="fu">h2hw</span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 113.0429</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># RGB colors are convenient, but are not ideal especially when blending</span></span>
-<span class="r-in"><span class="co"># colors. Note that blue and yellow have hues that differ by exactly 180</span></span>
-<span class="r-in"><span class="co"># degrees, meaning a hue average is as likely to be purple as green.</span></span>
-<span class="r-in"><span class="va">huesBY</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">col2hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"H"</span>,<span class="op">]</span>;</span>
-<span class="r-in"><span class="va">huesBY</span>;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># RGB colors are convenient, but are not ideal especially when blending</span></span></span>
+<span class="r-in"><span><span class="co"># colors. Note that blue and yellow have hues that differ by exactly 180</span></span></span>
+<span class="r-in"><span><span class="co"># degrees, meaning a hue average is as likely to be purple as green.</span></span></span>
+<span class="r-in"><span><span class="va">huesBY</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">col2hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"H"</span>,<span class="op">]</span>;</span></span>
+<span class="r-in"><span><span class="va">huesBY</span>;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 265.87273  85.87275</span>
-<span class="r-in"><span class="va">warpedHuesBY</span> <span class="op">&lt;-</span> <span class="fu">h2hw</span><span class="op">(</span><span class="va">huesBY</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="va">warpedHuesBY</span>;</span>
+<span class="r-in"><span><span class="va">warpedHuesBY</span> <span class="op">&lt;-</span> <span class="fu">h2hw</span><span class="op">(</span><span class="va">huesBY</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">warpedHuesBY</span>;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 220.7547 118.7000</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -130,7 +145,7 @@ blue). The color yellow has hue=60 in RGB space, so the call to
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

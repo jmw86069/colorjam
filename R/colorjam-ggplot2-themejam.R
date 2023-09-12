@@ -89,7 +89,7 @@ theme_jam <- function
    if (!jamba::check_pkg_installed("ggplot2")) {
       stop("theme_jam() requires the ggplot2 package.");
    }
-   if (resetTheme) {
+   if (TRUE %in% resetTheme) {
       tNew <- theme_default(base_size=base_size);
    } else {
       tNew <- ggplot2::theme_get();
@@ -204,9 +204,8 @@ scale_color_jam <- function
  darken=FALSE,
  alpha=1,
  useGrey=20,
- h1=NULL,
- h2=NULL,
- preset="custom")
+ preset=getOption("colorjam.preset", "dichromat2"),
+ step=getOption("colorjam.step", "v24"))
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -223,9 +222,8 @@ scale_color_jam <- function
          darken=darken,
          alpha=alpha,
          useGrey=useGrey,
-         h1=h1,
-         h2=h2,
-         preset=preset),
+         preset=preset,
+         step=step),
       ...);
 }
 
@@ -298,9 +296,8 @@ scale_fill_jam <- function
  darken=FALSE,
  alpha=1,
  useGrey=20,
- h1=NULL,
- h2=NULL,
- preset="custom")
+ preset=getOption("colorjam.preset", "dichromat2"),
+ step=getOption("colorjam.step", "v24"))
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -317,9 +314,8 @@ scale_fill_jam <- function
          darken=darken,
          alpha=alpha,
          useGrey=useGrey,
-         h1=h1,
-         h2=h2,
-         preset=preset),
+         preset=preset,
+         step=step),
       ...);
 }
 
@@ -366,9 +362,8 @@ jam_pal <- function
  darken=FALSE,
  alpha=1,
  useGrey=20,
- h1=NULL,
- h2=NULL,
- preset="custom",
+ preset=getOption("colorjam.preset", "dichromat2"),
+ step=getOption("colorjam.step", "v24"),
  ...)
 {
    ## Note this function does not specifically require ggplot2
@@ -382,8 +377,7 @@ jam_pal <- function
             rainbowJam(n,
                alpha=alpha,
                preset=preset,
-               h1=h1,
-               h2=h2,
+               step=step,
                ...),
             useGrey=useGrey);
          names(pal) <- NULL;
@@ -398,8 +392,7 @@ jam_pal <- function
          pal <- rainbowJam(n,
             alpha=alpha,
             preset=preset,
-            h1=h1,
-            h2=h2,
+            step=step,
             ...);
          if (darkFactor != 1 || sFactor != 1) {
             pal <- jamba::makeColorDarker(pal,

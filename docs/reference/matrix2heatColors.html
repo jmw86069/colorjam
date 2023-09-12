@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,72 +52,97 @@
     <p>Convert numeric matrix to heatmap colors</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">matrix2heatColors</span><span class="op">(</span>
-  <span class="va">x</span>,
-  colorV <span class="op">=</span> <span class="fu"><a href="group2colors.html">group2colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,
-  defaultBaseColor <span class="op">=</span> <span class="st">"#FFFFFF"</span>,
-  transformFunc <span class="op">=</span> <span class="va">c</span>,
-  lens <span class="op">=</span> <span class="fl">0</span>,
-  shareLimit <span class="op">=</span> <span class="cn">TRUE</span>,
-  numLimitFactor <span class="op">=</span> <span class="fl">0.95</span>,
-  numLimit <span class="op">=</span> <span class="cn">NULL</span>,
-  baseline <span class="op">=</span> <span class="fl">0</span>,
-  color_below_baseline <span class="op">=</span> <span class="st">"#FFFFFF"</span>,
-  divergent <span class="op">=</span> <span class="cn">FALSE</span>,
-  rampN <span class="op">=</span> <span class="fl">15</span>,
-  trimRamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">matrix2heatColors</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  colorV <span class="op">=</span> <span class="fu"><a href="group2colors.html">group2colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  defaultBaseColor <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
+<span>  transformFunc <span class="op">=</span> <span class="va">c</span>,</span>
+<span>  lens <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  shareLimit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numLimitFactor <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  numLimit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  baseline <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  color_below_baseline <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
+<span>  divergent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  rampN <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  trimRamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>numeric matrix. If there are no <code>colnames(x)</code> they will
 be created using <code>jamba::makeNames(rep("x", ncol(x)))</code>.</p></dd>
+
+
 <dt>colorV</dt>
 <dd><p>character vector of R colors, named by <code>colnames(x)</code>,
 and recycled to <code>ncol(x)</code> if needed. If <code>colorV</code> is supplied as
 a list, the list elements are mapped to <code>colnames(x)</code> in order.</p></dd>
+
+
 <dt>defaultBaseColor</dt>
 <dd><p>character vector of R colors used as the default
 base color, when <code>colorV</code> is supplied as a vector.</p></dd>
+
+
 <dt>transformFunc</dt>
 <dd><p>function applied to numeric values before
 the color gradient is mapped to numeric values. For example,
 <code>transformFunc=function(i)-log10(i)</code> would map colors to P-value
 using a <code>-log10(p)</code> transformation.</p></dd>
+
+
 <dt>lens</dt>
 <dd><p>numeric value passed to <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html" class="external-link">warpRamp()</a></code> to adjust the
 distribution of colors along the numeric range.</p></dd>
+
+
 <dt>shareLimit</dt>
 <dd><p>logical indicating whether one numeric limit <code>numLimit</code>
 should be used to define the numeric range for color mapping.</p></dd>
+
+
 <dt>numLimitFactor</dt>
 <dd><p>when <code>numLimit</code> is NULL, this factor is applied to
 the maximum numeric value to determine the <code>numLimit</code>.</p></dd>
+
+
 <dt>numLimit</dt>
 <dd><p>numeric value to define the maximum numeric value
 above which all numeric values are mapped to the maximum color.
 When set to <code>NULL</code> the <code>numLimitFactor</code> is used to define
 the <code>numLimit</code>.</p></dd>
+
+
 <dt>baseline</dt>
 <dd><p>numeric value to define the numeric baseline, used
 when <code>divergent=FALSE</code>. Values are recycled to <code>ncol(x)</code> to be
 applied to each column individually.</p></dd>
+
+
 <dt>color_below_baseline</dt>
 <dd><p>color used when numeric value is
 below the <code>baseline</code>. Values are recycled to <code>ncol(x)</code> to be
 applied to each column individually. When <code>color_below_baseline</code>
 is <code>NULL</code>, the first color in the color ramp is used for all
 values below the baseline.</p></dd>
+
+
 <dt>divergent</dt>
 <dd><p>logical indicating whether to apply colors to the numeric
 range symmetric around zero.</p></dd>
+
+
 <dt>rampN</dt>
 <dd><p>integer value to define the number of color breaks for
 each color gradient.</p></dd>
+
+
 <dt>trimRamp</dt>
 <dd><p>numeric vector with two values, used by
 <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code> to trim the intermediate color gradient before
@@ -130,12 +155,17 @@ gradient with length <code>rampN</code>. The <code>trimRamp</code> argument is e
 useful to remove the leading white color, or to trim the first
 few colors to ensure the first color in the gradient is visibly
 different from the background color defined by <code>defaultBaseColor</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical indicating whether to print verbose output.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments are passed to <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>
 for additional customization. These arguments are handled across
 all columns, and not a column-by-column basis.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -157,26 +187,25 @@ to intensify the color saturation across the numeric range.</p>
 <code><a href="rainbowJamMulti.html">rainbowJamMulti</a>()</code>,
 <code><a href="vals2colorLevels.html">vals2colorLevels</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="co"># generate a random numeric matrix</span></span>
-<span class="r-in"><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">12</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">120</span><span class="op">)</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="va">m1n</span> <span class="op">&lt;-</span> <span class="va">m1</span>;</span>
-<span class="r-in"><span class="va">m1n</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>, digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, trim<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span>
-<span class="r-in"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span></span>
-<span class="r-in">   <span class="fu">matrix2heatColors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>,</span>
-<span class="r-in">      transformFunc<span class="op">=</span><span class="va">c</span>,</span>
-<span class="r-in">      divergent<span class="op">=</span><span class="cn">FALSE</span>,</span>
-<span class="r-in">      lens<span class="op">=</span><span class="op">-</span><span class="fl">5</span>,</span>
-<span class="r-in">      shareNumLimit<span class="op">=</span><span class="cn">TRUE</span>,</span>
-<span class="r-in">      baseline<span class="op">=</span><span class="fl">0</span>,</span>
-<span class="r-in">      numLimit<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">   cellnote<span class="op">=</span><span class="va">m1n</span><span class="op">)</span>;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="co"># generate a random numeric matrix</span></span></span>
+<span class="r-in"><span><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">12</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">120</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">m1n</span> <span class="op">&lt;-</span> <span class="va">m1</span>;</span></span>
+<span class="r-in"><span><span class="va">m1n</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>, digits<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, trim<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   <span class="fu">matrix2heatColors</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      transformFunc<span class="op">=</span><span class="va">c</span>,</span></span>
+<span class="r-in"><span>      divergent<span class="op">=</span><span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>      lens<span class="op">=</span><span class="op">-</span><span class="fl">5</span>,</span></span>
+<span class="r-in"><span>      shareNumLimit<span class="op">=</span><span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>      baseline<span class="op">=</span><span class="fl">0</span>,</span></span>
+<span class="r-in"><span>      numLimit<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   cellnote<span class="op">=</span><span class="va">m1n</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="matrix2heatColors-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -191,7 +220,7 @@ to intensify the color saturation across the numeric range.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

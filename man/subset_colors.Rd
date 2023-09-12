@@ -129,6 +129,7 @@ Other colorjam sort:
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},

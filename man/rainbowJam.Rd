@@ -6,15 +6,16 @@
 \usage{
 rainbowJam(
   n = NULL,
-  Hstart = 12.2,
+  preset = getOption("colorjam.preset", "dichromat2"),
+  step = getOption("colorjam.step", "v24"),
+  Hstart = 0,
   alpha = 1,
   hues = NULL,
   warpHue = NULL,
-  preset = c("custom"),
   h1 = NULL,
   h2 = NULL,
-  Cvals = c(200, 120, 160, 90, 180, 150),
-  Lvals = c(44, 88, 74, 58, 80, 65),
+  Cvals = NULL,
+  Lvals = NULL,
   Crange = NULL,
   Lrange = NULL,
   phase = 1,
@@ -30,77 +31,98 @@ rainbowJam(
 \arguments{
 \item{n}{\code{integer} number of categorical colors to return}
 
+\item{preset}{\code{character} string matching one entry in \code{colorjam_presets()},
+which defines the color wheel to use.
+define the color wheel, only used when \code{warpHue=TRUE}.}
+
+\item{step}{\code{character} string matching one entry in \code{colorjam_steps()},
+which defines the sequence of Chroma and Luminance values across
+the range of color hues.}
+
 \item{Hstart}{\code{numeric} hue to use for the first hue value in the
-color sequence. Standard red has a hue 12.2, which is the default.}
+color sequence. This value represents the first color in the color
+wheel defined by \code{preset}, and colors are arrayed across 360 degrees.}
 
 \item{alpha}{\code{numeric} alpha transparency of colors, values ranging from
 0 to 1. If multiple values are supplied, they are applied in order to
 the categorical colors returned.}
 
-\item{hues}{\code{numeric} vector of hues to use, only useful when the
-exact hues should be used instead of taking slices along a hue color
-wheel. By default, \code{warpHue=FALSE} if not otherwise defined, when
-\code{hues} is supplied. However, then \code{warpHue=TRUE} then the \code{hues}
-will be adjusted using \code{h2hw()}.}
+\item{hues}{\code{numeric} optional vector with specific hues to use instead
+of using \code{Hstart} and filling the 360 degree color wheel with colors.}
 
-\item{warpHue}{\code{logical} indicating whether to apply a custom color wheel,
-which "warps" the hue using \code{h2hwOptions()}, by applying either
-\code{preset}, or specific \code{h1} and \code{h2} arguments.}
+\item{warpHue}{\code{logical} (deprecated) formerly to enable or disable the
+color warping for custom color wheel.
+To disable a custom color wheel use \code{preset="rgb"}.}
 
-\item{preset}{\code{character} string passed to \code{h2hwOptions()} to
-define the color wheel, only used when \code{warpHue=TRUE}.}
+\item{h1, h2}{\code{numeric} (deprecated) in favor of argument \code{preset} to
+define the \code{h1} and \code{h2} values.
+To use custom values for \code{h1} and \code{h2} use \code{add_colorjam_preset()}
+to define a new preset name, then use the name with \code{preset}.}
 
-\item{h1, h2}{\code{numeric} vectors as used by \code{h2hw()} and \code{hw2h()} to
-convert from warped hues to standard hues. The default values define
-red-yellow-blue (additive) color space, which is converted to
-red-green-blue color space to produce the actual R color.}
+\item{Cvals, Lvals}{\code{numeric} (deprecated) in favor of argument \code{step}
+to define the sequence of Chroma and Luminance values.
+To define custom values, use \code{add_colorjam_step()} to define a new
+step name, then use the name with \code{step}.}
 
-\item{Cvals, Lvals}{\code{numeric} vector of chroma (C) and luminance (L) values
-to be cycled when creating colors along the vector of color hues. These
-values are intended to maximize visual distinctiveness of adjacent and
-nearly-adjacent colors. For example, varying from bright to dark may
-provide additional distinction between two similar color hues.}
+\item{Crange, Lrange}{\code{numeric} optional permitted ranges for
+Chroma and Luminance values.
+These adjustments may be useful to impose a darker or lighter
+set of categorical colors.
+\itemize{
+\item When any Chroma value is outside the given \code{Crange}, all color Chroma
+values are scaled to fit this range using \code{jamba::normScale()}.
+This process scales the lowest observed Chroma to the minimum Crange,
+and the highest observed Chroma to the maximum Crange, in order to
+preserve intermediate gradient values.
+\item When any Luminance value is outside the given \code{Lrange}, all color
+Luminance values are scaled to fit this range using \code{jamba::normScale()}.
+}}
 
-\item{Crange, Lrange}{vector of two numeric values which define the allowable
-chroma (C) and luminance (L) ranges for \code{Cvals} and \code{Lvals}
-parameter values. If supplied, the numeric vector Cvals will be scaled
-so the lowest Cvals value maps to the first value in Crange, and the
-highest Cvals value maps to the last value in Crange. Varying the
-Crange and Lrange values can help produce categorical colors on a
-dark or light background, by changing the range of values being used.}
-
-\item{phase}{\code{integer} value which indicates the first value to use
-from the sequence of \code{Cvals},\code{Lvals} values, where \code{phase=1} starts
-with the first value for each, \code{phase=2} starts with the second
-value from each, etc. When \code{phase} is negative, the order of
-\code{Cvals} and \code{Lvals} is reversed.}
+\item{phase}{\code{integer} starting step value to use from the sequence
+of Chroma and Luminance values defined by \code{colorjam_steps()}.
+\itemize{
+\item Default \code{phase=1} begins with the first value; \code{phase=2} begins
+with the second value.
+\item When \code{phase} is negative, the Chroma and Luminance values are
+each reversed, then the absolute value of \code{phase} is used.
+For example \code{phase=-1} reverses the sequence, then uses the first value.
+So it would begin with the last Chroma value, and the last Luminance
+value.
+}}
 
 \item{direction}{\code{character} value indicating the direction to travel
-around the color wheel, where \code{"1"} travels forward (red-yellow-blue),
-and \code{"-1"} travels in reverse (red-blue-yellow).}
+around the color wheel, permitting the color wheel to be reversed.
+When using \code{direction="-1"} it may also be helpful to use a negative
+\code{phase=-1}.
+\itemize{
+\item \code{"1"} (default) travels forward, clockwise around the color wheel
+\item \code{"-1"} travels in reverse, counter-clockwise around the color wheel
+}}
 
 \item{do_hue_pad}{\code{logical} indicating whether to apply padding to
-the color hue sequence, intended mainly so the last color hue
-in a sequence is less similar to the first color hue in the
-sequence.}
+the end of the color hue sequence. This padding increases distinction
+between the first and last colors.}
 
 \item{hue_pad_percent}{\code{numeric} value between 0 and 100, used when
-\code{do_hue_pad} to apply a padding between the first and last color
+\code{do_hue_pad=TRUE} to apply a padding between the first and last color
 hues.}
 
-\item{nameStyle}{\code{character} value indicating how to name the output
-colors: "none" returns colors with no names; "hcl" assigns names with
-the color number prefix, followed by H, C, L values; "colors" names the
-vector by the hex color code.}
+\item{nameStyle}{\code{character} string for the style of name assigned:
+\itemize{
+\item \code{"none"} assigns no names
+\item \code{"n"} assigns names by the index order
+\item \code{"hcl"} assigns names using H, C, L values
+\item \code{"color"} assigns names by hex color
+\item \code{"closestRcolors"} assigns names from \code{closestRcolors()}
+}}
 
 \item{doTest}{\code{logical} indicating whether to perform a visual test for
-the \code{n} number of colors produced, which helps judge the
-visual distinctiveness of different combinations of dark and light
-colors.}
+\code{n} number of colors produced.}
 
 \item{verbose}{\code{logical} whether to print verbose output}
 
-\item{...}{additional arguments are ignored.}
+\item{...}{additional arguments are passed to \code{closestRcolor()} when
+\code{nameStyle="closestRcolor"}.}
 }
 \value{
 \code{character} vector of categorical colors
@@ -154,6 +176,7 @@ jamba::showColors(list(version19=cat19, version20=cat20))
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{sort_colors}()},

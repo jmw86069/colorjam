@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,90 +52,175 @@
     <p>Find the closest R color for a vector of colors</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">closestRcolor</span><span class="op">(</span>
-  <span class="va">x</span>,
-  colorSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>,
-  C_min <span class="op">=</span> <span class="fl">20</span>,
-  showPalette <span class="op">=</span> <span class="cn">FALSE</span>,
-  colorModel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcl"</span>, <span class="st">"LUV"</span><span class="op">)</span>,
-  Hwt <span class="op">=</span> <span class="fl">2</span>,
-  Cwt <span class="op">=</span> <span class="fl">1</span>,
-  Lwt <span class="op">=</span> <span class="fl">4</span>,
-  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,
-  preset <span class="op">=</span> <span class="st">"ryb"</span>,
-  method <span class="op">=</span> <span class="st">"maximum"</span>,
-  returnType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"color"</span>, <span class="st">"name"</span>, <span class="st">"match"</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">closestRcolor</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  colorSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  C_min <span class="op">=</span> <span class="va">Cgrey</span>,</span>
+<span>  Cgrey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"jam.Cgrey"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  showPalette <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  colorModel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcl"</span>, <span class="st">"LUV"</span><span class="op">)</span>,</span>
+<span>  Hwt <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  Cwt <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  Lwt <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  preset <span class="op">=</span> <span class="st">"ryb"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"maximum"</span>,</span>
+<span>  returnType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"color"</span>, <span class="st">"name"</span>, <span class="st">"match"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>character vector of colors, either in hex format or any
 valid color in R.</p></dd>
+
+
 <dt>colorSet</dt>
-<dd><p>vector of colors, by default includes the R colors
-provided by <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> minus the "grey##" greyscale colors,
-however any vector of colors can be used, whether named or not.</p></dd>
+<dd><p><code>character</code> vector of colors, by default includes
+the R colors <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>.</p></dd>
+
+
+<dt>C_min, Cgrey</dt>
+<dd><p><code>numeric</code> minimum color Chroma filter applied to
+handle greyscale colors. In most practical cases <code>C_min</code> and <code>Cgrey</code>
+should be the same value. Note <code>Cgrey</code> is used as an option in
+<code><a href="https://rdrr.io/pkg/jamba/man/make_styles.html" class="external-link">jamba::make_styles()</a></code>, <code><a href="https://rdrr.io/pkg/jamba/man/applyCLrange.html" class="external-link">jamba::applyCLrange()</a></code> for similar
+use cases, so it is used here as well: <code>getOption("jamba.Cgrey", 5)</code>.</p><ul><li><p><code>C_min</code> is applied to <code>colorSet</code> to require the closest matching
+color to have at least this color Chroma (saturation).</p></li>
+<li><p><code>Cgrey</code> is applied to <code>x</code> to determine if the input color itself
+is considered greyscale, in which case it should not be matched
+with saturated colors since there is no reliable color hue.
+Instead, the subset of <code>colorSet</code> with Chroma below <code>C_min</code> is used
+for color-matching.</p></li>
+</ul><p>Reworded in short:</p><ul><li><p>Colors in <code>x</code> with Chroma above <code>Cgrey</code> are matched with
+colors in <code>colorSet</code> with Chroma above <code>C_min</code>.</p></li>
+<li><p>Colors in <code>x</code> with Chroma below <code>Cgrey</code> are matched with
+colors in <code>colorSet</code> with Chroma below <code>C_min</code>.</p></li>
+<li><p>The end result should be that saturated input colors match
+saturated reference colors, and unsaturated input colors match
+unsaturated reference colors.</p></li>
+</ul></dd>
+
+
+<dt>Cgrey</dt>
+<dd><p><code>numeric</code> color Chroma at or below which the input color <code>x</code>
+is considered to be "grey" (or "gray"), and therefore the color
+hue is no longer matched.</p></dd>
+
+
 <dt>showPalette</dt>
-<dd><p>boolean indicating whether to display the input
+<dd><p><code>logical</code> indicating whether to display the input
 colors and resulting closest matching colors by using
 <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code>.</p></dd>
+
+
 <dt>colorModel</dt>
-<dd><p>character color model to use, currently only using
-"hcl", though "rgb" and "ryb" were both tested and judged to perform
-less effectively.</p></dd>
+<dd><p><code>character</code> color model to use:</p><ul><li><p><code>"hcl"</code>: default, uses HCL provided by <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code> which
+uses the equivalent of <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code> and considers
+color hues in terms of 360 degree angles along a color wheel.</p></li>
+<li><p><code>"LUV"</code>: uses CIELUV color space, provided by <code><a href="https://colorspace.R-Forge.R-project.org/reference/LUV.html" class="external-link">colorspace::LUV()</a></code>
+which encodes the angular color hue in 3-D Cartesian space,
+allowing comparisons using Euclidean distance.</p></li>
+</ul></dd>
+
+
 <dt>Hwt, Cwt, Lwt</dt>
-<dd><p>relative weights for each dimension of HCL colors,
-respectively.</p></dd>
+<dd><p><code>numeric</code> relative weights for each dimension of
+HCL colors, for the H, C, and L channels, respectively.</p></dd>
+
+
 <dt>warpHue</dt>
-<dd><p>boolean indicating whether to perform the hue warp
+<dd><p><code>logical</code> indicating whether to perform the hue warp
 operation using <code><a href="h2hw.html">h2hw()</a></code> which improves the ability to match
 colors between orange and green.</p></dd>
+
+
+<dt>preset</dt>
+<dd><p><code>character</code> string to define the color wheel used
+when matching input colors <code>x</code> to colors in <code>colorSet</code>.
+This preset is used with <code><a href="h2hw.html">h2hw()</a></code> and <code><a href="hw2h.html">hw2h()</a></code>.
+The default <code>preset="ryb"</code> allows greatest distinction in colors
+without imposing additional restrictions such as by <code>preset="dichromat"</code>
+which would only match color-safe colors. The purpose here is
+to identify and label colors based upon a reference set of colors.</p></dd>
+
+
+<dt>method</dt>
+<dd><p><code>character</code> string passed to <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">stats::dist()</a></code>. The default
+<code>method="maximum"</code> works well for <code>colorModel="hcl"</code>, and
+assigns distance using the largest distance across
+the three color coordinates H, C, and L. It requires the best
+overall match across all three coordinates rather than any weighted
+combination of coordinate distances. Other methods in testing allowed
+matches of different color hues when luminance and chroma values
+were very similar.
+With  <code>colorModel="LUV"</code> we recommend using <code>method="euclidean"</code>,
+which seems to work well with projected color coordinates
+L, U, and V. The U, and V coordinates are roughly the angular
+color hue projected into a flat plane, the L describing Luminance.</p></dd>
+
+
 <dt>returnType</dt>
-<dd><p>character type of data to return: "color" will return
-the actual closest color; "name" will return the name of the closest
-color, or if the <code>colorSet</code> vector has no names, its values will
-be used; "match" will return an integer vector as an index to colors
-in <code>colorSet</code>.</p></dd>
+<dd><p><code>character</code> type of data to return:</p><ul><li><p><code>"color"</code> returns the color values in <code>colorSet</code>, which by default
+are color names from <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code></p></li>
+<li><p><code>"name"</code> returns <code>names(colorSet)</code> if they exist, otherwise
+values from <code>colorSet</code></p></li>
+<li><p><code>"match"</code> returns an integer vector as an index to <code>colorSet</code></p></li>
+</ul></dd>
+
+
 <dt>verbose</dt>
-<dd><p>logical whether to print verbose output</p></dd>
+<dd><p><code>logical</code> whether to print verbose output.</p></dd>
+
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p><code>character</code> vector of colors, optionally customized
+by argument <code>returnType</code>.</p>
+    </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function is intended as a relatively efficient method to compare
-a set of colors to the named R colors provided by <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors()</a></code>.
-It has some distinction from similar methods, in that it uses HCL
-color space, unlike similar methods which may use RGB color space.
-It also prioritizes the color hue, then the luminance (visual brightness),
-then chroma (saturation). These weights can be adjusted if necessary
-although the default values appear to work fairly well.</p>
+a set of colors to the named R colors provided by <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>.</p>
+<p>Color matching provides substantial improvements over similar functions
+from other R packages. Notably, colors are matched using either
+HCL or LUB color model by default, both of which provide vast
+improvement over RGB color matching, due to better spacing of
+colors, and increased resolution of color hue.</p>
+<p>For <code>colorModel="HCL"</code> the coordinates are weighted to prioritize
+matching color Hue above Chroma and Luminance. The distance method
+by default uses <code>method="maximum"</code> which also emphasizes the lowest
+distance in any of the three dimensions.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other colorjam core: 
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
+<code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="colors_to_df.html">colors_to_df</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="rainbowJam.html">rainbowJam</a>()</code>,
 <code><a href="sort_colors.html">sort_colors</a>()</code>,
 <code><a href="subset_colors.html">subset_colors</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">closestRcolor</span><span class="op">(</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, showPalette<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">closestRcolor</span><span class="op">(</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, showPalette<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="closestRcolor-1.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           #E90000           #FFB194           #FF8500           #C07E00 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            "red2"     "lightsalmon"     "darkorange1"         "orange3" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           #00DBFF           #00A0FF           #001FFF           #CFCDFF </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      "turquoise2"      "dodgerblue"            "blue" "lightsteelblue2" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           #BF91FF           #9D75EA           #FF64FF           #FF00E9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "mediumpurple1"   "mediumpurple2"         "orchid1"         "magenta" </span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #00E1FF          #A67200          #FF8A66          #DC726B </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "turquoise2" "darkgoldenrod4"        "salmon1"  "palevioletred" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #FF89BA          #E86CED          #E9C0FF          #9169F9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "palevioletred1"        "orchid2"          "plum1" "lightslateblue" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #AFA5FF          #8891EE          #00DBFF          #00C35B </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "steelblue1" "cornflowerblue"     "turquoise2"   "springgreen3" </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -150,7 +235,7 @@ although the default values appear to work fairly well.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

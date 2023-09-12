@@ -23,62 +23,74 @@
 #' hues recognized by [hcl()].
 #'
 #' @param n `integer` number of categorical colors to return
+#' @param preset `character` string matching one entry in `colorjam_presets()`,
+#'    which defines the color wheel to use.
+#'    define the color wheel, only used when `warpHue=TRUE`.
+#' @param step `character` string matching one entry in `colorjam_steps()`,
+#'    which defines the sequence of Chroma and Luminance values across
+#'    the range of color hues.
 #' @param Hstart `numeric` hue to use for the first hue value in the
-#'    color sequence. Standard red has a hue 12.2, which is the default.
+#'    color sequence. This value represents the first color in the color
+#'    wheel defined by `preset`, and colors are arrayed across 360 degrees.
 #' @param alpha `numeric` alpha transparency of colors, values ranging from
 #'    0 to 1. If multiple values are supplied, they are applied in order to
 #'    the categorical colors returned.
-#' @param hues `numeric` vector of hues to use, only useful when the
-#'    exact hues should be used instead of taking slices along a hue color
-#'    wheel. By default, `warpHue=FALSE` if not otherwise defined, when
-#'    `hues` is supplied. However, then `warpHue=TRUE` then the `hues`
-#'    will be adjusted using `h2hw()`.
-#' @param warpHue `logical` indicating whether to apply a custom color wheel,
-#'    which "warps" the hue using `h2hwOptions()`, by applying either
-#'    `preset`, or specific `h1` and `h2` arguments.
-#' @param preset `character` string passed to `h2hwOptions()` to
-#'    define the color wheel, only used when `warpHue=TRUE`.
-#' @param h1,h2 `numeric` vectors as used by `h2hw()` and `hw2h()` to
-#'    convert from warped hues to standard hues. The default values define
-#'    red-yellow-blue (additive) color space, which is converted to
-#'    red-green-blue color space to produce the actual R color.
-#' @param Cvals,Lvals `numeric` vector of chroma (C) and luminance (L) values
-#'    to be cycled when creating colors along the vector of color hues. These
-#'    values are intended to maximize visual distinctiveness of adjacent and
-#'    nearly-adjacent colors. For example, varying from bright to dark may
-#'    provide additional distinction between two similar color hues.
-#' @param Crange,Lrange vector of two numeric values which define the allowable
-#'    chroma (C) and luminance (L) ranges for \code{Cvals} and \code{Lvals}
-#'    parameter values. If supplied, the numeric vector Cvals will be scaled
-#'    so the lowest Cvals value maps to the first value in Crange, and the
-#'    highest Cvals value maps to the last value in Crange. Varying the
-#'    Crange and Lrange values can help produce categorical colors on a
-#'    dark or light background, by changing the range of values being used.
-#' @param phase `integer` value which indicates the first value to use
-#'    from the sequence of `Cvals`,`Lvals` values, where `phase=1` starts
-#'    with the first value for each, `phase=2` starts with the second
-#'    value from each, etc. When `phase` is negative, the order of
-#'    `Cvals` and `Lvals` is reversed.
+#' @param hues `numeric` optional vector with specific hues to use instead
+#'    of using `Hstart` and filling the 360 degree color wheel with colors.
+#' @param warpHue `logical` (deprecated) formerly to enable or disable the
+#'    color warping for custom color wheel.
+#'    To disable a custom color wheel use `preset="rgb"`.
+#' @param h1,h2 `numeric` (deprecated) in favor of argument `preset` to
+#'    define the `h1` and `h2` values.
+#'    To use custom values for `h1` and `h2` use `add_colorjam_preset()`
+#'    to define a new preset name, then use the name with `preset`.
+#' @param Cvals,Lvals `numeric` (deprecated) in favor of argument `step`
+#'    to define the sequence of Chroma and Luminance values.
+#'    To define custom values, use `add_colorjam_step()` to define a new
+#'    step name, then use the name with `step`.
+#' @param Crange,Lrange `numeric` optional permitted ranges for
+#'    Chroma and Luminance values.
+#'    These adjustments may be useful to impose a darker or lighter
+#'    set of categorical colors.
+#'    * When any Chroma value is outside the given `Crange`, all color Chroma
+#'    values are scaled to fit this range using `jamba::normScale()`.
+#'    This process scales the lowest observed Chroma to the minimum Crange,
+#'    and the highest observed Chroma to the maximum Crange, in order to
+#'    preserve intermediate gradient values.
+#'    * When any Luminance value is outside the given `Lrange`, all color
+#'    Luminance values are scaled to fit this range using `jamba::normScale()`.
+#' @param phase `integer` starting step value to use from the sequence
+#'    of Chroma and Luminance values defined by `colorjam_steps()`.
+#'    * Default `phase=1` begins with the first value; `phase=2` begins
+#'    with the second value.
+#'    * When `phase` is negative, the Chroma and Luminance values are
+#'    each reversed, then the absolute value of `phase` is used.
+#'    For example `phase=-1` reverses the sequence, then uses the first value.
+#'    So it would begin with the last Chroma value, and the last Luminance
+#'    value.
 #' @param direction `character` value indicating the direction to travel
-#'    around the color wheel, where `"1"` travels forward (red-yellow-blue),
-#'    and `"-1"` travels in reverse (red-blue-yellow).
+#'    around the color wheel, permitting the color wheel to be reversed.
+#'    When using `direction="-1"` it may also be helpful to use a negative
+#'    `phase=-1`.
+#'    * `"1"` (default) travels forward, clockwise around the color wheel
+#'    * `"-1"` travels in reverse, counter-clockwise around the color wheel
 #' @param do_hue_pad `logical` indicating whether to apply padding to
-#'    the color hue sequence, intended mainly so the last color hue
-#'    in a sequence is less similar to the first color hue in the
-#'    sequence.
+#'    the end of the color hue sequence. This padding increases distinction
+#'    between the first and last colors.
 #' @param hue_pad_percent `numeric` value between 0 and 100, used when
-#'    `do_hue_pad` to apply a padding between the first and last color
+#'    `do_hue_pad=TRUE` to apply a padding between the first and last color
 #'    hues.
-#' @param nameStyle `character` value indicating how to name the output
-#'    colors: "none" returns colors with no names; "hcl" assigns names with
-#'    the color number prefix, followed by H, C, L values; "colors" names the
-#'    vector by the hex color code.
+#' @param nameStyle `character` string for the style of name assigned:
+#'    * `"none"` assigns no names
+#'    * `"n"` assigns names by the index order
+#'    * `"hcl"` assigns names using H, C, L values
+#'    * `"color"` assigns names by hex color
+#'    * `"closestRcolors"` assigns names from `closestRcolors()`
 #' @param doTest `logical` indicating whether to perform a visual test for
-#'    the \code{n} number of colors produced, which helps judge the
-#'    visual distinctiveness of different combinations of dark and light
-#'    colors.
+#'    `n` number of colors produced.
 #' @param verbose `logical` whether to print verbose output
-#' @param ... additional arguments are ignored.
+#' @param ... additional arguments are passed to `closestRcolor()` when
+#'    `nameStyle="closestRcolor"`.
 #'
 #' @return `character` vector of categorical colors
 #'
@@ -108,17 +120,16 @@
 #' @export
 rainbowJam <- function
 (n=NULL,
- Hstart=12.2,
+ preset=getOption("colorjam.preset", "dichromat2"),
+ step=getOption("colorjam.step", "v24"),
+ Hstart=0,#12.2,
  alpha=1,
  hues=NULL,
  warpHue=NULL,
- preset=c("custom"),
  h1=NULL,
  h2=NULL,
- #Cvals=c(140, 150, 160, 130, 200, 100),
- Cvals=c(200, 120, 160,  90, 180, 150),
- #Lvals=c( 47,  85,  62,  42,  77,  54),
- Lvals=c( 44,  88,  74,  58,  80,  65),
+ Cvals=NULL,
+ Lvals=NULL,
  Crange=NULL,
  Lrange=NULL,
  phase=1,
@@ -144,29 +155,39 @@ rainbowJam <- function
    ##
    nameStyle <- match.arg(nameStyle);
    direction <- match.arg(direction);
-   if (length(warpHue) == 0) {
-      if (length(hues) > 0) {
-         warpHue <- FALSE;
-      } else {
-         warpHue <- TRUE;
-      }
+
+   # deprecated arguments
+   warn_txt <- character(0);
+   if (length(h1) > 0 || length(h2) > 0) {
+      warn_txt <- c(warn_txt,
+         "!"="{.var h1} and {.var h2} are deprecated, use argument {.var preset}.")
    }
-   if (length(h1) == 0 || length(h2) == 0) {
-      preset <- match.arg(preset,
-         choices=eval(formals(h2hwOptions)$preset_names));
-      if ("ryb" %in% preset && Hstart == 12.2) {
-         Hstart <- 0
-      }
-      h1h2 <- h2hwOptions(preset=preset,
-         setOptions="FALSE",
-         verbose=verbose);
-      h1 <- h1h2$h1;
-      h2 <- h1h2$h2;
-      if (verbose) {
-         jamba::printDebug("h1: ", round(digits=2, h1), sep=", ");
-         jamba::printDebug("h2: ", round(digits=2, h2), sep=", ");
-      }
+   if (length(Cvals) > 0 || length(Lvals) > 0) {
+      warn_txt <- c(warn_txt,
+         "!"="{.var Cvals} and {.var Lvals} are deprecated, use argument {.var step}.")
    }
+   if (length(warpHue) > 0) {
+      warn_txt <- c(warn_txt,
+         "!"="{.var warpHue} is deprecated, disable warp hue with {.code preset='rgb'}.")
+   }
+   if (length(warn_txt) > 0) {
+      cli::cli_warn(warn_txt);
+   }
+
+
+   # handle preset
+   h1h2 <- colorjam_presets(preset)
+   if (length(h1h2) == 0) {
+      cli::cli_abort(
+         "{.var preset} was not recognized in {.code colorjam_presets()}.")
+   }
+   h1 <- h1h2$h1;
+   h2 <- h1h2$h2;
+   if (verbose) {
+      jamba::printDebug("h1: ", format(round(digits=4, h1)));
+      jamba::printDebug("h2: ", format(round(digits=4, h2)));
+   }
+
    if ("-1" %in% direction) {
       direction <- -1;
    } else {
@@ -175,7 +196,7 @@ rainbowJam <- function
    if (length(do_hue_pad) == 0) {
       do_hue_pad <- FALSE;
    }
-   if (doTest) {
+   if (TRUE %in% doTest) {
       if (length(n) == 0 && length(hues) == 0) {
          n <- 8;
       }
@@ -189,7 +210,7 @@ rainbowJam <- function
       ##   This logic is applied for any (multiple of 6) + 1, defined by
       ##   (n %% 6) == 1
       ## - same when the last color is 4
-      if (do_hue_pad) {
+      if (TRUE %in% do_hue_pad) {
          hue_pad <- (
             ((n %% 6) == 1)*(floor(n/6)+0) +
             ((n %% 6) == 4)*(floor(n/6)+1) +
@@ -213,12 +234,14 @@ rainbowJam <- function
 
       ## sequence of hues with optional weighted padding
       hue_wedge <- 360 / sum(c(rep(1, requested_n), hue_pad_percent/100));
-      hues <- cumsum(c(Hstart, rep(hue_wedge * direction, n - 1))) %% 360;
+      hues <- cumsum(c(
+         Hstart,
+         rep(hue_wedge * direction, n - 1))) %% 360;
 
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
             "Generated hues:",
-            format(digits=2, hues));
+            format(digits=3, hues));
       }
    } else {
       ## If not supplied n, then n=length(hues)
@@ -231,51 +254,52 @@ rainbowJam <- function
       }
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
-            "Using supplied hues:",
+            " Supplied hues:",
             format(digits=2, hues));
       }
    }
 
-   ## Optionally apply warp hue logic
-   if (warpHue) {
-      if (verbose) {
-         jamba::printDebug("rainbowJam(): ",
-            "applying h2hw()");
-      }
-      if (warpHue == 2) {
-         jamba::printDebug("rainbowJam(): ",
-            "Using warpHue==2 secret defaults.");
-         h1 <- c(0, 20,  60, 120, 240, 360);
-         h2 <- c(0, 80, 120, 180, 240, 360);
-      } else if (warpHue == 3) {
-         jamba::printDebug("rainbowJam(): ",
-            "Using warpHue==2 secret defaults.");
-         h1 <- c(0,22,60,120,240,270,360);
-         h2 <- c(0,80,150,180,220,290,360);
-      }
-      hues_in <- hues;
-      hues <- hw2h(hues,
-         h1=h1,
-         h2=h2);
-      if (verbose) {
-         jamba::printDebug("rainbowJam(): ",
-            "warped hues:");
-         print(data.frame(hues_in=hues_in,
-            hues_out=hues));
-      }
-   }
-
-   ## Define Cvals
-   if (length(Cvals) == 0) {
-      ## If empty, use function default
-      Cvals <- eval(formals(colorjam::rainbowJam)$Cvals);
-   }
+   # apply warp hue logic
    if (verbose) {
       jamba::printDebug("rainbowJam(): ",
-         "Cvals:",
+         "applying h2hw()");
+   }
+   if (2 %in% warpHue) {
+      jamba::printDebug("rainbowJam(): ",
+         "Using warpHue==2 secret defaults.");
+      h1 <- c(0, 20,  60, 120, 240, 360);
+      h2 <- c(0, 80, 120, 180, 240, 360);
+   } else if (3 %in% warpHue) {
+      jamba::printDebug("rainbowJam(): ",
+         "Using warpHue==2 secret defaults.");
+      h1 <- c(0,22,60,120,240,270,360);
+      h2 <- c(0,80,150,180,220,290,360);
+   }
+   hues_in <- hues;
+   hues <- hw2h(h=hues,
+      h1=h1,
+      h2=h2,
+      preset="custom");
+   if (verbose) {
+      jamba::printDebug("rainbowJam(): ",
+         "   Warped hues:",
+         format(digits=2, hues));
+   }
+
+   # Define Cvals
+   step_list <- colorjam_steps(step);
+   if (length(step_list) == 0) {
+      cli::cli_abort(
+         "{.var step} was not recognized in {.code colorjam_steps()}.")
+   }
+   # Cvals
+   Cvals <- step_list[["C"]];
+   if (verbose) {
+      jamba::printDebug("rainbowJam(): ",
+         " Input Cvals:",
          format(digits=2, Cvals));
    }
-   ## Optionally force Cvals to fit range Crange
+   # Optionally scale Cvals by Crange
    if (length(Crange) > 0) {
       Crange <- range(Crange);
       Cvals <- jamba::normScale(Cvals,
@@ -283,57 +307,71 @@ rainbowJam <- function
          to=Crange[2]);
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
-            "Rescaled Cvals:",
+            "Scaled Cvals:",
             format(digits=2, Cvals));
       }
    }
-
-   ## Define Lvals
-   if (length(Lvals) == 0) {
-      ## If empty, use function default
-      Lvals <- eval(formals(colorjam::rainbowJam)$Lvals);
-   }
+   # Lvals
+   Lvals <- step_list[["L"]];
    if (verbose) {
       jamba::printDebug("rainbowJam(): ",
-         "Lvals:",
+         " Input Lvals:",
          format(digits=2, Lvals));
    }
-   ## Optionally force Lvals to fit range Lrange
+   # Optionally scale Lvals by Lrange
    if (length(Lrange) > 0) {
       Lrange <- range(Lrange);
       Lvals <- jamba::normScale(Lvals,
          from=Lrange[1],
-         to=Lrange[2]);
+         to=Lrange[2])
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
-            "Rescaled Lvals:",
+            "Scaled Lvals:",
             format(digits=2, Lvals));
       }
    }
 
    ## Optionally apply phase to offset the Cvals,Lvals
-   if (phase <= 0) {
-      Cvals <- rev(Cvals);
-      Lvals <- rev(Lvals);
-      phase <- abs(phase) + 5;
+   if (length(phase) == 0) {
+      phase <- 1;
    }
-   Cphase <- ((phase - 1) %% length(Cvals)) + 1;
-   if (Cphase != 1) {
-      Cvals <- head(tail(rep(Cvals, 2), 1 - Cphase), length(Cvals))
+   if (length(phase) == 1) {
+      if (phase <= 0) {
+         Cvals <- rev(Cvals);
+         Lvals <- rev(Lvals);
+         phase <- jamba::noiseFloor(abs(phase), minimum=1)
+      }
+      Cphase <- seq(from=phase, by=1, length=length(Cvals))
+      Cphase <- (Cphase - 1) %% length(Cvals) + 1;
+      Lphase <- seq(from=phase, by=1, length=length(Lvals))
+      Lphase <- (Lphase - 1) %% length(Lvals) + 1;
+      if (verbose) {
+         jamba::printDebug("rainbowJam(): ",
+            "Extended phase starting at:",
+            phase);
+      }
+   } else if (length(phase) > 1) {
+      if (any(phase <= 0)) {
+         Cvals <- rev(Cvals);
+         Lvals <- rev(Lvals);
+         phase <- jamba::noiseFloor(abs(phase), minimum=1)
+      }
+      Cphase <- (phase - 1) %% length(Cvals) + 1;
+      Lphase <- (phase - 1) %% length(Lvals) + 1;
+      if (verbose) {
+         jamba::printDebug("rainbowJam(): ",
+            "Recycled user-provided phase:",
+            phase);
+      }
    }
-   Lphase <- ((phase - 1) %% length(Lvals)) + 1;
-   if (Lphase != 1) {
-      Lvals <- head(tail(rep(Lvals, 2), 1 - Lphase), length(Lvals))
+   Cvals <- Cvals[rep(Cphase, length.out=n)]
+   Lvals <- Lvals[rep(Lphase, length.out=n)]
+   if (length(alpha) == 0) {
+      alpha <- 1;
    }
-
-   ## Expand Cvals,Lvals,alpha to length=n
-   Cvals <- rep(Cvals, length.out=n);
-   Lvals <- rep(Lvals, length.out=n);
    alpha <- rep(alpha, length.out=n);
 
-   ## Generate colors using HCL definitions
-   ## Note we always use model="hcl" which uses R package farver
-   ## equivalent to colorspace fixup=TRUE
+   # Generate colors using hcl2col()
    rainbow_set <- jamba::hcl2col(H=hues,
       C=Cvals,
       L=Lvals,
@@ -346,27 +384,30 @@ rainbowJam <- function
    ## Define names
    if ("n" %in% nameStyle) {
       names(rainbow_set) <- seq_along(rainbow_set);
-   } else if (nameStyle %in% "hcl") {
+   } else if ("hcl" %in% nameStyle) {
       rainbow_names <- jamba::makeNames(paste(seq_len(n),
          paste0("h", signif(hues, digits=2)),
          paste0("c", signif(Cvals, digits=2)),
          paste0("l", signif(Lvals, digits=2)),
          sep=" "));
       names(rainbow_set) <- rainbow_names;
-   } else if (nameStyle %in% "color") {
+   } else if ("color" %in% nameStyle) {
       rainbow_names <- jamba::makeNames(rainbow_set);
       names(rainbow_set) <- rainbow_names;
-   } else if (jamba::igrepHas("close", nameStyle)) {
-      rainbow_names <- jamba::makeNames(closestRcolor(rainbow_set));
+   } else if ("closestRcolor" %in% nameStyle) {
+      rainbow_names <- jamba::makeNames(
+         closestRcolor(rainbow_set,
+            ...));
       names(rainbow_set) <- rainbow_names;
    } else {
       rainbow_set <- unname(rainbow_set);
    }
-   ## Test with doTest=TRUE
-   if (doTest) {
+
+   # doTest
+   if (TRUE %in% doTest) {
       oPar <- par(no.readonly=TRUE);
       par(mfrow=c(2,1));
-      rainbow_set <- rainbowJam_dev(n);
+      rainbow_set <- rainbowJam(n);
       par("mar"=c(1, par("mar")[2:4]));
       print(par("mar"))
       jamba::showColors(rainbow_set,
@@ -408,150 +449,3 @@ rainbowJam <- function
    return(rainbow_set);
 }
 
-#' Show colors spread around a pie chart
-#'
-#' Show colors spread around a pie chart
-#'
-#' This function simply displays colors in a pie chart
-#' format.
-#'
-#' If the input is a `list`, each list is used to produce
-#' layers of a pie chart, in order to help compare colors
-#' from each vector in the list.
-#'
-#' @family colorjam display
-#'
-#' @param colors `vector` of R colors.
-#' @param border `vector` of R colors used to draw a border around
-#'    each pie wedge. By default it uses input `colors`.
-#' @param lwd numeric value used to define the line width of the
-#'    pie wedge borders.
-#' @param radius numeric value representing the radius of the
-#'    overall pie chart, where `radius=1` represents the default
-#'    radius used by `graphics::pie()`. The default is `radius=1.5`
-#'    in order to use more of the output plot size.
-#' @param label_radius numeric value indicating the radius used
-#'    for labels, intended to allow labels to appear inside each
-#'    pie wedge.
-#' @param add logical indicating whether to draw the pie chart
-#'    onto the existing plot device, without creating a new plot.
-#' @param ... additional arguments are passed to `graphics::pie()`.
-#'
-#' @examples
-#' color_pie(rainbowJam(20, nameStyle="none"),
-#'    sub="rainbowJam(20)")
-#'
-#' n <- 8;
-#' color_pie(rainbowJam(n),
-#'    sub="rainbowJam(8)")
-#'
-#' color_pie(rainbow(n),
-#'    sub="rainbow(8)")
-#'
-#' color_pie(colorspace::rainbow_hcl(n),
-#'    sub="colorspace::rainbow_hcl(8)")
-#'
-#' color_pie(colorspace::rainbow_hcl(n, c=120),
-#'    sub="colorspace::rainbow_hcl(8, c=120)")
-#'
-#' color_list <- list(rainbowJam=rainbowJam(n),
-#'    rainbow_hcl=colorspace::rainbow_hcl(n, c=120));
-#' color_pie(color_list,
-#'    sub="inside ring:rainbow_hcl()\nouter ring: rainbowJam()")
-#'
-#' rainbow_list <- lapply(4*c(5,4,2,1), function(n){
-#'    rainbowJam(n, nameStyle="none");
-#' });
-#' color_pie(rainbow_list,
-#'    sub="rainbowJam()\nn=4, 8, 16, 20")
-#'
-#' @export
-color_pie <- function
-(colors,
- border=colors,
- lwd=2,
- radius=1.5,
- label_radius=radius*0.75,
- add=FALSE,
- init.angle=NULL,
- clockwise=TRUE,
- ...)
-{
-   ##
-   if (is.list(colors)) {
-      radius_seq <- head(
-         seq(from=radius,
-            to=0.3,
-            length.out=length(colors)+1),
-         length(colors));
-      if (!is.list(border)) {
-         border <- as.list(border);
-      }
-      radius_diff <- head(c(diff(radius_seq)/2, -radius*0.25), 1);
-      border <- rep(border,
-         length.out=length(colors));
-      l <- lapply(seq_along(colors), function(i){
-         if (i == 1) {
-            color_pie(colors=colors[[i]],
-               border=border[[i]],
-               lwd=lwd,
-               add=(i > 1),
-               init.angle=init.angle,
-               clockwise=clockwise,
-               radius=radius_seq[i],
-               label_radius=radius_seq[i]*0.92 + radius_diff,
-               ...);
-         } else {
-            color_pie(colors=colors[[i]],
-               border=border[[i]],
-               lwd=lwd,
-               add=(i > 1),
-               init.angle=init.angle,
-               clockwise=clockwise,
-               radius=radius_seq[i],
-               label_radius=radius_seq[i]*0.92 + radius_diff);
-         }
-      });
-      return(invisible(l));
-   }
-   if (length(init.angle) == 0) {
-      if (clockwise) {
-         init.angle <- 90 + 360 / length(colors) / 2;
-      } else {
-         init.angle <- 90 - 360 / length(colors) / 2;
-      }
-   }
-
-   op <- par(no.readonly=TRUE);
-   on.exit(par(op));
-   par("xpd"=TRUE);
-   par("lwd"=lwd);
-   if (length(colors) == 1) {
-      par("lwd"=0.001);
-   }
-   if (add) {
-      par("new"=TRUE);
-   }
-   pie(x=rep(1, length.out=length(colors)),
-      col=colors,
-      border=border,
-      labels="",
-      lwd=lwd,
-      radius=radius,
-      init.angle=init.angle,
-      clockwise=clockwise,
-      ...);
-   if (length(names(colors)) > 0) {
-      par("new"=TRUE);
-      par("lwd"=0.001);
-      pie(x=rep(1, length.out=length(colors)),
-         col="transparent",
-         labels=names(colors),
-         border=FALSE,
-         init.angle=init.angle,
-         clockwise=clockwise,
-         radius=label_radius,
-         ...);
-   }
-   invisible(colors);
-}

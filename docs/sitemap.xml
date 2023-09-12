@@ -16,6 +16,15 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/add_colorjam_preset.html</loc>
+  </url>
+  <url>
+    <loc>/reference/add_colorjam_step.html</loc>
+  </url>
+  <url>
+    <loc>/reference/adjust_hue_warp.html</loc>
+  </url>
+  <url>
     <loc>/reference/approx_degrees.html</loc>
   </url>
   <url>
@@ -31,7 +40,16 @@
     <loc>/reference/col_linear_xf.html</loc>
   </url>
   <url>
+    <loc>/reference/color_complement.html</loc>
+  </url>
+  <url>
     <loc>/reference/color_pie.html</loc>
+  </url>
+  <url>
+    <loc>/reference/colorjam_presets.html</loc>
+  </url>
+  <url>
+    <loc>/reference/colorjam_steps.html</loc>
   </url>
   <url>
     <loc>/reference/colors_to_df.html</loc>

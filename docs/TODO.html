@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -47,6 +47,30 @@
     </div>
 
 
+<div class="section level2">
+<h2 id="todo-07sep2023">TODO 07sep2023<a class="anchor" aria-label="anchor" href="#todo-07sep2023"></a></h2>
+<ul><li>
+<p>Ability to register a new color wheel</p>
+<ul><li>for example modifying an existing color wheel with <code><a href="reference/adjust_hue_warp.html">adjust_hue_warp()</a></code> then saving it as a named preset.</li>
+<li>use <code>igraph:::.igraph.shapes</code> as a model, they store graph node shapes in that environment, then provide access <code><a href="https://r.igraph.org/reference/shapes.html" class="external-link">igraph::shapes()</a></code> and allow new shapes with <code><a href="https://r.igraph.org/reference/shapes.html" class="external-link">igraph::add_shape()</a></code>.</li>
+</ul></li>
+<li><p>DONE. port <code><a href="reference/color_complement.html">color_complement()</a></code> into this package.</p></li>
+<li>
+<p><code><a href="reference/make_jam_divergent.html">make_jam_divergent()</a></code></p>
+<ul><li>When argument <code>linear2</code> is not supplied, get <code>color_complement(linear1)</code>
+</li>
+<li>DONE. Error when using <code>jam_linear</code> and <code>jam_divergent</code> without package prefix when the colorjam package is not formally loaded.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="todo-23sep2022">TODO 23sep2022<a class="anchor" aria-label="anchor" href="#todo-23sep2022"></a></h2>
+<ul><li>
+<p>Migrate <code><a href="https://rdrr.io/pkg/platjam/man/design2colors.html" class="external-link">platjam::design2colors()</a></code> into this package</p>
+<ul><li>Consider <code>color_list</code> related functions, since <code>design2colors()</code> produces a list of colors and color functions.</li>
+<li>
+<code>merge_color_lists()</code> would combine two color lists into one, taking either the union of assigned colors, or the first color function, where relevant.</li>
+</ul></li>
+</ul></div>
 <div class="section level2">
 <h2 id="todo-22may2022">TODO 22may2022<a class="anchor" aria-label="anchor" href="#todo-22may2022"></a></h2>
 <ul><li>
@@ -83,7 +107,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

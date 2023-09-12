@@ -29,31 +29,40 @@
 #' @param ... additional arguments are passed to `graphics::pie()`.
 #'
 #' @examples
-#' color_pie(rainbowJam(20, nameStyle="none"),
-#'    sub="rainbowJam(20)")
+#' color_pie(rainbowJam(15, nameStyle="none"),
+#'    sub="rainbowJam(15)")
 #'
-#' n <- 8;
-#' color_pie(rainbowJam(n),
-#'    sub="rainbowJam(8)")
+#' n <- 12;
+#' color_pie(list(
+#'    rainbowJam(n),
+#'    rainbow(n)),
+#'    main="rainbowJam(12) [outer]\n       rainbow(12) [inner]")
 #'
-#' color_pie(rainbow(n),
-#'    sub="rainbow(8)")
-#'
-#' color_pie(colorspace::rainbow_hcl(n),
-#'    sub="colorspace::rainbow_hcl(8)")
-#'
-#' color_pie(colorspace::rainbow_hcl(n, c=120),
-#'    sub="colorspace::rainbow_hcl(8, c=120)")
-#'
-#' color_list <- list(rainbowJam=rainbowJam(n),
-#'    rainbow_hcl=colorspace::rainbow_hcl(n, c=120));
-#' color_pie(color_list,
-#'    sub="inside ring:rainbow_hcl()\nouter ring: rainbowJam()")
+#' n <- 15
+#' color_pie(list(
+#'    rainbowJam(n),
+#'    rainbow_hcl(n, c=85)),
+#'    main="rainbowJam(15) [outer]\nrainbow_hcl(15) [inner]")
 #'
 #' rainbow_list <- lapply(4*c(5,4,2,1), function(n){
-#'    rainbowJam(n, nameStyle="none");
+#'    rainbowJam(n, preset="ryb", step='v23', nameStyle="n");
 #' });
 #' color_pie(rainbow_list,
+#'    main="preset='ryb'\nstep='v23",
+#'    sub="rainbowJam()\nn=4, 8, 16, 20")
+#'
+#' rainbow_list2 <- lapply(4*c(5,4,2,1), function(n){
+#'    rainbowJam(n, nameStyle="n");
+#' });
+#' color_pie(rainbow_list2,
+#'    main="default settings",
+#'    sub="rainbowJam()\nn=4, 8, 16, 20")
+#'
+#' rainbow_list3 <- lapply(4*c(5,4,2,1), function(n){
+#'    rainbowJam(n, preset="dichromat", step="v23", nameStyle="n");
+#' });
+#' color_pie(rainbow_list3,
+#'    main="preset='dichromat'\nstep='v23'",
 #'    sub="rainbowJam()\nn=4, 8, 16, 20")
 #'
 #' @export
@@ -113,14 +122,13 @@ color_pie <- function
       }
    }
 
-   op <- par(no.readonly=TRUE);
-   on.exit(par(op));
-   par("xpd"=TRUE);
-   par("lwd"=lwd);
+   # op <- par(no.readonly=TRUE);
    if (length(colors) == 1) {
-      par("lwd"=0.001);
+      lwd <- 0.001;
    }
-   if (add) {
+   op <- par("xpd"=TRUE, "lwd"=lwd);
+   on.exit(par(op));
+   if (TRUE %in% add) {
       par("new"=TRUE);
    }
    pie(x=rep(1, length.out=length(colors)),
@@ -135,15 +143,21 @@ color_pie <- function
    if (length(names(colors)) > 0) {
       par("new"=TRUE);
       par("lwd"=0.001);
-      jamba::printDebug("init.angle:", round(init.angle));
-      pie(x=rep(1, length.out=length(colors)),
-         col="transparent",
-         labels=names(colors),
-         border=FALSE,
-         init.angle=init.angle,
-         clockwise=clockwise,
-         radius=label_radius,
-         ...);
+      label_angles <- round(head(seq(from=init.angle - 180 / length(colors),
+         to=(init.angle - 360 - 180 / length(colors)),
+         length.out=length(colors) + 1), -1)) %% 360;
+      label_angles1 <- ((label_angles + 89) %% 180 - 89) %% 360;
+      angle_switch <- (label_angles != label_angles1) * 1;
+      lx <- cos(jamba::deg2rad(label_angles)) * label_radius;
+      ly <- sin(jamba::deg2rad(label_angles)) * label_radius;
+      for (k in split(seq_along(lx), paste0(label_angles, "_", angle_switch))) {
+         jamba::shadowText(x=lx[k],
+            y=ly[k],
+            adj=c(head(angle_switch[k], 1), 0.5),
+            col=jamba::setTextContrastColor(colors[k], useGrey=15),
+            labels=names(colors)[k],
+            srt=head(label_angles1[k], 1))
+      }
    }
    invisible(colors);
 }

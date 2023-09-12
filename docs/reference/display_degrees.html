@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -52,35 +52,121 @@
     <p>Display degree angles around a unit circle</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">display_degrees</span><span class="op">(</span>
-  <span class="va">x</span>,
-  add <span class="op">=</span> <span class="cn">FALSE</span>,
-  col <span class="op">=</span> <span class="st">"darkorange"</span>,
-  lwd <span class="op">=</span> <span class="fl">2</span>,
-  top_degree <span class="op">=</span> <span class="fl">0</span>,
-  clockwise <span class="op">=</span> <span class="cn">TRUE</span>,
-  r1 <span class="op">=</span> <span class="fl">0</span>,
-  r2 <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">display_degrees</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  x2 <span class="op">=</span> <span class="va">x</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"darkorange"</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  top_degree <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  clockwise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  r1 <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  r2 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  r0 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  arrow.length <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  asp <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>x</dt>
+<dd><p><code>numeric</code> angles in degrees</p></dd>
+
+
+<dt>x2</dt>
+<dd><p><code>numeric</code> angles in degrees, optionally used to show
+when an angle changes from <code>x</code> to <code>x2</code>.</p></dd>
+
+
+<dt>add</dt>
+<dd><p><code>logical</code> indicating whether to add to an existing open
+plot device.</p></dd>
+
+
+<dt>col</dt>
+<dd><p><code>character</code> vector of colors recycled to <code>length(x)</code>.</p></dd>
+
+
+<dt>lwd</dt>
+<dd><p><code>numeric</code> line width.</p></dd>
+
+
+<dt>top_degree</dt>
+<dd><p><code>numeric</code> the angle in degrees for the top
+(12 o'clock) position of the graph.</p></dd>
+
+
+<dt>clockwise</dt>
+<dd><p><code>logical</code> indicating whether angles proceed from
+the <code>top_degree</code> in clockwise (top, top-right, right, bottom-right,
+bottom, bottom-left, left, top-left, top) or counter-clockwise
+orientation.</p></dd>
+
+
+<dt>r1, r2</dt>
+<dd><p><code>numeric</code> radius values for the start and end position
+of each arrow vector drawn.</p></dd>
+
+
+<dt>r0</dt>
+<dd><p><code>numeric</code> radius used for the axis with labeled angles.</p></dd>
+
+
+<dt>arrow.length</dt>
+<dd><p><code>numeric</code> passed to <code><a href="https://rdrr.io/r/graphics/arrows.html" class="external-link">arrows()</a></code> to define the
+arrow head length.</p></dd>
+
+
+<dt>xlim, ylim</dt>
+<dd><p><code>numeric</code> x-axis and y-axis plot limits, respectively.
+When not supplied, they automatically use 1.1 times the higher
+value from <code>c(r1, r2, r0, 1)</code> so that the minimum radius is at
+at least <code>1</code> unless specified otherwise.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>additional arguments are ignored.</p></dd>
+
+</dl></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other colorjam hue warp: 
+<code><a href="add_colorjam_preset.html">add_colorjam_preset</a>()</code>,
+<code><a href="add_colorjam_step.html">add_colorjam_step</a>()</code>,
+<code><a href="adjust_hue_warp.html">adjust_hue_warp</a>()</code>,
 <code><a href="approx_degrees.html">approx_degrees</a>()</code>,
+<code><a href="colorjam_presets.html">colorjam_presets</a>()</code>,
+<code><a href="colorjam_steps.html">colorjam_steps</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">180</span>, <span class="fl">289</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   lwd<span class="op">=</span><span class="fl">4</span>,</span></span>
+<span class="r-in"><span>   col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue2"</span>, <span class="st">"purple3"</span>, <span class="st">"gold"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="display_degrees-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">270</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span><span class="op">)</span>, r1<span class="op">=</span><span class="fl">0</span>, r2<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, r1<span class="op">=</span><span class="fl">0.5</span>, r2<span class="op">=</span><span class="fl">1</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="display_degrees-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">270</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span><span class="op">)</span>, r1<span class="op">=</span><span class="fl">0</span>, r2<span class="op">=</span><span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span>   arrow.length<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">270</span><span class="op">)</span>, x2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">280</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   r1<span class="op">=</span><span class="fl">0.5</span>, r2<span class="op">=</span><span class="fl">1</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">display_degrees</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">270</span><span class="op">)</span>, x2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">260</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   r1<span class="op">=</span><span class="fl">0.5</span>, r2<span class="op">=</span><span class="fl">1</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="display_degrees-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -95,7 +181,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

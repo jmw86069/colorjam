@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.23.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
       </span>
     </div>
 
@@ -71,398 +71,348 @@
 <div class="section level1">
 <div class="page-header"><h1 id="colorjam-">colorjam <img src="reference/figures/colorjam_logo.png" width="133px" height="154px" align="right" style="padding-left:10px;background-color:white;"><a class="anchor" aria-label="anchor" href="#colorjam-"></a>
 </h1></div>
-<p>The goal of colorjam is to provide useful color manipulation functions for R data visualization.</p>
-<p>It includes methods to generate dynamic categorical colors of arbitrary length, providing as much visual separation between adjacent colors as currently feasible.</p>
+<div class="section level2">
+<h2 id="why-colorjam">Why colorjam?<a class="anchor" aria-label="anchor" href="#why-colorjam"></a>
+</h2>
+<p><code>colorjam</code> provides visually distinct categorical colors of arbitrary length, using an optimized pattern of chroma/luminance values.</p>
+<ul>
+<li>
+<strong>Scalable</strong>. Generate visually distinct categorical colors of arbitrary length.</li>
+<li>
+<strong>Color-blindness friendly</strong>. Caveat: No set of colors can be represented perfectly for all types of color blindness. However the default color wheel in <code>colorjam</code> was optimized for maximal visual distinction between colors, informed by the three major types of color blindness simulated by the fantastic R package <code>dichromat()</code>.</li>
+<li>
+<strong>Optimized for experiment design</strong>. The first color default is gold, for experiment design factors that encode the control/reference as the first factor level. This reference is assigned the neutral color “gold” rather than bright red.</li>
+<li>
+<strong>Flexible</strong>. The color wheel can be changed to red-yellow-blue (painting), red-green-blue (default for computer monitors), or customized completely. The chroma/luminance step functions can be re-ordered or customized as well.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install colorjam, use the <code>devtools</code> package installer:</p>
-<blockquote>
-<p>devtools::install_github(“jmw86069/colorjam”);</p>
-</blockquote>
-<p>Note that colorjam Depends upon the “jamba” package for some manipulations.</p>
+<p>To install colorjam, you may use the <code>remotes</code> package:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jmw86069/colorjam"</span><span class="op">)</span>;</span></code></pre></div>
+<p>OR, we recommend the package <code>pacman</code> which helps keep the package updated:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">### if necessary, install pacman:</span></span>
+<span><span class="co"># install.packages("pacman")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/trinker/pacman" class="external-link">pacman</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load_current_gh.html" class="external-link">p_load_current_gh</a></span><span class="op">(</span><span class="st">"jmw86069/colorjam"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>colorjam</code> package is being prepared for CRAN in the “near” future.</p>
 </div>
 <div class="section level2">
 <h2 id="command-reference">Command reference<a class="anchor" aria-label="anchor" href="#command-reference"></a>
 </h2>
-<p>A full command reference is provided using the <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> function, and is available here:</p>
-<p><a href="https://jmw86069.github.io/colorjam" class="external-link">Full command reference</a></p>
+<p>The full command reference is available here:</p>
+<p><a href="https://jmw86069.github.io/colorjam" class="external-link"><code>colorjam</code> command reference</a></p>
 </div>
 <div class="section level2">
 <h2 id="quick-start-with-colorjam">Quick start with colorjam<a class="anchor" aria-label="anchor" href="#quick-start-with-colorjam"></a>
 </h2>
 <p>For the examples below, two packages are loaded:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/jmw86069/colorjam" class="external-link">colorjam</a></span><span class="op">)</span>;
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/jmw86069/jamba" class="external-link">jamba</a></span><span class="op">)</span>;</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/jmw86069/colorjam" class="external-link">colorjam</a></span><span class="op">)</span>;</span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/jmw86069/jamba" class="external-link">jamba</a></span><span class="op">)</span>;</span></code></pre></div>
 <div class="section level3">
 <h3 id="categorical-colors">Categorical colors<a class="anchor" aria-label="anchor" href="#categorical-colors"></a>
 </h3>
+<div class="section level4">
+<h4 id="dichromat">dichromat<a class="anchor" aria-label="anchor" href="#dichromat"></a>
+</h4>
 <p>First generate some basic categorical colors, <code>n=5</code> colors. We will use the function <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code> to display the colors.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>;</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-cat5-1.png"><!-- --></p>
 <p>To illustrate the effect of increasing categorical colors, we will create a list of categorical colors with increasing <code>n</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">colorList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span>
-   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>;
-<span class="op">}</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">colorList</span>,
-   main<span class="op">=</span><span class="st">"Dichromat color wheel (default colorjam)"</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-cat_list_dichromat-1.png"><!-- --></p>
-<p>By default, colorjam uses a “warped” color wheel, which produces a dichromat (color blind friendly) color wheel.</p>
-<p>There are several custom color wheel “presets”, for example red-yellow-blue color wheel can be used with <code>preset="ryb"</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">colorList1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span>
-   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"ryb"</span>, hue_pad_percent<span class="op">=</span><span class="fl">100</span>, do_hue_pad<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;
-<span class="op">}</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">colorList1</span>,
-   main<span class="op">=</span><span class="st">"Red-Yellow-Blue color wheel (previous default rainbowJam)"</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-cat_list_ryb-1.png"><!-- --></p>
-<p>To view Red-Green-Blue colors using the default color wheel in base R, supply <code>warpHue=FALSE</code> as shown below, or use <code>preset="rgb"</code> to define the red-green-blue color wheel.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">colorList2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span>
-   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, warpHue<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;
-<span class="op">}</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">colorList2</span>,
-   main<span class="op">=</span><span class="st">"Red-Green-Blue color wheel (base R)"</span><span class="op">)</span>;</code></pre></div>
+<code class="sourceCode R"><span><span class="va">colorList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
+<span>   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, nameStyle<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">colorList</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Dichromat color wheel (default colorjam)"</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-cat_list_dichromat-1.png"><!-- --></p>
+<p>By default, colorjam uses a “dichromat” color wheel, which produces color blindness friendly colors by avoiding a subset of colors that are not visually distinct for the three major types of color blindness.</p>
+</div>
+<div class="section level4">
+<h4 id="red-yellow-blue">red-yellow-blue<a class="anchor" aria-label="anchor" href="#red-yellow-blue"></a>
+</h4>
+<p>The recommended “full rainbow” color wheel is “red-yellow-blue”, distinctly different from the “red-green-blue” color wheel used in computer monitor color generation, and which underpins the majority of color functions in R.</p>
+<p>The red-yellow-blue color wheel can be selected with:</p>
+<ul>
+<li>
+<code>preset="ryb"</code> for red-yellow-blue</li>
+<li>
+<code>preset="ryb2"</code> for red-yellow-blue that starts with yellow (shiown below).</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorList1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
+<span>   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"ryb2"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">colorList1</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Red-Yellow-Blue color wheel (starting at yellow)"</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-cat_list_ryb-1.png"><!-- --></p>
+<p>The benefit to starting color assignment with yellow is notable when the first category in a set is considered the reference or control group. For example, in a treatment study, the treatments are often encoded in an order <code>c("Control", "Dexamethasone", "Etoposide")</code> so that <code>"Control"</code> appears first. This order helps define statistical comparisons where terms are compared to <code>"Control"</code>. As such, assigning a neutral color to the control term is quite convenient.</p>
+<p>Previous versions of colorjam used a red-yellow-blue color wheel starting with red.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorList1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
+<span>   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"ryb"</span>, step<span class="op">=</span><span class="st">"v23"</span>, nameStyle<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">colorList1</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Red-Yellow-Blue color wheel (previous default rainbowJam)"</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-cat_list_ryb_prev-1.png"><!-- --></p>
+</div>
+<div class="section level4">
+<h4 id="red-green-blue">red-green-blue<a class="anchor" aria-label="anchor" href="#red-green-blue"></a>
+</h4>
+<p>Similarly, the default color wheel “red-green-blue” can be used:</p>
+<ul>
+<li>
+<code>preset="rgb"</code> the default RGB color wheel</li>
+<li>
+<code>preset="rgb2"</code> the default RGB color wheel, starting with yellow</li>
+</ul>
+<p>The main reason not to use RGB is that so much of the color wheel is green-blue, and green-blue are the most difficult to distinguish from other colors with color blindness sensitive viewers.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorList2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
+<span>   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"rgb2"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">colorList2</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Red-Green-Blue color wheel (starting at yellow)"</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-cat_list_rgb2-1.png"><!-- --></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorList2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">{</span></span>
+<span>   <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"rgb"</span>, step<span class="op">=</span><span class="st">"v23"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">colorList2</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Red-Green-Blue color wheel (base R)"</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-cat_list_rgb-1.png"><!-- --></p>
 </div>
+</div>
 <div class="section level3">
-<h3 id="color-blending-new-in-version-0016900">Color-blending (new in version 0.0.16.900)<a class="anchor" aria-label="anchor" href="#color-blending-new-in-version-0016900"></a>
+<h3 id="color-blending">Color-blending<a class="anchor" aria-label="anchor" href="#color-blending"></a>
 </h3>
-<p>The color wheel red-yellow-blue is particularly effective for color-mixing operations. The function <code><a href="reference/blend_colors.html">blend_colors()</a></code> has some useful features:</p>
+<p>The color wheel red-yellow-blue is particularly effective for color-mixing. The function <code><a href="reference/blend_colors.html">blend_colors()</a></code> has some useful features:</p>
 <ul>
-<li>Paint color mixing style (blue + yellow = green)</li>
-<li>Able to mix more than two colors</li>
-<li>Accounts for color transparency during mixing</li>
+<li>
+<strong>Paint-style blending</strong>. blue + yellow = green. (For default RGB: blue + yellow = grey)</li>
+<li>
+<strong>Scalable for multiple colors</strong>. Able to mix more than two colors.</li>
+<li>
+<strong>Transparency-aware</strong>. Accounts for color transparency during mixing.</li>
 </ul>
 <p>The argument <code>do_plot=TRUE</code> will plot a visual summary of the mixing results.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-1.png"><!-- --></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-2.png"><!-- --></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"red"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-3.png"><!-- --></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">blent4</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"deeppink4"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-4.png"><!-- --></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent5</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green4"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-5.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">blent1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-1.png"><!-- --></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent6</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"darkorange"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-6.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">blent2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-2.png"><!-- --></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">blent7</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"gold"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-7.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">blent3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"red"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-3.png"><!-- --></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">blent8</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red1"</span>, <span class="st">"red3"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-8.png"><!-- --></p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># blent4 &lt;- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);</span></span>
+<span><span class="co"># blent5 &lt;- blend_colors(c("red", "green4"), do_plot=TRUE);</span></span>
+<span><span class="co"># blent6 &lt;- blend_colors(c("blue", "darkorange"), do_plot=TRUE);</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># blent7 &lt;- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);</span></span>
+<span></span>
+<span><span class="va">blent8</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red1"</span>, <span class="st">"red3"</span>, <span class="st">"blue"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-4.png"><!-- --></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent9</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red1"</span>, <span class="st">"blue1"</span>, <span class="st">"blue4"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-9.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">blent9</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red1"</span>, <span class="st">"blue1"</span>, <span class="st">"blue4"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-5.png"><!-- --></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">blent10</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"ivory"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-10.png"><!-- --></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">blent10</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"ivory"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-blend_colors1-11.png"><!-- --></p>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># blent10 &lt;- blend_colors(c("blue", "ivory"), do_plot=TRUE);</span></span>
+<span><span class="va">blent10</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blend_colors.html">blend_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"ivory"</span><span class="op">)</span>, do_plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
+<p><img src="reference/figures/README-blend_colors1-6.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="color-splitting">Color-splitting<a class="anchor" aria-label="anchor" href="#color-splitting"></a>
 </h3>
 <p>Another technique to expand a color palette is to split colors into a gradient, using the function <code><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient()</a></code>.</p>
 <p>This technique is useful when assigning categorical colors to a primary group, then splitting those colors by a sub-grouping.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">colorSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>;
-<span class="va">colorSet4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>, n<span class="op">=</span><span class="fl">4</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colorSet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">colorSet</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,
-   colorSet4<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4</span><span class="op">)</span><span class="op">)</span>,
-   main<span class="op">=</span><span class="st">"Color split into 4 additional subsets."</span><span class="op">)</span>;</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>;</span>
+<span><span class="va">colorSet4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>, n<span class="op">=</span><span class="fl">4</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>   colorSet4<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4</span><span class="op">)</span>,</span>
+<span>   colorSet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">colorSet</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Color split into 4 additional subsets."</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-color_split-1.png"><!-- --></p>
-<p>The color gradient can be tuned to increase or reduce the contrast between the light and dark colors:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">colorSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>;
-<span class="va">colorSet4a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,
-   n<span class="op">=</span><span class="fl">4</span>,
-   gradientWtFactor<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>;
-<span class="va">colorSet4c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,
-   n<span class="op">=</span><span class="fl">4</span>,
-   gradientWtFactor<span class="op">=</span><span class="fl">1</span><span class="op">)</span>;
-<span class="va">colorSet4b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,
-   n<span class="op">=</span><span class="fl">4</span>,
-   gradientWtFactor<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>colorSet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">colorSet</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,
-   `gradientWtFactor=1/4`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4a</span><span class="op">)</span>,
-   `gradientWtFactor=2/3\n(default)`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4</span><span class="op">)</span>,
-   `gradientWtFactor=1`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4c</span><span class="op">)</span>,
-   `gradientWtFactor=2`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4b</span><span class="op">)</span><span class="op">)</span>,
-   main<span class="op">=</span><span class="st">"Colors adjusted with gradientWtFactor"</span><span class="op">)</span>;</code></pre></div>
+<p>The intensity of the color gradient is adjusted with <code>dex</code>, the darkness expansion factor.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>;</span>
+<span><span class="va">colorSet4a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,</span>
+<span>   n<span class="op">=</span><span class="fl">4</span>,</span>
+<span>   dex<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>;</span>
+<span><span class="va">colorSet4c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,</span>
+<span>   n<span class="op">=</span><span class="fl">4</span>,</span>
+<span>   dex<span class="op">=</span><span class="fl">3</span><span class="op">)</span>;</span>
+<span><span class="va">colorSet4b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">color2gradient</a></span><span class="op">(</span><span class="va">colorSet</span>,</span>
+<span>   n<span class="op">=</span><span class="fl">4</span>,</span>
+<span>   dex<span class="op">=</span><span class="fl">10</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>   `dex=10`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4b</span><span class="op">)</span>,</span>
+<span>   `dex=3`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4c</span><span class="op">)</span>,</span>
+<span>   `dex=1\n(default)`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4</span><span class="op">)</span>,</span>
+<span>   `dex=1/2`<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">colorSet4a</span><span class="op">)</span>,</span>
+<span>   colorSet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">colorSet</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>   main<span class="op">=</span><span class="st">"Intensity of the gradient is adjusted with 'dex'\n(darkness expansion factor)"</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-color_split_wt-1.png"><!-- --></p>
 </div>
 <div class="section level3">
-<h3 id="assigning-colors-to-groups">Assigning colors to groups<a class="anchor" aria-label="anchor" href="#assigning-colors-to-groups"></a>
+<h3 id="ggplot2-colors">ggplot2 colors<a class="anchor" aria-label="anchor" href="#ggplot2-colors"></a>
 </h3>
-<p>The function <code><a href="reference/group2colors.html">group2colors()</a></code> takes a vector of group labels, and assigns categorical colors using <code><a href="reference/rainbowJam.html">rainbowJam()</a></code>. To illustrate the process, each group will have a different number of replicates.</p>
-<p>I use the helper function “makeNames()” which creates unique names for each vector item. Typically the names represent sample identifiers of some kind. The names are retained in the output color vector, which can be helpful to ensure data is in the correct order during a sequence of analysis steps.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">groupLabels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Wildtype"</span>, <span class="st">"Knockout"</span>, <span class="st">"Treated"</span><span class="op">)</span>,
-   <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">groupLabels</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jamba/man/makeNames.html" class="external-link">makeNames</a></span><span class="op">(</span><span class="va">groupLabels</span><span class="op">)</span>;
-<span class="va">groupColors</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/group2colors.html">group2colors</a></span><span class="op">(</span><span class="va">groupLabels</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">groupLabels</span>, <span class="va">groupColors</span><span class="op">)</span><span class="op">)</span>;
-<span class="co">#&gt;             groupLabels groupColors</span>
-<span class="co">#&gt; Wildtype_v1    Wildtype     #0091FF</span>
-<span class="co">#&gt; Wildtype_v2    Wildtype     #0091FF</span>
-<span class="co">#&gt; Wildtype_v3    Wildtype     #0091FF</span>
-<span class="co">#&gt; Knockout_v1    Knockout     #D92029</span>
-<span class="co">#&gt; Knockout_v2    Knockout     #D92029</span>
-<span class="co">#&gt; Knockout_v3    Knockout     #D92029</span>
-<span class="co">#&gt; Knockout_v4    Knockout     #D92029</span>
-<span class="co">#&gt; Knockout_v5    Knockout     #D92029</span>
-<span class="co">#&gt; Treated_v1      Treated     #FFB600</span>
-<span class="co">#&gt; Treated_v2      Treated     #FFB600</span>
-<span class="co">#&gt; Treated_v3      Treated     #FFB600</span>
-<span class="co">#&gt; Treated_v4      Treated     #FFB600</span>
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">groupColors</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-group_colors-1.png"><!-- --></p>
-<p>Colors are assigned in order, after sorting with <code><a href="https://rdrr.io/pkg/jamba/man/mixedSort.html" class="external-link">jamba::mixedSort()</a></code>, which provides alphanumeric sorting. However, if the input vector is a factor, the order of factor levels is maintained.</p>
-<p>Sometimes it is helpful to split the colors by replicate using a color gradient, using <code><a href="https://rdrr.io/pkg/jamba/man/color2gradient.html" class="external-link">jamba::color2gradient()</a></code>. This technique is helpful when trying to make replicates visually distinct in a data visualization.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">groupColorsSplit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/group2colors.html">group2colors</a></span><span class="op">(</span><span class="va">groupLabels</span>,
-   useGradient<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;
-<span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">groupColorsSplit</span><span class="op">)</span>;</code></pre></div>
-<p><img src="reference/figures/README-group_colors_split-1.png"><!-- --></p>
-</div>
-<div class="section level3">
-<h3 id="ggplot2-color-functions">ggplot2 color functions<a class="anchor" aria-label="anchor" href="#ggplot2-color-functions"></a>
-</h3>
-<p>There are a couple color functions useful with ggplot2.</p>
 <ul>
-<li>scale_color_jam() defines categorical colors to the ggplot2 <code>colour</code> property.</li>
-<li>scale_fill_jam() defines categorical colors to the ggplot2 <code>fill</code> property.</li>
+<li>
+<code><a href="reference/scale_color_jam.html">scale_color_jam()</a></code> defines categorical colors for ggplot2 <code>colour</code>
+</li>
+<li>
+<code><a href="reference/scale_fill_jam.html">scale_fill_jam()</a></code> defines categorical colors for ggplot2 <code>fill</code>
+</li>
 </ul>
-<p>These functions can be used directly in ggplot2 calls:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-   <span class="va">dsamp</span> <span class="op">&lt;-</span> <span class="va">diamonds</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span>,<span class="op">]</span>;
-   <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dsamp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">cut</span>, fill<span class="op">=</span><span class="va">cut</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">4</span>, shape<span class="op">=</span><span class="fl">21</span><span class="op">)</span>;
-   
-   <span class="va">d</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"scale_color_jam()"</span><span class="op">)</span>;
-<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>   <span class="va">dsamp</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html" class="external-link">diamonds</a></span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html" class="external-link">diamonds</a></span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span>,<span class="op">]</span>;</span>
+<span>   <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dsamp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">cut</span>, fill<span class="op">=</span><span class="va">cut</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">4</span>, shape<span class="op">=</span><span class="fl">21</span><span class="op">)</span>;</span>
+<span>   </span>
+<span>   <span class="va">d</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"scale_color_jam()"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-ggplot_functions-1.png"><!-- --></p>
-<p>Some plots use <code>"fill"</code> and <code>"colour"</code> properties, where the <code>"colour"</code> defines an outline. In this case, the colors can be adjusted to be lighter or darker using the <code>darkFactor</code> argument. The effect is to make the outline color slightly darker, and the fill color slightly brighter.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-   <span class="va">d</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Adjustment using 'darkFactor'"</span><span class="op">)</span>;
-<span class="op">}</span></code></pre></div>
+<p>Colors can be adjusted for darkness, saturation, to make interesting point shapes:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>   <span class="va">d</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Adjustment using 'darkFactor'"</span><span class="op">)</span>;</span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-ggplot_functions_outline-1.png"><!-- --></p>
 </div>
 <div class="section level3">
-<h3 id="alternate-ggplot2-theme">Alternate ggplot2 theme<a class="anchor" aria-label="anchor" href="#alternate-ggplot2-theme"></a>
+<h3 id="custom-ggplot2-theme">Custom ggplot2 theme<a class="anchor" aria-label="anchor" href="#custom-ggplot2-theme"></a>
 </h3>
 <p>An alternative ggplot2 theme is provided, which by default does not use the newspaper-grey background color.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-   <span class="va">d</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam()"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/theme_jam.html">theme_jam</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>   <span class="va">d</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam()"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/theme_jam.html">theme_jam</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-ggplot2_theme-1.png"><!-- --></p>
-<p>Notably, this function provides some common arguments which can be customized.</p>
+<p>This function provides some common arguments to customize:</p>
 <ul>
 <li>
-<code>base_size</code> = The default font size in points.</li>
+<code>base_size</code>: The default font size in points.</li>
 <li>
-<code>blankGrid</code> = boolean which removes all background grid lines, alternatively use <code>blankXgrid</code> or <code>blankYgrid</code> for control of either the x-axis or y-axis, respectively.</li>
+<code>blankGrid</code>: <code>logical</code> which removes all background grid lines.</li>
 </ul>
-<p>For example, when creating figures for presentation slides or other documents, it can be helpful to make the font substantially larger than would be comfortable on a computer screen.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-   <span class="va">d</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam()"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="reference/theme_jam.html">theme_jam</a></span><span class="op">(</span>base_size<span class="op">=</span><span class="fl">24</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>   <span class="va">d</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/scale_fill_jam.html">scale_fill_jam</a></span><span class="op">(</span>darkFactor<span class="op">=</span><span class="op">-</span><span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam()"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="reference/theme_jam.html">theme_jam</a></span><span class="op">(</span>base_size<span class="op">=</span><span class="fl">24</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-ggplot2_theme_figure-1.png"><!-- --></p>
 </div>
 <div class="section level3">
 <h3 id="naming-colors">Naming colors<a class="anchor" aria-label="anchor" href="#naming-colors"></a>
 </h3>
-<p>A small but useful function <code><a href="reference/closestRcolor.html">closestRcolor()</a></code> takes a vector of colors, and returns a vector of the closest R color name based upon the colors defined by <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors()</a></code>.</p>
-<p>The name is sometimes easier to remember and re-use than the hex format.</p>
-<p>The function has an optional argument <code>showPalette=TRUE</code> which will plot the original colors as well as the closest R color for comparison.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/closestRcolor.html">closestRcolor</a></span><span class="op">(</span><span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,
-   showPalette<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</code></pre></div>
+<p><code><a href="reference/closestRcolor.html">closestRcolor()</a></code> is used to assign a color name, matching the closest reference color in a vector. The method uses HCL color space with the red-yellow-blue color wheel, and custom weighting for H, C, and L color channels.</p>
+<p>It even matches greyscale colors properly, ignoring the unused “hue” channel when saturation is very low.</p>
+<p>The argument <code>showPalette=TRUE</code> will plot the original colors and the closest R colors for comparison.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/closestRcolor.html">closestRcolor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="reference/rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, <span class="st">"grey"</span><span class="op">)</span>,</span>
+<span>   showPalette<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-color_names-1.png"><!-- --></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          #D92029          #FF9C74          #FF6300          #A34F00 </span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     "firebrick3"    "lightsalmon"         "tomato"         "sienna" </span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          #00D9FF          #0084E9          #0061FF          #B8C1FF </span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     "turquoise2"    "dodgerblue2"     "royalblue2"   "lightskyblue" </span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          #956FFF          #7D24FA          #FF65FF          #D43FCD </span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; "lightslateblue"        "purple2"        "orchid1"       "magenta3"</span></span></code></pre></div>
-<p>Of course, not all hex colors have a close match in the named R colors, but the closest color is returned nonetheless.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co">#&gt;          #F7C53E          #C35E00          #FF8A66          #DC726B </span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="co">#&gt;          "gold2"     "chocolate3"        "salmon1"  "palevioletred" </span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">#&gt;          #FF89BA          #E86CED          #E9C0FF          #9169F9 </span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co">#&gt; "palevioletred1"        "orchid2"          "plum1" "lightslateblue" </span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co">#&gt;          #AFA5FF          #8891EE          #95C3FF          #43AAFF </span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt;     "steelblue1" "cornflowerblue"       "skyblue1"     "steelblue2" </span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt;             grey </span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#&gt;           "gray"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="fixed-color-gradients-new-in-version-0019900-as-of-08-apr-2021">Fixed color gradients (new in version 0.0.19.900, as of 08-Apr-2021)<a class="anchor" aria-label="anchor" href="#fixed-color-gradients-new-in-version-0019900-as-of-08-apr-2021"></a>
+<h3 id="pre-defined-color-gradients-08-apr-2021">Pre-defined color gradients (08-Apr-2021)<a class="anchor" aria-label="anchor" href="#pre-defined-color-gradients-08-apr-2021"></a>
 </h3>
-<p>Two new fixed gradients were added, motivated by the need for linear/sequential and divergent color gradients that are also color blindness friendly.</p>
+<p>Two pre-defined gradients were added, motivated by the need for linear/sequential and divergent color gradients that are also color blindness friendly.</p>
 <p>The linear/sequential gradients in <code>jam_linear</code> use a white baseline color, to distinguish them from divergent gradients. However the same names are used in <code>jam_linear</code> and <code>jam_divergent</code>.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">jam_linear</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">jam_linear</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-jam_linear_1-1.png"><!-- --></p>
 <p>The divergent color gradients in <code>jam_divergent</code> use a black background, to be distinguished from the linear gradients. However they use the same names, so that they can be paired as appropriate.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">jam_divergent</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">jam_divergent</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-jam_divergent_1-1.png"><!-- --></p>
-<p>The motivating example is showing genome sequence coverage heatmaps from something like a ChIP-seq experiment. The coverage data itself would use a linear gradient. If experimental data were compared to control data, using subtraction for example, the resulting coverage would use a divergent gradient with the same primary name as the coverage. An example would be <code>"jam_linear$firebrick"</code> for coverage, and <code>"jam_divergent$firebrick_skyblue"</code> for coverage difference.</p>
-<p>See either the <code>"platjam" R package (jmw86069/platjam) or the main package it extends from Bioconductor,</code>“EnrichedHeatmap”<code>, from the author of the amazing package</code>“ComplexHeatmap”`.</p>
+<p>The driving use case was to display genome sequence coverage heatmaps with slightly different colors for each type of signal. We wanted linear and divergent color gradients to use in tandem, for example <code>"jam_linear$firebrick"</code> and <code>"jam_divergent$firebrick_skyblue"</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="color-gradient-manipulations">Color gradient manipulations<a class="anchor" aria-label="anchor" href="#color-gradient-manipulations"></a>
+<h3 id="color-gradients">Color gradients<a class="anchor" aria-label="anchor" href="#color-gradients"></a>
 </h3>
+<div class="section level4">
+<h4 id="two-step-linear-gradients">Two-step linear gradients<a class="anchor" aria-label="anchor" href="#two-step-linear-gradients"></a>
+</h4>
 <p>Two new functions provide some interesting and useful features.</p>
-<p><code><a href="reference/twostep_gradient.html">twostep_gradient()</a></code> makes an “enhanced” linear/sequential gradient by combining the visual effects of two color gradients together. This technique is widely used, and famously demonstrated by Dr. Brewer in the R package <code>RColorBrewer</code> in her use of linear color gradients that also employ a subtle hue color shift to improve visible clarity between color steps.</p>
-<p>Essentially the function takes two colors, produces a linear gradient for each individually, then blends them using a gradually increasing weight along the steps. The argument <code>debug=TRUE</code> will create a plot showing each individual color, then the final blended result. The example below uses <code>"orange2"</code> and <code>"firebrick"</code> and produces a much more visibly distinctive linear gradient.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ts1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"orange2"</span>, <span class="st">"firebrick"</span>, n<span class="op">=</span><span class="fl">11</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"orange2 + firebrick"</span><span class="op">)</span>;</code></pre></div>
+<p><code><a href="reference/twostep_gradient.html">twostep_gradient()</a></code> combines two linear gradients into one linear gradient, increasing the visual distinction across the gradient. It is easier to show than to explain.</p>
+<p>Two linear gradients, based upon orange and red, are combined:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"orange2"</span>, <span class="st">"firebrick"</span>, n<span class="op">=</span><span class="fl">11</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       w1    w2</span></span>
+<span><span class="co">#&gt; 1  1.000 0.000</span></span>
+<span><span class="co">#&gt; 2  1.000 0.000</span></span>
+<span><span class="co">#&gt; 3  0.838 0.162</span></span>
+<span><span class="co">#&gt; 4  0.686 0.314</span></span>
+<span><span class="co">#&gt; 5  0.544 0.456</span></span>
+<span><span class="co">#&gt; 6  0.414 0.586</span></span>
+<span><span class="co">#&gt; 7  0.296 0.704</span></span>
+<span><span class="co">#&gt; 8  0.192 0.808</span></span>
+<span><span class="co">#&gt; 9  0.105 0.895</span></span>
+<span><span class="co">#&gt; 10 0.037 0.963</span></span>
+<span><span class="co">#&gt; 11 0.000 1.000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"orange2 + firebrick"</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-twostep_1-1.png"><!-- --></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ts2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"aquamarine"</span>, <span class="st">"dodgerblue"</span>, n<span class="op">=</span><span class="fl">11</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"aquamarine + dodgerblue"</span><span class="op">)</span>;</code></pre></div>
+<p>Two linear gradients, based upon aquamarine and blue, are combined:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"aquamarine"</span>, <span class="st">"dodgerblue"</span>, n<span class="op">=</span><span class="fl">11</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       w1    w2</span></span>
+<span><span class="co">#&gt; 1  1.000 0.000</span></span>
+<span><span class="co">#&gt; 2  1.000 0.000</span></span>
+<span><span class="co">#&gt; 3  0.838 0.162</span></span>
+<span><span class="co">#&gt; 4  0.686 0.314</span></span>
+<span><span class="co">#&gt; 5  0.544 0.456</span></span>
+<span><span class="co">#&gt; 6  0.414 0.586</span></span>
+<span><span class="co">#&gt; 7  0.296 0.704</span></span>
+<span><span class="co">#&gt; 8  0.192 0.808</span></span>
+<span><span class="co">#&gt; 9  0.105 0.895</span></span>
+<span><span class="co">#&gt; 10 0.037 0.963</span></span>
+<span><span class="co">#&gt; 11 0.000 1.000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"aquamarine + dodgerblue"</span><span class="op">)</span>;</span></code></pre></div>
 <p><img src="reference/figures/README-twostep_2-1.png"><!-- --></p>
-<p><code><a href="reference/make_jam_divergent.html">make_jam_divergent()</a></code> is the next color gradient function in the chain, intended to combine two linear gradients into one divergent gradient. It is useful in that it accepts a single color, the name of a known color gradient, or a vector of colors for each “half” of the divergent color gradient. Oh and it can use a lite or dark baseline color.</p>
-<p>The first use case is to combine the colors from <code><a href="reference/twostep_gradient.html">twostep_gradient()</a></code>:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ts1ts2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ts2<span class="op">=</span><span class="va">ts2</span><span class="op">)</span>,
-   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ts1<span class="op">=</span><span class="va">ts1</span><span class="op">)</span>,
-   n<span class="op">=</span><span class="fl">21</span><span class="op">)</span>
-<span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">ts1ts2</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="custom-divergent-gradients">Custom divergent gradients<a class="anchor" aria-label="anchor" href="#custom-divergent-gradients"></a>
+</h4>
+<p><code><a href="reference/make_jam_divergent.html">make_jam_divergent()</a></code> combines two linear gradients, using the two gradients created above:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts1ts2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ts2<span class="op">=</span><span class="va">ts2</span><span class="op">)</span>,</span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ts1<span class="op">=</span><span class="va">ts1</span><span class="op">)</span>,</span>
+<span>   n<span class="op">=</span><span class="fl">21</span><span class="op">)</span></span>
+<span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">ts1ts2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-div_1-1.png"><!-- --></p>
-<p>Another example re-creates a widely used yellow-black-purple color gradient, by first expanding each linear gradient, then combines them.</p>
-<p>For kicks, we use single colors to create a comparable “flat” one-step divergent gradient, which is still quite nice.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gr1d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"slateblue1"</span>, <span class="st">"purple"</span>, debug<span class="op">=</span><span class="cn">TRUE</span>, lite<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span></code></pre></div>
-<p><img src="reference/figures/README-div_2-1.png"><!-- --></p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gr2d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"darkorange"</span>, <span class="st">"gold"</span>, debug<span class="op">=</span><span class="cn">TRUE</span>, lite<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span></code></pre></div>
-<p><img src="reference/figures/README-div_2-2.png"><!-- --></p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">div12d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gr1d<span class="op">=</span><span class="va">gr1d</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gr2d<span class="op">=</span><span class="va">gr2d</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">div12dflat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span>, lite<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-   flat<span class="op">=</span><span class="va">div12dflat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
-   twostep<span class="op">=</span><span class="va">div12d</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of flat 'purple-black-yellow' to twostep_gradient()"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-div_2-3.png"><!-- --></p>
-<p>It becomes more clear when using a light background. Note that <code>jam_make_divergent()</code> does a fairly good job already with just one color on each “side”.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"slateblue"</span>, <span class="st">"purple"</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span></code></pre></div>
-<p><img src="reference/figures/README-div_3-1.png"><!-- --></p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/twostep_gradient.html">twostep_gradient</a></span><span class="op">(</span><span class="st">"gold"</span>, <span class="st">"darkorange"</span>, debug<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;       w1    w2</span>
-<span class="co">#&gt; 1  1.000 0.000</span>
-<span class="co">#&gt; 2  1.000 0.000</span>
-<span class="co">#&gt; 3  0.838 0.162</span>
-<span class="co">#&gt; 4  0.686 0.314</span>
-<span class="co">#&gt; 5  0.544 0.456</span>
-<span class="co">#&gt; 6  0.414 0.586</span>
-<span class="co">#&gt; 7  0.296 0.704</span>
-<span class="co">#&gt; 8  0.192 0.808</span>
-<span class="co">#&gt; 9  0.105 0.895</span>
-<span class="co">#&gt; 10 0.037 0.963</span>
-<span class="co">#&gt; 11 0.000 1.000</span></code></pre></div>
-<p><img src="reference/figures/README-div_3-2.png"><!-- --></p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">div12</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gr1<span class="op">=</span><span class="va">gr1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>gr2<span class="op">=</span><span class="va">gr2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">div12flat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_jam_divergent.html">make_jam_divergent</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"gold"</span><span class="op">)</span>
-<span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-   flat<span class="op">=</span><span class="va">div12flat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
-   twostep<span class="op">=</span><span class="va">div12</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Comparison of flat 'purple-black-yellow' to twostep_gradient(),\nwith light baseline color"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-div_3-3.png"><!-- --></p>
+</div>
 </div>
 </div>
 </div>
@@ -485,6 +435,13 @@
 </div>
 
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing colorjam</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
@@ -505,7 +462,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

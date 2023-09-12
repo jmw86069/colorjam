@@ -4,7 +4,13 @@
 \alias{h2hw}
 \title{Convert standard hue to warped hue}
 \usage{
-h2hw(h, h1 = NULL, h2 = NULL, preset = "custom", ...)
+h2hw(
+  h,
+  h1 = NULL,
+  h2 = NULL,
+  preset = getOption("colorjam.preset", "custom"),
+  ...
+)
 }
 \arguments{
 \item{h}{\code{numeric} vector of color hues between 0 and 360. These hues do
@@ -53,15 +59,19 @@ warpedHuesBY;
 }
 \seealso{
 Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
 \code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()}
 
 Other hue warp functions: 
-\code{\link{h2hwOptions}()},
-\code{\link{hw2h}()}
+\code{\link{h2hwOptions}()}
 }
 \concept{colorjam hue warp}
 \concept{hue warp functions}

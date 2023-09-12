@@ -266,35 +266,91 @@ rainbowJam_v1 <- function
 #' Find the closest R color for a vector of colors
 #'
 #' This function is intended as a relatively efficient method to compare
-#' a set of colors to the named R colors provided by \code{colors()}.
-#' It has some distinction from similar methods, in that it uses HCL
-#' color space, unlike similar methods which may use RGB color space.
-#' It also prioritizes the color hue, then the luminance (visual brightness),
-#' then chroma (saturation). These weights can be adjusted if necessary
-#' although the default values appear to work fairly well.
+#' a set of colors to the named R colors provided by `grDevices::colors()`.
+#'
+#' Color matching provides substantial improvements over similar functions
+#' from other R packages. Notably, colors are matched using either
+#' HCL or LUB color model by default, both of which provide vast
+#' improvement over RGB color matching, due to better spacing of
+#' colors, and increased resolution of color hue.
+#'
+#' For `colorModel="HCL"` the coordinates are weighted to prioritize
+#' matching color Hue above Chroma and Luminance. The distance method
+#' by default uses `method="maximum"` which also emphasizes the lowest
+#' distance in any of the three dimensions.
+#'
+#' @returns `character` vector of colors, optionally customized
+#'    by argument `returnType`.
 #'
 #' @param x character vector of colors, either in hex format or any
 #'    valid color in R.
-#' @param colorSet vector of colors, by default includes the R colors
-#'    provided by `grDevices::colors()` minus the "grey##" greyscale colors,
-#'    however any vector of colors can be used, whether named or not.
-#' @param showPalette boolean indicating whether to display the input
+#' @param colorSet `character` vector of colors, by default includes
+#'    the R colors `grDevices::colors()`.
+#' @param C_min,Cgrey `numeric` minimum color Chroma filter applied to
+#'    handle greyscale colors. In most practical cases `C_min` and `Cgrey`
+#'    should be the same value. Note `Cgrey` is used as an option in
+#'    `jamba::make_styles()`, `jamba::applyCLrange()` for similar
+#'    use cases, so it is used here as well: `getOption("jamba.Cgrey", 5)`.
+#'    * `C_min` is applied to `colorSet` to require the closest matching
+#'    color to have at least this color Chroma (saturation).
+#'    * `Cgrey` is applied to `x` to determine if the input color itself
+#'    is considered greyscale, in which case it should not be matched
+#'    with saturated colors since there is no reliable color hue.
+#'    Instead, the subset of `colorSet` with Chroma below `C_min` is used
+#'    for color-matching.
+#'
+#'    Reworded in short:
+#'    * Colors in `x` with Chroma above `Cgrey` are matched with
+#'    colors in `colorSet` with Chroma above `C_min`.
+#'    * Colors in `x` with Chroma below `Cgrey` are matched with
+#'    colors in `colorSet` with Chroma below `C_min`.
+#'    * The end result should be that saturated input colors match
+#'    saturated reference colors, and unsaturated input colors match
+#'    unsaturated reference colors.
+#' @param Cgrey `numeric` color Chroma at or below which the input color `x`
+#'    is considered to be "grey" (or "gray"), and therefore the color
+#'    hue is no longer matched.
+#' @param showPalette `logical` indicating whether to display the input
 #'    colors and resulting closest matching colors by using
 #'    `jamba::showColors()`.
-#' @param colorModel character color model to use, currently only using
-#'    "hcl", though "rgb" and "ryb" were both tested and judged to perform
-#'    less effectively.
-#' @param Hwt,Cwt,Lwt relative weights for each dimension of HCL colors,
-#'    respectively.
-#' @param warpHue boolean indicating whether to perform the hue warp
+#' @param colorModel `character` color model to use:
+#'    * `"hcl"`: default, uses HCL provided by `jamba::col2hcl()` which
+#'    uses the equivalent of `colorspace::polarLUV()` and considers
+#'    color hues in terms of 360 degree angles along a color wheel.
+#'    * `"LUV"`: uses CIELUV color space, provided by `colorspace::LUV()`
+#'    which encodes the angular color hue in 3-D Cartesian space,
+#'    allowing comparisons using Euclidean distance.
+#' @param Hwt,Cwt,Lwt `numeric` relative weights for each dimension of
+#'    HCL colors, for the H, C, and L channels, respectively.
+#' @param warpHue `logical` indicating whether to perform the hue warp
 #'    operation using `h2hw()` which improves the ability to match
 #'    colors between orange and green.
-#' @param returnType character type of data to return: "color" will return
-#'    the actual closest color; "name" will return the name of the closest
-#'    color, or if the `colorSet` vector has no names, its values will
-#'    be used; "match" will return an integer vector as an index to colors
-#'    in `colorSet`.
-#' @param verbose logical whether to print verbose output
+#' @param preset `character` string to define the color wheel used
+#'    when matching input colors `x` to colors in `colorSet`.
+#'    This preset is used with `h2hw()` and `hw2h()`.
+#'    The default `preset="ryb"` allows greatest distinction in colors
+#'    without imposing additional restrictions such as by `preset="dichromat"`
+#'    which would only match color-safe colors. The purpose here is
+#'    to identify and label colors based upon a reference set of colors.
+#' @param method `character` string passed to `stats::dist()`. The default
+#'    `method="maximum"` works well for `colorModel="hcl"`, and
+#'    assigns distance using the largest distance across
+#'    the three color coordinates H, C, and L. It requires the best
+#'    overall match across all three coordinates rather than any weighted
+#'    combination of coordinate distances. Other methods in testing allowed
+#'    matches of different color hues when luminance and chroma values
+#'    were very similar.
+#'    With  `colorModel="LUV"` we recommend using `method="euclidean"`,
+#'    which seems to work well with projected color coordinates
+#'    L, U, and V. The U, and V coordinates are roughly the angular
+#'    color hue projected into a flat plane, the L describing Luminance.
+#' @param returnType `character` type of data to return:
+#'    * `"color"` returns the color values in `colorSet`, which by default
+#'    are color names from `grDevices::colors()`
+#'    * `"name"` returns `names(colorSet)` if they exist, otherwise
+#'    values from `colorSet`
+#'    * `"match"` returns an integer vector as an index to `colorSet`
+#' @param verbose `logical` whether to print verbose output.
 #'
 #' @family colorjam core
 #'
@@ -305,7 +361,8 @@ rainbowJam_v1 <- function
 closestRcolor <- function
 (x,
  colorSet=colors(),
- C_min=20,
+ C_min=Cgrey,
+ Cgrey=getOption("jam.Cgrey", 5),
  showPalette=FALSE,
  colorModel=c("hcl","LUV"),
  Hwt=2,
@@ -314,7 +371,9 @@ closestRcolor <- function
  warpHue=TRUE,
  preset="ryb",
  method="maximum",
- returnType=c("color", "name", "match"),
+ returnType=c("color",
+    "name",
+    "match"),
  verbose=FALSE,
  ...)
 {
@@ -339,15 +398,73 @@ closestRcolor <- function
       names(origX) <- jamba::makeNames(origX);
    }
 
-   if (length(C_min) > 0 && C_min > 0) {
-      colorSet <- colorSet[jamba::col2hcl(colorSet)["C",] >= C_min];
+   if (length(C_min) == 0) {
+      C_min <- 0;
+   } else {
+      C_min <- head(C_min, 1);
+   }
+   colorSet_lo <- NULL;
+   if (C_min > 0) {
+      colorSet_hcl <- jamba::col2hcl(colorSet);
+      colorSet_hcl["C",] <- round(colorSet_hcl["C",],
+         digits=3)
+      colorSet_lo <- colorSet[colorSet_hcl["C",] < C_min];
+      colorSet <- colorSet[colorSet_hcl["C",] >= C_min];
    }
 
    if (returnType %in% "name" && length(names(colorSet)) == 0) {
       names(colorSet) <- jamba::makeNames(colorSet);
    }
    x <- jamba::nameVector(unique(origX));
-   if (colorModel %in% "hcl") {
+   xHCL <- NULL;
+   newX <- NULL;
+   if (Cgrey > 0 && C_min > 0 && length(colorSet_lo) > 0) {
+      # convert to HCL
+      xHCL <- jamba::col2hcl(x);
+      is_lo <- (xHCL["C",] < Cgrey);
+      if (any(is_lo)) {
+         # process unsaturated colors
+         newX_lo <- closestRcolor(x=x[is_lo],
+            colorSet=colorSet_lo,
+            C_min=0,
+            Cgrey=0,
+            colorModel=colorModel,
+            Hwt=Hwt,
+            Cwt=Cwt,
+            Lwt=Lwt,
+            warpHue=warpHue,
+            preset=preset,
+            method=method,
+            returnType="color",
+            verbose=verbose,
+            ...)
+         newX <- rep("", length(x));
+         newX[is_lo] <- newX_lo;
+         # process saturated colors
+         if (any(!is_lo)) {
+            newX_hi <- closestRcolor(
+               x=x[!is_lo],
+               colorSet=colorSet,
+               C_min=0,
+               Cgrey=0,
+               colorModel=colorModel,
+               Hwt=Hwt,
+               Cwt=Cwt,
+               Lwt=Lwt,
+               warpHue=warpHue,
+               preset=preset,
+               method=method,
+               returnType="color",
+               verbose=verbose,
+               ...)
+            newX[!is_lo] <- newX_hi;
+         } else {
+            newX_hi <- NULL;
+         }
+         names(newX) <- x;
+      }
+   }
+   if ("hcl" %in% colorModel && length(newX) == 0) {
 
       # hcl
       # Simple angular distance
@@ -360,7 +477,9 @@ closestRcolor <- function
          matrix(diff1, ncol=length(b), nrow=length(a),
             dimnames=list(names(a), names(b)));
       }
-      xHCL <- jamba::col2hcl(x);
+      if (length(xHCL) == 0) {
+         xHCL <- jamba::col2hcl(x);
+      }
       colorSetHCL <- jamba::col2hcl(jamba::nameVector(colorSet));
 
       ## Adjust H to RYB
@@ -371,13 +490,14 @@ closestRcolor <- function
             preset=preset);
       }
 
-      Hdist <- angDist(a=xHCL["H",], b=colorSetHCL["H",])/180*100;
+      Hdist <- angDist(a=xHCL["H",],
+         b=colorSetHCL["H",])/180*100;
 
       CLm <- rbind(t(xHCL), t(colorSetHCL))[,c("L","C"),drop=FALSE];
-      CLm[,"C"] <- CLm[,"C"]*Cwt;
-      CLm[,"L"] <- CLm[,"L"]*Lwt;
+      CLm[,"C"] <- CLm[,"C"] * Cwt;
+      CLm[,"L"] <- CLm[,"L"] * Lwt;
       CLdist <- as.matrix(dist(CLm,
-         method=method))[colnames(xHCL),colnames(colorSetHCL),drop=FALSE];
+         method=method))[colnames(xHCL), colnames(colorSetHCL), drop=FALSE];
       if (verbose) {
          jamba::printDebug("dim(Hdist):", dim(Hdist));
          jamba::printDebug("dim(CLdist):", dim(CLdist));
@@ -395,19 +515,21 @@ closestRcolor <- function
          newX <- jamba::nameVector(colorSet[iClosestColorWhich],
             colnames(xHCL));
       }
-   } else if (colorModel %in% "LUV") {
+   } else if ("LUV" %in% colorModel && length(newX) == 0) {
       ## Use LUV
       col2LUV <- function(a) {
          if (length(names(a)) == 0) {
             names(a) <- jamba::makeNames(a);
          }
-         coords(as(colorspace::hex2RGB(jamba::rgb2col(grDevices::col2rgb(a))), "LUV"));
+         # convert color
+         colorspace::coords(as(colorspace::hex2RGB(
+            jamba::rgb2col(grDevices::col2rgb(a))), "LUV"));
       }
       xLUV <- col2LUV(x);
       colorSetLUV <- col2LUV(colorSet);
       LUVdist <- as.matrix(dist(rbind(xLUV,
          colorSetLUV),
-         method=method))[rownames(xLUV),rownames(colorSetLUV),drop=FALSE];
+         method=method))[rownames(xLUV), rownames(colorSetLUV), drop=FALSE];
       iClosestColorWhich <- apply(LUVdist, 1, which.min);
       ## Define the proper return value
       if (returnType %in% "match") {
@@ -428,7 +550,8 @@ closestRcolor <- function
 
    ## Optionally display the palette before and after
    if (showPalette) {
-      jamba::showColors(list(original=jamba::nameVector(origX),
+      jamba::showColors(list(
+         original=jamba::nameVector(origX),
          returned=jamba::nameVector(retX)),
          ...);
    }

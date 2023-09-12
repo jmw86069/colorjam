@@ -4,7 +4,13 @@
 \alias{hw2h}
 \title{Convert warped hue to standard hue}
 \usage{
-hw2h(h, h1 = NULL, h2 = NULL, preset = "custom", ...)
+hw2h(
+  h,
+  h1 = NULL,
+  h2 = NULL,
+  preset = getOption("colorjam.preset", "custom"),
+  ...
+)
 }
 \arguments{
 \item{h}{\code{numeric} vector of color hues between 0 and 360. These hues do
@@ -15,6 +21,9 @@ not need to be in sequential order.}
 should be overridden but not modified.}
 }
 \value{
+\code{numeric} vector of color hues after applying the transformation
+from \code{h2} to \code{h1}.
+
 \code{numeric} vector of hue values after applying the hue warp
 operation.
 }
@@ -47,15 +56,27 @@ hues;
 }
 \seealso{
 Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
 \code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
 \code{\link{mean_angle}()}
 
-Other hue warp functions: 
+Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
+\code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
+\code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
-\code{\link{h2hw}()}
+\code{\link{h2hw}()},
+\code{\link{mean_angle}()}
 }
 \concept{colorjam hue warp}
-\concept{hue warp functions}
