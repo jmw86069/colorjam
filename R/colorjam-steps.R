@@ -90,11 +90,10 @@ colorjam_steps <- function
 #'
 #' color_pie(rainbowJam(n=10,
 #'    step="new_v24",
-#'    h1=h1, h2=h2,
 #'    phase=c(2,1,3,4,5,6)))
 #'
-#' add_colorjam_preset("dichromat2", h1=NULL, h2=NULL)
-#' colorjam_presets()
+#' add_colorjam_step("new_v24", step_list=NULL)
+#' colorjam_steps()
 #'
 #' @export
 add_colorjam_step <- function
