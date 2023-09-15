@@ -1,3 +1,20 @@
+## TODO 13sep2023
+
+* Simple R-shiny app
+
+   * visualize color palettes with adjustments
+   * select the number of colors
+   * edit the `step` values for Chroma and Luminance
+   * edit the `phase` order of steps
+   * choose the `preset` from known color wheels
+   * bonus points: edit the color wheel `h1`, `h2` points:
+
+      * click-and-drag to modify existing points
+      * add a new point
+      * delete an existing point
+
+* associate each `"preset"` with a default `"step"`
+
 ## TODO 07sep2023
 
 * Ability to register a new color wheel

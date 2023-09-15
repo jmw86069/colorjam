@@ -1,3 +1,22 @@
+# colorjam 0.0.25.900
+
+## new functions
+
+* `launchColorjamShiny()`
+
+    * simple R-shiny app to display categorical colors
+    * allows selection of `"preset"` and `"step"`
+    * plotly plot with preset `h1` and `h2` values
+    * `h1` and `h2` can be edited! Not perfect, adjustments can be tested.
+
+## changes to existing functions
+
+After initial testing, it seems clear that each `"preset"` should be
+associated with a default `"step"`. The presets `"dichromat"` and `"ryb"`
+are intended to start with dark colors `step="v23"` while
+presets `"dichromat2"` and `"ryb2"` are intended to start with bright
+colors `step="v24"`.
+
 # colorjam 0.0.24.900
 
 This version of colorjam turned into a bit of a refactor:
