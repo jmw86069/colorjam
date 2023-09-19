@@ -139,7 +139,8 @@ Other colorjam assignment:
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
 \code{\link{rainbowJamMulti}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{vals2colorLevels}()},
+\code{\link{vibrant_color_by_hue}()}
 }
 \concept{colorjam assignment}
 \concept{colorjam gradients}

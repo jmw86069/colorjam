@@ -211,14 +211,15 @@ h2hwOptions <- function
 #' @examples
 #' ## Yellow when using an RGB color wheel is 60 degrees,
 #' ## but on an RYB color wheel is 120 degrees.
-#' h2hw(60);
+#' h2hw(60, preset="ryb");
 #'
 #' # RGB colors are convenient, but are not ideal especially when blending
 #' # colors. Note that blue and yellow have hues that differ by exactly 180
 #' # degrees, meaning a hue average is as likely to be purple as green.
 #' huesBY <- jamba::col2hcl(c("blue", "yellow"))["H",];
 #' huesBY;
-#' warpedHuesBY <- h2hw(huesBY);
+#'
+#' warpedHuesBY <- h2hw(huesBY, preset="ryb");
 #' warpedHuesBY;
 #'
 #' @family hue warp functions
@@ -228,6 +229,7 @@ h2hw <- function
 (h,
  h1=NULL,
  h2=NULL,
+ direction=1,
  preset=getOption("colorjam.preset", "custom"),
  ...)
 {
@@ -237,26 +239,34 @@ h2hw <- function
    if (length(preset) == 0) {
       preset <- "custom";
    }
-   if (length(h1) > 0 && length(h2) > 0 && length(h1) == length(h2)) {
-      h1h2 <- h2hwOptions(preset=preset,
+   if ("custom" %in% preset && (length(h1) == 0 || length(h2) == 0)) {
+      cli::cli_abort(message=paste(
+         "{.var preset} must not be \"{.field custom}\" when",
+         "{.var h1} and {.var h2} are not provided."))
+   }
+   if (!"custom" %in% preset) {
+      h1h2 <- colorjam_presets(preset=preset);
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
+      direction <- h1h2$direction;
+   } else {
+      h1h2 <- jamba::rmNULL(validate_colorjam_preset(preset=preset,
          h1=h1,
          h2=h2,
-         setOptions="FALSE");
-   } else {
-      h1h2 <- h2hwOptions(preset=preset,
-         setOptions="FALSE");
+         direction=direction,
+         default_step=NULL))
    }
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
+   direction <- h1h2$direction;
 
-   hNew <- approx_degrees(h1=h1,
+   hNew <- approx_degrees(
+      h1=h1,
       h2=h2,
-      preset="custom",
-      h=h);
-   #hNew <- approx(x=h1,
-   #   y=h2,
-   #   ties="ordered",
-   #   xout=(h %% 360))$y;
+      h=h,
+      direction=direction,
+      preset="custom");
+
    return(hNew);
 }
 
@@ -297,7 +307,13 @@ h2hw <- function
 #' # then convert those hues to standard color hues.
 #' warpedHues <- seq(from=0, to=330, length.out=12);
 #' warpedHues;
-#' hues <- hw2h(warpedHues);
+#'
+#' # rgb imposes no change
+#' hues <- hw2h(warpedHues, preset="rgb");
+#' hues;
+#'
+#' # ryb imposes changes
+#' hues <- hw2h(warpedHues, preset="ryb");
 #' hues;
 #'
 #' @family colorjam hue warp
@@ -307,8 +323,7 @@ hw2h <- function
 (h,
  h1=NULL,
  h2=NULL,
- #h1=h2hwOptions()$h1,
- #h2=h2hwOptions()$h2,
+ direction=1,
  preset=getOption("colorjam.preset", "custom"),
  ...)
 {
@@ -318,28 +333,34 @@ hw2h <- function
    if (length(preset) == 0) {
       preset <- "custom";
    }
-   if (length(h1) > 0 && length(h2) > 0 && length(h1) == length(h2)) {
-      h1h2 <- h2hwOptions(preset=preset,
+   if ("custom" %in% preset && (length(h1) == 0 || length(h2) == 0)) {
+      cli::cli_abort(message=paste(
+         "{.var preset} must not be \"{.field custom}\" when",
+         "{.var h1} and {.var h2} are not provided."))
+   }
+   if (!"custom" %in% preset) {
+      h1h2 <- colorjam_presets(preset=preset);
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
+      direction <- h1h2$direction;
+   } else {
+      h1h2 <- jamba::rmNULL(validate_colorjam_preset(preset=preset,
          h1=h1,
          h2=h2,
-         setOptions="FALSE");
-   } else {
-      h1h2 <- h2hwOptions(preset=preset,
-         setOptions="FALSE");
+         direction=direction,
+         default_step=NULL))
    }
-
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
+   direction <- h1h2$direction;
 
    hNew <- approx_degrees(
       h1=h2,
       h2=h1,
       h=h,
+      direction=direction,
       preset="custom");
-   #hNew <- approx(x=h2,
-   #   y=h1,
-   #   ties="ordered",
-   #   xout=(h %% 360))$y;
+
    return(hNew);
 }
 

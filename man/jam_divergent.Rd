@@ -59,7 +59,8 @@ if (require(dichromat)) {
 }
 \seealso{
 Other colorjam data: 
-\code{\link{jam_linear}}
+\code{\link{jam_linear}},
+\code{\link{named_colors}}
 }
 \concept{colorjam data}
 \keyword{datasets}

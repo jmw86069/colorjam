@@ -365,7 +365,7 @@ closestRcolor <- function
  Cgrey=getOption("jam.Cgrey", 5),
  showPalette=FALSE,
  colorModel=c("hcl","LUV"),
- Hwt=2,
+ Hwt=2.5,
  Cwt=1,
  Lwt=4,
  warpHue=TRUE,
@@ -419,6 +419,10 @@ closestRcolor <- function
    xHCL <- NULL;
    newX <- NULL;
    if (Cgrey > 0 && C_min > 0 && length(colorSet_lo) > 0) {
+      if (verbose) {
+         jamba::printDebug("closestRcolor(): ",
+            "processing low chroma colors.")
+      }
       # convert to HCL
       xHCL <- jamba::col2hcl(x);
       is_lo <- (xHCL["C",] < Cgrey);
@@ -440,6 +444,7 @@ closestRcolor <- function
             ...)
          newX <- rep("", length(x));
          newX[is_lo] <- newX_lo;
+         # names(newX)[is_lo] <- x[is_lo];
          # process saturated colors
          if (any(!is_lo)) {
             newX_hi <- closestRcolor(
@@ -458,102 +463,114 @@ closestRcolor <- function
                verbose=verbose,
                ...)
             newX[!is_lo] <- newX_hi;
+            # names(newX)[!is_lo] <- names(newX_hi);
+            # names(newX)[!is_lo] <- x[!is_lo];
          } else {
             newX_hi <- NULL;
          }
          names(newX) <- x;
       }
    }
-   if ("hcl" %in% colorModel && length(newX) == 0) {
-
-      # hcl
-      # Simple angular distance
-      angDist <- function(a, b, ...){
-         x1 <- rep(a, length(b));
-         y1 <- rep(b, each=length(a));
-         diff1 <- abs(x1-y1);
-         diff1[diff1 > 180] <- 360 - diff1[diff1 > 180];
-         diff1;
-         matrix(diff1, ncol=length(b), nrow=length(a),
-            dimnames=list(names(a), names(b)));
-      }
-      if (length(xHCL) == 0) {
-         xHCL <- jamba::col2hcl(x);
-      }
-      colorSetHCL <- jamba::col2hcl(jamba::nameVector(colorSet));
-
-      ## Adjust H to RYB
-      if (warpHue) {
-         xHCL["H",] <- h2hw(xHCL["H",],
-            preset=preset);
-         colorSetHCL["H",] <- h2hw(colorSetHCL["H",],
-            preset=preset);
-      }
-
-      Hdist <- angDist(a=xHCL["H",],
-         b=colorSetHCL["H",])/180*100;
-
-      CLm <- rbind(t(xHCL), t(colorSetHCL))[,c("L","C"),drop=FALSE];
-      CLm[,"C"] <- CLm[,"C"] * Cwt;
-      CLm[,"L"] <- CLm[,"L"] * Lwt;
-      CLdist <- as.matrix(dist(CLm,
-         method=method))[colnames(xHCL), colnames(colorSetHCL), drop=FALSE];
-      if (verbose) {
-         jamba::printDebug("dim(Hdist):", dim(Hdist));
-         jamba::printDebug("dim(CLdist):", dim(CLdist));
-      }
-      HCLdist <- Hdist * Hwt + CLdist;
-      iClosestColorWhich <- apply(HCLdist, 1, which.min);
-
-      ## Define the proper return value
-      if (returnType %in% "match") {
-         newX <- iClosestColorWhich;
-      } else if (returnType %in% "name") {
-         newX <- jamba::nameVector(colnames(HCLdist)[iClosestColorWhich],
-            colnames(xHCL));
-      } else {
-         newX <- jamba::nameVector(colorSet[iClosestColorWhich],
-            colnames(xHCL));
-      }
-   } else if ("LUV" %in% colorModel && length(newX) == 0) {
-      ## Use LUV
-      col2LUV <- function(a) {
-         if (length(names(a)) == 0) {
-            names(a) <- jamba::makeNames(a);
+   if (length(newX) == 0) {
+      if ("hcl" %in% colorModel) {
+         # hcl
+         # Simple angular distance
+         angDist <- function(a, b, ...){
+            x1 <- rep(a, length(b));
+            y1 <- rep(b, each=length(a));
+            diff1 <- abs(x1-y1);
+            diff1[diff1 > 180] <- 360 - diff1[diff1 > 180];
+            diff1;
+            matrix(diff1, ncol=length(b), nrow=length(a),
+               dimnames=list(names(a), names(b)));
          }
-         # convert color
-         colorspace::coords(as(colorspace::hex2RGB(
-            jamba::rgb2col(grDevices::col2rgb(a))), "LUV"));
-      }
-      xLUV <- col2LUV(x);
-      colorSetLUV <- col2LUV(colorSet);
-      LUVdist <- as.matrix(dist(rbind(xLUV,
-         colorSetLUV),
-         method=method))[rownames(xLUV), rownames(colorSetLUV), drop=FALSE];
-      iClosestColorWhich <- apply(LUVdist, 1, which.min);
-      ## Define the proper return value
-      if (returnType %in% "match") {
-         newX <- iClosestColorWhich;
-      } else if (returnType %in% "name") {
-         newX <- jamba::nameVector(rownames(LUVdist)[iClosestColorWhich],
-            rownames(xLUV));
-      } else {
+         if (length(xHCL) == 0) {
+            xHCL <- jamba::col2hcl(x);
+         }
+         colorSetHCL <- jamba::col2hcl(jamba::nameVector(colorSet));
+
+         ## Adjust H to RYB
+         if (warpHue) {
+            xHCL["H",] <- h2hw(xHCL["H",],
+               preset=preset);
+            colorSetHCL["H",] <- h2hw(colorSetHCL["H",],
+               preset=preset);
+         }
+
+         Hdist <- angDist(a=xHCL["H",],
+            b=colorSetHCL["H",])/180*100;
+
+         CLm <- rbind(t(xHCL), t(colorSetHCL))[,c("L","C"),drop=FALSE];
+         CLm[,"C"] <- CLm[,"C"] * Cwt;
+         CLm[,"L"] <- CLm[,"L"] * Lwt;
+         CLdist <- as.matrix(dist(CLm,
+            method=method))[colnames(xHCL), colnames(colorSetHCL), drop=FALSE];
+         if (verbose) {
+            jamba::printDebug("dim(Hdist):", dim(Hdist));
+            jamba::printDebug("dim(CLdist):", dim(CLdist));
+         }
+         HCLdist <- Hdist * Hwt + CLdist;
+         iClosestColorWhich <- apply(HCLdist, 1, which.min);
+
+         newX <- jamba::nameVector(colorSet[iClosestColorWhich],
+            colnames(xHCL));
+      } else if ("LUV" %in% colorModel) {
+         ## Use LUV
+         col2LUV <- function(a) {
+            if (length(names(a)) == 0) {
+               names(a) <- jamba::makeNames(a);
+            }
+            # convert color
+            colorspace::coords(as(colorspace::hex2RGB(
+               jamba::rgb2col(grDevices::col2rgb(a))), "LUV"));
+         }
+         xLUV <- col2LUV(x);
+         colorSetLUV <- col2LUV(colorSet);
+         LUVdist <- as.matrix(dist(rbind(xLUV,
+            colorSetLUV),
+            method=method))[rownames(xLUV), rownames(colorSetLUV), drop=FALSE];
+         iClosestColorWhich <- apply(LUVdist, 1, which.min);
          newX <- jamba::nameVector(colorSet[iClosestColorWhich],
             rownames(xLUV));
       }
    }
 
+   # 0.0.25.900 - names are not assigned from input
+   # instead are assigned from `colorSet`
    retX <- newX[origX];
-   if (length(names(origX)) > 0) {
-      names(retX) <- names(origX);
+   if (length(colorSet_lo) > 0) {
+      colorSet <- c(colorSet, colorSet_lo);
    }
+   imatch <- match(retX, colorSet);
+   # print("head(imatch, 20):");print(head(imatch, 20));# debug
+   if (length(names(colorSet)) > 0) {
+      names(retX) <- jamba::makeNames(names(colorSet)[imatch]);
+   } else {
+      names(retX) <- NULL;
+   }
+   if ("match" %in% returnType) {
+      retX[] <- imatch;
+   } else if ("name" %in% returnType && length(names(colorSet)) > 0) {
+      retX[] <- names(colorSet)[imatch];
+   }
+   # if (length(names(origX)) > 0) {
+   #    names(retX) <- names(origX);
+   # }
 
    ## Optionally display the palette before and after
    if (showPalette) {
+      use_origX <- origX;
+      if (length(names(use_origX)) == 0) {
+         names(use_origX) <- origX;
+      }
+      use_retX <- retX;
+      if (length(names(use_retX)) == 0) {
+         names(use_retX) <- retX;
+      }
       jamba::showColors(list(
-         original=jamba::nameVector(origX),
-         returned=jamba::nameVector(retX)),
-         ...);
+         original=use_origX,
+         returned=use_retX),
+      ...);
    }
    ## Return to data.frame or matrix form if needed
    if (classX %in% c("data.frame", "matrix")) {
@@ -1107,4 +1124,55 @@ vals2colorLevels <- function
       names(kColor) <- names(x);
    }
    kColor;
+}
+
+#' Closest colorjam named_colors
+#'
+#' Closest colorjam named_colors for a vector of colors
+#'
+#' @family colorjam core
+#'
+#' @inheritParams closestRcolor
+#'
+#' @param colorSet `character` vector of colors, by default `named_colors`
+#'    with provides 4,447 total hex colors, each with human-assigned
+#'    color name. These colors also include hex colors from R `colors()`
+#'    which were not already included in the reference colors.
+#'
+#' @export
+closest_named_color <- function
+(x,
+ colorSet=named_colors,
+ C_min=Cgrey,
+ Cgrey=getOption("jam.Cgrey", 5),
+ showPalette=FALSE,
+ colorModel=c("hcl", "LUV"),
+ Hwt=2.5,
+ Cwt=1,
+ Lwt=4,
+ warpHue=TRUE,
+ preset="ryb",
+ method="maximum",
+ returnType=c("color",
+    "name",
+    "match"),
+ verbose=FALSE,
+ ...)
+{
+   #
+   closestRcolor(x=x,
+      colorSet=colorSet,
+      C_min=C_min,
+      Cgrey=Cgrey,
+      showPalette=showPalette,
+      colorModel=colorModel,
+      Hwt=Hwt,
+      Cwt=Cwt,
+      Lwt=Lwt,
+      warpHue=warpHue,
+      preset=preset,
+      method=method,
+      returnType=returnType,
+      verbose=verbose,
+      ...);
 }

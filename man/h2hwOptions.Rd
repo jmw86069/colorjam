@@ -138,7 +138,9 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hw}()},
 \code{\link{hw2h}()},
-\code{\link{mean_angle}()}
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
 
 Other hue warp functions: 
 \code{\link{h2hw}()}

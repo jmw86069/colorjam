@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Colorjam hue warp presets</h1>
-    <small class="dont-index">Source: <a href="http://github.com/jmw86069/colorjam/blob/HEAD/R/colorjam-huewarp.R" class="external-link"><code>R/colorjam-huewarp.R</code></a></small>
+    <small class="dont-index">Source: <a href="http://github.com/jmw86069/colorjam/blob/HEAD/R/colorjam-presets.R" class="external-link"><code>R/colorjam-presets.R</code></a></small>
     <div class="hidden name"><code>colorjam_presets.Rd</code></div>
     </div>
 
@@ -73,9 +73,17 @@ with a recognized preset name.</p></dd>
     
 
 <p><code>character</code> vector of recognized colorjam presets, or when
-<code>preset</code> is provided, it returns a <code>list</code> with elements
-<code>"h1"</code> and <code>"h2"</code> suitable for use with <code><a href="h2hw.html">h2hw()</a></code> or <code><a href="hw2h.html">hw2h()</a></code>.</p>
-    </div>
+<code>preset</code> is provided, it returns a <code>list</code> with elements:</p><ul><li><p><code>h1</code>: HCL color hue indicating the actual hue to be used
+when generating a color.</p></li>
+<li><p><code>h2</code>: HCL color hue indicating the virtual hue assigned to each
+actual hue in <code>h1</code>.</p></li>
+<li><p><code>direction</code>: with <code>1</code> indicating forward (increasing, clockwise)
+progression around the color wheel, and <code>-1</code> indicating reverse
+(decreasing, counter-clockwise) progression around the color
+wheel.</p></li>
+<li><p><code>default_step</code>: <code>character</code> string with name matching a
+value returned by <code><a href="colorjam_steps.html">colorjam_steps()</a></code></p></li>
+</ul></div>
     <div id="details">
     <h2>Details</h2>
     <p><code>colorjam_presets()</code>: list the names of available colorjam presets,
@@ -95,7 +103,9 @@ or when a preset name is provided, it returns hue warp data as a
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
-<code><a href="mean_angle.html">mean_angle</a>()</code></p></div>
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
   </div>

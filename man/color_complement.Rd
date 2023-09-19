@@ -125,6 +125,7 @@ jamba::showColors(list(RdBu_r=RdBu_r, complement=rc_divergent));
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{closest_named_color}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJam}()},

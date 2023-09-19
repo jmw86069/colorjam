@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rainbowJam</span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"dichromat2"</span><span class="op">)</span>,</span>
-<span>  step <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.step"</span>, <span class="st">"v24"</span><span class="op">)</span>,</span>
+<span>  step <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.step"</span>, <span class="st">"default"</span><span class="op">)</span>,</span>
 <span>  Hstart <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  hues <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -71,7 +71,7 @@
 <span>  direction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"-1"</span><span class="op">)</span>,</span>
 <span>  do_hue_pad <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  hue_pad_percent <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  nameStyle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"n"</span>, <span class="st">"hcl"</span>, <span class="st">"color"</span>, <span class="st">"closestRcolor"</span><span class="op">)</span>,</span>
+<span>  nameStyle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"n"</span>, <span class="st">"closest_named_color"</span>, <span class="st">"closestRcolor"</span>, <span class="st">"hcl"</span>, <span class="st">"color"</span><span class="op">)</span>,</span>
 <span>  doTest <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -182,10 +182,14 @@ hues.</p></dd>
 
 <dt>nameStyle</dt>
 <dd><p><code>character</code> string for the style of name assigned:</p><ul><li><p><code>"none"</code> assigns no names</p></li>
-<li><p><code>"n"</code> assigns names by the index order</p></li>
+<li><p><code>"n"</code> assigns names in numerical order</p></li>
+<li><p><code>"closest_named_color"</code> assigns the closest matching color from
+<code>named_colors</code>, calling <code><a href="closest_named_color.html">closest_named_color()</a></code> using <code>...</code> for
+additional arguments.</p></li>
+<li><p><code>"closestRcolor"</code> assigns names from <code>closestRcolors()</code>, using <code>...</code>
+for additional arguments.</p></li>
 <li><p><code>"hcl"</code> assigns names using H, C, L values</p></li>
 <li><p><code>"color"</code> assigns names by hex color</p></li>
-<li><p><code>"closestRcolors"</code> assigns names from <code>closestRcolors()</code></p></li>
 </ul></dd>
 
 
@@ -199,8 +203,10 @@ hues.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional arguments are passed to <code><a href="closestRcolor.html">closestRcolor()</a></code> when
-<code>nameStyle="closestRcolor"</code>.</p></dd>
+<dd><p>additional arguments are passed to</p><ul><li><p><code><a href="closest_named_color.html">closest_named_color()</a></code> when <code>nameStyle="closest_named_color"</code></p></li>
+<li><p><code><a href="closestRcolor.html">closestRcolor()</a></code> when <code>nameStyle="closestRcolor"</code></p></li>
+<li><p><code><a href="https://rdrr.io/pkg/jamba/man/makeNames.html" class="external-link">jamba::makeNames()</a></code> when <code>nameStyle</code> is anything except <code>"none"</code>.</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -231,6 +237,7 @@ hues recognized by <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="e
     <div class="dont-index"><p>Other colorjam core: 
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
 <code><a href="closestRcolor.html">closestRcolor</a>()</code>,
+<code><a href="closest_named_color.html">closest_named_color</a>()</code>,
 <code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="colors_to_df.html">colors_to_df</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
@@ -241,8 +248,8 @@ hues recognized by <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="e
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rainbowJam</span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "#00E1FF" "#A67200" "#FF8A66" "#DC726B" "#FF89BA" "#E86CED" "#E9C0FF"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "#9169F9" "#AFA5FF" "#8891EE" "#00DBFF" "#00C35B"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "#F7C53E" "#C35E00" "#FF8A66" "#DC726B" "#FF89BA" "#E86CED" "#E9C0FF"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "#9169F9" "#AFA5FF" "#8891EE" "#95C3FF" "#43AAFF"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># show colors</span></span></span>
 <span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">rainbowJam</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>;</span></span>

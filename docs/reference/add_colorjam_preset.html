@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add colorjam hue warp preset</h1>
-    <small class="dont-index">Source: <a href="http://github.com/jmw86069/colorjam/blob/HEAD/R/colorjam-huewarp.R" class="external-link"><code>R/colorjam-huewarp.R</code></a></small>
+    <small class="dont-index">Source: <a href="http://github.com/jmw86069/colorjam/blob/HEAD/R/colorjam-presets.R" class="external-link"><code>R/colorjam-presets.R</code></a></small>
     <div class="hidden name"><code>add_colorjam_preset.Rd</code></div>
     </div>
 
@@ -53,7 +53,16 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="va">preset</span>, <span class="va">h1</span>, <span class="va">h2</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_colorjam_preset</span><span class="op">(</span></span>
+<span>  <span class="va">preset</span>,</span>
+<span>  <span class="va">h1</span>,</span>
+<span>  <span class="va">h2</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  default_step <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +74,20 @@
 <dt>h1, h2</dt>
 <dd><p><code>numeric</code> vectors of equal length, or <code>NULL</code> to
 remove an existing preset.</p></dd>
+
+
+<dt>direction</dt>
+<dd><p><code>numeric</code> with one of two accepted values:</p><ul><li><p><code>1</code>: (default) indicating forward (increasing, clockwise)
+progression around the color wheel</p></li>
+<li><p><code>-1</code>: indicating reverse
+(decreasing, counter-clockwise) progression around the color
+wheel.</p></li>
+</ul></dd>
+
+
+<dt>default_step</dt>
+<dd><p><code>character</code> string indicating the recommended
+<code>step</code> from <code><a href="colorjam_steps.html">colorjam_steps()</a></code>.</p></dd>
 
 
 <dt>...</dt>
@@ -89,7 +112,9 @@ remove an existing preset.</p></dd>
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
-<code><a href="mean_angle.html">mean_angle</a>()</code></p></div>
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -100,10 +125,11 @@ remove an existing preset.</p></dd>
 <span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">115</span>, <span class="fl">35.9</span>, <span class="op">-</span><span class="fl">3.7</span>,</span></span>
 <span class="r-in"><span>   <span class="op">-</span><span class="fl">3.7</span>, <span class="op">-</span><span class="fl">3.7</span>, <span class="op">-</span><span class="fl">3.7</span>,</span></span>
 <span class="r-in"><span>   <span class="op">-</span><span class="fl">70.9</span>, <span class="op">-</span><span class="fl">189.6</span>, <span class="op">-</span><span class="fl">229.2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"dichromat2"</span>, h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:15</span>) 12Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">added preset='</span><span style="color: #FF8700;">dichromat2</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"custom_dichromat"</span>,</span></span>
+<span class="r-in"><span>   h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span>, direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, default_step<span class="op">=</span><span class="st">"v24"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:48</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">added preset='</span><span style="color: #FF8700;">custom_dichromat</span><span style="color: #00AFFF;">'</span> </span>
 <span class="r-in"><span><span class="fu"><a href="color_pie.html">color_pie</a></span><span class="op">(</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10</span>,</span></span>
-<span class="r-in"><span>   preset<span class="op">=</span><span class="st">"dichromat2"</span>,</span></span>
+<span class="r-in"><span>   preset<span class="op">=</span><span class="st">"custom_dichromat"</span>,</span></span>
 <span class="r-in"><span>   h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span>,</span></span>
 <span class="r-in"><span>   phase<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> `h1` and `h2` are deprecated, use argument `preset`.</span>
@@ -111,10 +137,11 @@ remove an existing preset.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"dichromat2"</span>, h1<span class="op">=</span><span class="cn">NULL</span>, h2<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>object 'preset' not found</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:15</span>) 12Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">removed preset='</span><span style="color: #FF8700;">dichromat2</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:48</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">removed preset='</span><span style="color: #FF8700;">dichromat2</span><span style="color: #00AFFF;">'</span> </span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_presets.html">colorjam_presets</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "dichromat"  "dichromat2" "none"       "rgb"        "rgb2"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "ryb"        "ryb1"       "ryb2"       "ryb3"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "custom_dichromat" "dichromat"        "dichromat2"       "none"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "rgb"              "rgb2"             "ryb"              "ryb1"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "ryb2"             "ryb3"            </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

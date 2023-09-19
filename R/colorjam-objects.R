@@ -107,3 +107,39 @@
 #'
 "jam_divergent"
 
+
+
+#' Colorjam named_colors
+#'
+#' Colorjam named_colors including 4447 named colors and 436 R `colors()`.
+#'
+#' @format object of class `character` with length 4447, containing
+#' hexadecimal colors named with human-assigned color names.
+#'
+#' ## Processing
+#'
+#' Named colors were obtained from the amazing Github repository
+#' [meodai/color-names](https://github.com/meodai/color-names).
+#' This resource provided 30200 total named colors.
+#' A subset of 4447 color names were denoted "good names" and were
+#' included here.
+#'
+#' R colors from `grDevices::colors()` whose hex values were not already
+#' included in the Meodai resource were added, after removing identical
+#' hex colors such as `"darkred"` and `"red4"`.
+#' These R colors were named with prefix `"R"` so labels such as
+#' `"darkred"` became `"Rdarkred"`. The `"R"` prefix was used to avoid
+#' name clashes, and to permit the Meodai color names to take precedence
+#' whenever the same name was used in both resources.
+#' The Meodai resource seemed visually preferable to similarly-named
+#' R `grDevices::colors()` such as `"brown"`, and `"chartreuse"`,
+#' however there could be benefit in using R color names since they
+#' appear to match the W3C color name standard used by HTML and CSS.
+#'
+#' @family colorjam data
+#'
+#' @examples
+#' data(named_colors)
+#' jamba::showColors(named_colors)
+#'
+"named_colors"

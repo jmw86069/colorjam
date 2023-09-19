@@ -18,7 +18,7 @@ to visibly distinct categorical colors."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -74,9 +74,11 @@ with a recognized steps name.</p></dd>
     <h2>Value</h2>
     
 
-<p><code>character</code> vector of recognized colorjam step names, or when
-<code>step</code> is provided, it returns a <code>list</code> with elements <code>"C"</code> and <code>"L"</code>.</p>
-    </div>
+<p><code>character</code> vector of recognized colorjam step names when
+<code>step</code> is <code>NULL</code>, or
+when <code>step</code> is defined a <code>list</code> is returned with elements</p><ul><li><p><code>C</code>: <code>numeric</code> values indicating HCL Chroma</p></li>
+<li><p><code>L</code>: <code>numeric</code> values indicating HCL Chroma</p></li>
+</ul></div>
     <div id="details">
     <h2>Details</h2>
     <p><code>colorjam_steps()</code>: list the names of available colorjam steps,
@@ -95,7 +97,9 @@ or when a <code>step</code> name is provided, it returns a <code>list</code> wit
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
-<code><a href="mean_angle.html">mean_angle</a>()</code></p></div>
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
   </div>

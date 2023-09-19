@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -57,6 +57,7 @@
 <span>  <span class="va">h</span>,</span>
 <span>  h1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  h2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"custom"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -109,7 +110,9 @@ blue). The color yellow has hue=60 in RGB space, so the call to
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
-<code><a href="mean_angle.html">mean_angle</a>()</code></p>
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p>
 <p>Other hue warp functions: 
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code></p></div>
     </div>
@@ -118,8 +121,8 @@ blue). The color yellow has hue=60 in RGB space, so the call to
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Yellow when using an RGB color wheel is 60 degrees,</span></span></span>
 <span class="r-in"><span><span class="co">## but on an RYB color wheel is 120 degrees.</span></span></span>
-<span class="r-in"><span><span class="fu">h2hw</span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 113.0429</span>
+<span class="r-in"><span><span class="fu">h2hw</span><span class="op">(</span><span class="fl">60</span>, preset<span class="op">=</span><span class="st">"ryb"</span><span class="op">)</span>;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 120</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># RGB colors are convenient, but are not ideal especially when blending</span></span></span>
 <span class="r-in"><span><span class="co"># colors. Note that blue and yellow have hues that differ by exactly 180</span></span></span>
@@ -127,9 +130,10 @@ blue). The color yellow has hue=60 in RGB space, so the call to
 <span class="r-in"><span><span class="va">huesBY</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">col2hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"H"</span>,<span class="op">]</span>;</span></span>
 <span class="r-in"><span><span class="va">huesBY</span>;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 265.87273  85.87275</span>
-<span class="r-in"><span><span class="va">warpedHuesBY</span> <span class="op">&lt;-</span> <span class="fu">h2hw</span><span class="op">(</span><span class="va">huesBY</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">warpedHuesBY</span> <span class="op">&lt;-</span> <span class="fu">h2hw</span><span class="op">(</span><span class="va">huesBY</span>, preset<span class="op">=</span><span class="st">"ryb"</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">warpedHuesBY</span>;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 220.7547 118.7000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 265.8727 145.8727</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

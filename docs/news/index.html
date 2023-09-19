@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -47,6 +47,122 @@
       <small>Source: <a href="http://github.com/jmw86069/colorjam/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.25.900" id="colorjam-0025900">colorjam 0.0.25.900<a class="anchor" aria-label="anchor" href="#colorjam-0025900"></a></h2>
+<p>Added MIT license and copyright.</p>
+<div class="section level3">
+<h3 id="general-updates-0-0-25-900">general updates<a class="anchor" aria-label="anchor" href="#general-updates-0-0-25-900"></a></h3>
+<ul><li><p><code>cli</code> was added as a package dependency (in v24 actually), to be consistent with recommended R package messaging.</p></li>
+<li>
+<p>Each <code>preset</code> now includes <code>direction</code> and <code>default_step</code></p>
+<ul><li>after testing it soon became clear that each <code>preset</code> is designed with a <code>step</code> in mind, so the appropriate <code>default_step</code> should be stored</li>
+<li>also the <code>direction</code> was previously deduced by the <code>h1</code>,<code>h2</code> values, however this too is unnecessary and should be encoded in the <code>preset</code> to avoid errors.</li>
+</ul></li>
+<li>
+<p>For my own benefit, I made a simple R-shiny app:</p>
+<ul><li>visualize colors from <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code>
+</li>
+<li>adjust the number of colors <code>n</code>, <code>preset</code>, <code>step</code>
+</li>
+<li>plotly to adjust the <code>preset</code> control points, creating a new color wheel</li>
+<li>subset specific colors for direct visual comparison</li>
+</ul></li>
+<li>
+<p>I used the R-shiny app to create and optimize <code>dichromat2</code>:</p>
+<ul><li>starts at gold</li>
+<li>roughly evenly distributes warm/cool colors around two halves of the color wheel</li>
+<li>roughly evenly distributes color-blindness sensitive colors around two halves of the color wheel, for “deutan”, “protan”, and “tritan”. It isn’t perfect, but should enhance the visual distinction in adjacent colors, while being fairly scalable to large <code>n</code>.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-data-0-0-25-900">new data<a class="anchor" aria-label="anchor" href="#new-data-0-0-25-900"></a></h3>
+<ul><li>
+<p><code>named_colors</code></p>
+<ul><li>
+<p>Superset of 4883 hexadecimal colors with corresponding color names:</p>
+<ul><li>4447 colors from Github <code>"meodai/color-names"</code> repository;</li>
+<li>436 colors from <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, which were not already defined by Meodai colors.</li>
+</ul></li>
+<li><p>Colors are intended to improve labeling <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> colors.</p></li>
+<li><p>Color labels from <code><a href="../reference/closest_named_color.html">closest_named_color()</a></code> could become a QC step to confirm that <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> creates colors that can be assigned to different named colors.</p></li>
+<li><p>In testing, <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> did not provide sufficient detail, specific examples frequently included <code>"cornflowerblue"</code> and <code>"steelblue"</code> despite appearing for colors with visibly distinctive blue/purple color hues.</p></li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-functions-0-0-25-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-25-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/launchColorjamShiny.html">launchColorjamShiny()</a></code></p>
+<ul><li>simple R-shiny app to display categorical colors</li>
+<li>selection of <code>'</code>, <code>preset</code>, <code>step</code>, <code>phase</code>, <code>subset</code>
+</li>
+<li>plotly interactive plot of <code>h1</code> and <code>h2</code> values, which can be edited! Is it not perfect, need to override plotly “snap” behavior, which seems to be hard-coded.</li>
+<li>optional <code><a href="https://rdrr.io/pkg/dichromat/man/dichromat.html" class="external-link">dichromat::dichromat()</a></code> adjustment to simulate color-blindness</li>
+<li>
+<code><a href="../reference/colorjamShinyServer.html">colorjamShinyServer()</a></code>,<code><a href="../reference/colorjamShinyUI.html">colorjamShinyUI()</a></code> are internal functions to provide <code>server</code> and <code>ui</code> components to <code><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">shiny::runApp()</a></code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/closest_named_color.html">closest_named_color()</a></code></p>
+<ul><li>simple wrapper to <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> except that it uses the 4883 <code>named_colors</code> instead of R <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, although all colors are contained in <code>named_colors</code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/validate_colorjam_preset.html">validate_colorjam_preset()</a></code></p>
+<ul><li>function to adjust raw <code>h1</code>,<code>h2</code> values, wrap within range <code>c(0, 360)</code>
+</li>
+<li>breaks ties in a way that maintains proper sort order for <code>direction=1</code> and <code>direction=-1</code>
+</li>
+<li>Todo: impose edits to <code>h1</code>,<code>h2</code> when out of order. E.g. is one point is adjusted past the next point, the next point should be shifted.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/plot_colorjam_preset.html">plot_colorjam_preset()</a></code></p>
+<ul><li>visual plotting of <code>h1</code>,<code>h2</code> values, showing the resulting color along each respective axis.</li>
+<li>option for base R plot, or plotly with editable control points (the editing is only functional inside an R-shiny app).</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/vibrant_color_by_hue.html">vibrant_color_by_hue()</a></code></p>
+<ul><li>external convenience function that takes an HCL color hue and returns the most saturated HSL color.</li>
+<li>internally it converts HCL to hex, hex to HSL - because HSL hue differs from HCL hue. Then using HSL hue it uses S=100, L=50 to obtain the most saturated color.</li>
+<li>it still shows color hue “drift” since HCL hue to HSL hue is not a linear relationship for different CL or SL values, but it’s much better than using HCL and letting it randomly determine what hue is the closest match to the requested HCL values.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-to-existing-functions-0-0-25-900">changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-25-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/rainbowJam.html">rainbowJam()</a></code></p>
+<ul><li>new argument option <code>nameStyle="closest_named_color"</code> which uses the 4883 <code>named_colors</code> for labeling.</li>
+<li>
+<code>nameStyle="hcl"</code> now calculates actual HCL values and not the input values to <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">hcl()</a></code>, because those values may change upon creating a color in gamut.</li>
+<li>
+<code>h1</code>,<code>h2</code> are deprecated, instead use <code>preset</code>
+</li>
+<li>
+<code>Cvals</code>,<code>Lvals</code> are deprecated, instead use <code>step</code>
+</li>
+<li>
+<code>phase</code> can take one or more values, to select and order specific items in the given <code>step</code>
+</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/colorjam_presets.html">colorjam_presets()</a></code>,<code><a href="../reference/add_colorjam_preset.html">add_colorjam_preset()</a></code></p>
+<ul><li>Each <code>preset</code> now also has <code>direction</code> and <code>default_step</code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/h2hw.html">h2hw()</a></code>,<code><a href="../reference/hw2h.html">hw2h()</a></code></p>
+<ul><li>now calls <code><a href="../reference/colorjam_presets.html">colorjam_presets()</a></code>
+</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/approx_degrees.html">approx_degrees()</a></code></p>
+<ul><li>now accepts <code>preset</code> input</li>
+<li>handles (and requires) <code>direction</code> instead of determining by <code>h1</code>,<code>h2</code>
+</li>
+<li>calls <code><a href="../reference/validate_colorjam_preset.html">validate_colorjam_preset()</a></code> to handle tie-breaks</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/closestRcolor.html">closestRcolor()</a></code></p>
+<ul><li>names are assigned when <code>colorSet</code> has names, helpful with the reference colors are hex, and names are user-friendly labels.</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.24.900" id="colorjam-0024900">colorjam 0.0.24.900<a class="anchor" aria-label="anchor" href="#colorjam-0024900"></a></h2>
 <p>This version of colorjam turned into a bit of a refactor:</p>

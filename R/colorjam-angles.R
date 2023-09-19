@@ -106,73 +106,61 @@ approx_degrees <- function
  h2,
  h=NULL,
  preset="custom",
+ direction=1,
  digits=10,
  verbose=FALSE,
  ...)
 {
+   # validate arguments
+   if (length(direction) == 0) {
+      direction <- 1;
+   }
+   direction <- head(direction, 1);
+
    # define h1,h2 from input h1,h2,preset
-   h1h2 <- h2hwOptions(preset=preset,
+   if (length(preset) > 0 && !"custom" %in% preset) {
+      h1h2 <- colorjam_presets(preset=preset);
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
+      direction <- h1h2$direction;
+      default_step <- h1h2$default_step;
+      preset <- "custom";
+   }
+   h1h2 <- as.data.frame(jamba::rmNULL(validate_colorjam_preset(
       h1=h1,
       h2=h2,
-      setOptions="FALSE")
+      direction=direction,
+      preset=preset)));
+   # take first unique value per h1
+   h1h2 <- subset(h1h2, !duplicated(h1));
+
+   # assign new h1,h2
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
 
-   # apply rounding for convenience
-   if (length(digits) > 0) {
-      h1 <- round(digits=digits, h1)
-      h2 <- round(digits=digits, h2)
-   }
-
-   # enforce h1 is increasing order
-   h1h2_df <- jamba::mixedSortDF(data.frame(
-      h1=h1,
-      h2=h2));
+   # enforce h1 in increasing order
+   h1h2_df <- jamba::mixedSortDF(h1h2,
+      byCols=c(1, 2 * direction));
+   h1h2_df$h1_diff <- diff(c(tail(h1h2_df$h1, 1), h1h2_df$h1))
    h1h2_df$h2_diff <- diff(c(tail(h1h2_df$h2, 1), h1h2_df$h2))
 
    if (verbose) {
       jamba::printDebug("approx_degrees(): ",
-         "h1h2_df (input):");
+         c("h1h2_df", " input:"));
       print(h1h2_df);
-   }
-   h1 <- h1h2_df$h1;
-   h2 <- h1h2_df$h2;
-   h2diff <- diff(h2);
-   h2_sign <- 1;
-   if (length(h2diff) > 0) {
-      h2_signs <- sign(h2diff)
-      h2_sign <- sign(mean(1e-9 + h2_signs[h2_signs != 0]))
-   }
-
-   # check for duplicated numeric values
-   if (any(duplicated(h2))) {
-      h2_dupes <- unique(h2[duplicated(h2)]);
-      for (h2_dupe in h2_dupes) {
-         i_dupe <- which(h2 %in% h2_dupe)
-         i_dupe_seq <- seq(from=0, by=h2_sign * 1e-9, length.out=length(i_dupe))
-         h2[i_dupe] <- h2[i_dupe] + i_dupe_seq;
-      }
-      if (verbose) {
-         jamba::printDebug("approx_degrees(): ",
-            "adjusted duplicate h2 values");
-      }
-   }
-   if (any(duplicated(h1))) {
-      h1_dupes <- unique(h1[duplicated(h1)]);
-      for (h1_dupe in h1_dupes) {
-         i_dupe <- which(h1 %in% h1_dupe)
-         i_dupe_seq <- seq(from=0, by=1 * 1e-9, length.out=length(i_dupe))
-         h1[i_dupe] <- h1[i_dupe] + i_dupe_seq;
-      }
-      if (verbose) {
-         jamba::printDebug("approx_degrees(): ",
-            "adjusted duplicate h1 values");
-      }
    }
 
    # detect breaks in sequence (across range 0-360)
-   if (h2_sign < 0 && any(h1h2_df$h2_diff > 180)) {
-      which_flips <- setdiff(which(h1h2_df$h2_diff > 180), 1);
+   if (verbose) {
+      jamba::printDebug("approx_degrees(): ",
+         "direction:", direction);
+   }
+   if (direction < 0 && any(h1h2_df$h2_diff > 0)) {
+      which_flips <- setdiff(which(h1h2_df$h2_diff > 0), 1);
+      if (verbose) {
+         jamba::printDebug("approx_degrees(): ",
+            "which_flips:", which_flips);
+      }
       for (which_flip in which_flips) {
          flip_seq <- seq(from=which_flip, to=nrow(h1h2_df))
          h1h2_df$h2[flip_seq] <- h1h2_df$h2[flip_seq] - 360;
@@ -184,11 +172,15 @@ approx_degrees <- function
          jamba::printDebug("approx_degrees(): ",
             "correcting discontinuity in h2 angles crossing below 0");
          jamba::printDebug("approx_degrees(): ",
-            "h1h2_df:");
+            c("h1h2_df", " adjusted:"));
          print(h1h2_df);
       }
-   } else if (h2_sign >= 0 && any(h1h2_df$h2_diff < 180)) {
-      which_flips <- setdiff(which(h1h2_df$h2_diff < -180), 1);
+   } else if (direction > 0 && any(h1h2_df$h2_diff < 0)) {
+      which_flips <- setdiff(which(h1h2_df$h2_diff < 0), 1);
+      if (verbose) {
+         jamba::printDebug("approx_degrees(): ",
+            "which_flips:", which_flips);
+      }
       for (which_flip in which_flips) {
          flip_seq <- seq(from=which_flip, to=nrow(h1h2_df))
          h1h2_df$h2[flip_seq] <- h1h2_df$h2[flip_seq] + 360;
@@ -199,7 +191,7 @@ approx_degrees <- function
          jamba::printDebug("approx_degrees(): ",
             "correcting discontinuity in h2 angles crossing above 360");
          jamba::printDebug("approx_degrees(): ",
-            "h1h2_df:");
+            c("h1h2_df", " expanded:"));
          print(h1h2_df);
       }
    }
@@ -208,41 +200,79 @@ approx_degrees <- function
    h1_min_span <- floor(min(h1)/360) * 360
    h1_max_span <- ceiling(max(h1)/360) * 360
    h1_range_span <- ceiling(diff(range(h1))/360 + 1e-10) * 360;
+   h2_min_span <- floor(min(h2)/360) * 360
+   h2_max_span <- ceiling(max(h2)/360) * 360
+   h2_range_span <- h2_max_span - h2_min_span;
    new_h1 <- h1;
    new_h2 <- h2;
-   if (h1_min_span >= 0) {
-      new_h1 <- c(h1 - h1_range_span, new_h1)
-      if (h2_sign >= 0) {
-         new_h2 <- c(h2 - h1_range_span, new_h2)
-      } else {
-         new_h2 <- c(h2 + h1_range_span, new_h2)
-      }
+   if (verbose) {
+      jamba::printDebug("h1_min_span:", h1_min_span);
+      jamba::printDebug("h1_max_span:", h1_max_span);
+      jamba::printDebug("h1_range_span:", h1_range_span);
+      jamba::printDebug("h2_min_span:", h2_min_span);
+      jamba::printDebug("h2_max_span:", h2_max_span);
+      jamba::printDebug("h2_range_span:", h2_range_span);
    }
-   if (h1_max_span <= 360) {
-      new_h1 <- c(new_h1, h1 + h1_range_span)
-      if (h2_sign >= 0) {
-         new_h2 <- c(new_h2, h2 + h1_range_span)
-      } else {
-         new_h2 <- c(new_h2, h2 - h1_range_span)
-      }
-   }
-   # data.frame(new_h1, new_h2)
-   # data.frame(diff(new_h1), diff(new_h2))
 
+   # expand the range beyond c(0, 360)
+   h1h2_prepend <- head(h1h2_df, 0);
+   h1h2_append <- head(h1h2_df, 0);
+   if (min(h1) > 0) {
+      h1h2_prepend <- h1h2_df;
+      h1h2_prepend$h1 <- h1h2_prepend$h1 - 360;
+      h1h2_prepend$h2 <- h1h2_prepend$h2 - (direction * 360);
+      # jamba::printDebug("h1h2_prepend:");print(h1h2_prepend);# debug
+   }
+   if (max(h1) < 360) {
+      h1h2_append <- h1h2_df;
+      h1h2_append$h1 <- h1h2_append$h1 + 360;
+      h1h2_append$h2 <- h1h2_append$h2 + (direction * 360);
+      # jamba::printDebug("h1h2_append:");print(h1h2_append);# debug
+   }
+   h1h2_df <- do.call(rbind, list(h1h2_prepend, h1h2_df, h1h2_append));
+   h1h2_df$h1_diff <- c(NA, diff(h1h2_df$h1));
+   h1h2_df$h2_diff <- round(c(NA, diff(h1h2_df$h2)), digits=4);
    if (verbose) {
       jamba::printDebug("approx_degrees(): ",
-         "Expanded table:");
-      print(data.frame(h1=new_h1,
-         h1_diff=c(NA, diff(new_h1)),
-         h2=new_h2,
-         h2_diff=c(NA, diff(new_h2))));
+         "h1h2_df (expanded):");
+      print(h1h2_df);
+   }
+
+   if (FALSE) {
+      if (h1_min_span >= 0) {
+         new_h1 <- c(h1 - h1_range_span, new_h1)
+         if (direction > 0) {
+            new_h2 <- c(h2 - h1_range_span, new_h2)
+         } else {
+            new_h2 <- c(h2 + h1_range_span, new_h2)
+         }
+      }
+      if (h1_max_span <= 360) {
+         new_h1 <- c(new_h1, h1 + h1_range_span)
+         if (direction > 0) {
+            new_h2 <- c(new_h2, h2 + h1_range_span)
+         } else {
+            new_h2 <- c(new_h2, h2 - h1_range_span)
+         }
+      }
+      # data.frame(new_h1, new_h2)
+      # data.frame(diff(new_h1), diff(new_h2))
+
+      if (FALSE && verbose) {
+         jamba::printDebug("approx_degrees(): ",
+            "Expanded table:");
+         print(data.frame(h1=new_h1,
+            h1_diff=c(NA, diff(new_h1)),
+            h2=new_h2,
+            h2_diff=c(NA, diff(new_h2))));
+      }
    }
 
    # define approxfun
    h_fun <- function(h) {
       h_new <- approx(
-         x=new_h1,
-         y=new_h2,
+         x=h1h2_df$h1,
+         y=h1h2_df$h2,
          ties="ordered",
          xout=(h %% 360))$y %% 360;
       return(h_new);
@@ -252,60 +282,7 @@ approx_degrees <- function
    if (length(h) > 0) {
       return(h_fun(h))
    }
-   return(h_fun);
-
-   if (head(h1h2df1$h1, 1) > 0) {
-      h1 <- c(tail(h1h2df1$h1, 1) - 360, h1);
-      if (h2dir > 0) {
-         if (tail(h1h2df1$h2, 1) > head(h1h2df1$h2, 1)) {
-            h2 <- c(tail(h1h2df1$h2, 1) - 360, h2);
-         } else {
-            h2 <- c(tail(h1h2df1$h2, 1), h2);
-         }
-      } else {
-         if (tail(h1h2df1$h2, 1) < head(h1h2df1$h2, 1)) {
-            h2 <- c(tail(h1h2df1$h2, 1) + 360, h2);
-         } else {
-            h2 <- c(tail(h1h2df1$h2, 1), h2);
-         }
-      }
-   }
-   if (tail(h1h2df1$h1, 1) < 360) {
-      h1 <- c(h1, head(h1h2df1$h1, 1) + 360);
-      if (h2dir > 0) {
-         if (head(h1h2df1$h2, 1) < tail(h1h2df1$h2, 1)) {
-            h2 <- c(h2, head(h1h2df1$h2, 1) + 360);
-         } else {
-            h2 <- c(h2, head(h1h2df1$h2, 1));
-         }
-      } else {
-         if (head(h1h2df1$h2, 1) > tail(h1h2df1$h2, 1)) {
-            h2 <- c(h2, head(h1h2df1$h2, 1) - 360);
-         } else {
-            h2 <- c(h2, head(h1h2df1$h2, 1));
-         }
-      }
-   }
-   h1h2df2 <- data.frame(h1=h1, h2=h2)
-   if (verbose) {
-      jamba::printDebug("approx_degrees(): ",
-         "h1h2df2:");
-      print(h1h2df2);
-   }
-
-   # define approx() function that includes %% 360
-   # to limit output angles between 0 and 360
-   h_fun <- function(h) {
-      h_new <- approx(
-         x=h1,
-         y=h2,
-         ties="ordered",
-         xout=(h %% 360))$y %% 360;
-      return(h_new);
-   }
-   if (length(h) > 0) {
-      return(h_fun(h))
-   }
+   # return function
    return(h_fun);
 }
 

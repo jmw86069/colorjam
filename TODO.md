@@ -1,6 +1,6 @@
 ## TODO 13sep2023
 
-* Simple R-shiny app
+* DONE. Simple R-shiny app
 
    * visualize color palettes with adjustments
    * select the number of colors
@@ -13,11 +13,22 @@
       * add a new point
       * delete an existing point
 
-* associate each `"preset"` with a default `"step"`
+* DONE. enhance `"preset"`
+
+   * DONE. associate with a `default_step`
+   * DONE. associate with `direction`: `1` or `-1` for
+   direction around the color wheel
+   * `add_colorjam_preset()` should validate `h1`,`h2` and `direction`.
+
+* DONE. Fix `approx_degrees()` when multiple `h1` or `h2` values are repeated.
+
+   * The `approx()` function requires unique `x` values.
+   * Data should be sorted by `x`,`y` then uniqueness enforced for `x`.
+   * This bug mainly affects `h1`,`h2` when `h2` is used for `x`.
 
 ## TODO 07sep2023
 
-* Ability to register a new color wheel
+* DONE. register a new color wheel
 
    * for example modifying an existing color wheel with `adjust_hue_warp()`
    then saving it as a named preset.

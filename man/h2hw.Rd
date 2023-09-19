@@ -8,6 +8,7 @@ h2hw(
   h,
   h1 = NULL,
   h2 = NULL,
+  direction = 1,
   preset = getOption("colorjam.preset", "custom"),
   ...
 )
@@ -46,14 +47,15 @@ blue). The color yellow has hue=60 in RGB space, so the call to
 \examples{
 ## Yellow when using an RGB color wheel is 60 degrees,
 ## but on an RYB color wheel is 120 degrees.
-h2hw(60);
+h2hw(60, preset="ryb");
 
 # RGB colors are convenient, but are not ideal especially when blending
 # colors. Note that blue and yellow have hues that differ by exactly 180
 # degrees, meaning a hue average is as likely to be purple as green.
 huesBY <- jamba::col2hcl(c("blue", "yellow"))["H",];
 huesBY;
-warpedHuesBY <- h2hw(huesBY);
+
+warpedHuesBY <- h2hw(huesBY, preset="ryb");
 warpedHuesBY;
 
 }
@@ -68,7 +70,9 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{hw2h}()},
-\code{\link{mean_angle}()}
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
 
 Other hue warp functions: 
 \code{\link{h2hwOptions}()}

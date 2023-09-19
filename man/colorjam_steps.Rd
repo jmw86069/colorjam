@@ -14,8 +14,13 @@ steps, or \code{character} string to return specific data associated
 with a recognized steps name.}
 }
 \value{
-\code{character} vector of recognized colorjam step names, or when
-\code{step} is provided, it returns a \code{list} with elements \code{"C"} and \code{"L"}.
+\code{character} vector of recognized colorjam step names when
+\code{step} is \code{NULL}, or
+when \code{step} is defined a \code{list} is returned with elements
+\itemize{
+\item \code{C}: \code{numeric} values indicating HCL Chroma
+\item \code{L}: \code{numeric} values indicating HCL Chroma
+}
 }
 \description{
 Colorjam chroma/luminance steps to adjust a series of color hues
@@ -37,6 +42,8 @@ Other colorjam hue warp:
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
 \code{\link{hw2h}()},
-\code{\link{mean_angle}()}
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

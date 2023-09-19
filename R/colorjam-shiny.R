@@ -113,30 +113,22 @@ colorjamShinyUI <- function
          selected="n"),
       shiny::textInput("colorjam_phase",
          "Phase (comma-delimited order of steps):",
-         value=jamba::cPaste(1:6)),
+         value=jamba::cPaste(seq_len(max(lengths(
+            colorjam_steps(tail(colorjam_steps(), 1))))))),
       shiny::textInput("colorjam_subset",
          "Subset colors (comma-delimited index numbers):",
          value=""),
       shiny::textInput("colorjam_hue_pad_percent",
          "Hue pad percent (numeric value):",
-         value="0")
+         value="0"),
+      shiny::checkboxGroupInput("colorjam_dichromat",
+         label="Dichromat simulations?:",
+         choices=c("none",
+            "deutan",
+            "protan",
+            "tritan"),
+         selected="none")
    )
-
-   # main body
-   # main_panel <- shiny::mainPanel(
-   #    shiny::fluidRow(
-   #       shiny::column(width=5,
-   #          shiny::plotOutput("colorjam_plot")),
-   #       shiny::column(width=1,
-   #          shiny::htmlOutput("color_table"))
-   #    ),
-   #    shiny::fluidRow(
-   #       shiny::column(width=5,
-   #          plotly::plotlyOutput("preset_plotly")),
-   #       shiny::column(width=1,
-   #          shiny::htmlOutput("preset_table"))
-   #    )
-   # )
 
    # assemble the page
    shiny_ui <- shiny::fluidPage(
@@ -146,15 +138,21 @@ colorjamShinyUI <- function
             sidebar_panel),
          shiny::column(width=9,
             shiny::fluidRow(
-               shiny::column(width=9,
-                  shiny::plotOutput("colorjam_plot")),
-               shiny::column(width=3,
+               shiny::column(width=8,
+                  # style="background: #EEEEEE;",
+                  shiny::plotOutput("colorjam_plot",
+                     width=500,
+                     height=450)),
+               shiny::column(width=4,
                   shiny::htmlOutput("color_table"))
             ),
             shiny::fluidRow(
-               shiny::column(width=9,
-                  plotly::plotlyOutput("preset_plotly")),
-               shiny::column(width=3,
+               shiny::column(width=8,
+                  # style="background: #EEEEEE;",
+                  plotly::plotlyOutput("preset_plotly",
+                     height=500,
+                     width=500)),
+               shiny::column(width=4,
                   shiny::htmlOutput("preset_table"))
             )
          )
@@ -181,14 +179,6 @@ colorjamShinyUI <- function
 #' @param input provided by shiny
 #' @param output provided by shiny
 #' @param session provided by shiny
-#'
-#' @import jamba
-#' @import dplyr
-#' @import ggplot2
-#' @import plotly
-#' @importFrom plotly subplot
-#' @import GenomicRanges
-#' @importFrom magrittr %>%
 #'
 #' @export
 colorjamShinyServer <- function
@@ -226,6 +216,35 @@ colorjamShinyServer <- function
       preset_kable()
    })
 
+   # when preset is changed, also change step to the default_step
+   shiny::observe({
+      new_preset <- input$colorjam_preset;
+      h1h2 <- colorjam_presets(preset=new_preset)
+      new_step <- head(h1h2$default_step, 1);
+      if (length(new_step) > 0 && nchar(default_step) > 0) {
+         shiny::updateSelectInput(session=session,
+            inputId="colorjam_step",
+            choices=colorjam_steps(),
+            selected=new_step)
+      }
+   })
+
+   # when step is changed, update default_step if the preset is custom
+   shiny::observe({
+      new_step <- input$colorjam_step;
+      h1h2 <- colorjam_presets(preset=input$colorjam_preset)
+      ## to custom preset
+      if (grepl("custom", input$colorjam_preset)) {
+         h1h2$default_step <- input$colorjam_step;
+         # update custom preset
+         add_colorjam_preset(preset=input$colorjam_preset,
+            h1=h1h2$h1,
+            h2=h1h2$h2,
+            direction=head(h1h2$direction, 1),
+            default_step=head(h1h2$default_step, 1))
+      }
+   })
+
    # render the main plot
    output$colorjam_plot <- shiny::renderPlot({
       # define color palette
@@ -249,20 +268,6 @@ colorjamShinyServer <- function
          nameStyle=input$colorjam_nameStyle
       )
 
-      # update the color table
-      use_ncol <- ceiling(length(use_colors) / 12);
-      use_nrow <- min(c(ceiling(length(use_colors)/use_ncol), 12));
-      color_vector <- rep("", use_ncol * use_nrow);
-      color_vector[seq_along(use_colors)] <- use_colors;
-      color_df <- as.data.frame(matrix(byrow=TRUE,
-         ncol=use_ncol,
-         color_vector))
-      color_kable(kable_coloring(
-         color_df,
-         caption="Colors shown.",
-         colorSub=jamba::nameVector(use_colors),
-         row.names=FALSE))
-
       # optional subset
       subset <- jamba::rmNA(
          as.numeric(strsplit(
@@ -272,183 +277,73 @@ colorjamShinyServer <- function
       } else {
          subset <- subset[subset %in% seq_along(use_colors)];
       }
+
+      # update the color table
+      max_color_rows <- 8;
+      use_ncol <- ceiling(length(use_colors[subset]) / max_color_rows);
+      use_nrow <- min(c(
+         ceiling(length(use_colors[subset])/use_ncol),
+         max_color_rows));
+      color_vector <- rep("", use_ncol * use_nrow);
+      color_vector[seq_along(subset)] <- use_colors[subset];
+      color_df <- as.data.frame(matrix(byrow=TRUE,
+         ncol=use_ncol,
+         color_vector))
+      color_kable(kable_coloring(
+         color_df,
+         caption="Colors shown.",
+         colorSub=jamba::nameVector(use_colors),
+         row.names=FALSE))
+
       colorjam_title <- paste0(
          input$colorjam_n, " color palette\n",
          "preset='", input$colorjam_preset, "'\n",
          "step='", input$colorjam_step);
       par("mar"=c(1, 1, 6, 1), "xpd"=NA);
-      color_pie(use_colors[subset],
-         radius=0.9,
-         main=colorjam_title);
-   })
-
-   # render the preset plot
-   output$preset_plot <- shiny::renderPlot({
-      h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
-
-      # h1h2 <- jamba::mixedSortDF(as.data.frame(h1h2), byCols=2)
-      # simple plot showing the color warping
-      plot(x=h1h2$h1 %% 360,
-         y=h1h2$h2 %% 360,
-         xlim=c(-10, 370),
-         ylim=c(-10, 370),
-         xaxt="n",
-         yaxt="n",
-         asp=1,
-         pch=".",
-         col="transparent",
-         xlab="h1",
-         ylab="h2",
-         main=paste0("preset='", input$colorjam_preset, "'"))
-      title(xlab="h1", ylab="h2")
-      axis_at <- seq(from=-30, to=390, by=30);
-      abline(h=axis_at, v=axis_at, col="grey", lty=2)
-      abline(h=c(0, 360), v=c(0, 360), col="grey", lty=1);
-      axis(1,
-         at=axis_at,
-         labels=axis_at)
-      axis(2,
-         las=2,
-         at=axis_at,
-         labels=axis_at)
-      # approximate intermediate points
-      hseq <- seq(from=0, to=359)
-      h1new <- approx_degrees(h1=h1h2$h2,
-         h2=h1h2$h1,
-         h=hseq)
-      # approximate full saturation color by converting HCL to HSL
-      hclhue2hsl <- function(hseq){
-         hsl_seq <- round(col2hsl(hcl2col(H=hseq, C=60, L=70)))["H",]
-         hsl_vals <- hsl2col(H=hsl_seq, S=100, L=50)
+      # optional dichromat adjustments
+      ctypes <- c(input$colorjam_dichromat);
+      if (length(ctypes) == 0) {
+         ctypes <- c("none")
       }
-      # input colors
-      hsl_vals <- hclhue2hsl(hseq);
-      rect(
-         xleft=hseq, xright=hseq+1,
-         ybottom=-10, ytop=-2,
-         col=hsl_vals, border=NA)
-      rect(
-         xleft=hseq, xright=hseq+1,
-         ybottom=362, ytop=370,
-         col=hsl_vals, border=NA)
-      # output colors
-      hsl_vals_new <- hclhue2hsl(h1new);
-      rect(
-         xleft=-10, xright=-2,
-         ybottom=hseq, ytop=hseq+1,
-         col=hsl_vals_new, border=NA)
-      rect(
-         xleft=362, xright=370,
-         ybottom=hseq, ytop=hseq+1,
-         col=hsl_vals_new, border=NA)
-
-      # draw intermediate points
-      points(x=h1new,
-         y=hseq,
-         pch=20,
-         cex=1,
-         col=hsl_vals_new)
-      points(x=rev(h1new),
-         y=rev(hseq),
-         pch=20,
-         cex=0.5,
-         col=rev(hsl_vals_new))
-      # re-draw labels
-      points(x=h1h2$h1 %% 360,
-         y=h1h2$h2 %% 360,
-         pch=21,
-         cex=2,
-         bg="#FFFFFF66")
-      text(x=h1h2$h1 %% 360,
-         y=h1h2$h2 %% 360,
-         labels=rownames(h1h2),
-         cex=0.7)
-
+      use_colors_list <- lapply(ctypes, function(itype){
+         if (!"none" %in% itype) {
+            jamba::nameVector(
+               dichromat::dichromat(use_colors[subset],
+                  type=itype),
+               subset);
+         } else {
+            use_colors[subset]
+         }
+      })
+      par("mar"=c(0.2, 0.2, 3.5, 0.2));
+      color_pie(use_colors_list,
+         radius=0.8,
+         main=colorjam_title);
+      par("mar"=c(5, 4, 4, 2) + 0.1);
    })
 
    # output plotly
    output$preset_plotly <- plotly::renderPlotly({
       preset_kbl <- preset_kable();
-      h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
+      h1h2 <- as.data.frame(jamba::rmNULL(
+         validate_colorjam_preset(
+            colorjam_presets(input$colorjam_preset))))
+      h1h2 <- jamba::mixedSortDF(h1h2,
+         byCols=c(2, direction));
       axis_at <- seq(from=-30, to=390, by=30);
 
       # update the preset_kable
       preset_kable(kable_coloring(
          row.names=FALSE,
          caption="Preset values for h1 and h2.",
-         h1h2))
+         h1h2[, c("h2", "h1"), drop=FALSE]))
 
-      # prepare editable shapes
-      presetly <- plotly::plot_ly(mode="markers", type="scatter") %>%
-         plotly::layout(
-            xaxis=list(range=range(axis_at)),
-            yaxis=list(range=range(axis_at)),
-            shapes=lapply(seq_len(nrow(h1h2)), function(i){
-               list(
-                  type="circle",
-                  xanchor=(h1h2$h1[i] %% 360),
-                  yanchor=(h1h2$h2[i] %% 360),
-                  # grey points with darker outline
-                  fillcolor="gray80",
-                  line=list(color="gray50"),
-                  # 4-pixel radius
-                  x0=-8, x1=8,
-                  y0=-8, y1=8,
-                  xsizemode="pixel",
-                  ysizemode="pixel")
-            })
-         ) %>%
-         plotly::config(
-            edits=list(
-               shapePosition=TRUE))
-
-      # approximate intermediate points
-      hseq <- seq(from=0, to=359)
-      h1new <- approx_degrees(h1=h1h2$h2,
-         h2=h1h2$h1,
-         h=hseq)
-      # approximate full saturation color by converting HCL to HSL
-      hclhue2hsl <- function(hseq){
-         hsl_seq <- round(col2hsl(hcl2col(H=hseq, C=60, L=70)))["H",]
-         hsl_vals <- hsl2col(H=hsl_seq, S=100, L=50)
-      }
-      hsl_vals_new <- hclhue2hsl(h1new);
-      h1h2new <- data.frame(h1=h1new,
-         h2=hseq,
-         color=hsl_vals_new)
-
-      k <- 1:10;
-      h1h2new$color <- factor(h1h2new$color, levels=(unique(h1h2new$color)))
-      head(h1h2new$color)
-      # h1h2new$color <- as.character(h1h2new$color)
-      presetly <- presetly %>%
-         plotly::add_trace(data=h1h2new,
-            x=~h1,
-            y=~h2,
-            # color=~color,
-            marker=list(color=h1h2new$color),
-            showlegend=FALSE,
-            mode="markers")
-      # add sidebar colors
-      presetly <- presetly %>%
-         plotly::add_trace(data=h1h2new,
-            x=-5,
-            y=~h2,
-            # color=~color,
-            marker=list(color=h1h2new$color),
-            showlegend=FALSE,
-            mode="markers")
-      # add sidebar reference color spectrum
-      hsl_vals <- hclhue2hsl(hseq);
-      # h1h2ref <- data.frame(h1=hseq, h2=-5, color=hsl_vals)
-      presetly <- presetly %>%
-         plotly::add_trace(
-            x=hseq,
-            y=-5,
-            # color=~color,
-            marker=list(color=hsl_vals),
-            showlegend=FALSE,
-            mode="markers")
+      # prepare editable plotly visualization
+      presetly <- plot_colorjam_preset(
+         h1=h1h2$h1,
+         h2=h1h2$h2,
+         direction=head(h1h2$direction, 1),
+         style="plotly")
 
       presetly
    })
@@ -458,10 +353,13 @@ colorjamShinyServer <- function
    preset_event_data <- shiny::reactiveVal(
       c(0, 0))
 
-   # observe changes in the preset points
+   # observe edits in the preset points
    # update x/y reactive values in response to changes in shape anchors
-   observe({
+   shiny::observe({
       h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
+      # sort h1h2 consistent with plot_colorjam_preset()
+      h1h2 <- jamba::mixedSortDF(h1h2,
+         byCols=c(1, 2 * direction));
       ed <- plotly::event_data("plotly_relayout")
       # check whether data has changed
       if (identical(preset_event_data(), ed)) {
@@ -489,14 +387,29 @@ colorjamShinyServer <- function
             jamba::printDebug("new_x:", new_x, ", new_y:", new_y);# debug
             jamba::printDebug("inum:", inum);# debug
 
-            # edit h1h2 at the proper row
-            h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
-            jamba::printDebug("input$colorjam_preset:", input$colorjam_preset);# debug
-            # jamba::printDebug("h1h2 (before):");print(h1h2);# debug
-            h1h2[inum, c("h1", "h2")] <- c(new_x, new_y);
+            {
+               jamba::printDebug("h1h2 (before):");
+               print(jamba::mixedSortDF(byCols=c(2, direction), h1h2));# debug
+            }
+            h1h2[inum, c("h2", "h1")] <- c(new_x, new_y);
+            # run validation
+            {
+               jamba::printDebug("h1h2 (edited):");
+               print(jamba::mixedSortDF(byCols=c(2, direction), h1h2));# debug
+            }
+            h1h2 <- as.data.frame(jamba::rmNULL(
+               validate_colorjam_preset(preset="custom",
+                  h1=h1h2$h1,
+                  h2=h1h2$h2,
+                  direction=head(h1h2$direction, 1),
+                  default_step=head(h1h2$default_step, 1))));
             # force values between 0 and 359
-            h1h2$h2 <- h1h2$h2 %% 360;
-            # jamba::printDebug("h1h2 (after):");print(h1h2);# debug
+            # h1h2$h2 <- h1h2$h2 %% 360;
+            {
+               jamba::printDebug("h1h2 (validated):");
+               print(h1h2);
+               print(jamba::mixedSortDF(byCols=c(2, direction), h1h2));# debug
+            }
             # update the preset_kable
             preset_kable(kable_coloring(
                row.names=FALSE,
@@ -511,10 +424,17 @@ colorjamShinyServer <- function
             } else {
                new_preset <- input$colorjam_preset
             }
+            ## consider adding current input$colorjam_step as default_step
+            ## to custom preset
+            if (grepl("custom", input$colorjam_preset)) {
+               h1h2$default_step <- input$colorjam_step;
+            }
             # save new preset
             add_colorjam_preset(preset=new_preset,
                h1=h1h2$h1,
-               h2=h1h2$h2)
+               h2=h1h2$h2,
+               direction=head(h1h2$direction, 1),
+               default_step=head(h1h2$default_step, 1))
 
             # update the colorjam_preset UI element with to use this preset name
             shiny::updateSelectInput(session=session,

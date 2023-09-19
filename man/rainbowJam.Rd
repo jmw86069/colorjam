@@ -7,7 +7,7 @@
 rainbowJam(
   n = NULL,
   preset = getOption("colorjam.preset", "dichromat2"),
-  step = getOption("colorjam.step", "v24"),
+  step = getOption("colorjam.step", "default"),
   Hstart = 0,
   alpha = 1,
   hues = NULL,
@@ -22,7 +22,7 @@ rainbowJam(
   direction = c("1", "-1"),
   do_hue_pad = FALSE,
   hue_pad_percent = 0,
-  nameStyle = c("none", "n", "hcl", "color", "closestRcolor"),
+  nameStyle = c("none", "n", "closest_named_color", "closestRcolor", "hcl", "color"),
   doTest = FALSE,
   verbose = FALSE,
   ...
@@ -110,10 +110,14 @@ hues.}
 \item{nameStyle}{\code{character} string for the style of name assigned:
 \itemize{
 \item \code{"none"} assigns no names
-\item \code{"n"} assigns names by the index order
+\item \code{"n"} assigns names in numerical order
+\item \code{"closest_named_color"} assigns the closest matching color from
+\code{named_colors}, calling \code{closest_named_color()} using \code{...} for
+additional arguments.
+\item \code{"closestRcolor"} assigns names from \code{closestRcolors()}, using \code{...}
+for additional arguments.
 \item \code{"hcl"} assigns names using H, C, L values
 \item \code{"color"} assigns names by hex color
-\item \code{"closestRcolors"} assigns names from \code{closestRcolors()}
 }}
 
 \item{doTest}{\code{logical} indicating whether to perform a visual test for
@@ -121,8 +125,12 @@ hues.}
 
 \item{verbose}{\code{logical} whether to print verbose output}
 
-\item{...}{additional arguments are passed to \code{closestRcolor()} when
-\code{nameStyle="closestRcolor"}.}
+\item{...}{additional arguments are passed to
+\itemize{
+\item \code{closest_named_color()} when \code{nameStyle="closest_named_color"}
+\item \code{closestRcolor()} when \code{nameStyle="closestRcolor"}
+\item \code{jamba::makeNames()} when \code{nameStyle} is anything except \code{"none"}.
+}}
 }
 \value{
 \code{character} vector of categorical colors
@@ -176,6 +184,7 @@ jamba::showColors(list(version19=cat19, version20=cat20))
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
+\code{\link{closest_named_color}()},
 \code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},

@@ -4,6 +4,12 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>/TODO.html</loc>
   </url>
   <url>
@@ -34,6 +40,9 @@
     <loc>/reference/closestRcolor.html</loc>
   </url>
   <url>
+    <loc>/reference/closest_named_color.html</loc>
+  </url>
+  <url>
     <loc>/reference/col_div_xf.html</loc>
   </url>
   <url>
@@ -44,6 +53,12 @@
   </url>
   <url>
     <loc>/reference/color_pie.html</loc>
+  </url>
+  <url>
+    <loc>/reference/colorjamShinyServer.html</loc>
+  </url>
+  <url>
+    <loc>/reference/colorjamShinyUI.html</loc>
   </url>
   <url>
     <loc>/reference/colorjam_presets.html</loc>
@@ -82,6 +97,9 @@
     <loc>/reference/jam_pal.html</loc>
   </url>
   <url>
+    <loc>/reference/launchColorjamShiny.html</loc>
+  </url>
+  <url>
     <loc>/reference/make_jam_divergent.html</loc>
   </url>
   <url>
@@ -89,6 +107,12 @@
   </url>
   <url>
     <loc>/reference/mean_angle.html</loc>
+  </url>
+  <url>
+    <loc>/reference/named_colors.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plot_colorjam_preset.html</loc>
   </url>
   <url>
     <loc>/reference/rainbowJam.html</loc>
@@ -121,6 +145,12 @@
     <loc>/reference/twostep_gradient.html</loc>
   </url>
   <url>
+    <loc>/reference/validate_colorjam_preset.html</loc>
+  </url>
+  <url>
     <loc>/reference/vals2colorLevels.html</loc>
+  </url>
+  <url>
+    <loc>/reference/vibrant_color_by_hue.html</loc>
   </url>
 </urlset>

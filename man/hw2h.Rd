@@ -8,6 +8,7 @@ hw2h(
   h,
   h1 = NULL,
   h2 = NULL,
+  direction = 1,
   preset = getOption("colorjam.preset", "custom"),
   ...
 )
@@ -50,7 +51,13 @@ blue). The color yellow has hue=120 in RYB space, so the call to
 # then convert those hues to standard color hues.
 warpedHues <- seq(from=0, to=330, length.out=12);
 warpedHues;
-hues <- hw2h(warpedHues);
+
+# rgb imposes no change
+hues <- hw2h(warpedHues, preset="rgb");
+hues;
+
+# ryb imposes changes
+hues <- hw2h(warpedHues, preset="ryb");
 hues;
 
 }
@@ -65,7 +72,9 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
-\code{\link{mean_angle}()}
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
 
 Other colorjam hue warp: 
 \code{\link{add_colorjam_preset}()},
@@ -77,6 +86,8 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
-\code{\link{mean_angle}()}
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

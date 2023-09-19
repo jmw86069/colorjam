@@ -123,6 +123,7 @@ Other colorjam assignment:
 \code{\link{col_linear_xf}()},
 \code{\link{group2colors}()},
 \code{\link{rainbowJamMulti}()},
-\code{\link{vals2colorLevels}()}
+\code{\link{vals2colorLevels}()},
+\code{\link{vibrant_color_by_hue}()}
 }
 \concept{colorjam assignment}

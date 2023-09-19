@@ -11,7 +11,7 @@ closestRcolor(
   Cgrey = getOption("jam.Cgrey", 5),
   showPalette = FALSE,
   colorModel = c("hcl", "LUV"),
-  Hwt = 2,
+  Hwt = 2.5,
   Cwt = 1,
   Lwt = 4,
   warpHue = TRUE,
@@ -141,6 +141,7 @@ closestRcolor(rainbowJam(12), showPalette=TRUE);
 \seealso{
 Other colorjam core: 
 \code{\link{blend_colors}()},
+\code{\link{closest_named_color}()},
 \code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},

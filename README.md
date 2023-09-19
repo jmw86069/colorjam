@@ -57,7 +57,7 @@ library(colorjam);
 library(jamba);
 ```
 
-### Categorical colors
+### Scalable categorical colors
 
 #### dichromat
 
@@ -70,11 +70,37 @@ showColors(rainbowJam(5));
 
 ![](man/figures/README-cat5-1.png)<!-- -->
 
-To illustrate the effect of increasing categorical colors, we will
-create a list of categorical colors with increasing `n`.
+Alternative the function `color_pie()` displays colors in a pie circle:
 
 ``` r
-colorList <- lapply(nameVector(c(12, 6, 3)), function(n){
+color_pie(rainbowJam(5));
+```
+
+![](man/figures/README-pie5-1.png)<!-- -->
+
+Categorical colors are scalable (to a point, but that point is around
+100).
+
+``` r
+color_pie(rainbowJam(15));
+```
+
+![](man/figures/README-pie15-1.png)<!-- -->
+
+You can be fancy and name the output colors with `named_colors`:
+
+``` r
+color_pie(rainbowJam(15, nameStyle="closest_named_color"));
+```
+
+![](man/figures/README-named15-1.png)<!-- -->
+
+`color_pie()` can plot a `list` of color vectors in concentric circles,
+so below we plot an increasing number of categorical colors to
+illustrate the scaling.
+
+``` r
+colorList <- lapply(nameVector(c(36, 24, 12)), function(n){
    rainbowJam(n, nameStyle="n");
 });
 color_pie(colorList,
@@ -83,93 +109,163 @@ color_pie(colorList,
 
 ![](man/figures/README-cat_list_dichromat-1.png)<!-- -->
 
-By default, colorjam uses a “dichromat” color wheel, which produces
-color blindness friendly colors by avoiding a subset of colors that are
-not visually distinct for the three major types of color blindness.
+##### What is “dichromat” here?
+
+Every color system has a “color wheel” - something like red-green-blue
+(RGB) or red-yellow-blue (RYB). Here, we defined a new color wheel
+`"dichromat"` to maximize the distinction between color hues for people
+with color blindness - and this approach used the R package `dichromat`.
+
+The `"dichromat"` color wheel creates approximately equal halves of the
+color wheel that accounts for simulated colors based upon `"deutan"`,
+`"protan"`, and `"tritan"` forms of color blindness. That means
+“cool/warm” colors should take approximately half the color wheel in
+each case, while avoiding colors that are most difficult to distinguish
+from others in the color wheel.
+
+It isn’t perfect.
+
+However `colorjam` does provide the first scalable method to produce
+categorical colors, where colors are optimized for three forms of
+color-blindness. There are other excellent resources that provide
+color-blindness friendly colors, which are not scalable. To be fair,
+this approach may not ultimately be much more scalable than methods that
+provide a fixed maximum number of colors.
 
 #### red-yellow-blue
 
-The recommended “full rainbow” color wheel is “red-yellow-blue”,
-distinctly different from the “red-green-blue” color wheel used in
-computer monitor color generation, and which underpins the majority of
-color functions in R.
-
-The red-yellow-blue color wheel can be selected with:
+The recommended “full rainbow” color wheel is “red-yellow-blue”, which
+performs much better for most color operations such as blending colors
+(additive mixing).
 
 - `preset="ryb"` for red-yellow-blue
 - `preset="ryb2"` for red-yellow-blue that starts with yellow (shiown
   below).
 
 ``` r
-colorList1 <- lapply(nameVector(c(16, 8, 5)), function(n){
-   rainbowJam(n, preset="ryb2");
+colorList1 <- lapply(nameVector(c(12)), function(n){
+   rainbowJam(n, preset="ryb");
 });
 color_pie(colorList1,
-   main="Red-Yellow-Blue color wheel (starting at yellow)");
+   main="Red-Yellow-Blue color wheel\npreset='ryb' (starting at red)");
 ```
 
 ![](man/figures/README-cat_list_ryb-1.png)<!-- -->
 
-The benefit to starting color assignment with yellow is notable when the
-first category in a set is considered the reference or control group.
-For example, in a treatment study, the treatments are often encoded in
-an order `c("Control", "Dexamethasone", "Etoposide")` so that
-`"Control"` appears first. This order helps define statistical
-comparisons where terms are compared to `"Control"`. As such, assigning
-a neutral color to the control term is quite convenient.
-
-Previous versions of colorjam used a red-yellow-blue color wheel
-starting with red.
-
 ``` r
-colorList1 <- lapply(nameVector(c(16, 8, 5)), function(n){
-   rainbowJam(n, preset="ryb", step="v23", nameStyle="n");
+colorList1 <- lapply(nameVector(c(16)), function(n){
+   rainbowJam(n, preset="ryb2");
 });
 color_pie(colorList1,
-   main="Red-Yellow-Blue color wheel (previous default rainbowJam)");
+   main="Red-Yellow-Blue color wheel\npreset='ryb2' (starting at yellow)");
 ```
 
-![](man/figures/README-cat_list_ryb_prev-1.png)<!-- -->
+![](man/figures/README-cat_list_ryb2-1.png)<!-- -->
+
+The reason to start with yellow is noticed when the first category in a
+set is the reference or control group in a scientific experiment. It is
+intuitive for the reference/control to have a neutral color, instead of
+being bright red.
+
+Previous versions (\<= 0.0.23.900) of colorjam used a red-yellow-blue
+color wheel starting with red.
 
 #### red-green-blue
 
-Similarly, the default color wheel “red-green-blue” can be used:
+Similarly, the R default “red-green-blue” color wheel:
 
-- `preset="rgb"` the default RGB color wheel
-- `preset="rgb2"` the default RGB color wheel, starting with yellow
-
-The main reason not to use RGB is that so much of the color wheel is
-green-blue, and green-blue are the most difficult to distinguish from
-other colors with color blindness sensitive viewers.
+- `preset="rgb"` the R default RGB color wheel
+- `preset="rgb2"` the R default RGB color wheel, starting with yellow
 
 ``` r
-colorList2 <- lapply(nameVector(c(20, 10, 5)), function(n){
-   rainbowJam(n, preset="rgb2");
-});
-color_pie(colorList2,
-   main="Red-Green-Blue color wheel (starting at yellow)");
-```
-
-![](man/figures/README-cat_list_rgb2-1.png)<!-- -->
-
-``` r
-colorList2 <- lapply(nameVector(c(20, 10, 5)), function(n){
-   rainbowJam(n, preset="rgb", step="v23");
-});
-color_pie(colorList2,
-   main="Red-Green-Blue color wheel (base R)");
+color_pie(
+   rainbowJam(16, preset="rgb"),
+   main="Red-Green-Blue\npreset='rgb' (starting at red)");
 ```
 
 ![](man/figures/README-cat_list_rgb-1.png)<!-- -->
 
+*(Look how much of this color wheel is blue-green. It is not for me.)*
+
+``` r
+color_pie(
+   rainbowJam(16, preset="rgb2"),
+   main="Red-Green-Blue\npreset='rgb2' (starting at yellow)");
+```
+
+![](man/figures/README-cat_list_rgb2-1.png)<!-- -->
+
+Too much of the RGB color wheel is green-blue.
+
+Interesting aside: The 4994 total `named_colors` from the amazing Meodai
+resource show a clear bias in color hues. Subsetting colors for at least
+Chroma 40 with `subset_colors(named_colors, C > 40)`:
+
+``` r
+color_pie(unname(
+   subset_colors(named_colors, C > 40)))
+```
+
+![](man/figures/README-named_color_bias-1.png)<!-- -->
+
+Clearly people can see many more red-orange-yellow, and comparatively
+very few green/blue colors. This bias is partly from lower sensitivity
+of colors such as “cyan”, and partly due to RGB color monitors being
+unable to produce high saturation colors with that hue. Color theory is
+fascinating, and endlessly complex, in part because each person is
+slightly different.
+
+### Color matching / Naming colors
+
+Two functions are provided to match colors to a reference set, which is
+a convenient way to assign color names.
+
+- `closestRcolor()` - matches colors to the 657 colors in
+  `grDevices::colors()`, representing 502 unique hexadecimal colors.
+  (Custom reference colors can be supplied.)
+- `closest_named_color()` - matches to the much more comprehensive
+  `named_colors`, which adds 4447 hexadecimal colors from
+  [meodai/named-colors](https://github.com/meodai/named-colors), and 436
+  colors unique to `grDevices::colors()`, representing **4883 named
+  hexadecimal colors**.
+
+The argument `showPalette=TRUE` will plot the original colors and the
+closest R colors for comparison.
+
+``` r
+cnc <- closest_named_color(c(rainbowJam(12), "grey"),
+   showPalette=TRUE,
+   main="closest_named_color() using `named_colors`");
+```
+
+![](man/figures/README-color_names-1.png)<!-- -->
+
+``` r
+crc <- closestRcolor(c(rainbowJam(12), "grey"),
+   showPalette=TRUE,
+   main="closestRcolor() using `colors()`");
+```
+
+![](man/figures/README-color_names-2.png)<!-- -->
+
+There are two underlying methods:
+
+- `"HCL"` (default) uses color hue matching by angle, and applies custom
+  weights to H, C, L channels.
+- `"LUV"` converts to non-polar coordinates, and uses Euclidean distance
+  across L, U, V channels.
+
+The function separately matches greyscale colors to the subset of
+grayscale reference colors, in order to ignore the “hue” which is still
+stored.
+
 ### Color-blending
 
-The color wheel red-yellow-blue is particularly effective for
-color-mixing. The function `blend_colors()` has some useful features:
+The function `blend_colors()` has some useful features:
 
 - **Paint-style blending**. blue + yellow = green. (For default RGB:
   blue + yellow = grey)
-- **Scalable for multiple colors**. Able to mix more than two colors.
+- **Scalable number of colors**. Able to mix more than two colors.
 - **Transparency-aware**. Accounts for color transparency during mixing.
 
 The argument `do_plot=TRUE` will plot a visual summary of the mixing
@@ -222,8 +318,7 @@ blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
 
 ### Color-splitting
 
-Another technique to expand a color palette is to split colors into a
-gradient, using the function `color2gradient()`.
+Colors can be split into a light-dark gradient using `color2gradient()`.
 
 This technique is useful when assigning categorical colors to a primary
 group, then splitting those colors by a sub-grouping.
@@ -239,8 +334,8 @@ color_pie(list(
 
 ![](man/figures/README-color_split-1.png)<!-- -->
 
-The intensity of the color gradient is adjusted with `dex`, the darkness
-expansion factor.
+The intensity of the color gradient is adjusted with `dex`, “darkness
+expansion factor”.
 
 ``` r
 colorSet <- rainbowJam(5);
@@ -253,12 +348,18 @@ colorSet4c <- color2gradient(colorSet,
 colorSet4b <- color2gradient(colorSet,
    n=4,
    dex=10);
+colorSet <- rep(colorSet, each=4)
+names(colorSet4c) <- names(colorSet4b) <- names(colorSet4a) <- names(colorSet4) <- "";
+names(colorSet4b)[5:8] <- c("  10", "  |", "  |", "  v")
+names(colorSet4c)[5:8] <- c("  3", "  |", "  |", "  v")
+names(colorSet4)[5:8] <- c(" 1", " |", " |", " v")
+names(colorSet4a)[5:8] <- c("1/2", " |", " |", " v")
 color_pie(list(
-   `dex=10`=unname(colorSet4b),
-   `dex=3`=unname(colorSet4c),
-   `dex=1\n(default)`=unname(colorSet4),
-   `dex=1/2`=unname(colorSet4a),
-   colorSet=rep(colorSet, each=4)),
+   `dex=10`=(colorSet4b),
+   `dex=3`=(colorSet4c),
+   `dex=1\n(default)`=(colorSet4),
+   `dex=1/2`=(colorSet4a),
+   colorSet=colorSet),
    main="Intensity of the gradient is adjusted with 'dex'\n(darkness expansion factor)");
 ```
 
@@ -331,35 +432,6 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 ```
 
 ![](man/figures/README-ggplot2_theme_figure-1.png)<!-- -->
-
-### Naming colors
-
-`closestRcolor()` is used to assign a color name, matching the closest
-reference color in a vector. The method uses HCL color space with the
-red-yellow-blue color wheel, and custom weighting for H, C, and L color
-channels.
-
-It even matches greyscale colors properly, ignoring the unused “hue”
-channel when saturation is very low.
-
-The argument `showPalette=TRUE` will plot the original colors and the
-closest R colors for comparison.
-
-``` r
-closestRcolor(c(rainbowJam(12), "grey"),
-   showPalette=TRUE);
-```
-
-![](man/figures/README-color_names-1.png)<!-- -->
-
-    #>          #F7C53E          #C35E00          #FF8A66          #DC726B 
-    #>          "gold2"     "chocolate3"        "salmon1"  "palevioletred" 
-    #>          #FF89BA          #E86CED          #E9C0FF          #9169F9 
-    #> "palevioletred1"        "orchid2"          "plum1" "lightslateblue" 
-    #>          #AFA5FF          #8891EE          #95C3FF          #43AAFF 
-    #>     "steelblue1" "cornflowerblue"       "skyblue1"     "steelblue2" 
-    #>             grey 
-    #>           "gray"
 
 ### Pre-defined color gradients (08-Apr-2021)
 

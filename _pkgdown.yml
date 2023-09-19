@@ -10,6 +10,10 @@ reference:
   desc: Jam linear and divergent gradient data
   contents:
   - has_concept("colorjam data")
+- title: Colorjam R-shiny functions
+  desc: The Colorjam R-shiny App
+  contents:
+  - has_concept("colorjam R-shiny functions")
 - title: Colorjam ggplot2 functions
   desc: Functions that apply colorjam to ggplot2 objects
   contents:

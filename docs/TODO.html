@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -48,9 +48,40 @@
 
 
 <div class="section level2">
+<h2 id="todo-13sep2023">TODO 13sep2023<a class="anchor" aria-label="anchor" href="#todo-13sep2023"></a></h2>
+<ul><li>
+<p>DONE. Simple R-shiny app</p>
+<ul><li><p>visualize color palettes with adjustments</p></li>
+<li><p>select the number of colors</p></li>
+<li><p>edit the <code>step</code> values for Chroma and Luminance</p></li>
+<li><p>edit the <code>phase</code> order of steps</p></li>
+<li><p>choose the <code>preset</code> from known color wheels</p></li>
+<li>
+<p>bonus points: edit the color wheel <code>h1</code>, <code>h2</code> points:</p>
+<ul><li>click-and-drag to modify existing points</li>
+<li>add a new point</li>
+<li>delete an existing point</li>
+</ul></li>
+</ul></li>
+<li>
+<p>DONE. enhance <code>"preset"</code></p>
+<ul><li>DONE. associate with a <code>default_step</code>
+</li>
+<li>DONE. associate with <code>direction</code>: <code>1</code> or <code>-1</code> for direction around the color wheel</li>
+<li>
+<code><a href="reference/add_colorjam_preset.html">add_colorjam_preset()</a></code> should validate <code>h1</code>,<code>h2</code> and <code>direction</code>.</li>
+</ul></li>
+<li>
+<p>DONE. Fix <code><a href="reference/approx_degrees.html">approx_degrees()</a></code> when multiple <code>h1</code> or <code>h2</code> values are repeated.</p>
+<ul><li>The <code><a href="https://rdrr.io/r/stats/approxfun.html" class="external-link">approx()</a></code> function requires unique <code>x</code> values.</li>
+<li>Data should be sorted by <code>x</code>,<code>y</code> then uniqueness enforced for <code>x</code>.</li>
+<li>This bug mainly affects <code>h1</code>,<code>h2</code> when <code>h2</code> is used for <code>x</code>.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
 <h2 id="todo-07sep2023">TODO 07sep2023<a class="anchor" aria-label="anchor" href="#todo-07sep2023"></a></h2>
 <ul><li>
-<p>Ability to register a new color wheel</p>
+<p>DONE. register a new color wheel</p>
 <ul><li>for example modifying an existing color wheel with <code><a href="reference/adjust_hue_warp.html">adjust_hue_warp()</a></code> then saving it as a named preset.</li>
 <li>use <code>igraph:::.igraph.shapes</code> as a model, they store graph node shapes in that environment, then provide access <code><a href="https://r.igraph.org/reference/shapes.html" class="external-link">igraph::shapes()</a></code> and allow new shapes with <code><a href="https://r.igraph.org/reference/shapes.html" class="external-link">igraph::add_shape()</a></code>.</li>
 </ul></li>

@@ -16,17 +16,26 @@
    # L used v20 values scaled between 45 and 85
    L=c(45, 85, 72, 58, 78, 64))
 .colorjam_steps[["v24"]] <- list(
-   # C values intended for gold-first sequence
-   # scaled between 80 to 100
-   C=c(110, 88, 99,  80, 105, 97)[c(2,1,3,4,5,6)],
+   C=c(88, 110, 99,  80, 105, 97),
    # L values intended for gold-first sequence
-   # slightly adjusted for each sequence of 6 steps:
-   # `+ rep(c(0, 5, -10), each=6)`
-   # scaled between 45 and 85
+   # slightly adjusted for each sequence of 6 steps
    L=c(
-      c(51, 82, 70, 60, 77, 65)[c(2,1,3,4,5,6)],
-      c(55, 85, 73, 63, 80, 68)[c(2,1,3,4,5,6)],
-      c(45, 75, 63, 53, 70, 58)[c(2,1,3,4,5,6)]))
+      c(80, 51, 65, 58, 76, 62),
+      c(84, 55, 71, 61, 82, 66),
+      c(90, 45, 61, 53, 71, 58)))
+
+# .colorjam_steps[["v24a"]] <- list(
+#    # C values intended for gold-first sequence
+#    # scaled between 80 to 100
+#    C=c(110, 88, 99,  80, 105, 97)[c(2,1,3,4,5,6)],
+#    # L values intended for gold-first sequence
+#    # slightly adjusted for each sequence of 6 steps:
+#    # `+ rep(c(0, 5, -10), each=6)`
+#    # scaled between 45 and 85
+#    L=c(
+#       c(51, 82, 70, 60, 77, 65)[c(2,1,3,4,5,6)],
+#       c(55, 85, 73, 63, 80, 68)[c(2,1,3,4,5,6)],
+#       c(45, 75, 63, 53, 70, 58)[c(2,1,3,4,5,6)]))
 
 #' Colorjam chroma/luminance steps
 #'
@@ -37,8 +46,11 @@
 #' or when a `step` name is provided, it returns a `list` with elements
 #' `"C"` and `"L"`.
 #'
-#' @returns `character` vector of recognized colorjam step names, or when
-#'    `step` is provided, it returns a `list` with elements `"C"` and `"L"`.
+#' @returns `character` vector of recognized colorjam step names when
+#'    `step` is `NULL`, or
+#'    when `step` is defined a `list` is returned with elements
+#'    * `C`: `numeric` values indicating HCL Chroma
+#'    * `L`: `numeric` values indicating HCL Chroma
 #'
 #' @family colorjam hue warp
 #'
@@ -109,8 +121,7 @@ add_colorjam_step <- function
          rm(step,
             envir=.colorjam_steps)
          if (TRUE %in% verbose) {
-            jamba::printDebug("add_colorjam_step(): ",
-               "removed step='", step, "'");
+            cli::cli_alert_info("removed step '{.field {step}}'.")
          }
       }
    } else {
@@ -118,8 +129,7 @@ add_colorjam_step <- function
          value=step_list,
          envir=.colorjam_steps)
       if (TRUE %in% verbose) {
-         jamba::printDebug("add_colorjam_step(): ",
-            "added step='", step, "'");
+         cli::cli_alert_info("added step '{.field {step}}'.")
       }
    }
    invisible(TRUE)

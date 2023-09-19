@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.24.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
       </span>
     </div>
 
@@ -58,6 +58,7 @@
 <span>  <span class="va">h2</span>,</span>
 <span>  h <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  preset <span class="op">=</span> <span class="st">"custom"</span>,</span>
+<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -120,7 +121,9 @@ angle in "to".</p>
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
-<code><a href="mean_angle.html">mean_angle</a>()</code></p></div>
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -186,7 +189,7 @@ angle in "to".</p>
 <span class="r-in"><span><span class="va">seq2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">seq1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span></span></span>
 <span class="r-in"><span><span class="va">seq_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">350</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (input):</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (input):</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  90     -30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   30  60     -30</span>
@@ -200,8 +203,8 @@ angle in "to".</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 270 180     -30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 300 150     -30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 330 120     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing below 0</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df:</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing below 0</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df:</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     h1   h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0   90     330</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   30   60     -30</span>
@@ -215,7 +218,7 @@ angle in "to".</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 270 -180     -30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 300 -210     -30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 330 -240     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">Expanded table:</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">Expanded table:</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      h1 h1_diff   h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  -360      NA  450      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  -330      30  420     -30</span>
@@ -263,7 +266,7 @@ angle in "to".</p>
 <span class="r-in"><span><span class="va">seq2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">seq1</span> <span class="op">+</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span></span></span>
 <span class="r-in"><span><span class="va">seq_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">350</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (input):</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (input):</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0 120      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   30 150      30</span>
@@ -277,8 +280,8 @@ angle in "to".</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 270  30      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 300  60      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 330  90      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing above 360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df:</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing above 360</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df:</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0 120      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   30 150      30</span>
@@ -292,7 +295,7 @@ angle in "to".</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 270 390      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 300 420      30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 330 450      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">19:15:16</span>) 12Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">Expanded table:</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:50</span>) 18Sep2023:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">Expanded table:</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      h1 h1_diff   h2 h2_diff</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  -360      NA -240      NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  -330      30 -210      30</span>

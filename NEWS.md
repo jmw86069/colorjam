@@ -1,21 +1,136 @@
 # colorjam 0.0.25.900
 
+Added MIT license and copyright.
+
+## general updates
+
+* `dichromat` added as package dependency. Respect.
+* `cli` was added as a package dependency (in v24 actually),
+to be consistent with recommended R package messaging.
+* Each `preset` now includes `direction` and `default_step`, optional
+attribute `"description"` as a label.
+
+    * after testing it soon became clear that each `preset` is designed with
+    a `step` in mind, so the appropriate `default_step` should be stored
+    * also the `direction` was previously deduced by the `h1`,`h2` values,
+    however this too is unnecessary and should be encoded in the `preset`
+    to avoid errors.
+
+* For my own benefit, I made a simple R-shiny app:
+
+    * visualize colors from `rainbowJam()`
+    * adjust the number of colors `n`, `preset`, `step`
+    * plotly to adjust the `preset` control points, creating a new color wheel
+    * subset specific colors for direct visual comparison
+
+* I used the R-shiny app to create and optimize `dichromat2`:
+
+    * starts at gold
+    * roughly evenly distributes warm/cool colors
+    around two halves of the color wheel
+    * roughly evenly distributes color-blindness sensitive colors
+    around two halves of the color wheel, for "deutan", "protan", and "tritan".
+    It isn't perfect, but should enhance the visual distinction in adjacent
+    colors, while being fairly scalable to large `n`.
+
+## new data
+
+* `named_colors`
+
+    * Superset of 4883 hexadecimal colors with corresponding color names:
+
+        * 4447 colors from Github `"meodai/color-names"` repository;
+        * 436 colors from `grDevices::colors()`, which were not already
+        defined by Meodai colors.
+
+    * Colors are intended to improve labeling `rainbowJam()` colors.
+    * Color labels from `closest_named_color()` could become a QC step
+    to confirm that `rainbowJam()` creates colors that can be assigned
+    to different named colors.
+    * In testing, `grDevices::colors()` did not provide sufficient detail,
+    specific examples frequently included `"cornflowerblue"` and `"steelblue"`
+    despite appearing for colors with visibly distinctive blue/purple
+    color hues.
+
 ## new functions
 
 * `launchColorjamShiny()`
 
     * simple R-shiny app to display categorical colors
-    * allows selection of `"preset"` and `"step"`
-    * plotly plot with preset `h1` and `h2` values
-    * `h1` and `h2` can be edited! Not perfect, adjustments can be tested.
+    * selection of `'`, `preset`, `step`, `phase`, `subset`
+    * plotly interactive plot of `h1` and `h2` values, which can be edited!
+    Is it not perfect, need to override plotly "snap" behavior,
+    which seems to be hard-coded.
+    * optional `dichromat::dichromat()` adjustment to simulate color-blindness
+    * `colorjamShinyServer()`,`colorjamShinyUI()` are internal functions
+    to provide `server` and `ui` components to `shiny::runApp()`.
+
+* `closest_named_color()`
+
+    * simple wrapper to `closestRcolor()` except that it uses the 4883
+    `named_colors` instead of R `grDevices::colors()`, although all
+    colors are contained in `named_colors`.
+
+* `validate_colorjam_preset()`
+
+    * function to adjust raw `h1`,`h2` values, wrap within range `c(0, 360)`
+    * breaks ties in a way that maintains proper sort order for `direction=1`
+    and `direction=-1`
+    * Todo: impose edits to `h1`,`h2` when out of order. E.g. is one point
+    is adjusted past the next point, the next point should be shifted.
+
+* `plot_colorjam_preset()`
+
+    * visual plotting of `h1`,`h2` values, showing the resulting color
+    along each respective axis.
+    * option for base R plot, or plotly with editable control points
+    (the editing is only functional inside an R-shiny app).
+
+* `vibrant_color_by_hue()`
+
+    * external convenience function that takes an HCL color hue
+    and returns the most saturated HSL color.
+    * internally it converts HCL to hex, hex to HSL - because HSL hue
+    differs from HCL hue. Then using HSL hue it uses S=100, L=50
+    to obtain the most saturated color.
+    * it still shows color hue "drift" since HCL hue to HSL hue is not
+    a linear relationship for different CL or SL values, but it's much
+    better than using HCL and letting it randomly determine what hue
+    is the closest match to the requested HCL values.
 
 ## changes to existing functions
 
-After initial testing, it seems clear that each `"preset"` should be
-associated with a default `"step"`. The presets `"dichromat"` and `"ryb"`
-are intended to start with dark colors `step="v23"` while
-presets `"dichromat2"` and `"ryb2"` are intended to start with bright
-colors `step="v24"`.
+* `rainbowJam()`
+
+    * new argument option `nameStyle="closest_named_color"` which uses
+    the 4883 `named_colors` for labeling.
+    * `nameStyle="hcl"` now calculates actual HCL values and not the 
+    input values to `hcl()`, because those values may change upon
+    creating a color in gamut.
+    * `h1`,`h2` are deprecated, instead use `preset`
+    * `Cvals`,`Lvals` are deprecated, instead use `step`
+    * `phase` can take one or more values, to select and order specific
+    items in the given `step`
+
+* `colorjam_presets()`,`add_colorjam_preset()`
+
+    * Each `preset` now also has `direction` and `default_step`.
+
+* `h2hw()`,`hw2h()`
+
+    * now calls `colorjam_presets()`
+
+* `approx_degrees()`
+
+    * now accepts `preset` input
+    * handles (and requires) `direction` instead of determining by `h1`,`h2`
+    * calls `validate_colorjam_preset()` to handle tie-breaks
+
+* `closestRcolor()`
+
+    * names are assigned when `colorSet` has names, helpful with the
+    reference colors are hex, and names are user-friendly labels.
+
 
 # colorjam 0.0.24.900
 

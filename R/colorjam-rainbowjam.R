@@ -82,15 +82,21 @@
 #'    hues.
 #' @param nameStyle `character` string for the style of name assigned:
 #'    * `"none"` assigns no names
-#'    * `"n"` assigns names by the index order
+#'    * `"n"` assigns names in numerical order
+#'    * `"closest_named_color"` assigns the closest matching color from
+#'    `named_colors`, calling `closest_named_color()` using `...` for
+#'    additional arguments.
+#'    * `"closestRcolor"` assigns names from `closestRcolors()`, using `...`
+#'    for additional arguments.
 #'    * `"hcl"` assigns names using H, C, L values
 #'    * `"color"` assigns names by hex color
-#'    * `"closestRcolors"` assigns names from `closestRcolors()`
 #' @param doTest `logical` indicating whether to perform a visual test for
 #'    `n` number of colors produced.
 #' @param verbose `logical` whether to print verbose output
-#' @param ... additional arguments are passed to `closestRcolor()` when
-#'    `nameStyle="closestRcolor"`.
+#' @param ... additional arguments are passed to
+#'    * `closest_named_color()` when `nameStyle="closest_named_color"`
+#'    * `closestRcolor()` when `nameStyle="closestRcolor"`
+#'    * `jamba::makeNames()` when `nameStyle` is anything except `"none"`.
 #'
 #' @return `character` vector of categorical colors
 #'
@@ -121,7 +127,7 @@
 rainbowJam <- function
 (n=NULL,
  preset=getOption("colorjam.preset", "dichromat2"),
- step=getOption("colorjam.step", "v24"),
+ step=getOption("colorjam.step", "default"),
  Hstart=0,#12.2,
  alpha=1,
  hues=NULL,
@@ -139,9 +145,10 @@ rainbowJam <- function
  nameStyle=c(
     "none",
     "n",
+    "closest_named_color",
+    "closestRcolor",
     "hcl",
-    "color",
-    "closestRcolor"),
+    "color"),
  doTest=FALSE,
  verbose=FALSE,
  ...)
@@ -160,15 +167,18 @@ rainbowJam <- function
    warn_txt <- character(0);
    if (length(h1) > 0 || length(h2) > 0) {
       warn_txt <- c(warn_txt,
-         "!"="{.var h1} and {.var h2} are deprecated, use argument {.var preset}.")
+         "!"=paste("{.var h1} and {.var h2} are deprecated,",
+            "use argument {.var preset}."))
    }
    if (length(Cvals) > 0 || length(Lvals) > 0) {
       warn_txt <- c(warn_txt,
-         "!"="{.var Cvals} and {.var Lvals} are deprecated, use argument {.var step}.")
+         "!"=paste("{.var Cvals} and {.var Lvals} are deprecated,",
+            "use argument {.var step}."))
    }
    if (length(warpHue) > 0) {
       warn_txt <- c(warn_txt,
-         "!"="{.var warpHue} is deprecated, disable warp hue with {.code preset='rgb'}.")
+         "!"=paste("{.var warpHue} is deprecated,",
+            "disable warp hue with {.code preset='rgb'}."))
    }
    if (length(warn_txt) > 0) {
       cli::cli_warn(warn_txt);
@@ -183,6 +193,10 @@ rainbowJam <- function
    }
    h1 <- h1h2$h1;
    h2 <- h1h2$h2;
+   if ("default" %in% step) {
+      step <- h1h2$default_step;
+   }
+   direction <- h1h2$direction;
    if (verbose) {
       jamba::printDebug("h1: ", format(round(digits=4, h1)));
       jamba::printDebug("h2: ", format(round(digits=4, h2)));
@@ -225,7 +239,8 @@ rainbowJam <- function
       ## - always at least n hues
       ## - always at least 4 hues
       ## - pad using hue_pad to reduce first,last color similarity
-      requested_n <- max(c(4, n));
+      min_requested_n <- 5;
+      requested_n <- max(c(min_requested_n, n));
       if (verbose && hue_pad != 0) {
          jamba::printDebug("rainbowJam(): ",
             "hue_pad:",
@@ -236,7 +251,22 @@ rainbowJam <- function
       hue_wedge <- 360 / sum(c(rep(1, requested_n), hue_pad_percent/100));
       hues <- cumsum(c(
          Hstart,
-         rep(hue_wedge * direction, n - 1))) %% 360;
+         rep(hue_wedge, requested_n - 1))) %% 360;
+
+      # alternate subsets when n < requested_n
+      if (n < requested_n) {
+         if (n == 1) {
+            hues <- head(hues, 1);
+         } else if (n == 2) {
+            hues <- head(hues, 2);
+         } else if (n == 3) {
+            hues <- hues[c(1, 2, 4)]
+         } else if (n == 4) {
+            hues <- hues[c(1, 2, 4, 5)];
+         } else {
+            hues <- hues[round(seq(from=1, to=length(hues), length.out=n))];
+         }
+      }
 
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
@@ -276,10 +306,9 @@ rainbowJam <- function
       h2 <- c(0,80,150,180,220,290,360);
    }
    hues_in <- hues;
-   hues <- hw2h(h=hues,
-      h1=h1,
-      h2=h2,
-      preset="custom");
+   hues <- hw2h(preset=preset,
+      h=hues);
+   # print(data.frame(hues_in, hues));# debug
    if (verbose) {
       jamba::printDebug("rainbowJam(): ",
          "   Warped hues:",
@@ -385,19 +414,35 @@ rainbowJam <- function
    if ("n" %in% nameStyle) {
       names(rainbow_set) <- seq_along(rainbow_set);
    } else if ("hcl" %in% nameStyle) {
-      rainbow_names <- jamba::makeNames(paste(seq_len(n),
-         paste0("h", signif(hues, digits=2)),
-         paste0("c", signif(Cvals, digits=2)),
-         paste0("l", signif(Lvals, digits=2)),
-         sep=" "));
-      names(rainbow_set) <- rainbow_names;
+      # 0.0.25.900 - change to actual HCL values and not input to hcl()
+      # because hcl() may change values upon creating a color in gamut.
+      rainbow_names <- jamba::pasteByRow(
+         x=round(digits=1,
+            t(col2hcl(rainbow_set)[c("H", "C", "L"), , drop=FALSE])),
+         includeNames=TRUE,
+         sep=" ",
+         sepName="")
+      ## previous method (below) assigned named by input to hcl()
+      # rainbow_names <- jamba::makeNames(paste(seq_len(n),
+      #    paste0("h", signif(hues, digits=2)),
+      #    paste0("c", signif(Cvals, digits=2)),
+      #    paste0("l", signif(Lvals, digits=2)),
+      #    sep=" "));
+      names(rainbow_set) <- jamba::makeNames(rainbow_names,
+         ...);
    } else if ("color" %in% nameStyle) {
-      rainbow_names <- jamba::makeNames(rainbow_set);
+      rainbow_names <- jamba::makeNames(rainbow_set,
+         ...);
       names(rainbow_set) <- rainbow_names;
    } else if ("closestRcolor" %in% nameStyle) {
       rainbow_names <- jamba::makeNames(
          closestRcolor(rainbow_set,
             ...));
+      names(rainbow_set) <- rainbow_names;
+   } else if ("closest_named_color" %in% nameStyle) {
+      rainbow_names <- jamba::makeNames(
+         names(closest_named_color(rainbow_set,
+            ...)));
       names(rainbow_set) <- rainbow_names;
    } else {
       rainbow_set <- unname(rainbow_set);
