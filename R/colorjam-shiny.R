@@ -221,7 +221,7 @@ colorjamShinyServer <- function
       new_preset <- input$colorjam_preset;
       h1h2 <- colorjam_presets(preset=new_preset)
       new_step <- head(h1h2$default_step, 1);
-      if (length(new_step) > 0 && nchar(default_step) > 0) {
+      if (length(new_step) > 0 && nchar(h1h2$default_step) > 0) {
          shiny::updateSelectInput(session=session,
             inputId="colorjam_step",
             choices=colorjam_steps(),
@@ -328,6 +328,7 @@ colorjamShinyServer <- function
       h1h2 <- as.data.frame(jamba::rmNULL(
          validate_colorjam_preset(
             colorjam_presets(input$colorjam_preset))))
+      direction <- head(h1h2$direction, 1)
       h1h2 <- jamba::mixedSortDF(h1h2,
          byCols=c(2, direction));
       axis_at <- seq(from=-30, to=390, by=30);
@@ -357,6 +358,7 @@ colorjamShinyServer <- function
    # update x/y reactive values in response to changes in shape anchors
    shiny::observe({
       h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
+      direction <- head(h1h2$direction, 1)
       # sort h1h2 consistent with plot_colorjam_preset()
       h1h2 <- jamba::mixedSortDF(h1h2,
          byCols=c(1, 2 * direction));

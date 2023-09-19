@@ -453,15 +453,14 @@ plot_colorjam_preset <- function
    }
    if (length(preset) > 0) {
       h1h2 <- validate_colorjam_preset(preset=preset);
+      default_step <- h1h2$default_step;
    } else {
       h1h2 <- validate_colorjam_preset(
          h1=h1,
          h2=h2,
-         direction=direction,
-         default_step=default_step)
+         direction=direction)
    }
    direction <- head(h1h2$direction, 1);
-   default_step <- head(h1h2$default_step, 1);
 
    byCols <- c(1, -2);
    if (direction < 0) {
