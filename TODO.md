@@ -1,3 +1,35 @@
+## TODO 20sep2023
+
+* Consider secret test mode for `rainbowJam()` that uses HSL instead of HCL
+
+   * likely to show less contrast than HCL, but with better saturation per hue
+   * for testing, use C,L values rescaled to HSL range
+
+* Move `platjam::design2colors()` here?
+* Review `preset` and `step`
+
+   * After real-world usage, decide whether default colors are visually
+   distinct enough
+   * R package `pals` provides functions to evaluate color palettes
+   * Other packages: colorBlindness, colorblindr, shades, ggsci
+   * Consider expanding `Lrange`, `Crange` to broaden visual range.
+
+## TODO 19sep2023
+
+* DONE. `sort_colors()` default should sort by hue, chroma, luminance.
+
+* DONE. Consider HCL-to-HSL hue mapping
+* DONE. `remap_colors()`
+
+   * convert colors to use a different `preset`
+   * upon changing the hue
+   
+      * convert HCL hue to HSL hue
+      * convert color internally to HSL to determine the current S,L values
+      * adjust to the new hue, then apply the same S,L values
+      * upon testing, HSL does not work nearly as well as hoped; HCL was
+      too dark; blending HSL and HCL conversions seemed most effective
+
 ## TODO 13sep2023
 
 * DONE. Simple R-shiny app
@@ -63,10 +95,12 @@
    or color `functions` for `numeric` columns, as created
    by `circlize::colorRamp2()`.
 
-* Implement HSL color space for categorical colors, slowly replacing
-HCL colorspace in `rainbowJam()`.
+* No longer necessary: Implement HSL color space for categorical colors,
+slowly replacing HCL colorspace in `rainbowJam()`.
 
 ## TODO
+
+These items are not likely to be on an active todo list:
 
 * Add optional parameter to `group2colors()` which applies
 a systematic re-ordering of colors assigned to labels. For
@@ -87,15 +121,20 @@ Notably allows a "color lens" which applies a scalable adjustment
 to the color ramp to enhance or reduce the color intensity across
 the numeric range.
 
-## color table viewer
+## color table viewer (ASCII)
 
-* Perhaps the most frequently used JAM function is a fixed-width
-colorized table viewer for console output. Similar in theory to
-the custom tibble print method, this function goes further by
-colorizing values in each column to help the visual summary.
-Especially useful for checking experiment design, typos in
-labels, and numeric ranges. It can, for example, make a text
-heatmap for numeric values, which can be helpful spotting outliers.
-It also trims column values so the table fits within one or
-more screen widths.
+* Perhaps the most frequently used JAM function is (was) a fixed-width
+colorized table viewer for console output.
+
+   * Similar in theory to the custom tibble print method, this function goes
+   further by colorizing values in each column to help the visual summary.
+   * Especially useful for checking experiment design, typos in
+   labels, and numeric ranges. It can, for example, make a text
+   heatmap for numeric values, which can be helpful spotting outliers.
+   * It also trims column values so the table fits within one or
+   more screen widths.
+   * Similar R package `pillar` offers colorized formatted
+   `data.frame`/`tibble` output.
+   
+      * Unclear whether it can provide equivalent capabilities.
 

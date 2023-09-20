@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.26.900</span>
       </span>
     </div>
 
@@ -47,6 +47,38 @@
     </div>
 
 
+<div class="section level2">
+<h2 id="todo-20sep2023">TODO 20sep2023<a class="anchor" aria-label="anchor" href="#todo-20sep2023"></a></h2>
+<ul><li>
+<p>Consider secret test mode for <code><a href="reference/rainbowJam.html">rainbowJam()</a></code> that uses HSL instead of HCL</p>
+<ul><li>likely to show less contrast than HCL, but with better saturation per hue</li>
+<li>for testing, use C,L values rescaled to HSL range</li>
+</ul></li>
+<li><p>Move <code><a href="https://rdrr.io/pkg/platjam/man/design2colors.html" class="external-link">platjam::design2colors()</a></code> here?</p></li>
+<li>
+<p>Review <code>preset</code> and <code>step</code></p>
+<ul><li>After real-world usage, decide whether default colors are visually distinct enough</li>
+<li>R package <code>pals</code> provides functions to evaluate color palettes</li>
+<li>Other packages: colorBlindness, colorblindr, shades, ggsci</li>
+<li>Consider expanding <code>Lrange</code>, <code>Crange</code> to broaden visual range.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="todo-19sep2023">TODO 19sep2023<a class="anchor" aria-label="anchor" href="#todo-19sep2023"></a></h2>
+<ul><li><p>DONE. <code><a href="reference/sort_colors.html">sort_colors()</a></code> default should sort by hue, chroma, luminance.</p></li>
+<li><p>DONE. Consider HCL-to-HSL hue mapping</p></li>
+<li>
+<p>DONE. <code>remap_colors()</code></p>
+<ul><li><p>convert colors to use a different <code>preset</code></p></li>
+<li>
+<p>upon changing the hue</p>
+<ul><li>convert HCL hue to HSL hue</li>
+<li>convert color internally to HSL to determine the current S,L values</li>
+<li>adjust to the new hue, then apply the same S,L values</li>
+<li>upon testing, HSL does not work nearly as well as hoped; HCL was too dark; blending HSL and HCL conversions seemed most effective</li>
+</ul></li>
+</ul></li>
+</ul></div>
 <div class="section level2">
 <h2 id="todo-13sep2023">TODO 13sep2023<a class="anchor" aria-label="anchor" href="#todo-13sep2023"></a></h2>
 <ul><li>
@@ -108,18 +140,28 @@
 <p>Migrate <code><a href="https://rdrr.io/pkg/platjam/man/design2colors.html" class="external-link">platjam::design2colors()</a></code> here.</p>
 <ul><li>Intended to take <code>data.frame</code> with group, subgroup, and create a <code>list</code> of colors for each column, either with named <code>character</code> color vectors named by value, or color <code>functions</code> for <code>numeric</code> columns, as created by <code><a href="https://rdrr.io/pkg/circlize/man/colorRamp2.html" class="external-link">circlize::colorRamp2()</a></code>.</li>
 </ul></li>
-<li><p>Implement HSL color space for categorical colors, slowly replacing HCL colorspace in <code><a href="reference/rainbowJam.html">rainbowJam()</a></code>.</p></li>
+<li><p>No longer necessary: Implement HSL color space for categorical colors, slowly replacing HCL colorspace in <code><a href="reference/rainbowJam.html">rainbowJam()</a></code>.</p></li>
 </ul></div>
 <div class="section level2">
 <h2 id="todo">TODO<a class="anchor" aria-label="anchor" href="#todo"></a></h2>
+<p>These items are not likely to be on an active todo list:</p>
 <ul><li>Add optional parameter to <code><a href="reference/group2colors.html">group2colors()</a></code> which applies a systematic re-ordering of colors assigned to labels. For example, labels are typically assigned sequential color hue, which may not be ideal for all cases. This method would assign colors to every n-th color.</li>
 <li>Add <code>subgroup2colors()</code> which extends <code><a href="reference/group2colors.html">group2colors()</a></code> by splitting each color into subgroups as needed. In this way, experiment factors can each be assigned colors, while the factor levels are assigned values from a gradient for each color. In future, this function will optionally use a color family (or small range of color hues) to each factor, then will vary the hue, as well as the chroma/luminance for factor levels.</li>
 <li>
 <code><a href="reference/vals2colorLevels.html">vals2colorLevels()</a></code> assigns colors to a numeric range, keeping zero as a mid-point for divergent color scales. Notably allows a “color lens” which applies a scalable adjustment to the color ramp to enhance or reduce the color intensity across the numeric range.</li>
 </ul></div>
 <div class="section level2">
-<h2 id="color-table-viewer">color table viewer<a class="anchor" aria-label="anchor" href="#color-table-viewer"></a></h2>
-<ul><li>Perhaps the most frequently used JAM function is a fixed-width colorized table viewer for console output. Similar in theory to the custom tibble print method, this function goes further by colorizing values in each column to help the visual summary. Especially useful for checking experiment design, typos in labels, and numeric ranges. It can, for example, make a text heatmap for numeric values, which can be helpful spotting outliers. It also trims column values so the table fits within one or more screen widths.</li>
+<h2 id="color-table-viewer-ascii">color table viewer (ASCII)<a class="anchor" aria-label="anchor" href="#color-table-viewer-ascii"></a></h2>
+<ul><li>
+<p>Perhaps the most frequently used JAM function is (was) a fixed-width colorized table viewer for console output.</p>
+<ul><li><p>Similar in theory to the custom tibble print method, this function goes further by colorizing values in each column to help the visual summary.</p></li>
+<li><p>Especially useful for checking experiment design, typos in labels, and numeric ranges. It can, for example, make a text heatmap for numeric values, which can be helpful spotting outliers.</p></li>
+<li><p>It also trims column values so the table fits within one or more screen widths.</p></li>
+<li>
+<p>Similar R package <code>pillar</code> offers colorized formatted <code>data.frame</code>/<code>tibble</code> output.</p>
+<ul><li>Unclear whether it can provide equivalent capabilities.</li>
+</ul></li>
+</ul></li>
 </ul></div>
 
 

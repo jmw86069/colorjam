@@ -41,9 +41,12 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

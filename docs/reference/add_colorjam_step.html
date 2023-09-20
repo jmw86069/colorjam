@@ -18,7 +18,7 @@ to visibly distinct categorical colors."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.26.900</span>
       </span>
     </div>
 
@@ -93,9 +93,12 @@ for use with HSV color space.</p></dd>
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
+<code><a href="hcl_to_hsl_hue.html">hcl_to_hsl_hue</a>()</code>,
+<code><a href="hsl_to_hcl_hue.html">hsl_to_hcl_hue</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
@@ -108,13 +111,13 @@ for use with HSV color space.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  88 110  99  80 105  97</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $L</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 82 51 70 60 77 65 85 55 73 63 80 68 75 45 63 53 70 58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 80 51 65 58 76 62 84 55 71 61 82 66 90 45 61 53 71 58</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">Cvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">88</span>, <span class="fl">99</span>,  <span class="fl">80</span>, <span class="fl">105</span>, <span class="fl">97</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">Lvals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">51</span>, <span class="fl">82</span>, <span class="fl">70</span>, <span class="fl">60</span>, <span class="fl">77</span>, <span class="fl">65</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">add_colorjam_step</span><span class="op">(</span><span class="st">"new_v24"</span>, step_list<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>C<span class="op">=</span><span class="va">Cvals</span>, L<span class="op">=</span><span class="va">Lvals</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_step(): </span><span style="color: #00AFFF;">added step='</span><span style="color: #FF8700;">new_v24</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> added step '<span style="color: #00BB00;">new_v24</span>'.</span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_steps.html">colorjam_steps</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "new_v24" "v19"     "v20"     "v23"     "v24"    </span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_steps.html">colorjam_steps</a></span><span class="op">(</span><span class="st">"new_v24"</span><span class="op">)</span></span></span>
@@ -132,7 +135,7 @@ for use with HSV color space.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add_colorjam_step</span><span class="op">(</span><span class="st">"new_v24"</span>, step_list<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>object 'step' not found</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:49</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_step(): </span><span style="color: #00AFFF;">removed step='</span><span style="color: #FF8700;">new_v24</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> removed step '<span style="color: #00BB00;">new_v24</span>'.</span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_steps.html">colorjam_steps</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "new_v24" "v19"     "v20"     "v23"     "v24"    </span>
 <span class="r-in"><span></span></span>

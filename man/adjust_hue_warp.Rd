@@ -7,6 +7,7 @@
 adjust_hue_warp(
   h1 = NULL,
   h2 = NULL,
+  direction = NULL,
   preset = getOption("colorjam.preset", "custom"),
   h1_shift = 0,
   h2_shift = 0,
@@ -58,42 +59,49 @@ color_pie(rj_0, radius=1,
 
 n <- 24;
 new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=-120, reverse_h2=FALSE)
-add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2)
+add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2, direction=1)
 rj_120 <- rainbowJam(n=n, preset="temp", step="v23",
    nameStyle="n")
 color_pie(rj_120, radius=1,
    main="dichromat color wheel rotated -120 degrees\nstep='v23'")
 
 new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=0, reverse_h2=TRUE)
-add_colorjam_preset("temp1", h1=new_h1h2$h1, h2=new_h1h2$h2)
-rj_0rev <- rainbowJam(n=n, preset="temp1", step='v23')
+add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+   direction=new_h1h2$direction)
+rj_0rev <- rainbowJam(n=n, preset="temp", step="v23")
 names(rj_0rev) <- seq_len(n)
 color_pie(rj_0rev, radius=1, main="dichromat color wheel (reversed)")
 
 new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=90, reverse_h2=FALSE)
-add_colorjam_preset("temp2", h1=new_h1h2$h1, h2=new_h1h2$h2)
-rj_90 <- rainbowJam(n=n, preset="temp2", step='v23')
+add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+   direction=new_h1h2$direction)
+rj_90 <- rainbowJam(n=n, preset="temp", step='v23')
 color_pie(rj_90, radius=1,
    main="color wheel rotated 90 degrees\nstep='v23'")
 
 # RGB rotated to start at yellow, then red, then blue
 new_h1h2 <- adjust_hue_warp(preset="rgb", h2_shift=-70, reverse_h2=TRUE)
-add_colorjam_preset("temp3", h1=new_h1h2$h1, h2=new_h1h2$h2)
+add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+   direction=new_h1h2$direction)
 n <- 10
 rgb_rev <- rainbowJam(n=n,
-   preset="temp3", step='v24')
+   preset="temp", step='v24')
 color_pie(rgb_rev,
    main="RGB color wheel rotated -30 degrees (reversed)\nstep='v24'")
 
 # same as above except using ryb3
 ryb_h1h2 <- adjust_hue_warp(preset="ryb", h2_shift=-110, reverse_h2=TRUE)
-add_colorjam_preset("temp4", h1=ryb_h1h2$h1, h2=ryb_h1h2$h2)
+add_colorjam_preset("temp", h1=ryb_h1h2$h1, h2=ryb_h1h2$h2,
+   direction=new_h1h2$direction)
 n <- 10
 ryb_rev <- rainbowJam(n=n,
    #phase=c(1,4,5,2,6,3),
-   preset="temp4", step='v24')
+   preset="temp", step='v24')
 color_pie(ryb_rev,
    main="RYB color wheel rotated -110 degrees (reversed)\nstep='v24'")
+
+# remove "temp" preset
+add_colorjam_preset(preset="temp", h1=NULL)
 
 }
 \seealso{
@@ -106,9 +114,12 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

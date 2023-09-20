@@ -1,37 +1,56 @@
 
-# colorjam <img src="man/figures/colorjam_logo.png" width="133px" height="154px" align="right" style="padding-left:10px;background-color:white;" />
+# colorjam <img src="man/figures/colorjam_logo.png" width="133px" height="154px" align="right" style="padding-left:10px;background-color:white;"/>
 
 ## Why colorjam?
 
 `colorjam` provides visually distinct categorical colors of arbitrary
 length, using an optimized pattern of chroma/luminance values.
 
-- **Scalable**. Generate visually distinct categorical colors of
-  arbitrary length.
-- **Color-blindness friendly**. Caveat: No set of colors can be
-  represented perfectly for all types of color blindness. However the
-  default color wheel in `colorjam` was optimized for maximal visual
-  distinction between colors, informed by the three major types of color
-  blindness simulated by the fantastic R package `dichromat()`.
-- **Optimized for experiment design**. The first color default is gold,
-  for experiment design factors that encode the control/reference as the
-  first factor level. This reference is assigned the neutral color
-  “gold” rather than bright red.
-- **Flexible**. The color wheel can be changed to red-yellow-blue
-  (painting), red-green-blue (default for computer monitors), or
-  customized completely. The chroma/luminance step functions can be
-  re-ordered or customized as well.
+- **Scalable.** Visually distinct categorical colors of arbitrary
+  length.
+
+  - `rainbowJam(n)`
+  - ggplot2 functions: `scale_color_jam()`, `scale_fill_jam()`
+
+- **Color-blindness friendly.** Optimized for three kinds of color
+  blindness.
+
+<!--
+   * The `"dichromat"` color wheel (default) is optimized for three kinds of
+   color blindness, <br>
+   as simulated by the `dichromat` package.
+-->
+
+- **Flexible.** `"dichromat"`, `"ryb"`, `"rgb"` color wheels are
+  available.
+
+<!--
+   * `"dichromat"`: color-blindness optimized
+   * `"ryb"`: red-yellow-blue "rainbow", additive color blending
+   * `"rgb"`: red-green-blue "rainbow", default R, computer imaging
+   * custom color wheels can be defined
+-->
+
+- **Optimized for statistical design.** First color
+  <b style='color:#CDAD00'>gold</b> assigned to control groups:
+
+<!--
+   * **`"dichromat2"`**: color-blindness optimized, starts with gold (default)
+   * `"ryb2"`: red-yellow-blue, additive color blending
+   * `"rgb2"`: red-green-blue, default R, computer imaging
+-->
+
+- **Interactive R-shiny app.** `launchColorjamShiny()`
 
 ## Installation
 
-To install colorjam, you may use the `remotes` package:
+Install colorjam using the `remotes` package:
 
 ``` r
 remotes::install_github("jmw86069/colorjam");
 ```
 
-OR, we recommend the package `pacman` which helps keep the package
-updated:
+OR, use `pacman` to keep the package updated:
 
 ``` r
 ### if necessary, install pacman:
@@ -40,7 +59,8 @@ library(pacman)
 p_load_current_gh("jmw86069/colorjam")
 ```
 
-The `colorjam` package is being prepared for CRAN in the “near” future.
+*The `colorjam` package is being prepared for CRAN in the “near”
+future.*
 
 ## Command reference
 
@@ -57,12 +77,12 @@ library(colorjam);
 library(jamba);
 ```
 
-### Scalable categorical colors
+### Categorical colors
 
-#### dichromat
+#### dichromat (default)
 
-First generate some basic categorical colors, `n=5` colors. We will use
-the function `jamba::showColors()` to display the colors.
+Let’s generate `n=5` categorical colors, displayed by
+`jamba::showColors()`.
 
 ``` r
 showColors(rainbowJam(5));
@@ -70,7 +90,7 @@ showColors(rainbowJam(5));
 
 ![](man/figures/README-cat5-1.png)<!-- -->
 
-Alternative the function `color_pie()` displays colors in a pie circle:
+Alternatively, `color_pie()` displays colors in a pie circle.
 
 ``` r
 color_pie(rainbowJam(5));
@@ -78,8 +98,7 @@ color_pie(rainbowJam(5));
 
 ![](man/figures/README-pie5-1.png)<!-- -->
 
-Categorical colors are scalable (to a point, but that point is around
-100).
+Categorical colors are scalable.
 
 ``` r
 color_pie(rainbowJam(15));
@@ -87,7 +106,7 @@ color_pie(rainbowJam(15));
 
 ![](man/figures/README-pie15-1.png)<!-- -->
 
-You can be fancy and name the output colors with `named_colors`:
+Label the colors using the 4994 `named_colors`:
 
 ``` r
 color_pie(rainbowJam(15, nameStyle="closest_named_color"));
@@ -95,69 +114,77 @@ color_pie(rainbowJam(15, nameStyle="closest_named_color"));
 
 ![](man/figures/README-named15-1.png)<!-- -->
 
-`color_pie()` can plot a `list` of color vectors in concentric circles,
-so below we plot an increasing number of categorical colors to
-illustrate the scaling.
+Gradually increase the number of colors, then use `color_pie()` to plot
+them in concentric circles.
 
 ``` r
 colorList <- lapply(nameVector(c(36, 24, 12)), function(n){
    rainbowJam(n, nameStyle="n");
 });
 color_pie(colorList,
-   main="Dichromat color wheel (default colorjam)");
+   main="preset='dichromat2' (default)");
 ```
 
 ![](man/figures/README-cat_list_dichromat-1.png)<!-- -->
 
 ##### What is “dichromat” here?
 
-Every color system has a “color wheel” - something like red-green-blue
-(RGB) or red-yellow-blue (RYB). Here, we defined a new color wheel
-`"dichromat"` to maximize the distinction between color hues for people
-with color blindness - and this approach used the R package `dichromat`.
+Every color system has a “color wheel” - something like
+<B style='color:#CC0000'>red</B>-<B style='color:#009900'>green</B>-<B style='color:#0000EE'>blue</B>
+(RGB) or
+<B style='color:#CC0000'>red</B>-<B style='color:#DDCC00'>yellow</B>-<B style='color:#0000EE'>blue</B>
+(RYB).
 
-The `"dichromat"` color wheel creates approximately equal halves of the
-color wheel that accounts for simulated colors based upon `"deutan"`,
-`"protan"`, and `"tritan"` forms of color blindness. That means
-“cool/warm” colors should take approximately half the color wheel in
-each case, while avoiding colors that are most difficult to distinguish
-from others in the color wheel.
+We defined a new color wheel `"dichromat"` to maximize the visual
+distinction between color hues for people with color blindness. The
+process was driven by R package `dichromat`, so we gave it that name out
+of respect.
+
+The `"dichromat"` color wheel allocates approximately equal halves of
+the color wheel to be visually distinct for `"deutan"`, `"protan"`, and
+`"tritan"` forms of color blindness. Roughly akin to using “cool”/“warm”
+colors for each half the color wheel, for each simulated color. The
+wheel avoids colors which are the most difficult to distinguish in the
+color wheel.
 
 It isn’t perfect.
 
-However `colorjam` does provide the first scalable method to produce
-categorical colors, where colors are optimized for three forms of
-color-blindness. There are other excellent resources that provide
-color-blindness friendly colors, which are not scalable. To be fair,
-this approach may not ultimately be much more scalable than methods that
-provide a fixed maximum number of colors.
+However `colorjam` does provide the first scalable method (we have seen)
+to produce categorical colors optimized for the three major forms of
+color-blindness. Other excellent resources that provide color-blindness
+friendly colors, which are not scalable. However to be fair, fixed
+colors may be the best realistic approach, so `colorjam` may not be the
+ideal solution.
 
 #### red-yellow-blue
 
-The recommended “full rainbow” color wheel is “red-yellow-blue”, which
-performs much better for most color operations such as blending colors
-(additive mixing).
+The “full rainbow” color wheel
+“<B style='color:#CC0000'>red</B>-<B style='color:#DDCC00'>yellow</B>-<B style='color:#0000EE'>blue</B>”
+is recommended over default RGB to provide the best full rainbow. It
+performs particularly well for color blending (see
+[Color-blending](#Color-blending)) for additive paint-like mixing.
 
 - `preset="ryb"` for red-yellow-blue
-- `preset="ryb2"` for red-yellow-blue that starts with yellow (shiown
-  below).
 
 ``` r
 colorList1 <- lapply(nameVector(c(12)), function(n){
    rainbowJam(n, preset="ryb");
 });
 color_pie(colorList1,
-   main="Red-Yellow-Blue color wheel\npreset='ryb' (starting at red)");
+   main="Red-Yellow-Blue\npreset='ryb' (starting at red)");
 ```
 
 ![](man/figures/README-cat_list_ryb-1.png)<!-- -->
+
+- `preset="ryb2"` (recommended) for yellow-red-blue, starting with
+  yellow
 
 ``` r
 colorList1 <- lapply(nameVector(c(16)), function(n){
    rainbowJam(n, preset="ryb2");
 });
 color_pie(colorList1,
-   main="Red-Yellow-Blue color wheel\npreset='ryb2' (starting at yellow)");
+   main="Yellow-Red-Blue\npreset='ryb2' (starting at yellow)");
 ```
 
 ![](man/figures/README-cat_list_ryb2-1.png)<!-- -->
@@ -172,10 +199,11 @@ color wheel starting with red.
 
 #### red-green-blue
 
-Similarly, the R default “red-green-blue” color wheel:
+Similarly, the R default
+“<B style='color:#CC0000'>red</B>-<B style='color:#009900'>green</B>-<B style='color:#0000EE'>blue</B>”
+color wheel:
 
 - `preset="rgb"` the R default RGB color wheel
-- `preset="rgb2"` the R default RGB color wheel, starting with yellow
 
 ``` r
 color_pie(
@@ -185,7 +213,10 @@ color_pie(
 
 ![](man/figures/README-cat_list_rgb-1.png)<!-- -->
 
-*(Look how much of this color wheel is blue-green. It is not for me.)*
+*(Look how much of this color wheel is blue-green. This style is not for
+me, haha.)*
+
+- `preset="rgb2"` the R default RGB color wheel, starting with yellow
 
 ``` r
 color_pie(
@@ -195,11 +226,17 @@ color_pie(
 
 ![](man/figures/README-cat_list_rgb2-1.png)<!-- -->
 
-Too much of the RGB color wheel is green-blue.
+#### More about color wheels
 
-Interesting aside: The 4994 total `named_colors` from the amazing Meodai
-resource show a clear bias in color hues. Subsetting colors for at least
-Chroma 40 with `subset_colors(named_colors, C > 40)`:
+The 4994 colors provided in `named_colors` (see next section) are
+collated from numerous sources, and ultimately represent colors that
+people were motivated to name. Look how many named colors include
+red/orange/yellow as compared to green/blue/purple! Then compare to the
+RGB color wheel above, which disproportionately represents blue/green,
+to the detriment of red/yellow.
+
+Here, `named_colors` are filtered for at least Chroma 40 using
+`subset_colors(named_colors, C > 40)`
 
 ``` r
 color_pie(unname(
@@ -215,22 +252,25 @@ unable to produce high saturation colors with that hue. Color theory is
 fascinating, and endlessly complex, in part because each person is
 slightly different.
 
-### Color matching / Naming colors
+### Color matching / Color naming
 
 Two functions are provided to match colors to a reference set, which is
 a convenient way to assign color names.
 
-- `closestRcolor()` - matches colors to the 657 colors in
-  `grDevices::colors()`, representing 502 unique hexadecimal colors.
-  (Custom reference colors can be supplied.)
-- `closest_named_color()` - matches to the much more comprehensive
-  `named_colors`, which adds 4447 hexadecimal colors from
-  [meodai/named-colors](https://github.com/meodai/named-colors), and 436
-  colors unique to `grDevices::colors()`, representing **4883 named
-  hexadecimal colors**.
+- `closestRcolor()`
+
+  - matches colors to the 657 colors in `grDevices::colors()`, custom
+    reference colors can be supplied.
+
+- `closest_named_color()`
+
+  - matches colors to **4883** `named_colors`, which adds 4447 colors
+    from [meodai/named-colors](https://github.com/meodai/named-colors)
+    (amazing!) and 436 colors not already represented from
+    `grDevices::colors()`.
 
 The argument `showPalette=TRUE` will plot the original colors and the
-closest R colors for comparison.
+closest matched color for comparison.
 
 ``` r
 cnc <- closest_named_color(c(rainbowJam(12), "grey"),
@@ -250,18 +290,17 @@ crc <- closestRcolor(c(rainbowJam(12), "grey"),
 
 There are two underlying methods:
 
-- `"HCL"` (default) uses color hue matching by angle, and applies custom
-  weights to H, C, L channels.
-- `"LUV"` converts to non-polar coordinates, and uses Euclidean distance
-  across L, U, V channels.
+- `"HCL"` (default) matches color hue by angle, with custom weights to
+  channels H, C, and L.
+- `"LUV"` matches colors using non-polar coordinates and Euclidean
+  distance across the channels L, U, and V.
 
-The function separately matches greyscale colors to the subset of
-grayscale reference colors, in order to ignore the “hue” which is still
-stored.
+Greyscale colors are matches separately to a subset of grayscale
+reference colors, to avoid using hue in unsaturated colors.
 
 ### Color-blending
 
-The function `blend_colors()` has some useful features:
+`blend_colors()` has some useful features:
 
 - **Paint-style blending**. blue + yellow = green. (For default RGB:
   blue + yellow = grey)
@@ -291,12 +330,6 @@ blent3 <- blend_colors(c("gold", "red"), do_plot=TRUE);
 
 ``` r
 
-# blent4 <- blend_colors(c("gold", "deeppink4"), do_plot=TRUE);
-# blent5 <- blend_colors(c("red", "green4"), do_plot=TRUE);
-# blent6 <- blend_colors(c("blue", "darkorange"), do_plot=TRUE);
-# 
-# blent7 <- blend_colors(c("red", "gold", "blue"), do_plot=TRUE);
-
 blent8 <- blend_colors(c("red1", "red3", "blue"), do_plot=TRUE);
 ```
 
@@ -310,7 +343,6 @@ blent9 <- blend_colors(c("red1", "blue1", "blue4"), do_plot=TRUE);
 
 ``` r
 
-# blent10 <- blend_colors(c("blue", "ivory"), do_plot=TRUE);
 blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
 ```
 
@@ -318,10 +350,7 @@ blent10 <- blend_colors(c("red", "blue", "ivory"), do_plot=TRUE);
 
 ### Color-splitting
 
-Colors can be split into a light-dark gradient using `color2gradient()`.
-
-This technique is useful when assigning categorical colors to a primary
-group, then splitting those colors by a sub-grouping.
+`color2gradient()` can split colors using a light-dark gradient.
 
 ``` r
 colorSet <- rainbowJam(5);
@@ -334,7 +363,7 @@ color_pie(list(
 
 ![](man/figures/README-color_split-1.png)<!-- -->
 
-The intensity of the color gradient is adjusted with `dex`, “darkness
+The intensity of the gradient is adjusted with `dex`, “darkness
 expansion factor”.
 
 ``` r
@@ -360,15 +389,16 @@ color_pie(list(
    `dex=1\n(default)`=(colorSet4),
    `dex=1/2`=(colorSet4a),
    colorSet=colorSet),
-   main="Intensity of the gradient is adjusted with 'dex'\n(darkness expansion factor)");
+   main=paste0("Intensity of the gradient is adjusted with 'dex'\n",
+      "(darkness expansion factor)"));
 ```
 
 ![](man/figures/README-color_split_wt-1.png)<!-- -->
 
-### ggplot2 colors
+### ggplot2 functions
 
-- `scale_color_jam()` defines categorical colors for ggplot2 `colour`
-- `scale_fill_jam()` defines categorical colors for ggplot2 `fill`
+- `scale_color_jam()` categorical colors for ggplot2 `colour`
+- `scale_fill_jam()` categorical colors for ggplot2 `fill`
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
@@ -401,8 +431,7 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
 ### Custom ggplot2 theme
 
-An alternative ggplot2 theme is provided, which by default does not use
-the newspaper-grey background color.
+An alternative ggplot2 theme is provided.
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
@@ -418,8 +447,8 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
 This function provides some common arguments to customize:
 
-- `base_size`: The default font size in points.
-- `blankGrid`: `logical` which removes all background grid lines.
+- `base_size`: `numeric` default font size in points.
+- `blankGrid`: `logical` to remove all background grid lines.
 
 ``` r
 if (suppressPackageStartupMessages(require(ggplot2))) {
@@ -433,15 +462,9 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
 
 ![](man/figures/README-ggplot2_theme_figure-1.png)<!-- -->
 
-### Pre-defined color gradients (08-Apr-2021)
+### Jam color gradients
 
-Two pre-defined gradients were added, motivated by the need for
-linear/sequential and divergent color gradients that are also color
-blindness friendly.
-
-The linear/sequential gradients in `jam_linear` use a white baseline
-color, to distinguish them from divergent gradients. However the same
-names are used in `jam_linear` and `jam_divergent`.
+- `jam_linear`: linear (sequential) gradients with white baseline color
 
 ``` r
 jamba::showColors(jam_linear)
@@ -449,9 +472,7 @@ jamba::showColors(jam_linear)
 
 ![](man/figures/README-jam_linear_1-1.png)<!-- -->
 
-The divergent color gradients in `jam_divergent` use a black background,
-to be distinguished from the linear gradients. However they use the same
-names, so that they can be paired as appropriate.
+- `jam_divergent`: divergent color gradients with black baseline color
 
 ``` r
 jamba::showColors(jam_divergent)
@@ -468,13 +489,10 @@ and divergent color gradients to use in tandem, for example
 
 #### Two-step linear gradients
 
-Two new functions provide some interesting and useful features.
-
 `twostep_gradient()` combines two linear gradients into one linear
-gradient, increasing the visual distinction across the gradient. It is
-easier to show than to explain.
+gradient.
 
-Two linear gradients, based upon orange and red, are combined:
+Two linear gradients are combined, using orange and red:
 
 ``` r
 ts1 <- twostep_gradient("orange2", "firebrick", n=11, debug=TRUE)
@@ -495,7 +513,7 @@ title("orange2 + firebrick");
 
 ![](man/figures/README-twostep_1-1.png)<!-- -->
 
-Two linear gradients, based upon aquamarine and blue, are combined:
+Two linear gradients are combined, using aquamarine and blue:
 
 ``` r
 ts2 <- twostep_gradient("aquamarine", "dodgerblue", n=11, debug=TRUE)
@@ -518,8 +536,7 @@ title("aquamarine + dodgerblue");
 
 #### Custom divergent gradients
 
-`make_jam_divergent()` combines two linear gradients, using the two
-gradients created above:
+`make_jam_divergent()` combines two linear gradients.
 
 ``` r
 ts1ts2 <- make_jam_divergent(list(ts2=ts2),

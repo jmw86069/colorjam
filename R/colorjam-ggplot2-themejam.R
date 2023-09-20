@@ -205,7 +205,7 @@ scale_color_jam <- function
  alpha=1,
  useGrey=20,
  preset=getOption("colorjam.preset", "dichromat2"),
- step=getOption("colorjam.step", "v24"))
+ step=getOption("colorjam.step", "default"))
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -297,7 +297,7 @@ scale_fill_jam <- function
  alpha=1,
  useGrey=20,
  preset=getOption("colorjam.preset", "dichromat2"),
- step=getOption("colorjam.step", "v24"))
+ step=getOption("colorjam.step", "default"))
 {
    ## Purpose is to provide rainbowJam() in ggplot2 context
    if (!jamba::check_pkg_installed("ggplot2")) {
@@ -363,7 +363,7 @@ jam_pal <- function
  alpha=1,
  useGrey=20,
  preset=getOption("colorjam.preset", "dichromat2"),
- step=getOption("colorjam.step", "v24"),
+ step=getOption("colorjam.step", "default"),
  ...)
 {
    ## Note this function does not specifically require ggplot2

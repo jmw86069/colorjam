@@ -8,7 +8,7 @@ sort_colors(
   x,
   ...,
   alpha = TRUE,
-  byCols = NULL,
+  byCols = c("H", "C", "L"),
   return_type = c("colors", "df")
 )
 }

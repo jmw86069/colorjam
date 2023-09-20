@@ -219,7 +219,7 @@ sort_colors <- function
 (x,
  ...,
  alpha=TRUE,
- byCols=NULL,
+ byCols=c("H", "C", "L"),
  return_type=c("colors", "df"))
 {
    ## Purpose is to emulate subset.data.frame() by converting colors

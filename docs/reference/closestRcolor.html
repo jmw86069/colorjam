@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.26.900</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@
 <span>  Cgrey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"jam.Cgrey"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  showPalette <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  colorModel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcl"</span>, <span class="st">"LUV"</span><span class="op">)</span>,</span>
-<span>  Hwt <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  Hwt <span class="op">=</span> <span class="fl">2.5</span>,</span>
 <span>  Cwt <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  Lwt <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -215,12 +215,9 @@ distance in any of the three dimensions.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">closestRcolor</span><span class="op">(</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, showPalette<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="closestRcolor-1.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #F7C53E          #C35E00          #FF8A66          #DC726B </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          "gold2"     "chocolate3"        "salmon1"  "palevioletred" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #FF89BA          #E86CED          #E9C0FF          #9169F9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "palevioletred1"        "orchid2"          "plum1" "lightslateblue" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #AFA5FF          #8891EE          #95C3FF          #43AAFF </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "steelblue1" "cornflowerblue"       "skyblue1"     "steelblue2" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "gold2"          "tan4"           "darkorange"     "salmon3"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "palevioletred1" "palevioletred2" "plum2"          "slateblue1"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "mediumpurple1"  "cornflowerblue" "skyblue1"       "steelblue2"    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

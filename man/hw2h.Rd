@@ -2,7 +2,7 @@
 % Please edit documentation in R/colorjam-huewarp.R
 \name{hw2h}
 \alias{hw2h}
-\title{Convert warped hue to standard hue}
+\title{Convert warped virtual hue to standard hue}
 \usage{
 hw2h(
   h,
@@ -20,30 +20,44 @@ not need to be in sequential order.}
 \item{h1, h2}{\code{numeric} vector of color hues, which by default are defined in
 \code{h2hwOptions()}, but allowed here in cases where the global options
 should be overridden but not modified.}
+
+\item{direction}{\code{numeric} indicating the direction of \code{h1} HCL hue
+relative to \code{h2} virtual hue:
+\itemize{
+\item \code{1} indicates both are increasing
+\item \code{-1} indicates \code{h1} and \code{h2} differ in direction
+}}
+
+\item{preset}{\code{character} string with a named preset from
+\code{colorjam_presets()}, for which the \code{h1},\code{h2},\code{direction} values will
+be obtained.
+When \code{preset="custom"} then \code{h1} and \code{h2} must be provided.}
 }
 \value{
 \code{numeric} vector of color hues after applying the transformation
-from \code{h2} to \code{h1}.
+from \code{h2} to \code{h1} for the given \code{preset}.
 
 \code{numeric} vector of hue values after applying the hue warp
 operation.
 }
 \description{
-Convert warped hue to standard hue using the hue warp vectors
+Convert warped (virtual) hue to standard HCL hue by colorjam preset
 }
 \details{
 This function is intended to convert from a vector of warped hue values to
-the hues defined by the vectors returned by h2hwOptions()`.
-The intent is to convert colors in RYB space into RGB space by default.
+the hues defined by \code{colorjam_presets()} for the given \code{preset}.
 
-One example of input would be to supply a uniformly spaced set of color
-hues, and convert them to "standard" hues by HCL standards. It has the
-effect of presenting categorical colors, using a non-linear set of
-"standard" hue values.
+Each \code{preset} defines a custom set of color hues, for example:
+\itemize{
+\item converting RGB to RYB color wheel
+\item converting RGB to the customized dichromat color wheel
+\item reversing a color wheel
+}
 
-The default mappings convert RYB (red, yellow, blue) to RGB (red, green,
-blue). The color yellow has hue=120 in RYB space, so the call to
-\code{h2hw(120)} results in 60, which is the hue in RGB space.
+Note the output hue uses the standard HCL color hue as defined
+by \code{colorspace::polarLUV()}, with values ranging between 0 and 360.
+By this standard, 12.2 is defined as red, 120 is defined as green, and
+245 is defined as blue.
 }
 \examples{
 # It can be useful to create a uniform sequence of angles in warped
@@ -72,8 +86,11 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 
 Other colorjam hue warp: 
@@ -86,8 +103,11 @@ Other colorjam hue warp:
 \code{\link{display_degrees}()},
 \code{\link{h2hwOptions}()},
 \code{\link{h2hw}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

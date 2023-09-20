@@ -491,6 +491,8 @@ rainbowJam <- function
       return(invisible(rainbow_set));
    }
 
+   # add optional attribute with preset name
+   attr(rainbow_set, "preset") <- preset;
    return(rainbow_set);
 }
 

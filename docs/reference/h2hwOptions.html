@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.26.900</span>
       </span>
     </div>
 
@@ -57,8 +57,8 @@
 <span>  h1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"h2hw.h1"</span><span class="op">)</span>,</span>
 <span>  h2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"h2hw.h2"</span><span class="op">)</span>,</span>
 <span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"custom"</span><span class="op">)</span>,</span>
-<span>  preset_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"custom"</span>, <span class="st">"none"</span>, <span class="st">"dichromat"</span>, <span class="st">"rgb"</span>, <span class="st">"ryb"</span>, <span class="st">"ryb1"</span>, <span class="st">"ryb2"</span>, <span class="st">"ryb3"</span><span class="op">)</span>,</span>
-<span>  default_preset <span class="op">=</span> <span class="st">"dichromat"</span>,</span>
+<span>  direction <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  default_preset <span class="op">=</span> <span class="st">"dichromat2"</span>,</span>
 <span>  reset <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  setOptions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FALSE"</span>, <span class="st">"TRUE"</span>, <span class="st">"ifnull"</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -75,7 +75,7 @@ values. One example of a typical operation: one may want to
 know the R hue for a particular red-yellow-blue hue.
 In this scenario the <code>h1</code> "hue warp" is the red-yellow-blue hue,
 and the "hue" is the R typical hue used in <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code>
-<code><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">grDevices::hcl()</a></code>, and <code><a href="https://rdrr.io/pkg/farver/man/convert_colour.html" class="external-link">farver::convert_colour()</a></code>. For
+<code><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">grDevices::hcl()</a></code>, and <code><a href="https://farver.data-imaginist.com/reference/convert_colour.html" class="external-link">farver::convert_colour()</a></code>. For
 evenly-spaced red-yellow-blue colors, one would define a sequence
 of "hue warp" values from 0 to 360, then convert them to
 the default hue used by other R functions.</p></dd>
@@ -101,11 +101,6 @@ in the red-orange-yellow-green range to varying degrees.</p></li>
 <li><p><code>"rgb"</code> for the default R red-green-blue color wheel</p></li>
 </ul></li>
 </ul></dd>
-
-
-<dt>preset_names</dt>
-<dd><p><code>character</code> vector of valid <code>preset</code> values,
-included only to make the values visible in the function arguments.</p></dd>
 
 
 <dt>default_preset</dt>
@@ -144,7 +139,7 @@ hue vectors used to convert between <code>h1</code> "hue warp", and
 <code>h2</code> "actual hue".</p>
 <p>The "actual" hue is used by standard R #' functions such as
 <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code>, <code><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">grDevices::hcl()</a></code>, and
-<code><a href="https://rdrr.io/pkg/farver/man/convert_colour.html" class="external-link">farver::convert_colour()</a></code>.</p>
+<code><a href="https://farver.data-imaginist.com/reference/convert_colour.html" class="external-link">farver::convert_colour()</a></code>.</p>
 <p>The mapping from <code>h1</code> to <code>h2</code> allows customization of the spacing
 and order of colors, which allows emulation of a red-yellow-blue
 color wheel for example.</p>
@@ -184,9 +179,12 @@ of manipulating color warp values.</p>
 <code><a href="colorjam_steps.html">colorjam_steps</a>()</code>,
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
+<code><a href="hcl_to_hsl_hue.html">hcl_to_hsl_hue</a>()</code>,
+<code><a href="hsl_to_hcl_hue.html">hsl_to_hcl_hue</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p>
 <p>Other hue warp functions: 
 <code><a href="h2hw.html">h2hw</a>()</code></p></div>
@@ -196,24 +194,24 @@ of manipulating color warp values.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">h2hwOptions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   8  30  65 120 200 240 260 280 330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  45   8 340 306 280 240 180 120  70</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0.0  79.1 118.7 118.7 118.7 118.7 185.9 304.6 344.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  45.00 115.00 185.00 192.00 200.00 330.00 357.99 357.99 357.99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="h2hw.html">h2hw</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 113.0429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16.794</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">h2hwOptions</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">60</span>,<span class="fl">120</span>,<span class="fl">240</span>,<span class="fl">300</span>,<span class="fl">360</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">120</span>,<span class="fl">180</span>,<span class="fl">240</span>,<span class="fl">280</span>,<span class="fl">360</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0  60 120 240 300 360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  45   8 340 306 280 240 180 120  70</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0 120 180 240 280 360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  45.00 115.00 185.00 192.00 200.00 330.00 357.99 357.99 357.99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="h2hw.html">h2hw</a></span><span class="op">(</span><span class="fl">300</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 320.44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 193.8462</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

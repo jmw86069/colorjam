@@ -81,21 +81,32 @@ attr(.colorjam_presets[["dichromat"]], "description") <- (
 # modified dichromat starting at yellow
 .colorjam_presets[["dichromat2"]] <- list(
    h1=c(45,   8, 340, 306, 280, 240, 180,    120,     70),
-   h2=c(45, 115, 185, 192, 200, 330, 359.99, 359.99, 359.99),
+   h2=c(45, 115, 185, 192, 200, 330, 357.99, 357.99, 357.99),
    direction=-1,
    default_step="v24")
 attr(.colorjam_presets[["dichromat2"]], "description") <- paste(
    "dichromat-adjusted color wheel rotated to begin at yellow,",
    "and reversed relative to dichromat");
 
-   # h1=c(8, 30, 65,
-   #    120, 200, 240,
-   #    260, 280, 330),
-   # h2=c(115, 35.9, -3.7+1e-9,
-   #    -3.7, -3.7-1e-9, -3.7-2e-9,
-   #    -70.9, -189.6, -229.2),
-   # direction=-1,
-   # default_step="v24")
+# HCL-to-HSL hue mapping
+.colorjam_presets[["hcl_to_hsl"]] <- list(
+   h1=c(0, 10, 20, 30, 40, 50,
+      60, 70, 80, 90, 100, 110,
+      120, 130, 140, 150, 160, 170,
+      180, 190, 200, 210, 220, 230,
+      240, 250, 260, 270, 280, 290,
+      300, 310, 320, 330, 340, 350),
+   h2=c(344, 357, 11, 24, 35, 39,
+      43, 48, 55, 64, 73, 84,
+      98, 122, 142, 151, 159, 166,
+      172, 179, 185, 190, 194, 197,
+      201, 209, 228, 249, 266, 280,
+      292, 302, 311, 319, 327, 335),
+   direction=1,
+   default_step="v23");
+attr(.colorjam_presets[["hcl_to_hsl"]], "description") <- paste(
+   "HSL-to-HSL hue mapping,",
+   "not intended for categorical colors.")
 
 #' Colorjam hue warp presets
 #'
@@ -204,7 +215,7 @@ colorjam_presets <- function
 #' colorjam_presets()
 #'
 #' # the preset data is available
-#' colorjam_preset("custom_dichromat")
+#' colorjam_presets("custom_dichromat")
 #'
 #' # the preset is used to create rainbow categorical colors
 #' color_pie(rainbowJam(n=10,

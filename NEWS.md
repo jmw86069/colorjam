@@ -1,3 +1,35 @@
+# colorjam 0.0.26.900
+
+* `.onLoad()` to add default `options(colorjam.preset="dichromat2")`,
+and which can be customized.
+* README.Rmd was rewritten to match recent updates.
+
+## changes to existing functions
+
+* `sort_colors()`
+
+    * argument `byCols=NULL` changed to `byCols=c("H", "C", "L")` so
+    the default behavior will sort colors by hue, previously the
+    default behavior was not to sort colors, which seemed counter
+    to the default purpose of the function.
+
+* new preset `"hcl_to_hsl"` intended for internal use to convert HCL hue
+to HSL hue.
+* `launchColorjamShiny()`
+
+    * now hides presets: `"none"`, `"hcl_to_hsl"`
+
+## new functions
+
+* `remap_colorjam_preset()`
+
+    * experimental, intended to remap colors from one preset to another
+    * it works fairly well, but honestly it may have marginal utility
+
+* `hcl_to_hsl_hue()`,`hsl_to_hcl_hue()`
+
+    * conversion to the hue in HCL and HSL color spaces.
+
 # colorjam 0.0.25.900
 
 Added MIT license and copyright.

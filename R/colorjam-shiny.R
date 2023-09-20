@@ -96,7 +96,9 @@ colorjamShinyUI <- function
    sidebar_panel <- shiny::sidebarPanel(width=12,
       shiny::selectInput("colorjam_preset",
          "Colorjam preset:",
-         choices=colorjam_presets(),
+         choices=setdiff(colorjam_presets(),
+            c("none",
+               "hcl_to_hsl")),
          selected="dichromat2"),
       shiny::selectInput("colorjam_step",
          "Colorjam step:",
@@ -441,7 +443,9 @@ colorjamShinyServer <- function
             # update the colorjam_preset UI element with to use this preset name
             shiny::updateSelectInput(session=session,
                inputId="colorjam_preset",
-               choices=colorjam_presets(),
+               choices=setdiff(colorjam_presets(),
+                  c("none",
+                     "hcl_to_hsl")),
                selected=new_preset)
          }
       }

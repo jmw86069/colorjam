@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">colorjam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.25.900</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.26.900</span>
       </span>
     </div>
 
@@ -56,10 +56,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_colorjam_preset</span><span class="op">(</span></span>
 <span>  <span class="va">preset</span>,</span>
 <span>  <span class="va">h1</span>,</span>
-<span>  <span class="va">h2</span>,</span>
+<span>  h2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  default_step <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  digits <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  description <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -90,6 +90,12 @@ wheel.</p></li>
 <code>step</code> from <code><a href="colorjam_steps.html">colorjam_steps()</a></code>.</p></dd>
 
 
+<dt>description</dt>
+<dd><p><code>character</code> with optional text description of
+the preset. The description will be added as an attribute:
+<code>attr(x, "description")</code></p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments are ignored.</p></dd>
 
@@ -100,6 +106,27 @@ wheel.</p></li>
 
 <p><code>TRUE</code>, invisibly.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The colorjam presets represent customized color wheels, used
+for various color operations.</p><ul><li><p><code>h1</code> contains actual color hue values, with range <code>c(0, 360)</code>.
+Its values are intended to be used in HCL color hue operations,
+such as <code><a href="https://rdrr.io/pkg/jamba/man/hcl2col.html" class="external-link">jamba::hcl2col()</a></code>, or <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code>. These
+are not equal to <code>HSV</code> or <code>HLS</code> (also known as HSL) color hues,
+although colorjam preset could be used to convert from HCL to HSV.</p></li>
+<li><p><code>h2</code> contains virtual color hue values, with range <code>c(0, 360)</code>.
+These values are intended to represent the full virtual color
+wheel, mapping the virtual hue <code>h2</code> to actual hue <code>h1</code>.
+Not all values in <code>h1</code> need be represented, in fact <code>"dichromat"</code>
+presets explicitly remove a sizable chunk of green color hues.</p></li>
+<li><p><code>direction</code> the direction of <code>h1</code> relative to <code>h2</code> encoded as:</p><ul><li><p><code>1</code> for forward direction, and</p></li>
+<li><p><code>-1</code> for reverse direction.</p></li>
+</ul></li>
+<li><p><code>default_step</code> used primarily by <code><a href="rainbowJam.html">rainbowJam()</a></code> to define the
+appropriate Chroma/Luminance stepping pattern when choosing
+actual HCL colors around the color wheel.</p></li>
+<li><p>optional attribute <code>"description"</code> as <code>attr(x, "description")</code>.</p></li>
+</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other colorjam hue warp: 
@@ -111,9 +138,12 @@ wheel.</p></li>
 <code><a href="display_degrees.html">display_degrees</a>()</code>,
 <code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
 <code><a href="h2hw.html">h2hw</a>()</code>,
+<code><a href="hcl_to_hsl_hue.html">hcl_to_hsl_hue</a>()</code>,
+<code><a href="hsl_to_hcl_hue.html">hsl_to_hcl_hue</a>()</code>,
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
@@ -126,22 +156,46 @@ wheel.</p></li>
 <span class="r-in"><span>   <span class="op">-</span><span class="fl">3.7</span>, <span class="op">-</span><span class="fl">3.7</span>, <span class="op">-</span><span class="fl">3.7</span>,</span></span>
 <span class="r-in"><span>   <span class="op">-</span><span class="fl">70.9</span>, <span class="op">-</span><span class="fl">189.6</span>, <span class="op">-</span><span class="fl">229.2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"custom_dichromat"</span>,</span></span>
-<span class="r-in"><span>   h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span>, direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, default_step<span class="op">=</span><span class="st">"v24"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:48</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">added preset='</span><span style="color: #FF8700;">custom_dichromat</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-in"><span>   h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span>, direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, default_step<span class="op">=</span><span class="st">"v24"</span>,</span></span>
+<span class="r-in"><span>   description<span class="op">=</span><span class="st">"Custom dichromat example"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> added preset '<span style="color: #00BB00;">custom_dichromat</span>'.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># behold the new preset name appears</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="colorjam_presets.html">colorjam_presets</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "custom_dichromat" "dichromat"        "dichromat2"       "hcl_to_hsl"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "none"             "rgb"              "rgb2"             "ryb"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [9] "ryb2"            </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the preset data is available</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="colorjam_presets.html">colorjam_presets</a></span><span class="op">(</span><span class="st">"custom_dichromat"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $h1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  30   8 330 280 260 240 200 120  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $h2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  35.9 115.0 130.8 170.4 289.1 356.3 356.3 356.3 356.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $direction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $default_step</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "v24"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"description")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Custom dichromat example"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the preset is used to create rainbow categorical colors</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="color_pie.html">color_pie</a></span><span class="op">(</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10</span>,</span></span>
-<span class="r-in"><span>   preset<span class="op">=</span><span class="st">"custom_dichromat"</span>,</span></span>
-<span class="r-in"><span>   h1<span class="op">=</span><span class="va">h1</span>, h2<span class="op">=</span><span class="va">h2</span>,</span></span>
-<span class="r-in"><span>   phase<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #BBBB00;">!</span> `h1` and `h2` are deprecated, use argument `preset`.</span>
+<span class="r-in"><span>   preset<span class="op">=</span><span class="st">"custom_dichromat"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="add_colorjam_preset-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"dichromat2"</span>, h1<span class="op">=</span><span class="cn">NULL</span>, h2<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># remove a preset by defining `h1=NULL`</span></span></span>
+<span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"custom_dichromat"</span>, h1<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>object 'preset' not found</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">18:58:48</span>) 18Sep2023:   <span style="color: #FF8700;">add_colorjam_preset(): </span><span style="color: #00AFFF;">removed preset='</span><span style="color: #FF8700;">dichromat2</span><span style="color: #00AFFF;">'</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> removed preset '<span style="color: #00BB00;">custom_dichromat</span>'.</span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_presets.html">colorjam_presets</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "custom_dichromat" "dichromat"        "dichromat2"       "none"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "rgb"              "rgb2"             "ryb"              "ryb1"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "ryb2"             "ryb3"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "custom_dichromat" "dichromat"        "dichromat2"       "hcl_to_hsl"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "none"             "rgb"              "rgb2"             "ryb"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [9] "ryb2"            </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

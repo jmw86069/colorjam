@@ -71,8 +71,6 @@
 #'       alternative color wheels designed to emphasize various features
 #'       in the red-orange-yellow-green range to varying degrees.
 #'       * `"rgb"` for the default R red-green-blue color wheel
-#' @param preset_names `character` vector of valid `preset` values,
-#'    included only to make the values visible in the function arguments.
 #' @param default_preset `character` string indicating which value
 #'    in `preset` should be used as the default when `reset=FALSE` and
 #'    `h1` and/or `h2` are not defined in `options()`.
@@ -102,15 +100,8 @@ h2hwOptions <- function
 (h1=getOption("h2hw.h1"),
  h2=getOption("h2hw.h2"),
  preset=getOption("colorjam.preset", "custom"),
- preset_names=c("custom",
-    "none",
-    "dichromat",
-    "rgb",
-    "ryb",
-    "ryb1",
-    "ryb2",
-    "ryb3"),
- default_preset="dichromat",
+ direction=NULL,
+ default_preset="dichromat2",
  reset=FALSE,
  setOptions=c("FALSE",
     "TRUE",
@@ -161,6 +152,7 @@ h2hwOptions <- function
       h1h2_list <- colorjam_presets(preset);
       h1 <- h1h2_list$h1;
       h2 <- h1h2_list$h2;
+      direction <- h1h2_list$direction;
    }
 
    if ("TRUE" %in% setOptions ||
@@ -178,34 +170,41 @@ h2hwOptions <- function
       h2=h2);
 }
 
-#' Convert standard hue to warped hue
+#' Convert standard hue to warped virtual hue
 #'
-#' Convert standard hue to warped hue using the hue warp vectors
+#' Convert standard HCL hue to warped (virtual) hue by colorjam preset
 #'
 #' This function is intended to convert from a vector of hue values to
-#' the warped hues defined by the vectors returned by [h2hwOptions()].
-#' The intent is to convert colors in RGB space into RYB space by default,
-#' which substantially improves several other color manipulations, such
-#' as selection of categorical colors, and color blending.
+#' the warped hues defined by `colorjam_presets()` for the given `preset`.
 #'
-#' Note the input hue is considered the "standard" color hue as defined
-#' by the [colorspace::polarLUV()] function, ranging between 0 and 360.
-#' By this standard, 0 is defined as red, 120 is defined as green, and
-#' 240 is defined as blue.
+#' Each `preset` defines a custom set of color hues, for example:
 #'
-#' The default mappings convert RGB (red, green, blue) to RYB (red, yellow,
-#' blue). The color yellow has hue=60 in RGB space, so the call to
-#' `hw2h(60)` results in `120`, which is the hue in RYB space.
+#' * converting RGB to RYB color wheel
+#' * converting RGB to the customized dichromat color wheel
+#' * reversing a color wheel
+#'
+#' Note the input hue uses the standard HCL color hue as defined
+#' by `colorspace::polarLUV()`, with values ranging between 0 and 360.
+#' By this standard, 12.2 is defined as red, 120 is defined as green, and
+#' 245 is defined as blue.
 #'
 #' @family colorjam hue warp
 #'
 #' @param h `numeric` vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
 #' @param h1,h2 `numeric` vector of color hues, which by default are defined in
-#'    [h2hwOptions()], but allowed here in cases where the global options
+#'    `h2hwOptions()`, but allowed here in cases where the global options
 #'    should be overridden but not modified.
+#' @param direction `numeric` indicating the direction of `h1` HCL hue
+#'    relative to `h2` virtual hue:
+#'    * `1` indicates both are increasing
+#'    * `-1` indicates `h1` and `h2` differ in direction
+#' @param preset `character` string with a named preset from
+#'    `colorjam_presets()`, for which the `h1`,`h2`,`direction` values will
+#'    be obtained.
+#'    When `preset="custom"` then `h1` and `h2` must be provided.
 #'
-#' @return `numeric` vector of hue values after applying the hue warp
+#' @returns `numeric` vector of hue values after applying the hue warp
 #'    operation.
 #'
 #' @examples
@@ -270,35 +269,44 @@ h2hw <- function
    return(hNew);
 }
 
-#' Convert warped hue to standard hue
+#' Convert warped virtual hue to standard hue
 #'
-#' Convert warped hue to standard hue using the hue warp vectors
+#' Convert warped (virtual) hue to standard HCL hue by colorjam preset
 #'
 #' This function is intended to convert from a vector of warped hue values to
-#' the hues defined by the vectors returned by h2hwOptions()`.
-#' The intent is to convert colors in RYB space into RGB space by default.
+#' the hues defined by `colorjam_presets()` for the given `preset`.
 #'
-#' One example of input would be to supply a uniformly spaced set of color
-#' hues, and convert them to "standard" hues by HCL standards. It has the
-#' effect of presenting categorical colors, using a non-linear set of
-#' "standard" hue values.
+#' Each `preset` defines a custom set of color hues, for example:
 #'
-#' The default mappings convert RYB (red, yellow, blue) to RGB (red, green,
-#' blue). The color yellow has hue=120 in RYB space, so the call to
-#' `h2hw(120)` results in 60, which is the hue in RGB space.
+#' * converting RGB to RYB color wheel
+#' * converting RGB to the customized dichromat color wheel
+#' * reversing a color wheel
+#'
+#' Note the output hue uses the standard HCL color hue as defined
+#' by `colorspace::polarLUV()`, with values ranging between 0 and 360.
+#' By this standard, 12.2 is defined as red, 120 is defined as green, and
+#' 245 is defined as blue.
 #'
 #' @family colorjam hue warp
 #'
 #' @returns `numeric` vector of color hues after applying the transformation
-#'    from `h2` to `h1`.
+#'    from `h2` to `h1` for the given `preset`.
 #'
 #' @param h `numeric` vector of color hues between 0 and 360. These hues do
 #'    not need to be in sequential order.
 #' @param h1,h2 `numeric` vector of color hues, which by default are defined in
 #'    `h2hwOptions()`, but allowed here in cases where the global options
 #'    should be overridden but not modified.
+#' @param direction `numeric` indicating the direction of `h1` HCL hue
+#'    relative to `h2` virtual hue:
+#'    * `1` indicates both are increasing
+#'    * `-1` indicates `h1` and `h2` differ in direction
+#' @param preset `character` string with a named preset from
+#'    `colorjam_presets()`, for which the `h1`,`h2`,`direction` values will
+#'    be obtained.
+#'    When `preset="custom"` then `h1` and `h2` must be provided.
 #'
-#' @return `numeric` vector of hue values after applying the hue warp
+#' @returns `numeric` vector of hue values after applying the hue warp
 #'    operation.
 #'
 #' @examples
@@ -403,47 +411,55 @@ hw2h <- function
 #'
 #' n <- 24;
 #' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=-120, reverse_h2=FALSE)
-#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2, direction=1)
 #' rj_120 <- rainbowJam(n=n, preset="temp", step="v23",
 #'    nameStyle="n")
 #' color_pie(rj_120, radius=1,
 #'    main="dichromat color wheel rotated -120 degrees\nstep='v23'")
 #'
 #' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=0, reverse_h2=TRUE)
-#' add_colorjam_preset("temp1", h1=new_h1h2$h1, h2=new_h1h2$h2)
-#' rj_0rev <- rainbowJam(n=n, preset="temp1", step='v23')
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+#'    direction=new_h1h2$direction)
+#' rj_0rev <- rainbowJam(n=n, preset="temp", step="v23")
 #' names(rj_0rev) <- seq_len(n)
 #' color_pie(rj_0rev, radius=1, main="dichromat color wheel (reversed)")
 #'
 #' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=90, reverse_h2=FALSE)
-#' add_colorjam_preset("temp2", h1=new_h1h2$h1, h2=new_h1h2$h2)
-#' rj_90 <- rainbowJam(n=n, preset="temp2", step='v23')
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+#'    direction=new_h1h2$direction)
+#' rj_90 <- rainbowJam(n=n, preset="temp", step='v23')
 #' color_pie(rj_90, radius=1,
 #'    main="color wheel rotated 90 degrees\nstep='v23'")
 #'
 #' # RGB rotated to start at yellow, then red, then blue
 #' new_h1h2 <- adjust_hue_warp(preset="rgb", h2_shift=-70, reverse_h2=TRUE)
-#' add_colorjam_preset("temp3", h1=new_h1h2$h1, h2=new_h1h2$h2)
+#' add_colorjam_preset("temp", h1=new_h1h2$h1, h2=new_h1h2$h2,
+#'    direction=new_h1h2$direction)
 #' n <- 10
 #' rgb_rev <- rainbowJam(n=n,
-#'    preset="temp3", step='v24')
+#'    preset="temp", step='v24')
 #' color_pie(rgb_rev,
 #'    main="RGB color wheel rotated -30 degrees (reversed)\nstep='v24'")
 #'
 #' # same as above except using ryb3
 #' ryb_h1h2 <- adjust_hue_warp(preset="ryb", h2_shift=-110, reverse_h2=TRUE)
-#' add_colorjam_preset("temp4", h1=ryb_h1h2$h1, h2=ryb_h1h2$h2)
+#' add_colorjam_preset("temp", h1=ryb_h1h2$h1, h2=ryb_h1h2$h2,
+#'    direction=new_h1h2$direction)
 #' n <- 10
 #' ryb_rev <- rainbowJam(n=n,
 #'    #phase=c(1,4,5,2,6,3),
-#'    preset="temp4", step='v24')
+#'    preset="temp", step='v24')
 #' color_pie(ryb_rev,
 #'    main="RYB color wheel rotated -110 degrees (reversed)\nstep='v24'")
+#'
+#' # remove "temp" preset
+#' add_colorjam_preset(preset="temp", h1=NULL)
 #'
 #' @export
 adjust_hue_warp <- function
 (h1=NULL,
  h2=NULL,
+ direction=NULL,
  preset=getOption("colorjam.preset", "custom"),
  h1_shift=0,
  h2_shift=0,
@@ -454,10 +470,24 @@ adjust_hue_warp <- function
    if (length(preset) == 0) {
       preset <- "custom";
    }
-   h1h2 <- h2hwOptions(preset=preset,
-      h1=h1,
+   if ("custom" %in% preset) {
+      h1h2 <- h2hwOptions(preset=preset,
+         h1=h1,
+         h2=h2,
+         setOptions="FALSE")
+   } else {
+      h1h2 <- colorjam_presets(preset=preset)
+      h1 <- h1h2$h1;
+      h2 <- h1h2$h2;
+      direction <- h1h2$direction;
+   }
+
+   # validate preset values
+   h1h2 <- validate_colorjam_preset(h1=h1,
       h2=h2,
-      setOptions="FALSE")
+      direction=direction,
+      default_step="v24")
+
    h1h2_df <- jamba::mixedSortDF(data.frame(
       h1=h1h2$h1,
       h2=h1h2$h2));
@@ -475,12 +505,21 @@ adjust_hue_warp <- function
    # optionally flip h2
    if (TRUE %in% reverse_h2) {
       # h2 <- rev(h2)
-      h2 <- 360 - h2
+      h2 <- 360 - h2;
+      # reverse the sign on the direction
+      direction <- -1 * sign(direction);
    }
 
+   # validate preset values again
+   h1h2 <- validate_colorjam_preset(h1=h1,
+      h2=h2,
+      direction=direction,
+      default_step="v24")
+
    return(list(
-      h1=h1,
-      h2=h2))
+      h1=h1h2$h1,
+      h2=h1h2$h2,
+      direction=h1h2$direction))
 
    # new_h2
    h2_signs <- sign(diff(h2))

@@ -8,8 +8,8 @@ h2hwOptions(
   h1 = getOption("h2hw.h1"),
   h2 = getOption("h2hw.h2"),
   preset = getOption("colorjam.preset", "custom"),
-  preset_names = c("custom", "none", "dichromat", "rgb", "ryb", "ryb1", "ryb2", "ryb3"),
-  default_preset = "dichromat",
+  direction = NULL,
+  default_preset = "dichromat2",
   reset = FALSE,
   setOptions = c("FALSE", "TRUE", "ifnull"),
   verbose = FALSE,
@@ -49,9 +49,6 @@ in the red-orange-yellow-green range to varying degrees.
 \item \code{"rgb"} for the default R red-green-blue color wheel
 }
 }}
-
-\item{preset_names}{\code{character} vector of valid \code{preset} values,
-included only to make the values visible in the function arguments.}
 
 \item{default_preset}{\code{character} string indicating which value
 in \code{preset} should be used as the default when \code{reset=FALSE} and
@@ -137,9 +134,12 @@ Other colorjam hue warp:
 \code{\link{colorjam_steps}()},
 \code{\link{display_degrees}()},
 \code{\link{h2hw}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 
 Other hue warp functions: 

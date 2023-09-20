@@ -82,6 +82,12 @@
     <loc>/reference/h2hwOptions.html</loc>
   </url>
   <url>
+    <loc>/reference/hcl_to_hsl_hue.html</loc>
+  </url>
+  <url>
+    <loc>/reference/hsl_to_hcl_hue.html</loc>
+  </url>
+  <url>
     <loc>/reference/hw2h.html</loc>
   </url>
   <url>
@@ -122,6 +128,9 @@
   </url>
   <url>
     <loc>/reference/rainbowJam_v1.html</loc>
+  </url>
+  <url>
+    <loc>/reference/remap_colorjam_preset.html</loc>
   </url>
   <url>
     <loc>/reference/scale_color_jam.html</loc>
