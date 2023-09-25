@@ -3,9 +3,9 @@
 \docType{data}
 \name{named_colors}
 \alias{named_colors}
-\title{Colorjam named_colors}
+\title{named_colors from meodai/color-names and R colors()}
 \format{
-object of class \code{character} with length 4447, containing
+a \code{character} vector with length 4883, containing
 hexadecimal colors named with human-assigned color names.
 \subsection{Processing}{
 
@@ -28,15 +28,22 @@ however there could be benefit in using R color names since they
 appear to match the W3C color name standard used by HTML and CSS.
 }
 }
+\source{
+\url{https://github.com/meodai/color-names}
+}
 \usage{
 named_colors
 }
 \description{
-Colorjam named_colors including 4447 named colors and 436 R \code{colors()}.
+named_colors including 4447 entries from meodai/color-names,
+and 436 entries from R \code{colors()}.
 }
 \examples{
-data(named_colors)
-jamba::showColors(named_colors)
+jamba::showColors(colorjam::named_colors)
+
+# subset for color chroma at least 30
+colorjam::color_pie(unname(
+   colorjam::subset_colors(colorjam::named_colors, C >= 30)))
 
 }
 \seealso{

@@ -1,3 +1,26 @@
+# colorjam 0.0.27.900
+
+## bug fixes
+
+* `launchColorjamShiny()`
+
+    * Error when `jamba` was not already loaded, added proper package prefix:
+    `jamba::kable_coloring()`
+
+* `subset_colors()`
+
+    * added missing prefixes for `jamba::rgb2col()`
+
+* `rainbowJam()`
+
+    * added missing prefix for `jamba::col2hcl()`
+
+## other changes
+
+* Added `@source` to `named_colors` to Github "meodai/color-names"
+* Added `data-raw/` to prepare `named_colors`
+
+
 # colorjam 0.0.26.900
 
 * `.onLoad()` to add default `options(colorjam.preset="dichromat2")`,

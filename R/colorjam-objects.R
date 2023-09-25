@@ -109,12 +109,13 @@
 
 
 
-#' Colorjam named_colors
+#' named_colors from meodai/color-names and R colors()
 #'
-#' Colorjam named_colors including 4447 named colors and 436 R `colors()`.
+#' named_colors including 4447 entries from meodai/color-names,
+#' and 436 entries from R `colors()`.
 #'
-#' @format object of class `character` with length 4447, containing
-#' hexadecimal colors named with human-assigned color names.
+#' @format a `character` vector with length 4883, containing
+#'    hexadecimal colors named with human-assigned color names.
 #'
 #' ## Processing
 #'
@@ -136,10 +137,15 @@
 #' however there could be benefit in using R color names since they
 #' appear to match the W3C color name standard used by HTML and CSS.
 #'
+#' @source <https://github.com/meodai/color-names>
+#'
 #' @family colorjam data
 #'
 #' @examples
-#' data(named_colors)
-#' jamba::showColors(named_colors)
+#' jamba::showColors(colorjam::named_colors)
+#'
+#' # subset for color chroma at least 30
+#' colorjam::color_pie(unname(
+#'    colorjam::subset_colors(colorjam::named_colors, C >= 30)))
 #'
 "named_colors"

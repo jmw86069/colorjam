@@ -418,16 +418,10 @@ rainbowJam <- function
       # because hcl() may change values upon creating a color in gamut.
       rainbow_names <- jamba::pasteByRow(
          x=round(digits=1,
-            t(col2hcl(rainbow_set)[c("H", "C", "L"), , drop=FALSE])),
+            t(jamba::col2hcl(rainbow_set)[c("H", "C", "L"), , drop=FALSE])),
          includeNames=TRUE,
          sep=" ",
          sepName="")
-      ## previous method (below) assigned named by input to hcl()
-      # rainbow_names <- jamba::makeNames(paste(seq_len(n),
-      #    paste0("h", signif(hues, digits=2)),
-      #    paste0("c", signif(Cvals, digits=2)),
-      #    paste0("l", signif(Lvals, digits=2)),
-      #    sep=" "));
       names(rainbow_set) <- jamba::makeNames(rainbow_names,
          ...);
    } else if ("color" %in% nameStyle) {

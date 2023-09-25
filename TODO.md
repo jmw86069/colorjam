@@ -1,3 +1,8 @@
+## TODO 25sep2023
+
+* add unit testing with `testthat`, currently coverage is via `@examples`
+* consider `shinytest2` to test the R-shiny app. Probably not urgent.
+
 ## TODO 20sep2023
 
 * Consider secret test mode for `rainbowJam()` that uses HSL instead of HCL

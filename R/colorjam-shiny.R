@@ -291,11 +291,12 @@ colorjamShinyServer <- function
       color_df <- as.data.frame(matrix(byrow=TRUE,
          ncol=use_ncol,
          color_vector))
-      color_kable(kable_coloring(
-         color_df,
-         caption="Colors shown.",
-         colorSub=jamba::nameVector(use_colors),
-         row.names=FALSE))
+      color_kable(
+         jamba::kable_coloring(
+            color_df,
+            caption="Colors shown.",
+            colorSub=jamba::nameVector(use_colors),
+            row.names=FALSE))
 
       colorjam_title <- paste0(
          input$colorjam_n, " color palette\n",
@@ -336,10 +337,11 @@ colorjamShinyServer <- function
       axis_at <- seq(from=-30, to=390, by=30);
 
       # update the preset_kable
-      preset_kable(kable_coloring(
-         row.names=FALSE,
-         caption="Preset values for h1 and h2.",
-         h1h2[, c("h2", "h1"), drop=FALSE]))
+      preset_kable(
+         jamba::kable_coloring(
+            row.names=FALSE,
+            caption="Preset values for h1 and h2.",
+            h1h2[, c("h2", "h1"), drop=FALSE]))
 
       # prepare editable plotly visualization
       presetly <- plot_colorjam_preset(
@@ -415,10 +417,11 @@ colorjamShinyServer <- function
                print(jamba::mixedSortDF(byCols=c(2, direction), h1h2));# debug
             }
             # update the preset_kable
-            preset_kable(kable_coloring(
-               row.names=FALSE,
-               caption="Preset values for h1 and h2.",
-               h1h2))
+            preset_kable(
+               jamba::kable_coloring(
+                  row.names=FALSE,
+                  caption="Preset values for h1 and h2.",
+                  h1h2))
 
             # - validate other values in the series?
 
