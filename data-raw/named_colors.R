@@ -11,7 +11,7 @@ colornames_sub <- subset(colornames, `good name` %in% "x")
 # adjust names
 colornames_v <- toupper(colornames_sub$hex)
 names(colornames_v) <- gsub("[ ]+", "_",
-   tolower(names(colornames_sub$name)))
+   tolower(colornames_sub$name))
 # make all hex colors uppercase
 
 # covert R colors to hex, removing alpha

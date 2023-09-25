@@ -15,11 +15,20 @@
 
     * added missing prefix for `jamba::col2hcl()`
 
+* `named_colors` - fixed missing named using `data-raw/named_colors.R`
+
 ## other changes
 
 * Added `@source` to `named_colors` to Github "meodai/color-names"
 * Added `data-raw/` to prepare `named_colors`
+* Small adjustments to `preset="dichromat2"`
+* `rainbowJam()`
 
+    * new argument `min_requested_n` previously used internally,
+    exposed for testing the minimum requested hues.
+    Secretly used to ensure the first 5 or so colors are pretty.
+    * The new default second color is now blue! I maybe should not
+    have done that. But right now I like it.
 
 # colorjam 0.0.26.900
 

@@ -90,6 +90,10 @@
 #'    for additional arguments.
 #'    * `"hcl"` assigns names using H, C, L values
 #'    * `"color"` assigns names by hex color
+#' @param min_requested_n `numeric` experimental value which defines the
+#'    minimum internal color hues to use when `n` is low. Typically this
+#'    argument restricts the first several color hues to prevent unusual
+#'    colors.
 #' @param doTest `logical` indicating whether to perform a visual test for
 #'    `n` number of colors produced.
 #' @param verbose `logical` whether to print verbose output
@@ -149,6 +153,7 @@ rainbowJam <- function
     "closestRcolor",
     "hcl",
     "color"),
+ min_requested_n=3,
  doTest=FALSE,
  verbose=FALSE,
  ...)
@@ -239,7 +244,7 @@ rainbowJam <- function
       ## - always at least n hues
       ## - always at least 4 hues
       ## - pad using hue_pad to reduce first,last color similarity
-      min_requested_n <- 5;
+      # min_requested_n <- 3;
       requested_n <- max(c(min_requested_n, n));
       if (verbose && hue_pad != 0) {
          jamba::printDebug("rainbowJam(): ",
@@ -258,11 +263,13 @@ rainbowJam <- function
          if (n == 1) {
             hues <- head(hues, 1);
          } else if (n == 2) {
-            hues <- head(hues, 2);
+            hues <- hues[c(1, 3)];
          } else if (n == 3) {
-            hues <- hues[c(1, 2, 4)]
+            hues <- hues[c(1, 3, 6)]
          } else if (n == 4) {
-            hues <- hues[c(1, 2, 4, 5)];
+            hues <- hues[c(1, 3, 5, 6)];
+         } else if (n == 5) {
+            hues <- hues[c(1, 3, 4, 5, 6)];
          } else {
             hues <- hues[round(seq(from=1, to=length(hues), length.out=n))];
          }
@@ -417,7 +424,7 @@ rainbowJam <- function
       # 0.0.25.900 - change to actual HCL values and not input to hcl()
       # because hcl() may change values upon creating a color in gamut.
       rainbow_names <- jamba::pasteByRow(
-         x=round(digits=1,
+         x=round(digits=0,
             t(jamba::col2hcl(rainbow_set)[c("H", "C", "L"), , drop=FALSE])),
          includeNames=TRUE,
          sep=" ",

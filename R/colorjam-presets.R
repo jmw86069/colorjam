@@ -62,6 +62,7 @@ attr(.colorjam_presets[["rgb2"]], "description") <- (
    default_step="v23");
 attr(.colorjam_presets[["none"]], "description") <- "Red-Green-Blue";
 
+
 # original dichromat color wheel
 .colorjam_presets[["dichromat"]] <- list(
    h1=c(8, 30,
@@ -80,8 +81,8 @@ attr(.colorjam_presets[["dichromat"]], "description") <- (
 
 # modified dichromat starting at yellow
 .colorjam_presets[["dichromat2"]] <- list(
-   h1=c(45,   8, 340, 306, 280, 240, 180,    120,     70),
-   h2=c(45, 115, 185, 192, 200, 330, 357.99, 357.99, 357.99),
+   h1=c(45,  12, 340, 306, 280, 240, 180,    120,     65)[-1],
+   h2=c(45, 120, 185, 192, 210, 330, 357.99, 357.99, 357.99)[-1],
    direction=-1,
    default_step="v24")
 attr(.colorjam_presets[["dichromat2"]], "description") <- paste(

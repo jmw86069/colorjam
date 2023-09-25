@@ -23,6 +23,7 @@ rainbowJam(
   do_hue_pad = FALSE,
   hue_pad_percent = 0,
   nameStyle = c("none", "n", "closest_named_color", "closestRcolor", "hcl", "color"),
+  min_requested_n = 3,
   doTest = FALSE,
   verbose = FALSE,
   ...
@@ -119,6 +120,11 @@ for additional arguments.
 \item \code{"hcl"} assigns names using H, C, L values
 \item \code{"color"} assigns names by hex color
 }}
+
+\item{min_requested_n}{\code{numeric} experimental value which defines the
+minimum internal color hues to use when \code{n} is low. Typically this
+argument restricts the first several color hues to prevent unusual
+colors.}
 
 \item{doTest}{\code{logical} indicating whether to perform a visual test for
 \code{n} number of colors produced.}
