@@ -1,5 +1,81 @@
+## TODO 14mar2024
+
+* Bug: `blend_colors()` does not allow changing the `preset`
+
+   * `h2hw()` and `hw2h()` prioritize `preset` over `h1`,`h2` which
+   causes `blend_colors()` to use the global `preset`, since it does
+   not pass `preset="custom"` to enable over-riding the default `h1`,`h2`
+   values.
+   
+
+
+## TODO 08jan2024
+
+* Consider new accessible color wheel.
+
+   * Start with red-yellow-blue color wheel.
+   * Remove wedges of green/yellow-green.
+   * Remove corresponding complement with fuschia/pink.
+   * Test remaining wheel for color-blindness friendly distinction.
+
+## TODO 14nov2023
+
+* Custom `showColors()` specifically for sorted colors
+
+   * indicate along the x-axis where the numeric breaks occur
+   * most often sorted by Hue, then indicate breaks along x-axis
+   * determine numeric values of the first sorted vector, then range,
+   then `pretty()`
+
+## TODO 01oct2023
+
+* `rainbowJam()`
+
+   * consider `Hrange` argument to `rainbowJam()` which would restrict
+   colors to this range of hues. Unclear it if means the virtual hue,
+   or output hue, but probably the virtual hue.
+
+* R-shiny app changes:
+
+   * in h1,h2 scatterplot, editing a point should not change its rank
+   
+      * it should be restricted on the x/y axis by the neighboring points
+      * help keep points properly aligned, for example preventing identical
+      points from being re-ordered.
+
+   * add `label` to plotly shapes, using just the row number
+   * consider double-clicking to add a point to the h1,h2 plot.
+   
+      * Point should be fixed between neighboring points on the x-axis,
+      thus constraining the y-axis value.
+   
+   Could use `plotly::showModal()` to pop-up a confirmation, but later.
+   * consider right-clicking to remove a point on the h1,h2 plot.
+   Again, it could use `showModal()` to confirm, to prevent accidentally
+   removing a point. (There is no convenient "Undo"... but there could be I guess.)
+   * Consider "Undo" button
+   
+      * When no previous values, the "Undo" button is hidden.
+      * Reverts to the previous h1,h2 values, then hides the "Undo" button.
+      * Upon editing any value, store previous values, display "Undo" button.
+
+* `design2colors()` (when ported here)
+
+   * consider changing how class colors are assigned, to ensure each class
+   uses `phase` values starting at the same place, in the same order.
+   Goal is to have first color in each class using the same phase step.
+   * When `class` colors are assigned, consider assigning group colors
+   using hue splitting instead of lightness splitting.
+   Generate a range of hues so that they do not conflict with other class hues.
+   (Then use new argument `Hrange`.)
+
+* Consider retiring `h2hw()`,`hw2h()`,`h2hwOptions()`
+
+   * simplify system to use "Virtual Hue" and "Actual Hue"?
+
 ## TODO 25sep2023
 
+* consider adding `launchColorjamShiny()` to colorjam.shinyapps.io for testing.
 * add unit testing with `testthat`, currently coverage is via `@examples`
 * consider `shinytest2` to test the R-shiny app. Probably not urgent.
 

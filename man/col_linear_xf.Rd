@@ -127,6 +127,35 @@ bp3 <- barplot(abs(test_seq),
 abline(v=bp3[abs(test_seq) == 5,], lty="dashed")
 abline(v=bp3[abs(test_seq) == 3,], lty="dashed")
 
+# Optionally show how to display data and legend in ComplexHeatmap
+if (jamba::check_pkg_installed("ComplexHeatmap")) {
+   set.seed(123);
+   m <- abs(matrix(ncol=9, rnorm(81) * 8));
+   col1 <- col_linear_xf(14, floor=4, n=8, lens=2);
+   hm_1 <- ComplexHeatmap::Heatmap(m, col=col1,
+      cell_fun=jamba::cell_fun_label(m=m, col_hm=col1),
+      heatmap_legend_param=list(
+         color_bar="discrete",
+         at=c(0, 2, 3.99, 4, 6, 8, 10, 12, 14),
+         border=TRUE),
+      column_title="col_linear_xf(14, floor=4)",
+      name="color key 1",
+      border=TRUE);
+
+   col2 <- col_linear_xf(14, floor=4, n=8, lens=2, open_floor=TRUE);
+   hm_2 <- ComplexHeatmap::Heatmap(m,
+      col=col2,
+      cell_fun=jamba::cell_fun_label(m=m, col_hm=col2),
+      heatmap_legend_param=list(
+         color_bar="discrete",
+         at=c(0, 2, 3.99, 4, 6, 8, 10, 12, 14),
+         border=TRUE),
+      column_title="col_linear_xf(14, floor=4, open_floor=TRUE)",
+      name="color key 2",
+      border=TRUE);
+   hm_1 + hm_2
+}
+
 }
 \seealso{
 Other colorjam gradients: 

@@ -57,7 +57,9 @@
 #'    of color vectors, where each vector will be independently
 #'    blended.
 #' @param preset `character` value indicating the color wheel preset,
-#'    passed to `colorjam::h2hwOptions()`.
+#'    default `"ryb"` for red-yellow-blue paint-like color blending.
+#'    It is passed to `colorjam::h2hwOptions()`, and permits any value
+#'    returned by `colorjam_presets()`.
 #' @param lens `numeric` value used to influence the color saturation
 #'    after averaging color wheel angles.
 #' @param do_plot `logical` indicating whether to depict the color
@@ -97,7 +99,11 @@
 #' @export
 blend_colors <- function
 (x,
- preset=c("ryb", "none", "dichromat", "rgb", "ryb2"),
+ preset=c("ryb",
+    "none",
+    "dichromat",
+    "rgb",
+    colorjam_presets()),
  h1=NULL,
  h2=NULL,
  do_plot=FALSE,
@@ -153,9 +159,11 @@ blend_colors <- function
       h1h2 <- list(h1=h1, h2=h2);
    }
    h_rgb <- x_HCL["H",];
+   # 0.0.28.900: changed to pass preset="custom" so it uses h1,h2 values
    h_ryb <- colorjam::h2hw(h=h_rgb,
       h1=h1h2$h1,
-      h2=h1h2$h2);
+      h2=h1h2$h2,
+      preset="custom");
 
    ## mean hue angle
    if (all(x_w_use == 0)) {
@@ -166,9 +174,11 @@ blend_colors <- function
       w=x_w_use);
    h_ryb_mean <- h_ryb_mean_v["deg"];
 
+   # 0.0.28.900: changed to pass preset="custom" so it uses h1,h2 values
    h_rgb_mean <- colorjam::hw2h(h=h_ryb_mean,
       h1=h1h2$h1,
-      h2=h1h2$h2);
+      h2=h1h2$h2,
+      preset="custom");
 
    mean_radius <- weighted.mean(c(1, h_ryb_mean_v["radius2"]),
       w=c(c_weight, 1));

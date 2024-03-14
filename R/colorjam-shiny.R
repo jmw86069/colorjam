@@ -358,14 +358,17 @@ colorjamShinyServer <- function
    preset_event_data <- shiny::reactiveVal(
       c(0, 0))
 
-   # observe edits in the preset points
+
+   ##################################################
+   # observe edits in the h1.h2 points
    # update x/y reactive values in response to changes in shape anchors
    shiny::observe({
       h1h2 <- as.data.frame(colorjam_presets(input$colorjam_preset))
       direction <- head(h1h2$direction, 1)
       # sort h1h2 consistent with plot_colorjam_preset()
       h1h2 <- jamba::mixedSortDF(h1h2,
-         byCols=c(1, 2 * direction));
+         byCols=c(2, 1 * direction));
+         # byCols=c(1, 2 * direction));
       ed <- plotly::event_data("plotly_relayout")
       # check whether data has changed
       if (identical(preset_event_data(), ed)) {
@@ -379,25 +382,30 @@ colorjamShinyServer <- function
          if (length(shape_anchors) == 0) {
             return()
          }
+         # determine which row was edited
          row_index_values <- gsub("shapes[[]|][.].anchor", "",
             names(shape_anchors));
          # print("shape_anchors:");print(shape_anchors);# debug
          shape_anchors_list <- split(shape_anchors, row_index_values)
          for (i in seq_along(shape_anchors_list)) {
-            inum <- as.numeric(names(shape_anchors_list)[i]) + 1;
+            edited_row <- as.numeric(names(shape_anchors_list)[i]) + 1;
             shape_anchors_i <- shape_anchors_list[[i]];
             is_x <- which(grepl("xanchor", names(shape_anchors_list[[i]])));
             is_y <- which(grepl("yanchor", names(shape_anchors_list[[i]])));
             new_x <- shape_anchors_list[[i]][[is_x]];
             new_y <- shape_anchors_list[[i]][[is_y]];
             jamba::printDebug("new_x:", new_x, ", new_y:", new_y);# debug
-            jamba::printDebug("inum:", inum);# debug
+            jamba::printDebug("row edited:", edited_row);# debug
 
             {
                jamba::printDebug("h1h2 (before):");
                print(jamba::mixedSortDF(byCols=c(2, direction), h1h2));# debug
             }
-            h1h2[inum, c("h2", "h1")] <- c(new_x, new_y);
+            # validate new values
+            # - enforce x-value between the previous/next x values
+            # - enforce y-value between the previous/next y values
+            #
+            h1h2[edited_row, c("h2", "h1")] <- c(new_x, new_y);
             # run validation
             {
                jamba::printDebug("h1h2 (edited):");

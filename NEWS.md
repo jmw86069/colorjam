@@ -1,3 +1,15 @@
+# colorjam 0.0.28.900
+
+## bug fixes
+
+* `blend_colors()` was not properly using `preset`
+
+    * whenever `options("jam.preset")` had already been defined, it would
+    take priority during color blending.
+    * Fixed by passing `preset="custom"` internally.
+    * Also expanded available `preset` values to permit all values in
+    `colorjam_presets()`.
+
 # colorjam 0.0.27.900
 
 ## bug fixes

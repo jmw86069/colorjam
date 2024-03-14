@@ -6,7 +6,7 @@
 \usage{
 blend_colors(
   x,
-  preset = c("ryb", "none", "dichromat", "rgb", "ryb2"),
+  preset = c("ryb", "none", "dichromat", "rgb", colorjam_presets()),
   h1 = NULL,
   h2 = NULL,
   do_plot = FALSE,
@@ -22,7 +22,9 @@ of color vectors, where each vector will be independently
 blended.}
 
 \item{preset}{\code{character} value indicating the color wheel preset,
-passed to \code{colorjam::h2hwOptions()}.}
+default \code{"ryb"} for red-yellow-blue paint-like color blending.
+It is passed to \code{colorjam::h2hwOptions()}, and permits any value
+returned by \code{colorjam_presets()}.}
 
 \item{do_plot}{\code{logical} indicating whether to depict the color
 blend operation using \code{jamba::showColors()}.}
