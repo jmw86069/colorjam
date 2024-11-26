@@ -1,3 +1,13 @@
+# colorjam 0.0.29.900
+
+## bug fixes
+
+* `blend_colors()`: Fixed error when `matrixStats` was not installed.
+
+## other changes
+
+* Added `testthat` coverage for core functions.
+
 # colorjam 0.0.28.900
 
 ## bug fixes

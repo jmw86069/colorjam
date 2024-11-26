@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.28.900
+Version: 0.0.29.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -16,8 +16,10 @@ Imports:
    circlize,
    cli,
    dichromat
-Suggests: ggplot2,
-   shiny
+Suggests: 
+    ggplot2,
+    shiny,
+    testthat (>= 3.0.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -26,3 +28,4 @@ URL: http://github.com/jmw86069/colorjam
 BugReports: http://github.com/jmw86069/colorjam/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Config/testthat/edition: 3

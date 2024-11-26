@@ -250,9 +250,15 @@ mean_angle <- function
    w <- rep(w,
       length.out=length(x));
 
-   xy_mean <- matrixStats::colWeightedMeans(
-      x=as.matrix(xy),
-      w=w);
+   # if (jamba::check_pkg_installed("matrixStats")) {
+   #    xy_mean <- matrixStats::colWeightedMeans(
+   #       x=as.matrix(xy),
+   #       w=w);
+   # } else {
+      xy_mean <- apply(as.matrix(xy), 2, function(i){
+         weighted.mean(x=i, w=w)
+      })
+   # }
    xy_m <- matrix(ncol=2, byrow=TRUE,
       c(0, 0, xy_mean));
    x_radius <- dist(xy_m);

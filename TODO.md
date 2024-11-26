@@ -1,8 +1,92 @@
+# colorjam Todo
+
+## TODO 12jul2024
+
+* `blend_colors()` - consider `preset=getOption("colorjam.blend.preset")`
+so it can be easily customized with a fixed scheme.
+* Fix package dependencies so it does not also load `jamba` upon load.
+* `color_pie()`: make it more similar to `jamba::showColors()`
+
+   * `color_pie(rainbowJam(12))` should show hex color as labels by default,
+   same as `jamba::showColors()`
+   * Consider argument `inner_radius` to make donut plots.
+   * Consider replacing `label_radius` with combination of 
+
+      * `label_just` for label justification relative to its position, where
+
+         * `just=0` means the point is on the left(bottom), and
+         * `just=1` means the point is on the right(top).
+
+      * `label_pos` for label position within the inner/outer radius:
+      
+         * `label_pos=1` positions at the outer radius
+         * `label_pos=0` positions at the inner radius
+
+* Consider new color display function `color_spiral()`
+
+   * Alternative to `color_pie()` to arrange colors around the color wheel
+   with concentric rings. Consider using `circlize` for spiral display?
+   * Goal is to show a lot of colors in an organized way to facilitate
+   picking a color from a pre-defined set.
+
+* Consider adding dependency on `farver>=2.1.2` to confirm fixed functions
+* Improve the color wheels (angles for color breaks)
+
+   * Revisit the color calculations given `farver>=2.1.2` which fixed
+   bug related to color distance calculations, and nearest color calculations.
+   * `"dichromat2"`
+   
+      * not enough actual red, too much brown/salmon/hot pink
+      * some of this problem is with the C/L sequence not producing a good red
+   
+   * `"dichromat"`
+   
+      * too much salmon/orange not enough gold, transition from orange to gold
+      seems too slow
+      * using n=6 "mediumpurple1" (H=272), "purple_illusion" (H=279)
+      are too similar. 
+      * Maybe spread colors in four quadrants: gold, red, purple, blue?
+      
+   * `"ryb"`
+   
+      * too much fuschia/hot pink in the color wheel,
+      with n=12 two sections are hot pink
+      * with n=36 it looks nice, except too much pink
+   
+   * `"ryb2"`
+   
+      * red does not occur reliably after n=4, becomes brown/salmon/pink
+      * even with n=36 WHERE IS THE RED? (Haha)
+
+
+* Consider finally porting the Fibonacci color method.
+
+   * Basic premise: Use magic number phi to represent a Fibonacci spiral
+   around the color wheel.
+
+
+## TODO 24apr2024
+
+* `closest_named_color()` and `closestRcolor()`
+
+   * Consider option to return the input/output values in a `data.frame`:
+   
+      * hex color value
+      * H,C,L values
+      * distance value calculated
+
+   * Consider alternative color distance function.
+   
+      * Standard HCL color distance function.
+      * Consider `farver::compare_colour()` with some adjustment for hue
+      difference.
+
+
 ## TODO 14mar2024
 
-* Bug: `blend_colors()` does not allow changing the `preset`
+* DONE. Bug: `blend_colors()` does not allow changing the `preset`
 
-   * `h2hw()` and `hw2h()` prioritize `preset` over `h1`,`h2` which
+   * DONE. `h2hw()` and `hw2h()` prioritize `preset` over `h1`,`h2` which
    causes `blend_colors()` to use the global `preset`, since it does
    not pass `preset="custom"` to enable over-riding the default `h1`,`h2`
    values.
