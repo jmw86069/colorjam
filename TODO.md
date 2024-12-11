@@ -1,5 +1,10 @@
 # colorjam Todo
 
+## 11dec2024
+
+* Improve `blend_color()` handling of alpha so it builds over time, use
+formula: `a + (1-a) * b` where a,b are alpha values between 0 and 1.
+
 ## TODO 12jul2024
 
 * `blend_colors()` - consider `preset=getOption("colorjam.blend.preset")`

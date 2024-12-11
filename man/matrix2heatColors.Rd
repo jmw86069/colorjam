@@ -23,52 +23,53 @@ matrix2heatColors(
 )
 }
 \arguments{
-\item{x}{numeric matrix. If there are no \code{colnames(x)} they will
+\item{x}{\code{numeric} matrix. If there are no \code{colnames(x)} they will
 be created using \code{jamba::makeNames(rep("x", ncol(x)))}.}
 
-\item{colorV}{character vector of R colors, named by \code{colnames(x)},
+\item{colorV}{\code{character} vector of R colors, named by \code{colnames(x)},
 and recycled to \code{ncol(x)} if needed. If \code{colorV} is supplied as
 a list, the list elements are mapped to \code{colnames(x)} in order.}
 
-\item{defaultBaseColor}{character vector of R colors used as the default
+\item{defaultBaseColor}{\code{character} vector of R colors used as the default
 base color, when \code{colorV} is supplied as a vector.}
 
-\item{transformFunc}{function applied to numeric values before
+\item{transformFunc}{\code{function} applied to numeric values before
 the color gradient is mapped to numeric values. For example,
 \code{transformFunc=function(i)-log10(i)} would map colors to P-value
 using a \code{-log10(p)} transformation.}
 
-\item{lens}{numeric value passed to \code{warpRamp()} to adjust the
+\item{lens}{\code{numeric} value passed to \code{jamba::warpRamp()} to adjust the
 distribution of colors along the numeric range.}
 
-\item{shareLimit}{logical indicating whether one numeric limit \code{numLimit}
+\item{shareLimit}{\code{logical} indicating whether one numeric limit \code{numLimit}
 should be used to define the numeric range for color mapping.}
 
-\item{numLimitFactor}{when \code{numLimit} is NULL, this factor is applied to
+\item{numLimitFactor}{\code{numeric} when \code{numLimit} is NULL,
+this factor is applied to
 the maximum numeric value to determine the \code{numLimit}.}
 
-\item{numLimit}{numeric value to define the maximum numeric value
+\item{numLimit}{\code{numeric} value to define the maximum numeric value
 above which all numeric values are mapped to the maximum color.
 When set to \code{NULL} the \code{numLimitFactor} is used to define
 the \code{numLimit}.}
 
-\item{baseline}{numeric value to define the numeric baseline, used
+\item{baseline}{\code{numeric} value to define the numeric baseline, used
 when \code{divergent=FALSE}. Values are recycled to \code{ncol(x)} to be
 applied to each column individually.}
 
-\item{color_below_baseline}{color used when numeric value is
+\item{color_below_baseline}{\code{character} color used when numeric value is
 below the \code{baseline}. Values are recycled to \code{ncol(x)} to be
 applied to each column individually. When \code{color_below_baseline}
 is \code{NULL}, the first color in the color ramp is used for all
 values below the baseline.}
 
-\item{divergent}{logical indicating whether to apply colors to the numeric
+\item{divergent}{\code{logical} indicating whether to apply colors to the numeric
 range symmetric around zero.}
 
-\item{rampN}{integer value to define the number of color breaks for
+\item{rampN}{\code{integer} value to define the number of color breaks for
 each color gradient.}
 
-\item{trimRamp}{numeric vector with two values, used by
+\item{trimRamp}{\code{numeric} vector with two values, used by
 \code{jamba::getColorRamp()} to trim the intermediate color gradient before
 creating the final color ramp with length \code{rampN}. For example,
 by default \code{jamba::getColorRamp()} creates a color gradient with
@@ -80,7 +81,7 @@ useful to remove the leading white color, or to trim the first
 few colors to ensure the first color in the gradient is visibly
 different from the background color defined by \code{defaultBaseColor}.}
 
-\item{verbose}{logical indicating whether to print verbose output.}
+\item{verbose}{\code{logical} indicating whether to print verbose output.}
 
 \item{...}{additional arguments are passed to \code{jamba::getColorRamp()}
 for additional customization. These arguments are handled across

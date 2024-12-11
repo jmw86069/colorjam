@@ -1,3 +1,29 @@
+# colorjam 0.0.30.900
+
+* Moved `jamba` to Imports, from Depends, for cleaner R code.
+* Updated `named_colors` to v11.0.0 from `"meodai/color-names"`
+
+## updates to existing functions
+
+* `blend_colors()`
+
+    * Improved support for applying alpha to the output color.
+    * New argument `apply_alpha=TRUE` will apply alpha transparency to
+    multiple colors, returning a blended color with appropriate
+    transparency.
+    The goal was to blend transparent red with itself and produce
+    less transparent red.
+    * New argument `flatten_alpha` will optionally flatten any blended
+    color transparency using the background color `bg`.
+    The goal was to convert transparent red (see above) to light red
+    equivalent to transparent red on white background.
+    * New argument `bg` is used only when `flatten_alpha=TRUE`, for
+    background color other than white.
+
+* `closest_named_colors()` now uses proper `colorjam::named_colors`
+to fix error when calling `colorjam::closest_named_colors()` without
+loading the colorjam package first.
+
 # colorjam 0.0.29.900
 
 ## bug fixes

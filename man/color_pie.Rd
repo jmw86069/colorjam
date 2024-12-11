@@ -90,6 +90,7 @@ color_pie(rainbow_list3,
 }
 \seealso{
 Other colorjam display: 
+\code{\link{combine_alphas}()},
 \code{\link{showDichromat}()}
 }
 \concept{colorjam display}

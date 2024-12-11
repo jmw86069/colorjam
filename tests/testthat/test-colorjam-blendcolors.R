@@ -42,3 +42,36 @@ test_that("blend_colors", {
       blend_colors(c("#0000FF55", "#FFFF0099", "#FF0000FF")),
       "#D28483FF")
 })
+
+test_that("combine_alphas", {
+   # two values
+   expect_equal(
+      combine_alphas(c(0.5, 0.5)),
+      0.75)
+   # three values
+   expect_equal(
+      combine_alphas(c(0.5, 0.5, 0.5)),
+      0.875)
+   # three values with NA
+   expect_equal(
+      combine_alphas(c(0.5, 0.5, NA, 0.5)),
+      0.875)
+   # all NA
+   expect_equal(
+      combine_alphas(c(NA_integer_, NA_integer_)),
+      integer(0))
+   # NULL input
+   expect_equal(
+      combine_alphas(NULL),
+      integer(0))
+
+   # two values, max_alpha=100
+   expect_equal(
+      combine_alphas(c(50, 50), max_alpha=100),
+      75)
+   # three values, max_alpha=100
+   expect_equal(
+      combine_alphas(c(50, 50, 50), max_alpha=100),
+      87.5)
+
+})

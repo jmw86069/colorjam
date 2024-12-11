@@ -905,13 +905,13 @@ twostep_gradient <- function
    print(wdf);
 
    g12 <- sapply(seq_len(n), function(i){
-      colorjam::blend_colors(c(
+      blend_colors(c(
          jamba::alpha2col(g1[i], alpha=w1[i]),
          jamba::alpha2col(g2[i], alpha=w2[i])
       ))})
 
    # optionally "fix" yellow hues
-   if (do_fixYellow) {
+   if (TRUE %in% do_fixYellow) {
       g12 <- jamba::fixYellow(g12);
    }
 

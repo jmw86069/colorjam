@@ -146,7 +146,7 @@ rainbow categorical colors using varied luminance and chroma
 }
 \details{
 This function customizes similar functions \code{grDevices::rainbow},
-\code{\link[colorspace:rainbow_hcl]{colorspace::rainbow_hcl()}}, and \code{\link[scales:hue_pal]{scales::hue_pal()}} in two main
+\code{\link[colorspace:rainbow_hcl]{colorspace::rainbow_hcl()}}, and \code{\link[scales:pal_hue]{scales::hue_pal()}} in two main
 ways:
 \enumerate{
 \item It uses the warped color wheel (see \code{\link[=h2hw]{h2hw()}} which compresses the
@@ -174,15 +174,19 @@ jamba::showColors(rainbowJam(10));
 color_pie(rainbowJam(10));
 
 # be fancy and label colors using the closest R named color
+jamba::showColors(rainbowJam(6, nameStyle="closestRcolor"));
+# or use the closest R color itself
 jamba::showColors(names(rainbowJam(6, nameStyle="closestRcolor")));
 
+# be fancy and label colors using the closest named_color
+jamba::showColors(rainbowJam(6, nameStyle="closest_named_color"));
+
+# be even fancier and use the nearest named color by its name
+jamba::showColors(named_colors[names(rainbowJam(6, nameStyle="closest_named_color"))]);
+
 # comparison of version 0.0.19.900 and update with version 0.0.20.900
-cat19 <- rainbowJam(n=12,
-   Cvals=c(140, 150, 160, 130, 200, 100),
-   Lvals=c( 47,  85,  62,  42,  77,  54))
-cat20 <- rainbowJam(n=12,
-   Cvals=c(200, 120, 160,  90, 180, 150),
-   Lvals=c( 44,  88,  74,  58,  80,  65))
+cat19 <- rainbowJam_v1(n=12)
+cat20 <- rainbowJam(n=12)
 jamba::showColors(list(version19=cat19, version20=cat20))
 
 }

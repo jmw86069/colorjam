@@ -1,165 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/TODO.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_colorjam_preset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_colorjam_step.html</loc>
-  </url>
-  <url>
-    <loc>/reference/adjust_hue_warp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/approx_degrees.html</loc>
-  </url>
-  <url>
-    <loc>/reference/blend_colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/closestRcolor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/closest_named_color.html</loc>
-  </url>
-  <url>
-    <loc>/reference/col_div_xf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/col_linear_xf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/color_complement.html</loc>
-  </url>
-  <url>
-    <loc>/reference/color_pie.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colorjamShinyServer.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colorjamShinyUI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colorjam_presets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colorjam_steps.html</loc>
-  </url>
-  <url>
-    <loc>/reference/colors_to_df.html</loc>
-  </url>
-  <url>
-    <loc>/reference/display_degrees.html</loc>
-  </url>
-  <url>
-    <loc>/reference/group2colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/h2hw.html</loc>
-  </url>
-  <url>
-    <loc>/reference/h2hwOptions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hcl_to_hsl_hue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hsl_to_hcl_hue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hw2h.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jam_divergent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jam_linear.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jam_pal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/launchColorjamShiny.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_jam_divergent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/matrix2heatColors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mean_angle.html</loc>
-  </url>
-  <url>
-    <loc>/reference/named_colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_colorjam_preset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rainbowJam.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rainbowJamMulti.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rainbowJam_v1.html</loc>
-  </url>
-  <url>
-    <loc>/reference/remap_colorjam_preset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_color_jam.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_fill_jam.html</loc>
-  </url>
-  <url>
-    <loc>/reference/showDichromat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sort_colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subset_colors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theme_jam.html</loc>
-  </url>
-  <url>
-    <loc>/reference/twostep_gradient.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validate_colorjam_preset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vals2colorLevels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vibrant_color_by_hue.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://jmw86069.github.io/colorjam/404.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/LICENSE-text.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/LICENSE.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/TODO.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/authors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/index.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/news/index.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/add_colorjam_preset.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/add_colorjam_step.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/adjust_hue_warp.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/approx_degrees.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/blend_colors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/closestRcolor.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/closest_named_color.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/col_div_xf.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/col_linear_xf.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/color_complement.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/color_pie.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/colorjamShinyServer.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/colorjamShinyUI.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/colorjam_presets.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/colorjam_steps.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/colors_to_df.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/combine_alphas.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/display_degrees.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/group2colors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/h2hw.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/h2hwOptions.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/hcl_to_hsl_hue.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/hsl_to_hcl_hue.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/hw2h.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/index.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/jam_divergent.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/jam_linear.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/jam_pal.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/launchColorjamShiny.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/make_jam_divergent.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/matrix2heatColors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/mean_angle.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/named_colors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/plot_colorjam_preset.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/rainbowJam.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/rainbowJamMulti.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/rainbowJam_v1.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/remap_colorjam_preset.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/scale_color_jam.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/scale_fill_jam.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/showDichromat.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/sort_colors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/subset_colors.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/theme_jam.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/twostep_gradient.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/validate_colorjam_preset.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/vals2colorLevels.html</loc></url>
+<url><loc>https://jmw86069.github.io/colorjam/reference/vibrant_color_by_hue.html</loc></url>
 </urlset>
+

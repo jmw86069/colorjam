@@ -13,6 +13,9 @@ blend_colors(
   lens = 0,
   c_weight = 0.2,
   c_floor = 12,
+  apply_alpha = FALSE,
+  flatten_alpha = FALSE,
+  bg = NULL,
   ...
 )
 }
@@ -45,6 +48,24 @@ every color is assigned one \code{H} hue value in HCL, even when
 the \code{C} chroma (saturation) is zero, therefore these colors
 effectively have no \code{H} hue.}
 
+\item{apply_alpha}{\code{logical} default TRUE, whether to apply alpha
+transparency to the output color. In other words, if the input
+colors are transparent, the output will also contain transparency
+when \code{apply_alpha=TRUE}.}
+
+\item{flatten_alpha}{\code{logical} default FALSE, whether to "flatten" the
+color transparency by blending with the current background color,
+defined by \code{bg}.
+This argument is only used when \code{apply_alpha=TRUE}.}
+
+\item{bg}{\code{character} default NULL, used to define the default
+background color, used only when \code{flatten_alpha=TRUE}.
+When NULL, it checks for an open graphics device with \code{dev.list()}
+and if open it open it uses \code{par("bg")}. However if no
+graphics device is open, it does not call \code{par("bg")} because
+that would open a new graphics device. Therefore when no graphics
+device is open, NULL is converted to "white" background.}
+
 \item{...}{additional arguments are ignored.}
 }
 \value{
@@ -61,12 +82,33 @@ color mixing. It accomplishes this goal by using a red-yellow-blue
 color wheel (very similar to cyan-yellow-magenta), then determines
 the average color hue with appropriate loss of color saturation.
 
-This function also utilized color transparency, applied internally
-as relative color weights, during the color mixing process.
+The process creates a unit vector for each color, whose length
+is scaled relative to the saturation and alpha transparency,
+with maximum length=1.
+The average angle of these unit vectors is used as the final color
+hue, and the distance from origin is used to derive the new color
+chroma (similar to saturation). The end goal is for blue-yellow
+to make green, blue-red to make purple, and red-yellow to make orange.
+Current RGB color blending fails at least one of these criteria.
 
-This function blends multiple colors, including several useful
-features:
+This approach enables blending more than
+two colors, which is fairly unique for color functions in R.
+Note that the approach, when used to blend multiple very different
+colors, tends to "muddy" the output color, similar to using finger
+paints. Eventually if you add enough colors, it turns "bleh".
+\subsection{New transparency arguments in 0.0.30.900}{
 \itemize{
+\item \code{apply_alpha=TRUE} will
+return a color with appropriate alpha transparency based upon the
+input colors. For example, blending red with red should always
+produce red. However, blending 50\% transparent red with 50\% transparent
+red should produce 75\% transparent red. In effect, the redness
+should build with more layers of transparent red.
+\item \code{flatten_alpha=TRUE} (default is FALSE) will flatten a transparent
+blended color to the background, which is useful for situations
+where the alpha transparency would be ignored. In other words,
+34\% transparent red would be flattened to \code{"#FFAAAAFF"} and should
+appear nearly identical to \code{"#FF000057"} in R plots.
 \item color wheel red-yellow-blue, subtractive color mixing
 \item can blend more than two colors at once
 \item accounts for transparency of individual colors
@@ -102,24 +144,31 @@ which means purple is substantially closer to blue than red.
 A suitable workaround in this case is to use
 \code{blend_colors(c("yellow", "deeppink4"))}.
 }
+}
 \examples{
 blend_colors(c("red", "yellow"), do_plot=TRUE)
 
 blend_colors(c("blue", "gold"), do_plot=TRUE)
 
-blend_colors(c("blue", "red3"), do_plot=TRUE)
-
-blend_colors(c("dodgerblue", "springgreen3"), do_plot=TRUE)
+blend_colors(c("dodgerblue", "firebrick2"), do_plot=TRUE)
 
 blend_colors(c("green", "dodgerblue"), do_plot=TRUE)
 
 blend_colors(c("red", "gold", "blue"), do_plot=TRUE)
 
-blend_colors(c("green4", "red"), do_plot=TRUE)
-
-blend_colors(c("deeppink4", "gold"), do_plot=TRUE)
+blend_colors(c("deeppink2", "yellow"), do_plot=TRUE)
 
 blend_colors(c("blue4", "darkorange1"), do_plot=TRUE)
+
+blend_colors(c("#FF000040", "#FF000080"), do_plot=TRUE)
+title(main=paste0("blend identical transparent colors\n",
+   "returning transparent colors\n"))
+
+blend_colors(c("#FF000040", "#FF000080"), do_plot=TRUE, flatten_alpha=TRUE)
+title(main=paste0("blend identical transparent colors\n",
+   "then flatten alpha transparency\n(same visual result)"))
+
+blend_colors(list(c("red", "yellow"), c("blue", "gold")), do_plot=FALSE)
 
 }
 \seealso{

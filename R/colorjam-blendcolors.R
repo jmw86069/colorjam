@@ -9,11 +9,34 @@
 #' color wheel (very similar to cyan-yellow-magenta), then determines
 #' the average color hue with appropriate loss of color saturation.
 #'
-#' This function also utilized color transparency, applied internally
-#' as relative color weights, during the color mixing process.
+#' The process creates a unit vector for each color, whose length
+#' is scaled relative to the saturation and alpha transparency,
+#' with maximum length=1.
+#' The average angle of these unit vectors is used as the final color
+#' hue, and the distance from origin is used to derive the new color
+#' chroma (similar to saturation). The end goal is for blue-yellow
+#' to make green, blue-red to make purple, and red-yellow to make orange.
+#' Current RGB color blending fails at least one of these criteria.
 #'
-#' This function blends multiple colors, including several useful
-#' features:
+#' This approach enables blending more than
+#' two colors, which is fairly unique for color functions in R.
+#' Note that the approach, when used to blend multiple very different
+#' colors, tends to "muddy" the output color, similar to using finger
+#' paints. Eventually if you add enough colors, it turns "bleh".
+#'
+#' ## New transparency arguments in 0.0.30.900
+#'
+#' * `apply_alpha=TRUE` will
+#' return a color with appropriate alpha transparency based upon the
+#' input colors. For example, blending red with red should always
+#' produce red. However, blending 50% transparent red with 50% transparent
+#' red should produce 75% transparent red. In effect, the redness
+#' should build with more layers of transparent red.
+#' * `flatten_alpha=TRUE` (default is FALSE) will flatten a transparent
+#' blended color to the background, which is useful for situations
+#' where the alpha transparency would be ignored. In other words,
+#' 34% transparent red would be flattened to `"#FFAAAAFF"` and should
+#' appear nearly identical to `"#FF000057"` in R plots.
 #'
 #' * color wheel red-yellow-blue, subtractive color mixing
 #' * can blend more than two colors at once
@@ -75,6 +98,21 @@
 #'    every color is assigned one `H` hue value in HCL, even when
 #'    the `C` chroma (saturation) is zero, therefore these colors
 #'    effectively have no `H` hue.
+#' @param apply_alpha `logical` default TRUE, whether to apply alpha
+#'    transparency to the output color. In other words, if the input
+#'    colors are transparent, the output will also contain transparency
+#'    when `apply_alpha=TRUE`.
+#' @param flatten_alpha `logical` default FALSE, whether to "flatten" the
+#'    color transparency by blending with the current background color,
+#'    defined by `bg`.
+#'    This argument is only used when `apply_alpha=TRUE`.
+#' @param bg `character` default NULL, used to define the default
+#'    background color, used only when `flatten_alpha=TRUE`.
+#'    When NULL, it checks for an open graphics device with `dev.list()`
+#'    and if open it open it uses `par("bg")`. However if no
+#'    graphics device is open, it does not call `par("bg")` because
+#'    that would open a new graphics device. Therefore when no graphics
+#'    device is open, NULL is converted to "white" background.
 #' @param ... additional arguments are ignored.
 #'
 #' @examples
@@ -82,19 +120,25 @@
 #'
 #' blend_colors(c("blue", "gold"), do_plot=TRUE)
 #'
-#' blend_colors(c("blue", "red3"), do_plot=TRUE)
-#'
-#' blend_colors(c("dodgerblue", "springgreen3"), do_plot=TRUE)
+#' blend_colors(c("dodgerblue", "firebrick2"), do_plot=TRUE)
 #'
 #' blend_colors(c("green", "dodgerblue"), do_plot=TRUE)
 #'
 #' blend_colors(c("red", "gold", "blue"), do_plot=TRUE)
 #'
-#' blend_colors(c("green4", "red"), do_plot=TRUE)
-#'
-#' blend_colors(c("deeppink4", "gold"), do_plot=TRUE)
+#' blend_colors(c("deeppink2", "yellow"), do_plot=TRUE)
 #'
 #' blend_colors(c("blue4", "darkorange1"), do_plot=TRUE)
+#'
+#' blend_colors(c("#FF000040", "#FF000080"), do_plot=TRUE)
+#' title(main=paste0("blend identical transparent colors\n",
+#'    "returning transparent colors\n"))
+#'
+#' blend_colors(c("#FF000040", "#FF000080"), do_plot=TRUE, flatten_alpha=TRUE)
+#' title(main=paste0("blend identical transparent colors\n",
+#'    "then flatten alpha transparency\n(same visual result)"))
+#'
+#' blend_colors(list(c("red", "yellow"), c("blue", "gold")), do_plot=FALSE)
 #'
 #' @export
 blend_colors <- function
@@ -110,6 +154,9 @@ blend_colors <- function
  lens=0,
  c_weight=0.2,
  c_floor=12,
+ apply_alpha=FALSE,
+ flatten_alpha=FALSE,
+ bg=NULL,
  ...)
 {
    ## 1. Convert colors to ryb
@@ -118,6 +165,9 @@ blend_colors <- function
    ## 3. convert to rgb
    #x <- jamba::nameVector(c("red", "yellow", "blue"));
    preset <- match.arg(preset);
+   if (length(apply_alpha) == 0) {
+      apply_alpha <- FALSE
+   }
    if (length(c_floor) == 0) {
       c_floor <- 0;
    }
@@ -134,8 +184,18 @@ blend_colors <- function
             h1=h1,
             h2=h2,
             do_plot=FALSE,
+            apply_alpha=apply_alpha,
+            flatten_alpha=flatten_alpha,
+            bg=bg,
             c_weight=c_weight);
       });
+      if (TRUE %in% do_plot) {
+         jamba::showColors(list(
+            x=unlist(x),
+            blended=setNames(rep(x_blends, lengths(x)),
+               rep(seq_along(x_blends), lengths(x)))
+         ));
+      }
       x_blend <- x_blends[x_match];
       names(x_blend) <- names(x);
       return(x_blend);
@@ -143,6 +203,13 @@ blend_colors <- function
 
    ## weights are defined by transparency
    x_w <- jamba::col2alpha(x);
+
+   ## apply alpha
+   if (TRUE %in% apply_alpha) {
+      new_alpha <- combine_alphas(x_w);
+   } else {
+      new_alpha <- 1;
+   }
 
    x_HCL <- jamba::col2hcl(x);
    x_w_use <- ifelse(x_HCL["C",] <= c_floor,
@@ -189,6 +256,23 @@ blend_colors <- function
       L=x_mean_L,
       alpha=1));
    new_col <- jamba::hcl2col(new_HCL);
+   if (new_alpha < 1) {
+      new_col <- jamba::alpha2col(new_col,
+         alpha=new_alpha);
+      # Todo: Figure out how to flatten versus the back color
+      if (TRUE %in% flatten_alpha) {
+         # optionally flatten to the background color
+         if (length(bg) == 0) {
+            if (length(dev.list()) > 0) {
+               bg <- gsub("^transparent$", "#FFFFFF", par("bg"))
+            } else {
+               bg <- "#FFFFFF";
+            }
+         }
+         bg <- jamba::alpha2col(bg, alpha=(1 - jamba::col2alpha(new_col))^1.8);
+         new_col <- blend_colors(x=c(rep(new_col, 1), bg), apply_alpha=FALSE)
+      }
+   }
    if (do_plot) {
       jamba::showColors(list(x=x,
          blended=rep(new_col, length(x))));
@@ -313,3 +397,99 @@ mean_angle <- function
       radius2=x_radius2);
 }
 
+#' Combine alpha transparency values with additive logic
+#'
+#' Combine alpha transparency values with additive logic
+#'
+#' Alpha transparency is defined as 0 for fully transparent, and 1
+#' (or `max_alpha`) for fully opaque (not transparent).
+#' The purpose is to permit combining multiple colors, where the
+#' alpha transparency builds over time. Each color should contribute
+#' some proportional fraction to the overall opacity of the final
+#' color.
+#'
+#' The basic formula:
+#'
+#' `new_alpha <- alpha1 + (1 - alpha1) * alpha2`
+#'
+#' Or when `max_alpha` is defined:
+#'
+#' `new_alpha <- alpha1 + (max_alpha - alpha1) * alpha2`
+#'
+#' * Any `NA` values are considered equivalent to `0` and are
+#' therefore not applied.
+#' * All input alpha values are restricted to values between
+#' `0` and `max_alpha`.
+#' * For more than two values, each value is applied in series,
+#' which works out to the same result if applied in any order.
+#'
+#' @family colorjam display
+#'
+#' @returns `numeric` value after combining alpha values.
+#'
+#' @param x `numeric` alpha value, typically limited between 0 and 1.
+#'    The max value can be set using `max_alpha`.
+#' @param max_alpha `numeric` default 1, the maximum permitted alpha value.
+#' @param ... additional arguments are ignored.
+#'
+#' @examples
+#' # it progressively fills 50% of remaining transparency
+#' combine_alphas(c(0.5, 0.5))
+#' combine_alphas(c(0.5, 0.5, 0.5))
+#' combine_alphas(c(0.5, 0.5, 0.5, 0.5))
+#'
+#' base_alpha <- 0.5;
+#' new_alphas <- sapply(1:5, function(i){
+#'    combine_alphas(rep(base_alpha, i))
+#' })
+#' names(new_alphas) <- seq_along(new_alphas);
+#' bp <- barplot(new_alphas, ylim=c(0, 1.1), col="navy",
+#'    xlab=paste0("Number of ",
+#'    base_alpha,
+#'    " alpha values combined"))
+#' abline(h=1, lty=2);
+#' jamba::shadowText(x=bp[, 1], y=new_alphas,
+#'    col="white", cex=1.5,
+#'    pos=1,
+#'    xpd=TRUE,
+#'    label=round(new_alphas, digits=3))
+#' @export
+combine_alphas <- function
+(x,
+ max_alpha=1,
+ ...)
+{
+   #
+   if (length(x) == 0) {
+      return(numeric(0))
+   }
+   if (any(is.na(x))) {
+      x <- x[!x %in% NA]
+   }
+   if (!inherits(x, c("numeric", "integer"))) {
+      stop("x input must be numeric.")
+   }
+   if (any(x < 0)) {
+      x[x < 0] <- 0;
+   }
+   if (length(max_alpha) == 0) {
+      max_alpha <- 1;
+   }
+   max_alpha <- head(max_alpha, 1);
+   if (max_alpha <= 0) {
+      stop("max_alpha must be greater than 0.")
+   }
+   if (any(x > max_alpha)) {
+      x[x > max_alpha] <- max_alpha;
+   }
+   if (length(x) <= 1) {
+      return(x)
+   }
+   # apply alpha in series
+   new_alpha <- head(x, 1) / max_alpha;
+   for (i1 in seq(2, length(x))) {
+      new_alpha <- new_alpha + (1 - new_alpha) * x[i1] / max_alpha;
+   }
+   new_alpha <- new_alpha * max_alpha;
+   return(new_alpha);
+}

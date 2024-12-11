@@ -26,14 +26,15 @@ hex_colors <- hex_colors[!duplicated(hex_colors)];
 hex_colors_new <- hex_colors[!hex_colors %in% colornames_v];
 
 # combine color vectors
-named_colors <- c(colornames_v, hex_colors_new)
+new_named_colors <- c(colornames_v, hex_colors_new)
 
 # sort saturated colors first, then unsaturated (greyscale)
-named_colors <- c(
-   colorjam::sort_colors(named_colors, C > 10, byCols=c("H", "C", "L")),
-   colorjam::sort_colors(named_colors, C <= 10, byCols=c("H", "C", "L")))
+new_named_colors <- c(
+   colorjam::sort_colors(new_named_colors, C > 10, byCols=c("H", "C", "L")),
+   colorjam::sort_colors(new_named_colors, C <= 10, byCols=c("H", "C", "L")))
 
 # store for re-use
+named_colors <- new_named_colors
 usethis::use_data(named_colors, overwrite=TRUE)
 
 ## TODO: code to prepare colorjam hexsticker

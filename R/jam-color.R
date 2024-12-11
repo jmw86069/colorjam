@@ -177,7 +177,7 @@ rainbowJam_v1 <- function
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
             "warping hues");
-         ch(data.frame(h1=h1, h2=h2), Inf);
+         print(data.frame(h1=h1, h2=h2));
       }
       hues <- hw2h(hues,
          h1=h1,
@@ -193,22 +193,22 @@ rainbowJam_v1 <- function
    ## Scale the lVals and cVals ranges to given lRange and cRange if needed
    ## (note we have to do the scaling before taking a subset of values!)
    if (length(Lrange) == 2 && !all(Lrange %in% range(Lvals))) {
-      #Lvals <- normScale(Lvals,
+      #Lvals <- jamba::normScale(Lvals,
       #   from=Lrange[1],
       #   to=Lrange[2]);
       ## 19nov2018 changed to restrict the extremes, not stretch the
       ## interior values to the minimum/maximum
-      Lvals <- normScale(Lvals,
+      Lvals <- jamba::normScale(Lvals,
          low=min(c(Lrange[1], min(Lvals))),
          high=max(c(Lrange[2], max(Lvals))),
          from=Lrange[1],
          to=Lrange[2]);
    }
    if (length(Crange) == 2 && !all(Crange %in% range(Cvals))) {
-      #Cvals <- normScale(Cvals,
+      #Cvals <- jamba::normScale(Cvals,
       #   from=Crange[1],
       #   to=Crange[2]);
-      Cvals <- normScale(Cvals,
+      Cvals <- jamba::normScale(Cvals,
          low=min(c(Crange[1], min(Cvals))),
          high=max(c(Crange[2], max(Cvals))),
          from=Crange[1],
@@ -238,9 +238,9 @@ rainbowJam_v1 <- function
    if (any(abs(sFactor) != 1) || any(abs(darkFactor) != 1)) {
       if (verbose) {
          jamba::printDebug("rainbowJam(): ",
-            "applying darkFactor, sFactor with makeColorDarker().")
+            "applying darkFactor, sFactor with jamba::makeColorDarker().")
       }
-      hclSet <- makeColorDarker(hclSet,
+      hclSet <- jamba::makeColorDarker(hclSet,
          darkFactor=postDarkFactor,
          sFactor=postSfactor,
          ...);
@@ -692,40 +692,41 @@ group2colors <- function
 #' When `lens` is non-zero, the color gradient is warped in order
 #' to intensify the color saturation across the numeric range.
 #'
-#' @param x numeric matrix. If there are no `colnames(x)` they will
+#' @param x `numeric` matrix. If there are no `colnames(x)` they will
 #'    be created using `jamba::makeNames(rep("x", ncol(x)))`.
-#' @param colorV character vector of R colors, named by `colnames(x)`,
+#' @param colorV `character` vector of R colors, named by `colnames(x)`,
 #'    and recycled to `ncol(x)` if needed. If `colorV` is supplied as
 #'    a list, the list elements are mapped to `colnames(x)` in order.
-#' @param defaultBaseColor character vector of R colors used as the default
+#' @param defaultBaseColor `character` vector of R colors used as the default
 #'    base color, when `colorV` is supplied as a vector.
-#' @param transformFunc function applied to numeric values before
+#' @param transformFunc `function` applied to numeric values before
 #'    the color gradient is mapped to numeric values. For example,
 #'    `transformFunc=function(i)-log10(i)` would map colors to P-value
 #'    using a `-log10(p)` transformation.
-#' @param lens numeric value passed to `warpRamp()` to adjust the
+#' @param lens `numeric` value passed to `jamba::warpRamp()` to adjust the
 #'    distribution of colors along the numeric range.
-#' @param shareLimit logical indicating whether one numeric limit `numLimit`
+#' @param shareLimit `logical` indicating whether one numeric limit `numLimit`
 #'    should be used to define the numeric range for color mapping.
-#' @param numLimitFactor when `numLimit` is NULL, this factor is applied to
+#' @param numLimitFactor `numeric` when `numLimit` is NULL,
+#'    this factor is applied to
 #'    the maximum numeric value to determine the `numLimit`.
-#' @param numLimit numeric value to define the maximum numeric value
+#' @param numLimit `numeric` value to define the maximum numeric value
 #'    above which all numeric values are mapped to the maximum color.
 #'    When set to `NULL` the `numLimitFactor` is used to define
 #'    the `numLimit`.
-#' @param baseline numeric value to define the numeric baseline, used
+#' @param baseline `numeric` value to define the numeric baseline, used
 #'    when `divergent=FALSE`. Values are recycled to `ncol(x)` to be
 #'    applied to each column individually.
-#' @param color_below_baseline color used when numeric value is
+#' @param color_below_baseline `character` color used when numeric value is
 #'    below the `baseline`. Values are recycled to `ncol(x)` to be
 #'    applied to each column individually. When `color_below_baseline`
 #'    is `NULL`, the first color in the color ramp is used for all
 #'    values below the baseline.
-#' @param divergent logical indicating whether to apply colors to the numeric
+#' @param divergent `logical` indicating whether to apply colors to the numeric
 #'    range symmetric around zero.
-#' @param rampN integer value to define the number of color breaks for
+#' @param rampN `integer` value to define the number of color breaks for
 #'    each color gradient.
-#' @param trimRamp numeric vector with two values, used by
+#' @param trimRamp `numeric` vector with two values, used by
 #'    `jamba::getColorRamp()` to trim the intermediate color gradient before
 #'    creating the final color ramp with length `rampN`. For example,
 #'    by default `jamba::getColorRamp()` creates a color gradient with
@@ -736,7 +737,7 @@ group2colors <- function
 #'    useful to remove the leading white color, or to trim the first
 #'    few colors to ensure the first color in the gradient is visibly
 #'    different from the background color defined by `defaultBaseColor`.
-#' @param verbose logical indicating whether to print verbose output.
+#' @param verbose `logical` indicating whether to print verbose output.
 #' @param ... additional arguments are passed to `jamba::getColorRamp()`
 #'    for additional customization. These arguments are handled across
 #'    all columns, and not a column-by-column basis.
@@ -1142,7 +1143,7 @@ vals2colorLevels <- function
 #' @export
 closest_named_color <- function
 (x,
- colorSet=named_colors,
+ colorSet=colorjam::named_colors,
  C_min=Cgrey,
  Cgrey=getOption("jam.Cgrey", 5),
  showPalette=FALSE,

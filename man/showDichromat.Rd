@@ -56,6 +56,7 @@ showDichromat(jam_linear, type="tritan", spacer=FALSE, original=FALSE)
 }
 \seealso{
 Other colorjam display: 
-\code{\link{color_pie}()}
+\code{\link{color_pie}()},
+\code{\link{combine_alphas}()}
 }
 \concept{colorjam display}

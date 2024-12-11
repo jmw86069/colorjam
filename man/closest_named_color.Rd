@@ -6,7 +6,7 @@
 \usage{
 closest_named_color(
   x,
-  colorSet = named_colors,
+  colorSet = colorjam::named_colors,
   C_min = Cgrey,
   Cgrey = getOption("jam.Cgrey", 5),
   showPalette = FALSE,

@@ -5,14 +5,17 @@
 \alias{named_colors}
 \title{named_colors from meodai/color-names and R colors()}
 \format{
-a \code{character} vector with length 4883, containing
+a \code{character} vector with length 4943, containing
 hexadecimal colors named with human-assigned color names.
+Note that R colors are preceded by "R" in the name, for
+example "Rgreen2", and only include colors not already
+present in \code{"meodai/color-names"}.
 \subsection{Processing}{
 
 Named colors were obtained from the amazing Github repository
 \href{https://github.com/meodai/color-names}{meodai/color-names}.
 This resource provided 30200 total named colors.
-A subset of 4447 color names were denoted "good names" and were
+A subset of 4507 color names were denoted "good names" and were
 included here.
 
 R colors from \code{grDevices::colors()} whose hex values were not already
@@ -35,15 +38,16 @@ appear to match the W3C color name standard used by HTML and CSS.
 named_colors
 }
 \description{
-named_colors including 4447 entries from meodai/color-names,
-and 436 entries from R \code{colors()}.
+named_colors including 4507 entries from Git "meodai/color-names"
+v11.0.0, and 436 entries from R \code{colors()}.
 }
 \examples{
-jamba::showColors(colorjam::named_colors)
+color_pie(unname(colorjam::named_colors))
 
 # subset for color chroma at least 30
 colorjam::color_pie(unname(
    colorjam::subset_colors(colorjam::named_colors, C >= 30)))
+title(main="named_colors with C >= 30")
 
 }
 \seealso{

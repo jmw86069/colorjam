@@ -96,7 +96,7 @@ rainbow categorical colors using varied luminance and chroma
 }
 \details{
 This function customizes similar functions \code{grDevices::rainbow},
-\code{\link[colorspace:rainbow_hcl]{colorspace::rainbow_hcl()}}, and \code{\link[scales:hue_pal]{scales::hue_pal()}} in two main
+\code{\link[colorspace:rainbow_hcl]{colorspace::rainbow_hcl()}}, and \code{\link[scales:pal_hue]{scales::hue_pal()}} in two main
 ways:
 \enumerate{
 \item It uses the warped color wheel (see \code{\link[=h2hw]{h2hw()}} which compresses the
