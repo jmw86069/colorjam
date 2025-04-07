@@ -29,7 +29,7 @@ Encoding: UTF-8
 LazyData: true
 biocViews:
 Remotes:
-   github:jmw86069/jamses
+   github::jmw86069/jamses
 URL: https://jmw86069.github.io/colorjam
 BugReports: https://github.com/jmw86069/colorjam/issues
 Roxygen: list(markdown = TRUE)
