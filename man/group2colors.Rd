@@ -75,7 +75,6 @@ jamba::showColors(list(abcde=abcde,
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
-\code{\link{closest_named_color}()},
 \code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{rainbowJam}()},

@@ -63,18 +63,19 @@ to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_color_hue()}.
 }
 \examples{
-if (jamba::check_pkg_installed("ggplot2")) {
-   dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
-   d <- ggplot2::ggplot(
-      dsamp, ggplot2::aes(carat, price)) +
-      ggplot2::geom_point(ggplot2::aes(colour=cut),
-         size=4);
+\dontshow{if ((requireNamespace("ggplot2", quietly=TRUE))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
+d <- ggplot2::ggplot(
+   dsamp, ggplot2::aes(carat, price)) +
+   ggplot2::geom_point(ggplot2::aes(colour=cut),
+      size=4)
 
-   print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
-   print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
-   print(d + scale_color_jam(preset="ryb") + ggplot2::ggtitle("scale_color_jam(preset='ryb')"));
-}
+print(d + ggplot2::scale_color_hue() + ggplot2::ggtitle("scale_color_hue()"));
+print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
+print(d + scale_color_jam(preset="ryb") + ggplot2::ggtitle("scale_color_jam(preset='ryb')"));
 
+print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other colorjam ggplot2: 

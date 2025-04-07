@@ -10,16 +10,25 @@
       `rainbowJamMulti()` - may be superceded by `add_colors()`
       `rainbowJam_v1()`
       `remap_colorjam_preset()`
+   * Consider transitioning all user-facing functions to use presets,
+   thus hiding or removing all other functions.
+   * Consider hiding (not exporting) some internal functions:
+      `h2hw()`, `hw2h()`, `h2hwOptions()`
    * Consider renaming `color_to_df()` for clarity?
    Suggestions: `annotate_colors()` since it takes a vector of colors,
    and returns a `data.frame` of annotations.
-   * Consider hiding (not exporting) some internal functions:
-      `h2hw()`, `hw2h()`, `h2hwOptions()`
-   * Consider transitioning all user-facing functions to use presets.
    * Consider renaming functions from camelCase to snake_case for consistency?
    (Or both, shudder.)
    Mostly would mean adding `rainbow_jam()` and deprecating `rainbowJam()`.
    * Consider how best to include ggplot2 themes and scales.
+   Confirm `scale_color_jam()` works with combination of assigned and
+   missing colors.
+   * Update function family and pkgdown categories.
+
+* Consider changing `scale_color_jam()`, `scale_fill_jam()`
+
+   * Add argument `colorSub` to assign colors by name, then use `add_colors()`.
+   * Internally, see steps used by `ggplot2::manual_scale()`.
 
 * Add functions to help "maintain" named_colors from "meodai/color_names"
 
@@ -30,6 +39,7 @@
    disrespectful or otherwise inappropriate labels.
    * Refresh the named color wheel, e.g. the "preset".
    Optional? It might be best to keep the wheel consistent over time.
+
 
 ## 05apr2025
 

@@ -17,6 +17,20 @@
 #' by default uses `method="maximum"` which also emphasizes the lowest
 #' distance in any of the three dimensions.
 #'
+#' Notably, this function does not use `color_distance()`, in part
+#' because in practice the color metrics used by 'cie2000', 'cie94', 'cmc'
+#' did not prioritize the same color hue, and often the returned color
+#' was similar but not the most visibly similar in terms of hue.
+#'
+#' Also `color_distance()` does not currently permit weights for Hue,
+#' Chroma, Luminance, as these values are already defined in
+#' `farver::compare_colour()`.
+#'
+#' ## Todo
+#'
+#' * Consider testing then adding `color_distance()` as an optional metric.
+#' Test whether it could improve results.
+#'
 #' @returns `character` vector of colors, optionally customized
 #'    by argument `returnType`.
 #'
@@ -26,11 +40,14 @@
 #'    the R colors `grDevices::colors()`.
 #' @param Cgrey,C_min `numeric` default 5, using `getOption("jamba.Cgrey", 5)`,
 #'    the Chroma at which colors are considered "grey" ("gray").
-#'    * `Cgrey` is applied to `colorSet`.
-#'    * `C_min` is applied to `x`.
-#'
 #'    The purpose is for saturated colors to match saturated colors,
 #'    and non-saturated colors to match non-saturated colors.
+#'    * `Cgrey` is applied to `colorSet`.
+#'    * `C_min` is applied to `x`.
+#'    * They should be the same value in most scenarios, however it may be
+#'    useful to force `x` to match with non-grey colors even with small
+#'    but non-zero Chroma.
+#'
 #'    Rules:
 #'    * All non-grey colors `x` are compared with non-grey `colorSet`.
 #'    * Grey colors `x` are compared with grey `colorSet`,
@@ -47,8 +64,9 @@
 #'    * `"LUV"`: uses CIELUV color space, provided by `colorspace::LUV()`
 #'    which encodes the angular color hue in 3-D Cartesian space,
 #'    allowing comparisons using Euclidean distance.
-#' @param Hwt,Cwt,Lwt `numeric` relative weights for each dimension of
-#'    HCL colors, for the H, C, and L channels, respectively.
+#' @param Hwt,Cwt,Lwt `numeric`, defaults 2.5, 1, 4, respectively,
+#'    relative weights for the H, C, and L channels, respectively,
+#'    only when `colorModel="hcl"`.
 #' @param warpHue `logical` indicating whether to perform the hue warp
 #'    operation using `h2hw()` which improves the ability to match
 #'    colors between orange and green.
@@ -308,4 +326,48 @@ closestRcolor <- function
       }
    }
    return(retX);
+}
+
+
+#' Closest colorjam named_colors
+#'
+#' @rdname closestRcolor
+#'
+#' @export
+closest_named_color <- function
+(x,
+ colorSet=colorjam::named_colors,
+ Cgrey=getOption("jam.Cgrey", 5),
+ C_min=Cgrey,
+ showPalette=FALSE,
+ colorModel=c("hcl",
+    "LUV"),
+ Hwt=2.5,
+ Cwt=1,
+ Lwt=4,
+ warpHue=TRUE,
+ preset="ryb",
+ method="maximum",
+ returnType=c("color",
+    "name",
+    "match"),
+ verbose=FALSE,
+ ...)
+{
+   #
+   closestRcolor(x=x,
+      colorSet=colorSet,
+      C_min=C_min,
+      Cgrey=Cgrey,
+      showPalette=showPalette,
+      colorModel=colorModel,
+      Hwt=Hwt,
+      Cwt=Cwt,
+      Lwt=Lwt,
+      warpHue=warpHue,
+      preset=preset,
+      method=method,
+      returnType=returnType,
+      verbose=verbose,
+      ...);
 }

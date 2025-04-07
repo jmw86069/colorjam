@@ -174,7 +174,6 @@ blend_colors(list(c("red", "yellow"), c("blue", "gold")), do_plot=FALSE)
 \seealso{
 Other colorjam core: 
 \code{\link{closestRcolor}()},
-\code{\link{closest_named_color}()},
 \code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},

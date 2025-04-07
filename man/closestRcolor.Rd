@@ -2,11 +2,30 @@
 % Please edit documentation in R/colorjam-closest-color.R
 \name{closestRcolor}
 \alias{closestRcolor}
+\alias{closest_named_color}
 \title{Find the closest R color}
 \usage{
 closestRcolor(
   x,
   colorSet = colors(),
+  Cgrey = getOption("jam.Cgrey", 5),
+  C_min = Cgrey,
+  showPalette = FALSE,
+  colorModel = c("hcl", "LUV"),
+  Hwt = 2.5,
+  Cwt = 1,
+  Lwt = 4,
+  warpHue = TRUE,
+  preset = "ryb",
+  method = "maximum",
+  returnType = c("color", "name", "match"),
+  verbose = FALSE,
+  ...
+)
+
+closest_named_color(
+  x,
+  colorSet = colorjam::named_colors,
   Cgrey = getOption("jam.Cgrey", 5),
   C_min = Cgrey,
   showPalette = FALSE,
@@ -31,13 +50,16 @@ the R colors \code{grDevices::colors()}.}
 
 \item{Cgrey, C_min}{\code{numeric} default 5, using \code{getOption("jamba.Cgrey", 5)},
 the Chroma at which colors are considered "grey" ("gray").
+The purpose is for saturated colors to match saturated colors,
+and non-saturated colors to match non-saturated colors.
 \itemize{
 \item \code{Cgrey} is applied to \code{colorSet}.
 \item \code{C_min} is applied to \code{x}.
+\item They should be the same value in most scenarios, however it may be
+useful to force \code{x} to match with non-grey colors even with small
+but non-zero Chroma.
 }
 
-The purpose is for saturated colors to match saturated colors,
-and non-saturated colors to match non-saturated colors.
 Rules:
 \itemize{
 \item All non-grey colors \code{x} are compared with non-grey \code{colorSet}.
@@ -61,8 +83,9 @@ which encodes the angular color hue in 3-D Cartesian space,
 allowing comparisons using Euclidean distance.
 }}
 
-\item{Hwt, Cwt, Lwt}{\code{numeric} relative weights for each dimension of
-HCL colors, for the H, C, and L channels, respectively.}
+\item{Hwt, Cwt, Lwt}{\code{numeric}, defaults 2.5, 1, 4, respectively,
+relative weights for the H, C, and L channels, respectively,
+only when \code{colorModel="hcl"}.}
 
 \item{warpHue}{\code{logical} indicating whether to perform the hue warp
 operation using \code{h2hw()} which improves the ability to match
@@ -121,6 +144,21 @@ For \code{colorModel="HCL"} the coordinates are weighted to prioritize
 matching color Hue above Chroma and Luminance. The distance method
 by default uses \code{method="maximum"} which also emphasizes the lowest
 distance in any of the three dimensions.
+
+Notably, this function does not use \code{color_distance()}, in part
+because in practice the color metrics used by 'cie2000', 'cie94', 'cmc'
+did not prioritize the same color hue, and often the returned color
+was similar but not the most visibly similar in terms of hue.
+
+Also \code{color_distance()} does not currently permit weights for Hue,
+Chroma, Luminance, as these values are already defined in
+\code{farver::compare_colour()}.
+\subsection{Todo}{
+\itemize{
+\item Consider testing then adding \code{color_distance()} as an optional metric.
+Test whether it could improve results.
+}
+}
 }
 \examples{
 closestRcolor(rainbowJam(12), showPalette=TRUE);
@@ -129,7 +167,6 @@ closestRcolor(rainbowJam(12), showPalette=TRUE);
 \seealso{
 Other colorjam core: 
 \code{\link{blend_colors}()},
-\code{\link{closest_named_color}()},
 \code{\link{color_complement}()},
 \code{\link{colors_to_df}()},
 \code{\link{group2colors}()},
