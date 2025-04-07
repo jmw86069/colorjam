@@ -1,3 +1,39 @@
+# colorjam 0.0.31.900
+
+* Bumped jamba dependency to 1.0.4, using CRAN. Woot.
+* Incremental update to add features to prepare for CRAN submission.
+
+## new functions
+
+* `add_colors()`
+
+    * Prototype of function to take `given_colors` and add `n` more
+    categorical colors with reasonably maximal visual difference.
+    * Future intention is to use Fibonnaci colors to extend colors
+    in sets.
+    * Todo: Add another pass to filter adjacent colors whose CL values
+    make the color appear more similar than indicated by the color distance
+    method="cie2000".
+
+* `color_distance()`
+
+    * Wrapper to `farver::compare_colour()` that takes hex input,
+    uses `method="cie2000"` by default.
+    
+* `show_color_distance()`
+
+    * Utility function that uses `ComplexHeatmap` via `jamses`
+    to display a visual of color distance.
+
+* `slot_colors()`
+
+    * Internal function to match one set of colors (given) to another (ref).
+    It detects a reasonable color distance threshold based upon the given
+    colors, so that any "un-slotted" colors could be considered at least
+    as different from the given colors as the given colors are from each
+    other, on average.
+
+
 # colorjam 0.0.30.900
 
 * Moved `jamba` to Imports, from Depends, for cleaner R code.

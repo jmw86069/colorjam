@@ -31,30 +31,22 @@ with provides 4,447 total hex colors, each with human-assigned
 color name. These colors also include hex colors from R \code{colors()}
 which were not already included in the reference colors.}
 
-\item{C_min, Cgrey}{\code{numeric} minimum color Chroma filter applied to
-handle greyscale colors. In most practical cases \code{C_min} and \code{Cgrey}
-should be the same value. Note \code{Cgrey} is used as an option in
-\code{jamba::make_styles()}, \code{jamba::applyCLrange()} for similar
-use cases, so it is used here as well: \code{getOption("jamba.Cgrey", 5)}.
+\item{Cgrey, C_min}{\code{numeric} default 5, using \code{getOption("jamba.Cgrey", 5)},
+the Chroma at which colors are considered "grey" ("gray").
 \itemize{
-\item \code{C_min} is applied to \code{colorSet} to require the closest matching
-color to have at least this color Chroma (saturation).
-\item \code{Cgrey} is applied to \code{x} to determine if the input color itself
-is considered greyscale, in which case it should not be matched
-with saturated colors since there is no reliable color hue.
-Instead, the subset of \code{colorSet} with Chroma below \code{C_min} is used
-for color-matching.
+\item \code{Cgrey} is applied to \code{colorSet}.
+\item \code{C_min} is applied to \code{x}.
 }
 
-Reworded in short:
+The purpose is for saturated colors to match saturated colors,
+and non-saturated colors to match non-saturated colors.
+Rules:
 \itemize{
-\item Colors in \code{x} with Chroma above \code{Cgrey} are matched with
-colors in \code{colorSet} with Chroma above \code{C_min}.
-\item Colors in \code{x} with Chroma below \code{Cgrey} are matched with
-colors in \code{colorSet} with Chroma below \code{C_min}.
-\item The end result should be that saturated input colors match
-saturated reference colors, and unsaturated input colors match
-unsaturated reference colors.
+\item All non-grey colors \code{x} are compared with non-grey \code{colorSet}.
+\item Grey colors \code{x} are compared with grey \code{colorSet},
+therefore color Hue is not used.
+\item Note \code{Cgrey} is an argument in \code{jamba::make_styles()}, and
+\code{jamba::applyCLrange()} for similar use cases.
 }}
 
 \item{showPalette}{\code{logical} indicating whether to display the input

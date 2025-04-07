@@ -1,5 +1,121 @@
 # colorjam Todo
 
+## 06apr2025
+
+* Prepare for CRAN release.
+
+   * Consider removing functions not absolutely necessary:
+      `launchColorjamShiny()`,
+      `matrix2heatColors()` (?),
+      `rainbowJamMulti()` - may be superceded by `add_colors()`
+      `rainbowJam_v1()`
+      `remap_colorjam_preset()`
+   * Consider renaming `color_to_df()` for clarity?
+   Suggestions: `annotate_colors()` since it takes a vector of colors,
+   and returns a `data.frame` of annotations.
+   * Consider hiding (not exporting) some internal functions:
+      `h2hw()`, `hw2h()`, `h2hwOptions()`
+   * Consider transitioning all user-facing functions to use presets.
+   * Consider renaming functions from camelCase to snake_case for consistency?
+   (Or both, shudder.)
+   Mostly would mean adding `rainbow_jam()` and deprecating `rainbowJam()`.
+   * Consider how best to include ggplot2 themes and scales.
+
+* Add functions to help "maintain" named_colors from "meodai/color_names"
+
+   * Download latest
+   * Re-create `named_colors`.
+   Decide what to do with retired colors and backward compatibility.
+   For now, they are lost, in part bc retired colors have tended to remove
+   disrespectful or otherwise inappropriate labels.
+   * Refresh the named color wheel, e.g. the "preset".
+   Optional? It might be best to keep the wheel consistent over time.
+
+## 05apr2025
+
+* DONE. Prototype `add_colors()` function
+
+   * `slot_colors()` - used to compare `x` colors to `y` colors, "assigning"
+   colors in `x` to the corresponding best match in `y`, with default
+   restrictions using color distance.
+   * `color_distance()` - wrapper to `farver::compare::colour()`
+
+* Experiment with, then add `named_colors` color wheel
+
+   * Theory is to define the color wheel using "crowd sourcing"
+   based upon people's interest and enthusiasm for colors across
+   the RGB color wheel. It appears to be a natural method of pruning
+   the blue-green/green colors, which appeat to have proportionally
+   fewer names than yellow/gold/orange.
+
+* Add `fibonacci_colors()`
+
+* Transition `design2colors()` from `platjam::design2colors()`
+
+   * Use `add_colors()` to add colors iteratively.
+
+* Add testthis
+
+   * `rainbowJam()`
+   * `rainbowJam()` with alternative presets
+   * `add_colors()`
+   * `slot_colors()`
+
+## 01apr2025
+
+* `theme_jam()`
+
+   * Add `axis.text.y.angle=0` to code and defaults.
+   * Consider reducing strip margin around labels?
+
+* `colorjam_presets()`
+
+   * Consider hue wheel defined by `named_colors`.
+
+* `named_colors`
+
+   * Add maintenance functions to download latest `named_colors`, filter
+   for approved colors, redefine the color wheel (see above) and update
+   the colorjam package data object.
+   * Color wheel: Sort colors by hue. Define steps using spline, using
+   hue rank, scaled from 0 to 360. Consider some "rounding" of decimal values,
+   then take the mean rank for ties, where the same hue appears consecutively.
+   (Alternate is to reduce repeated values to single entry.)
+
+## 19mar2025
+
+* `col_linear_xf()`
+
+   * Consider new arg `floor_colramp="Blues"` to assign colors below floor.
+   * Consider optional argument with specific breakpoints, labels,
+   to be used as default with heatmap legends.
+
+* Consider function to create `ComplexHeatmap::Legend()` from
+`col_div_xf()` or `col_linear_xf()`
+
+
+## 21jan2025
+
+* consider making a ggplot2 "theme" that automatically uses the colorjam
+categorical color functions, as drop-in replacement for rainbow colors,
+most notably used by Seurat/tSNE/UMAP plots to color each cluster.
+* novel color wheel using "meodai/named_colors" as crowd-sourced evidence
+
+   * filter named_colors for chroma, luminance, for usability by `rainbowJam()`
+
+   
+
+## 14jan2025
+
+* `col_linear_xf()` and `col_div_xf()`
+
+   * When `floor` is used, consider optional argument `floor_color`
+   to apply a different color to indicate when a value is below the floor.
+   For example, sometimes it's useful to use yellow to indicate a value
+   is below the floor, rather than relying on discerning white versus
+   slightly off-white, especially for `colramp="Reds"` where the
+   baseline color is already slightly reddish-white.
+
 ## 11dec2024
 
 * Improve `blend_color()` handling of alpha so it builds over time, use
