@@ -66,6 +66,7 @@ find_color_spread <- function
    # if (n == 1) {
    #    return(given_colors)
    # }
+   names_x <- names(x);
    names(x) <- jamba::colNum2excelName(seq_along(x));
    cd <- color_distance(x,
       method=method,
@@ -211,6 +212,8 @@ find_color_spread <- function
       }
    }
 
-   return(x[k])
+   return_x <- x[k];
+   names(return_x) <- names_x[k];
+   return(return_x)
 
 }
