@@ -118,7 +118,7 @@ add_colors <- function
     "full",
     "list"),
  color_fn=rainbowJam,
- check_internal=FALSE,
+ check_internal=TRUE,
  max_iterations=50,
  min_distance=30,
  step_distance=-1,
