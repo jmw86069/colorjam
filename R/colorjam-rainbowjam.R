@@ -94,6 +94,17 @@
 #'    minimum internal color hues to use when `n` is low. Typically this
 #'    argument restricts the first several color hues to prevent unusual
 #'    colors.
+#' @param test_color_model `logical` default FALSE, enables a test mode
+#'    which enables HSL color space. The method uses an adjustment that
+#'    takes an average of the HCL chroma/luminance converted to
+#'    HSL saturation/lightness, then averages with the Cvals,Lvals
+#'    originally used for HCL. The effect is a somewhat muted version
+#'    of HSL which otherwise would be too neon saturated.
+#'    The output is closer to HSL, with generally more vibrant colors
+#'    than the HCL equivalent, because certain color hues tend to
+#'    become more saturated based upon the range of opportunity for
+#'    each color hue. HCL does not account for the available chroma
+#'    for a hue, it simply caps the chroma.
 #' @param doTest `logical` indicating whether to perform a visual test for
 #'    `n` number of colors produced.
 #' @param verbose `logical` whether to print verbose output
@@ -158,6 +169,7 @@ rainbowJam <- function
     "hcl",
     "color"),
  min_requested_n=3,
+ test_color_model=c("HCL", "HSL"),
  doTest=FALSE,
  verbose=FALSE,
  ...)
@@ -171,6 +183,7 @@ rainbowJam <- function
    ##
    nameStyle <- match.arg(nameStyle);
    direction <- match.arg(direction);
+   test_color_model <- match.arg(test_color_model);
 
    # deprecated arguments
    warn_txt <- character(0);
@@ -264,18 +277,21 @@ rainbowJam <- function
 
       # alternate subsets when n < requested_n
       if (n < requested_n) {
-         if (n == 1) {
-            hues <- head(hues, 1);
-         } else if (n == 2) {
-            hues <- hues[c(1, 3)];
-         } else if (n == 3) {
-            hues <- hues[c(1, 3, 6)]
-         } else if (n == 4) {
-            hues <- hues[c(1, 3, 5, 6)];
-         } else if (n == 5) {
-            hues <- hues[c(1, 3, 4, 5, 6)];
-         } else {
-            hues <- hues[round(seq(from=1, to=length(hues), length.out=n))];
+         hues <- head(hues, n);
+         if (FALSE) {
+            if (n == 1) {
+               hues <- head(hues, 1);
+            } else if (n == 2) {
+               hues <- hues[c(1, 3)];
+            } else if (n == 3) {
+               hues <- hues[c(1, 3, requested_n)]
+            } else if (n == 4) {
+               hues <- hues[c(1, 3, requested_n-1, requested_n)];
+            } else if (n == 5) {
+               hues <- hues[c(1, 3, requested_n-2, requested_n-1, requested_n)];
+            } else {
+               hues <- hues[round(seq(from=1, to=length(hues), length.out=n))];
+            }
          }
       }
 
@@ -412,10 +428,24 @@ rainbowJam <- function
    alpha <- rep(alpha, length.out=n);
 
    # Generate colors using hcl2col()
-   rainbow_set <- jamba::hcl2col(H=hues,
-      C=Cvals,
-      L=Lvals,
-      model="hcl");
+   if ("HSL" %in% test_color_model) {
+      rainbow_set_hcl <- jamba::hcl2col(H=hues,
+         C=Cvals,
+         L=Lvals,
+         model="hcl");
+      use_hsl <- jamba::col2hsl(rainbow_set_hcl);
+      use_H <- use_hsl["H", ];
+      use_S <- (Cvals * 3/3 + use_hsl["S", ]) / 2;
+      use_L <- (Lvals * 3/3 + use_hsl["L", ]) / 2;
+      rainbow_set <- jamba::hsl2col(H=use_H,
+         S=use_S,
+         L=use_L);
+   } else {
+      rainbow_set <- jamba::hcl2col(H=hues,
+         C=Cvals,
+         L=Lvals,
+         model="hcl");
+   }
    if (any(alpha != 1)) {
       rainbow_set <- jamba::alpha2col(alpha=alpha,
          rainbow_set);

@@ -1,3 +1,65 @@
+# colorjam 0.0.32.900
+
+## Changes to existing functions
+
+* `add_colors()` substantial improvements
+
+    * Default begins with `min_distance=30`, iterates `max_iterations`,
+    then progressively reduces `min_distance` by `step_distance` until
+    `n` colors are found.
+    If `n` colors are no solution is found it returns 'NULL'.
+    When `step_distance==0` it imposes a strict color distance requirement.
+    * This process works best when `color_fn` returns visually distinct
+    colors.
+    * The new colors are also compared using `find_color_spread()` to
+    identify colors with greatest difference from each other. This
+    step is still fairly slow, but ultimately necessary to apply
+    two constraints: new colors should differ from given colors, and
+    the new colors which are different from given colors must also
+    be different from each other.
+    In practice, it involves creating a notably larger set of new colors,
+    in order to have 'n' colors which are also different from each other.
+    * In principle, colors should be as different as possible given
+    the color distance method and white reference.
+    * New argument `method` to define the color distance method.
+    * New argument `use_white` to define a white reference point,
+    passed to `farver::compare_colour()`.
+
+* `slot_colors()`
+
+    * new argument `min_distance=11.5` imposes a minimum threshold
+    when assigning colors. The default is based on the cie2000 distance,
+    and visual comparisons of various color comparisons.
+    * New argument `method` to define the color distance method.
+    * New argument `use_white` to define a white reference point,
+    passed to `farver::compare_colour()`.
+
+* `rainbowJam()`
+
+    * Added secret testing mode `test_color_model="HSL"` which enables
+    potential hybrid approach that uses HSL to improve visual vibrance
+    of colors.
+
+## new function
+
+* `find_color_spread()`
+
+    * Intended at first to be internal, it could be broadly useful.
+    * It takes a vector of colors, and finds a subset of colors that
+    are all at least `min_distance` color distance from the rest
+    of the group. For example, given 25 rainbow colors, find 5 that
+    have at least `min_distance=15`.
+    * It can be used to find the most distinctive `n` colors in a set,
+    compared with each other.
+    * It becomes useful together with `add_colors()` to ensure newly added
+    colors are not just different from `given_colors`, but also
+    different from each other.
+    * Sadly, this function is currently fairly slow, but will be optimized
+    aggressively over time.
+
+* `plot_colorjam_steps()` - simple function to review the Chroma/Luminance
+steps defined for a given step name.
+
 # colorjam 0.0.31.900
 
 * Bumped jamba dependency to 1.0.4, using CRAN. Woot.

@@ -24,6 +24,7 @@ rainbowJam(
   hue_pad_percent = 0,
   nameStyle = c("none", "n", "closest_named_color", "closestRcolor", "hcl", "color"),
   min_requested_n = 3,
+  test_color_model = c("HCL", "HSL"),
   doTest = FALSE,
   verbose = FALSE,
   ...
@@ -125,6 +126,18 @@ for additional arguments.
 minimum internal color hues to use when \code{n} is low. Typically this
 argument restricts the first several color hues to prevent unusual
 colors.}
+
+\item{test_color_model}{\code{logical} default FALSE, enables a test mode
+which enables HSL color space. The method uses an adjustment that
+takes an average of the HCL chroma/luminance converted to
+HSL saturation/lightness, then averages with the Cvals,Lvals
+originally used for HCL. The effect is a somewhat muted version
+of HSL which otherwise would be too neon saturated.
+The output is closer to HSL, with generally more vibrant colors
+than the HCL equivalent, because certain color hues tend to
+become more saturated based upon the range of opportunity for
+each color hue. HCL does not account for the available chroma
+for a hue, it simply caps the chroma.}
 
 \item{doTest}{\code{logical} indicating whether to perform a visual test for
 \code{n} number of colors produced.}

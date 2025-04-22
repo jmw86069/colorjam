@@ -1,5 +1,48 @@
 # colorjam Todo
 
+## 21apr2025
+
+* Add `named_color` package maintenance functions.
+* Evaluate color distance within color blindness types:
+
+   * Consider `colorblindcheck::palette_dist()` for alternate color distance.
+   * `colorblindr()` can convert grid graphics to different forms.
+
+* Evaluate custom color wheel using `named_colors`
+* `add_colors()`
+
+   * DONE. Consider method to compare new colors to each other.
+   
+      * Test:
+      `new_colors <- add_colors(rainbowJam(4), n=3, do_plot=TRUE, color_fn=colorspace::rainbow_hcl)`
+      * DONE. Implement logic to subset `new_colors` by imposing `min_distance`
+      before assigning `n` colors. For example, if `n=4` but
+      12 new colors are found, the 12 could each be very different from
+      `given_colors` but very similar to each other. The approach should
+      select the `n` colors most distinct from each other.
+
+* Add tests
+
+   * Add tests for `slot_colors()`
+   * Add tests for `color_distance()`
+   * Add tests for `add_colors()`
+
+## 11apr2025
+
+* `add_colors()`
+
+   * DONE. Iterate progressively lower color distance for dynamic use.
+   * DEFER. Consider custom color distance for low-saturation bright colors,
+   which look more similar than distance metrics show.
+   * DENY. Consider defining dynamic color distance by overall available color
+   palette, not by using the input colors.
+   Denied bc the dynamic distance approach sidesteps the need.
+   * DEFER. Consider finding **a reasonable color distance metric**, somehow
+   the available metrics still fall short (of the intended effect here tbf).
+   * Consider future approach to apply additional logic to color filtering,
+   for example transform by color blindness before calculating distances,
+   or add logic to reward colors with distinct luminance.
+
 ## 06apr2025
 
 * Prepare for CRAN release.

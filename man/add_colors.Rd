@@ -7,33 +7,109 @@
 add_colors(
   given_colors = NULL,
   n = 1,
-  return_type = c("new", "full"),
+  return_type = c("new", "full", "list"),
   color_fn = rainbowJam,
-  max_iterations = 100,
+  check_internal = FALSE,
+  max_iterations = 50,
+  min_distance = 30,
+  step_distance = -1,
+  use_white = "F5",
+  method = "cie2000",
   do_plot = FALSE,
   verbose = FALSE,
+  seed = 123,
   ...
 )
 }
 \arguments{
-\item{given_colors}{\code{character} vector of colors.
+\item{given_colors}{\code{character} vector of colors, default NULL.
 \itemize{
 \item When \code{given_colors} is NULL, \code{n} new colors will be returned.
 }}
 
 \item{n}{\code{integer} number of colors to add to \code{given_colors}}
 
-\item{color_fn}{\code{function}, default \code{rainbowJam()}. The first argument
-is expected to be the integer number of colors to return.
-Other arguments in \code{...} are passed to this function for custom options.}
+\item{return_type}{\code{character}, default "new", what colors to return:
+\itemize{
+\item \code{"new"} - return only the newly assigned colors
+\item \code{"full"} - return input colors and assigned colors together,
+in order: given, then new colors.
+}}
 
-\item{max_iterations}{\code{integer} default 100, maximum iterations to
-attempt.}
+\item{color_fn}{\code{function}, default \code{rainbowJam()}.
+\itemize{
+\item The first argument \code{n}  is expected to be the integer number
+of colors to return, and the function should return \code{n} color values.
+Other arguments in \code{...} are passed to this function for custom options.
+\item Alternatively, \code{character} input is expanded using
+\code{jamba::color2gradient()}, although this process is not well-tested.
+}}
 
-\item{do_plot}{\code{logical} default FALSE, whether to plot the input and
-added colors.}
+\item{check_internal}{\code{logical} default FALSE whether to check the
+\code{color_fn} output for internal color distances. This step improves
+color output, however is currently time-consuming.
+\itemize{
+\item For best results, \code{color_fn} should already provide colors
+are as distinct from one another as possible, generally true
+for example \code{rainbowJam()}.
+\item However when using a function that provides relatively uniform
+colors, such as  \code{colorspace::rainbow_hcl()}, the colors which
+are most distinct from \code{given_colors} are often also very similar
+to each other. The \code{check_internal=TRUE} also requires colors
+from \code{color_fn} to meet the \code{min_distance} threshold, which
+requires a recursive, nested algorithm in \code{find_color_spread()}.
+}}
 
-\item{...}{additional arguments are passed to internal functions.}
+\item{max_iterations}{\code{integer} default 50, maximum iterations to
+attempt. The algorithm begins at \code{n} and increases the attempted
+colors by 1 each iteration until it defines at least \code{n} new colors.
+\itemize{
+\item When \code{step_distance} is non-zero, the \code{min_distance} is reduced
+by \code{abs(step_distance)} then the iterations are repeated.
+\item When \code{step_distance} is zero, if no solution is found it
+returns 'NULL'.
+}}
+
+\item{min_distance}{\code{numeric} default 30, minimum distance
+to require for new colors compared to \code{given_colors}.
+\itemize{
+\item When at least \code{n} colors are defined with at least \code{min_distance}
+distance from \code{given_colors}, the \code{n} colors with the greatest
+distance are returned.
+\item When \code{n} colors do not meet these critera, and \code{step_distance}
+is non-zero, the \code{min_distance} is reduced by \code{abs(step_distance)}
+and the process is repeated.
+\item Finally, if \code{n} colors cannot be defined, it returns 'NULL'.
+}}
+
+\item{step_distance}{\code{numeric} default 1, the default step size when
+iterating progressively smaller \code{min_distance} values.
+\itemize{
+\item When 'NULL' or '0', the \code{min_distance} is not decreased after
+\code{max_iterations} iterations.
+}}
+
+\item{use_white}{\code{character} default "F5" representing the
+white reference, any value recognized by \code{farver::as_white_ref()}.
+\itemize{
+\item The default 'F5' represents 'daylight fluorescent' and in
+qualitative testing was most effective when defining color
+distances.
+\item The typical default 'D65' is 'daylight 6500K' and
+is typically used for neutral daylight without blue (cool) or
+yellow (warm) shifted background lighting.
+}}
+
+\item{method}{\code{character}, default 'cie2000', passed to \code{slot_colors()},
+then \code{color_distance()} to define the color distance method.}
+
+\item{do_plot}{\code{logical} default FALSE, whether to plot the given_colors
+and new colors.}
+
+\item{verbose}{\code{logical} indicating whether to print verbose output.}
+
+\item{...}{additional arguments are passed to internal functions
+\code{color_fn}, \code{slot_colors()}, and optionally \code{jamba::color2gradient()}.}
 }
 \value{
 \code{character} vector of colors with length \code{n}.
@@ -45,17 +121,22 @@ Add categorical colors to an existing color set
 n1 <- 6;
 n <- 2;
 given <- jamba::nameVector(rainbowJam(n1));
-new_colors <- add_colors(given, n=n, do_plot=TRUE, dist_threshold=20)
+new_colors <- add_colors(given, n=n, do_plot=TRUE, method="cmc")
 names(new_colors) <- seq_along(new_colors);
 show_color_distance(c(given, new_colors))
+show_color_distance(c(given, new_colors), cluster_data=TRUE)
 show_color_distance(sort_colors(c(given, new_colors)))
 
 given2 <- c(given, new_colors);
+color_pie(given2)
+new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE)
+new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE, dist_threshold=15)
 new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE, dist_threshold=20)
 names(new_colors2) <- seq_along(new_colors2) + 2;
-show_color_distance(sort_colors(c(given2, new_colors2)))
+show_color_distance(sort_colors(c(given2, new_colors2)), cluster_data=TRUE)
 
-jamba::showColors(list(given=given,
+jamba::showColors(list(
+   given=sort_colors(given),
    `add 2`=sort_colors(c(given, new_colors)),
    `add 2 more`=sort_colors(c(given2, new_colors2))))
 

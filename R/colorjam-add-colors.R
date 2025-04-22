@@ -3,17 +3,66 @@
 #'
 #' Add categorical colors to an existing color set
 #'
-#' @param given_colors `character` vector of colors.
+#' @param given_colors `character` vector of colors, default NULL.
 #'    * When `given_colors` is NULL, `n` new colors will be returned.
 #' @param n `integer` number of colors to add to `given_colors`
-#' @param color_fn `function`, default `rainbowJam()`. The first argument
-#'    is expected to be the integer number of colors to return.
+#' @param return_type `character`, default "new", what colors to return:
+#'    * `"new"` - return only the newly assigned colors
+#'    * `"full"` - return input colors and assigned colors together,
+#'    in order: given, then new colors.
+#' @param color_fn `function`, default `rainbowJam()`.
+#'    * The first argument `n`  is expected to be the integer number
+#'    of colors to return, and the function should return `n` color values.
 #'    Other arguments in `...` are passed to this function for custom options.
-#' @param max_iterations `integer` default 100, maximum iterations to
-#'    attempt.
-#' @param do_plot `logical` default FALSE, whether to plot the input and
-#'    added colors.
-#' @param ... additional arguments are passed to internal functions.
+#'    * Alternatively, `character` input is expanded using
+#'    `jamba::color2gradient()`, although this process is not well-tested.
+#' @param check_internal `logical` default FALSE whether to check the
+#'    `color_fn` output for internal color distances. This step improves
+#'    color output, however is currently time-consuming.
+#'    * For best results, `color_fn` should already provide colors
+#'    are as distinct from one another as possible, generally true
+#'    for example `rainbowJam()`.
+#'    * However when using a function that provides relatively uniform
+#'    colors, such as  `colorspace::rainbow_hcl()`, the colors which
+#'    are most distinct from `given_colors` are often also very similar
+#'    to each other. The `check_internal=TRUE` also requires colors
+#'    from `color_fn` to meet the `min_distance` threshold, which
+#'    requires a recursive, nested algorithm in `find_color_spread()`.
+#' @param max_iterations `integer` default 50, maximum iterations to
+#'    attempt. The algorithm begins at `n` and increases the attempted
+#'    colors by 1 each iteration until it defines at least `n` new colors.
+#'    * When `step_distance` is non-zero, the `min_distance` is reduced
+#'    by `abs(step_distance)` then the iterations are repeated.
+#'    * When `step_distance` is zero, if no solution is found it
+#'    returns 'NULL'.
+#' @param min_distance `numeric` default 30, minimum distance
+#'    to require for new colors compared to `given_colors`.
+#'    * When at least `n` colors are defined with at least `min_distance`
+#'    distance from `given_colors`, the `n` colors with the greatest
+#'    distance are returned.
+#'    * When `n` colors do not meet these critera, and `step_distance`
+#'    is non-zero, the `min_distance` is reduced by `abs(step_distance)`
+#'    and the process is repeated.
+#'    * Finally, if `n` colors cannot be defined, it returns 'NULL'.
+#' @param step_distance `numeric` default 1, the default step size when
+#'    iterating progressively smaller `min_distance` values.
+#'    * When 'NULL' or '0', the `min_distance` is not decreased after
+#'    `max_iterations` iterations.
+#' @param use_white `character` default "F5" representing the
+#'    white reference, any value recognized by `farver::as_white_ref()`.
+#'    * The default 'F5' represents 'daylight fluorescent' and in
+#'    qualitative testing was most effective when defining color
+#'    distances.
+#'    * The typical default 'D65' is 'daylight 6500K' and
+#'    is typically used for neutral daylight without blue (cool) or
+#'    yellow (warm) shifted background lighting.
+#' @param method `character`, default 'cie2000', passed to `slot_colors()`,
+#'    then `color_distance()` to define the color distance method.
+#' @param do_plot `logical` default FALSE, whether to plot the given_colors
+#'    and new colors.
+#' @param verbose `logical` indicating whether to print verbose output.
+#' @param ... additional arguments are passed to internal functions
+#'    `color_fn`, `slot_colors()`, and optionally `jamba::color2gradient()`.
 #'
 #' @returns `character` vector of colors with length `n`.
 #'
@@ -21,17 +70,22 @@
 #' n1 <- 6;
 #' n <- 2;
 #' given <- jamba::nameVector(rainbowJam(n1));
-#' new_colors <- add_colors(given, n=n, do_plot=TRUE, dist_threshold=20)
+#' new_colors <- add_colors(given, n=n, do_plot=TRUE, method="cmc")
 #' names(new_colors) <- seq_along(new_colors);
 #' show_color_distance(c(given, new_colors))
+#' show_color_distance(c(given, new_colors), cluster_data=TRUE)
 #' show_color_distance(sort_colors(c(given, new_colors)))
 #'
 #' given2 <- c(given, new_colors);
+#' color_pie(given2)
+#' new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE)
+#' new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE, dist_threshold=15)
 #' new_colors2 <- add_colors(unname(given2), n=n, do_plot=TRUE, dist_threshold=20)
 #' names(new_colors2) <- seq_along(new_colors2) + 2;
-#' show_color_distance(sort_colors(c(given2, new_colors2)))
+#' show_color_distance(sort_colors(c(given2, new_colors2)), cluster_data=TRUE)
 #'
-#' jamba::showColors(list(given=given,
+#' jamba::showColors(list(
+#'    given=sort_colors(given),
 #'    `add 2`=sort_colors(c(given, new_colors)),
 #'    `add 2 more`=sort_colors(c(given2, new_colors2))))
 #'
@@ -61,71 +115,182 @@ add_colors <- function
 (given_colors=NULL,
  n=1,
  return_type=c("new",
-    "full"),
+    "full",
+    "list"),
  color_fn=rainbowJam,
- max_iterations=100,
+ check_internal=FALSE,
+ max_iterations=50,
+ min_distance=30,
+ step_distance=-1,
+ use_white="F5",
+ method="cie2000",
  do_plot=FALSE,
  verbose=FALSE,
+ seed=123,
  ...)
 {
    #
    return_type <- match.arg(return_type);
-
-   effective_n <- n;
-   new_n <- 0;
-   iteration_n <- 0;
-   new_colors <- character(0);
-
-   if (length(given_colors) > 0 &&
-         length(names(given_colors)) > 0 &&
-         any(names(given_colors) %in% c(NA, ""))) {
-      jb <- (names(given_colors) %in% c(NA, ""));
-      names(given_colors)[jb] <- paste0("given", seq_along(jb))[jb];
+   set.seed(seed);
+   if (length(min_distance) == 0) {
+      min_distance <- 30;
    }
-
-   while(new_n < n) {
-      iteration_n <- iteration_n + 1;
+   if (length(step_distance) == 0) {
+      step_distance <- 0;
+   } else {
+      step_distance <- abs(head(step_distance, 1)) * -1;
+   }
+   if (TRUE %in% do_plot &&
+         !requireNamespace("jamses", quietly=TRUE)) {
+      do_plot <- FALSE
+   }
+   if (step_distance < 0) {
+      orig_min_distance <- min_distance;
+      # define sequence of distances to attempt
+      seq_min_distance <- seq(from=min_distance, to=1e-5, by=step_distance);
+      #
       if (verbose) {
-         jamba::printDebug("add_colors(): ",
-            "iteration:", iteration_n,
-            ", effective_n:", effective_n);
+         jamba::printDebug("add_colors(): ", "",
+            "seq_min_distance:", seq_min_distance);
       }
-      if (iteration_n > max_iterations) {
-         stop(paste0("No solution found after ",
-            max_iterations, " iterations."));
+      for (use_min_distance in seq_min_distance) {
+         if (verbose) {
+            jamba::printDebug("add_colors(): ", "",
+               "use_min_distance:", use_min_distance);
+         }
+         ret_colors <- suppressMessages(
+            add_colors(given_colors=given_colors,
+               n=n,
+               return_type="list",
+               color_fn=color_fn,
+               check_internal=check_internal,
+               max_iterations=max_iterations,
+               min_distance=use_min_distance,
+               step_distance=0,
+               use_white=use_white,
+               method=method,
+               do_plot=FALSE,
+               verbose=FALSE,
+               seed=seed,
+               ...))
+         if (length(ret_colors) > 0) {
+            break;
+         }
       }
-      # Begin iterations
-      if (inherits(color_fn, "function")) {
-         ref_colors <- jamba::call_fn_ellipsis(color_fn,
-            n=effective_n,
-            ...)
-      } else if (inherits(color_fn, "character")) {
-         # expand fixed set of colors
-         # split repeated colors with color2gradient()
-         ref_colors <- jamba::color2gradient(
-            rep(color_fn, length.out=effective_n),
-            ...)
+      if (length(ret_colors) == 0) {
+         warn_txt <- paste("No dynamic solution found after",
+            "{max_iterations} {.field max_iterations}",
+            "at {min_distance} {.field min_distance},",
+            "returning {.emph NULL}")
+         cli::cli_abort(warn_txt)
+         return(NULL)
+      }
+      new_colors <- ret_colors$new_colors;
+      given_colors <- ret_colors$given_colors;
+      #
+   } else {
+      min_distance <- head(min_distance, 1)
+      #
+      effective_n <- n;
+      new_n <- 0;
+      iteration_n <- 0;
+      new_colors <- character(0);
+
+      if (length(given_colors) > 0 &&
+            length(names(given_colors)) > 0 &&
+            any(names(given_colors) %in% c(NA, ""))) {
+         jb <- (names(given_colors) %in% c(NA, ""));
+         names(given_colors)[jb] <- paste0("GIVEN", seq_along(jb))[jb];
       }
 
-      # Slot colors
-      if (length(given_colors) == 0) {
-         slotted_colors <- NULL
-      } else {
-         slotted_colors <- slot_colors(given_colors,
+      while(new_n < n) {
+         iteration_n <- iteration_n + 1;
+         if (verbose > 1) {
+            jamba::printDebug("add_colors(): ",
+               "iteration:", iteration_n,
+               ", effective_n:", effective_n);
+         }
+         if (iteration_n > max_iterations) {
+            warn_txt <- paste("No solution found after",
+               "{max_iterations} {.field max_iterations},",
+               "at {min_distance} {.field min_distance},",
+               "returning {.emph NULL}")
+            cli::cli_alert_warning(warn_txt)
+            return(NULL)
+         }
+         # Begin iterations
+         if (inherits(color_fn, "function")) {
+            ref_colors <- jamba::call_fn_ellipsis(color_fn,
+               n=effective_n,
+               ...)
+         } else if (inherits(color_fn, "character")) {
+            # expand fixed set of colors
+            # split repeated colors with color2gradient()
+            ref_colors <- jamba::color2gradient(
+               rep(color_fn, length.out=effective_n),
+               ...)
+         }
+
+         # Slot colors
+         if (length(given_colors) == 0) {
+            slotted_colors <- NULL
+         } else {
+            slotted_colors <- slot_colors(given_colors,
+               ref_colors,
+               min_distance=min_distance,
+               method=method,
+               verbose=FALSE,
+               use_white=use_white,
+               ...)
+         }
+
+         # Remaining colors
+         new_colors <- setdiff(ref_colors,
+            ref_colors[unlist(slotted_colors)]);
+
+         # Optionally apply secondary distance threshold
+         if (length(min_distance) == 1 && min_distance > 1) {
+            # apply distance here
+         }
+
+         # filter colors versus themselves
+         if (TRUE %in% check_internal &&
+               length(new_colors) >= n) {
+            # jamba::printDebug("find_color_spread(new_colors): ");print(new_colors);# debug
+            new_colors <- find_color_spread(x=new_colors,
+               n=n,
+               min_distance=min_distance,
+               step_distance=0,
+               # min_distance=min_distance * 2,
+               # step_distance=-1,
+               method=method,
+               use_white=use_white,
+               first_only=TRUE,
+               ...)
+         }
+
+         new_n <- length(new_colors)
+
+         # increment by 1
+         effective_n <- effective_n + 1;
+      }
+
+      # optionally prioritize colors when there are more than necessary
+      if (length(new_colors) > n) {
+         new_dist <- color_distance(new_colors,
             ref_colors,
-            verbose=verbose,
-            ...)
+            use_white=use_white,
+            method=method,
+            ...);
+         new_min <- apply(new_dist, 1, min, na.rm=TRUE);
+         new_colors <- intersect(new_colors,
+            head(new_colors[order(-new_min)], n))
       }
-
-      # Remaining colors
-      new_colors <- setdiff(ref_colors,
-         ref_colors[unlist(slotted_colors)]);
-      new_n <- length(new_colors)
-
-      # increment by 1
-      effective_n <- effective_n + 1;
+      if (length(names(new_colors)) == 0) {
+         names(new_colors) <- jamba::makeNames(new_colors,
+            ...);
+      }
    }
-
    if (any(do_plot)) {
       k <- jamba::nameVector(new_colors,
          paste0("new", seq_along(new_colors)));
@@ -134,21 +299,32 @@ add_colors <- function
       } else {
          j <- given_colors;
          if (length(names(j)) == 0) {
-            names(j) <- paste0("given", seq_along(j));
+            names(j) <- paste0("GIVEN", seq_along(j));
          } else if (any(names(j) %in% c(NA, ""))) {
             jb <- (names(j) %in% c(NA, ""));
-            names(j)[jb] <- paste0("given", seq_along(jb))[jb];
+            names(j)[jb] <- paste0("GIVEN", seq_along(jb))[jb];
          }
       }
-      if (do_plot %in% c(TRUE, 1)) {
+      if (TRUE %in% do_plot &&
+            requireNamespace("jamses", quietly=TRUE)) {
          jk <- sort_colors(c(j, k))
          # print(color_distance(jk));# debug
-         hm <- show_color_distance(color_distance(jk),
+         jkcd <- color_distance(jk,
+            method=method,
+            use_white=use_white,
+            ...)
+         hm <- show_color_distance(jkcd,
             pc=c(jk),
             ...);
          ComplexHeatmap::draw(hm, merge_legends=TRUE);
-      } else if (do_plot %in% c(2)) {
-         hm <- show_color_distance(color_distance(j, k), pc=c(j, k));
+      } else if (2 %in% do_plot &&
+            requireNamespace("jamses", quietly=TRUE)) {
+         jkcd <- color_distance(j,
+            k,
+            method=method,
+            use_white=use_white,
+            ...)
+         hm <- show_color_distance(jkcd, pc=c(j, k));
          ComplexHeatmap::draw(hm, merge_legends=TRUE);
       } else {
          jamba::showColors(list(
@@ -160,7 +336,13 @@ add_colors <- function
 
    # return the first n colors
    use_colors <- head(new_colors, n);
+
    # Todo: If there are more than 'n' return the most different?
+   if ("list" %in% return_type) {
+      return(list(
+         new_colors=new_colors,
+         given_colors=given_colors))
+   }
    if ("full" %in% return_type) {
       return(c(given_colors, use_colors));
    }
@@ -168,277 +350,3 @@ add_colors <- function
 }
 
 
-#' Slot a set of colors into a reference set of colors
-#'
-#' Slot a set of colors into a reference set of colors
-#'
-#' @return `list` with length(given_colors) with `integer` vectors
-#'    referencing one or more elements in `ref_colors`, or `NULL`.
-#'
-#' @examples
-#' given_colors <- rainbowJam(5)
-#' ref_colors <- colorspace::rainbow_hcl(6)
-#' slot_colors(given_colors, ref_colors)
-#'
-#' @export
-slot_colors <- function
-(given_colors,
- ref_colors,
- dist_threshold=NULL,
- verbose=FALSE,
- ...)
-{
-   #
-   if (length(names(given_colors)) == 0) {
-      names(given_colors) <- jamba::makeNames(given_colors,
-         renameFirst=FALSE)
-   }
-   if (length(names(ref_colors)) == 0) {
-      names(ref_colors) <- jamba::makeNames(ref_colors,
-         renameFirst=FALSE)
-   }
-   cd <- color_distance(x=given_colors,
-      y=ref_colors)
-
-   # determine distance threshold (if not specifically defined)
-   if (length(dist_threshold) != 1) {
-      # given
-      cd_given <- color_distance(x=given_colors)
-      # show_color_distance(cd_given)
-      diag(cd_given) <- NA;
-      given_min_dists <- apply(cd_given, 2, min, na.rm=TRUE)
-      given_mean <- mean(given_min_dists)
-      given_median <- median(given_min_dists)
-      # ref
-      cd_ref <- color_distance(x=ref_colors)
-      # show_color_distance(cd_ref)
-      diag(cd_ref) <- NA;
-      ref_min_dists <- apply(cd_ref, 2, min, na.rm=TRUE)
-      ref_mean <- mean(ref_min_dists)
-      ref_median <- median(ref_min_dists)
-      ## Todo: decide between mean and median, for now use median
-      # dist_threshold <- ref_mean * (2 / 5);
-      given_metric <- max(c(given_mean, given_median));
-      if (verbose) {
-         jamba::printDebug("slot_colors(): ",
-            indent=5,
-            "given_mean:", given_mean);
-         jamba::printDebug("slot_colors(): ",
-            indent=5,
-            "given_median:", given_median);
-         jamba::printDebug("slot_colors(): ",
-            indent=5,
-            "given_metric:", given_metric);
-      }
-      dist_threshold <- given_metric * (2 / 5);
-   }
-   if (verbose) {
-      jamba::printDebug("slot_colors(): ",
-         indent=5,
-         "dist_threshold:", dist_threshold);
-   }
-
-   # # or use default
-   # d_threshold <- 10;
-
-   # find color matches within this distance
-   slotted_colors <- lapply(rownames(cd), function(icol){
-      ival <- which(cd[icol, ] < dist_threshold)
-      if (length(ival) == 0) {
-         return(NA)
-      }
-      ival
-   })
-   return(slotted_colors)
-}
-
-#' Calculate color distance between two or more colors
-#'
-#' Calculate color distance between two or more colors
-#'
-#' Color distance is calculated using `farver::compare_colour()`,
-#' with some defaults intended in future to assist with color blindness
-#' calculations.
-#'
-#' @returns `numeric` color distance with `length(x)` entries when both
-#'    `x` and `y` are supplied, or a `numeric` matrix with color distances
-#'    between all entries in `x`.
-#'
-#' @param x `character` color, required input colors.
-#'    * When `y` is supplied, values in `y` are recycled to `length(x)`,
-#'    and each entry in `x` is directly compared to `y`.
-#'    * When `y` is not supplied, `x` is compared to itself,
-#'    returning a `matrix`.
-#' @param y `character` color, default NULL
-#' @param ... additional arguments are passed to `farver::compare_colour()`
-#'
-#' @examples
-#' color_distance("red", "firebrick")
-#' color_distance("red", "red2")
-#'
-#' color_distance(grDevices::palette.colors(15))
-#'
-#' pc <- grDevices::palette.colors(15);
-#' pc <- rainbowJam(5)
-#' cd <- color_distance(pc);
-#' cd[lower.tri(cd)] <- NA;
-#' cse <- SummarizedExperiment::SummarizedExperiment(
-#'    assays=list(distance=cd),
-#'    rowData=data.frame(color=colnames(cd)),
-#'    colData=data.frame(color=colnames(cd)))
-#' jamses::heatmap_se(cse, use_raster=FALSE,
-#'    top_colnames="color", rowData_colnames="color",
-#'    sample_color_list=list(color=pc),
-#'    cluster_columns=FALSE, cluster_rows=FALSE, color_max=360,
-#'    centerby_colnames=FALSE,
-#'    legend_at=seq(0, 300, by=100), legend_labels=seq(0, 300, by=100))
-#'
-#' @export
-color_distance <- function
-(x,
- y=NULL,
- method=c("cie2000",
-    "cie94",
-    "cie1976",
-    "cmc",
-    "euclidean"),
- ...)
-{
-   #
-   if (length(x) == 0) {
-      return(NULL)
-   }
-   method <- match.arg(method);
-   if (length(names(x)) == 0) {
-      names(x) <- jamba::makeNames(x,
-         renameFirst=FALSE)
-   }
-   if (length(y) == 0) {
-      y <- x;
-   }
-   x <- farver::decode_colour(x);
-   if (length(y) > 0) {
-      if (length(names(y)) == 0) {
-         names(y) <- jamba::makeNames(y,
-            renameFirst=FALSE)
-      }
-      y <- farver::decode_colour(y,
-         ...)
-   }
-   cd <- farver::compare_colour(from=x,
-      to=y,
-      from_space="rgb",
-      to_space="rgb",
-      method=method,
-      ...)
-   attr(cd, "method") <- method;
-
-   return(cd)
-}
-
-#' Show color distance as a heatmap
-#'
-#' Show color distance as a heatmap
-#'
-#' @examples
-#' pc <- grDevices::palette.colors(25);
-#' cd <- color_distance(pc, method="cmc");
-#' cd <- color_distance(pc, method="euclidean");
-#' cd <- color_distance(pc, method="cie2000");
-#' show_color_distance(cd, pc, cluster_data=TRUE, row_split=4)
-#'
-#' show_color_distance(cd, pc, cluster_data=TRUE, row_split=5,
-#' clustering_distance_rows="euclidean", clustering_distance_columns="euclidean")
-#' cd2 <- 360 - cd;
-#' diag(cd2) <- 360;
-#' show_color_distance(cd2, pc, cluster_data=TRUE, row_split=4,
-#' clustering_distance_rows="euclidean", clustering_distance_columns="euclidean")
-#'
-#' show_color_distance(cd, pc)
-#'
-#' pc <- rainbowJam(5)
-#' @export
-show_color_distance <- function
-(cd=NULL,
- pc=NULL,
- show_labels=TRUE,
- cluster_data=FALSE,
- row_split=0,
- ...)
-{
-   #
-   if (!requireNamespace("jamses", quietly=TRUE)) {
-      stop("This function requires jamses, SummarizedExperiment, ComplexHeatmap")
-   }
-   if (inherits(cd, "character") && is.atomic(cd)) {
-      pc <- cd;
-      cd <- NULL;
-   }
-   if (length(cd) == 0 && length(pc) > 1) {
-      cd <- color_distance(pc,
-         ...);
-
-   }
-   if (length(pc) == 0) {
-      pc <- unique(c(colnames(cd),
-         rownames(cd)))
-   }
-
-   if (length(names(pc)) == 0) {
-      names(pc) <- jamba::makeNames(pc,
-         renameFirst=FALSE);
-   }
-   legend_at <- pretty(c(cd, 150))
-   legend_labels <- legend_at;
-   color_max <- max(legend_at);
-   if (length(row_split) == 0 || any(row_split %in% c(0, 1))) {
-      row_split <- NULL;
-   }
-
-   # optional cell labels
-   use_cell_fn <- NULL;
-   if (TRUE %in% show_labels) {
-      use_cell_fn <- jamba::cell_fun_label(
-         m=list(cd,
-            round(cd)),
-         col_hm=colorjam::col_div_xf(color_max),
-         show=2);
-   }
-
-   # make SE for convenience
-   cse <- SummarizedExperiment::SummarizedExperiment(
-      assays=list(distance=cd),
-      rowData=data.frame(color=rownames(cd)),
-      colData=data.frame(color=colnames(cd)))
-
-   data_type <- "distance";
-   if ("method" %in% names(attributes(cd))) {
-      data_type <- attr(cd, "method")
-   }
-
-   # make heatmap
-   jamses::heatmap_se(cse,
-      use_raster=FALSE,
-      data_type=data_type,
-      cell_fun=use_cell_fn,
-      top_colnames="color",
-      rowData_colnames="color",
-      sample_color_list=list(color=pc),
-      cluster_columns=cluster_data,
-      cluster_rows=cluster_data,
-      show_left_legend=FALSE,
-      show_top_legend=FALSE,
-      color_max=color_max,
-      centerby_colnames=FALSE,
-      legend_at=legend_at,
-      row_names_side="left",
-      row_dend_side="right",
-      column_names_side="top",
-      column_names_rot=60,
-      row_split=row_split,
-      column_split=row_split,
-      column_dend_side="bottom",
-      legend_labels=legend_labels,
-      ...)
-
-}

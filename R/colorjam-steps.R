@@ -134,3 +134,91 @@ add_colorjam_step <- function
    }
    invisible(TRUE)
 }
+
+#' Plot colorjam steps
+#'
+#' Plot colorjam steps in simple scatterplot format
+#'
+#' Simple function to plot the series of Chroma/Luminance steps
+#' for a given named step series. See steps with `colorjam_steps()`.
+#'
+#' @param step `character` name of colorjam step from `colorjam_steps()`
+#' @param n `integer` number of steps to show, default NULL uses all steps.
+#' @param hue `numeric` hue or `character` color to convert to color hue,
+#'    used to colorize points using the actual C,L step values.
+#'    * When no `hue` is supplied, the points are colored using a color
+#'    gradient `"Reds"` in the order they appear.
+#' @param ... additional arguments are ignored.
+#'
+#' @returns `list` with step values, invisibly.
+#'
+#' @examples
+#' colorjam_steps()
+#' step_name <- colorjam_steps()[1]
+#' plot_colorjam_steps(step_name)
+#'
+#' step_name <- tail(colorjam_steps(), 1)
+#' plot_colorjam_steps(step_name)
+#'
+#' plot_colorjam_steps(step_name, hue="orange")
+#' plot_colorjam_steps(step_name, hue="gold")
+#'
+#' @export
+plot_colorjam_steps <- function
+(step,
+ n=NULL,
+ hue=NULL,
+ lines=TRUE,
+ return_type=c("ptcol", "step_data"),
+ ...)
+{
+   #
+   return_type <- match.arg(return_type);
+   #
+   step_data <- .colorjam_steps[[step]];
+   maxlen <- max(lengths(step_data))
+   if (length(n) == 1) {
+      maxlen <- n
+   }
+   use_x <- rep(step_data[[1]], length.out=maxlen)
+   use_y <- rep(step_data[[2]], length.out=maxlen)
+
+   if (length(hue) == 1) {
+      if (is.character(hue)) {
+         hue <- jamba::col2hcl(hue)["H", ]
+      }
+      ptcol <- jamba::hcl2col(H=rep(hue, maxlen),
+         C=use_x, L=use_y, alpha=1)
+   } else {
+      ptcol <- jamba::getColorRamp("Reds", n=maxlen);
+   }
+   ptype <- "p";
+   if (TRUE %in% lines) {
+      ptype <- "l";
+   }
+   plot(x=use_x,
+      y=use_y,
+      type=ptype,
+      xlab=names(step_data)[1],
+      ylab=names(step_data)[2],
+      main=step,
+      pch=21,
+      bg=ptcol,
+      cex=4,
+      asp=1)
+   points(x=use_x,
+      y=use_y,
+      pch=21,
+      bg=ptcol,
+      cex=4)
+   text(x=use_x,
+      y=use_y,
+      col=jamba::setTextContrastColor(ptcol),
+      label=seq_len(maxlen))
+
+   if ("ptcol" %in% return_type) {
+      return(invisible(setNames(ptcol, seq_len(maxlen))))
+   }
+   return(invisible(step_data));
+
+}
