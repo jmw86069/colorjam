@@ -69,6 +69,9 @@
 #'    below the `floor`, versus using gradient colors below the
 #'    `floor`, while all remaining numeric-color assignments
 #'    are held constant.
+#' @param floor_color `character` default NULL, optional fixed color
+#'    to apply below the floor threshold. Note that this color
+#'    works best when `open_floor=FALSE`.
 #' @param debug `logical` indicating whether to produce a plot
 #'    that shows the resulting color gradient.
 #' @param ... additional arguments are ignored.
@@ -161,6 +164,7 @@ col_div_xf <- function
  n=15,
  colramp="RdBu_r",
  open_floor=FALSE,
+ floor_color=NULL,
  debug=FALSE,
  ...)
 {
@@ -184,7 +188,9 @@ col_div_xf <- function
       exp_factor <- ceiling(100 / nrow(cbdf));
       cbdf_v <- rep(jamba::nameVector(cbdf), each=exp_factor);
       names(cbdf_v) <- jamba::breaksByVector(names(cbdf_v))$newLabels;
-      jamba::showColors(list(color_breaks=jamba::nameVector(cbdf)), labelCells=TRUE);
+      jamba::showColors(
+         list(color_breaks=jamba::nameVector(cbdf)),
+         labelCells=TRUE);
    }
 
    if (length(floor) == 0 || floor <= 0) {
@@ -201,16 +207,21 @@ col_div_xf <- function
       return(invisible(col_fn))
    }
    color_v <- jamba::getColorRamp(colramp, n=n, lens=lens, ...);
-   color_1 <- head(color_v, floor(n/2));
-   color_2 <- tail(color_v, floor(n/2));
-   mid_color <- color_v[ceiling(n/2)];
+   color_1 <- head(color_v, base::floor(n/2));
+   color_2 <- tail(color_v, base::floor(n/2));
+   # define floor_color
+   if (length(floor_color) == 1 && inherits(floor_color, "character")) {
+      mid_color <- floor_color;
+   } else {
+      mid_color <- color_v[ceiling(n/2)];
+   }
    colors_v <- c(color_1, rep(mid_color, 3), color_2);
 
    floor_buffer <- weighted.mean(c(floor, 0), w=c(1e10, 1))
    break_2 <- c(floor_buffer,
       seq(from=floor,
          to=x,
-         length.out=floor(n/2)));
+         length.out=base::floor(n/2)));
    break_1 <- rev(-1 * break_2);
    breaks_v <- c(break_1, 0, break_2);
 
@@ -340,6 +351,7 @@ col_linear_xf <- function
  n=6,
  colramp="Purples",
  open_floor=FALSE,
+ floor_color=NULL,
  debug=FALSE,
  ...)
 {
@@ -384,7 +396,12 @@ col_linear_xf <- function
    }
 
    color_2 <- tail(color_v, n - 1);
-   mid_color <- head(color_v, 1);
+   # define floor_color
+   if (length(floor_color) == 1 && inherits(floor_color, "character")) {
+      mid_color <- floor_color;
+   } else {
+      mid_color <- head(color_v, 1);
+   }
    colors_v <- c(rep(mid_color, 2), color_2);
 
    floor_buffer <- weighted.mean(c(floor, baseline),

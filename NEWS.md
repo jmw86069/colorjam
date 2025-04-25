@@ -1,3 +1,16 @@
+# colorjam 0.0.33.900
+
+## Changes to existing functions
+
+* `col_div_xf()`, `col_linear_xf()`
+
+    * new argument `floor_color` to assign an optional fixed color
+    below the signal `floor`, which can be helpful to indicate
+    a sharp indication of values below the noise floor. Otherwise,
+    values might be "nearly the background color" but not clearly
+    defined as such.
+
+
 # colorjam 0.0.32.900
 
 ## Changes to existing functions
