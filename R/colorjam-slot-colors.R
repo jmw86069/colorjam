@@ -28,6 +28,8 @@
 #' and this latter scenario is the primary motivation of
 #' `slot_colors()` and `add_colors()`.
 #'
+#' @family colorjam internal
+#'
 #' @returns `list` with length(given_colors) with `integer` vectors
 #'    referencing one or more elements in `ref_colors`, or `NULL`.
 #'

@@ -7,8 +7,10 @@
 color_distance(
   x,
   y = NULL,
-  method = c("cie2000", "cie94", "cie1976", "cmc", "euclidean"),
+  method = c("cmc", "cie2000", "cie94", "cie1976", "euclidean"),
   use_white = "F5",
+  lightness = 2/3,
+  chroma = 1,
   do_plot = FALSE,
   ...
 )
@@ -24,10 +26,19 @@ returning a \code{matrix}.
 
 \item{y}{\code{character} color, default NULL}
 
-\item{method}{\code{character}, default 'cie2000', the color distance method,
-passed to \code{farver::compare_colour()}. In future, this argument
+\item{method}{\code{character}, default 'cmc', the color distance method,
+passed to \code{farver::compare_colour()}.
+\itemize{
+\item Note that 'cmc' uses arguments \code{lightness} and \code{chroma} which
+have custom values 2/3 and 1, respectively. The defaults are 2 and 1
+for acceptability, and 1 and 1 for perceptability.
+In our testing, 2/3 and 1 were more useful, since lightness on
+computer screen and in print is more easily perceived than
+on a painted surface.
+\item In future, this argument
 may permit additional distance methods, and/or specific color function,
-in order to impose other criteria and adjustments.}
+in order to impose other criteria and adjustments.
+}}
 
 \item{use_white}{\code{character} default "F5" representing the
 white reference, any value recognized by \code{farver::as_white_ref()}.
@@ -40,7 +51,11 @@ is typically used for neutral daylight without blue (cool) or
 yellow (warm) shifted background lighting.
 }}
 
-\item{...}{additional arguments are passed to \code{farver::compare_colour()}}
+\item{do_plot}{\code{logical} default FALSE, whether to plot results using
+\code{show_color_distance()}.}
+
+\item{...}{additional arguments are passed to \code{farver::compare_colour()}
+and to \code{show_color_distance()}.}
 }
 \value{
 \code{numeric} color distance with \code{length(x)} entries when both
@@ -63,14 +78,21 @@ calculations.
 \examples{
 color_distance("red", "firebrick", use_white="D65")
 
-color_distance(grDevices::palette.colors(15))
+palette15 <- sort_colors(grDevices::palette.colors(15, "Polychrome 36"))
+color_distance(palette15, do_plot=TRUE)
 
-pc <- rainbowJam(5)
+pc <- rainbowJam(8)
 cd <- color_distance(pc);
-show_color_distance(cd, pc=pc, column_title="rainbowJam()");
-
-pc <- grDevices::palette.colors(15);
-cd <- color_distance(pc);
-show_color_distance(cd, pc=pc, column_title="palette.colors()");
+show_color_distance(cd, pc=pc);
 
 }
+\seealso{
+Other colorjam internal: 
+\code{\link{find_color_spread}()},
+\code{\link{jam_pal}()},
+\code{\link{rainbowJam_v1}()},
+\code{\link{show_color_distance}()},
+\code{\link{slot_colors}()},
+\code{\link{vals2colorLevels}()}
+}
+\concept{colorjam internal}

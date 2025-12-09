@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,10 +111,26 @@ By this standard, 12.2 is defined as red, 120 is defined as green, and
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="plot_colorjam_steps.html">plot_colorjam_steps</a>()</code>,
 <code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p>
-<p>Other hue warp functions:
-<code><a href="h2hwOptions.html">h2hwOptions</a>()</code></p></div>
+<p>Other colorjam hue warp:
+<code><a href="add_colorjam_preset.html">add_colorjam_preset</a>()</code>,
+<code><a href="add_colorjam_step.html">add_colorjam_step</a>()</code>,
+<code><a href="adjust_hue_warp.html">adjust_hue_warp</a>()</code>,
+<code><a href="approx_degrees.html">approx_degrees</a>()</code>,
+<code><a href="colorjam_presets.html">colorjam_presets</a>()</code>,
+<code><a href="colorjam_steps.html">colorjam_steps</a>()</code>,
+<code><a href="display_degrees.html">display_degrees</a>()</code>,
+<code><a href="h2hwOptions.html">h2hwOptions</a>()</code>,
+<code><a href="hcl_to_hsl_hue.html">hcl_to_hsl_hue</a>()</code>,
+<code><a href="hsl_to_hcl_hue.html">hsl_to_hcl_hue</a>()</code>,
+<code><a href="hw2h.html">hw2h</a>()</code>,
+<code><a href="mean_angle.html">mean_angle</a>()</code>,
+<code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="plot_colorjam_steps.html">plot_colorjam_steps</a>()</code>,
+<code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
+<code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -127,7 +143,7 @@ By this standard, 12.2 is defined as red, 120 is defined as green, and
 <span class="r-in"><span><span class="co"># RGB colors are convenient, but are not ideal especially when blending</span></span></span>
 <span class="r-in"><span><span class="co"># colors. Note that blue and yellow have hues that differ by exactly 180</span></span></span>
 <span class="r-in"><span><span class="co"># degrees, meaning a hue average is as likely to be purple as green.</span></span></span>
-<span class="r-in"><span><span class="va">huesBY</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">col2hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"H"</span>,<span class="op">]</span>;</span></span>
+<span class="r-in"><span><span class="va">huesBY</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">col2hcl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"H"</span>,<span class="op">]</span>;</span></span>
 <span class="r-in"><span><span class="va">huesBY</span>;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 265.87459  85.86596</span>
 <span class="r-in"><span></span></span>
@@ -146,7 +162,7 @@ By this standard, 12.2 is defined as red, 120 is defined as green, and
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

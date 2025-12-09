@@ -9,7 +9,7 @@ approx_degrees(
   h2,
   h = NULL,
   preset = "custom",
-  direction = 1,
+  direction = NULL,
   digits = 10,
   verbose = FALSE,
   ...
@@ -28,12 +28,20 @@ the corresponding interpolated angle "to", When \verb{h is NULL}
 then the object returned is a \code{function} to be called
 to convert a numeric vector "from" to degree angles "to".}
 
+\item{direction}{\code{integer} or default NULL, which detects the direction
+using the input data.
+The direction represents whether h1 and h2 are both increasiing together,
+which is \code{direction=1}.
+When h1 is increasing by h2 is decreasing, \code{direction=-1}.}
+
 \item{digits}{\code{integer} value indicating the number of digits
 of precision to use for the input \code{h1} and \code{h2} degree angles,
 used when confining to 360 degrees with \code{h1 \%\% 360}, and
 this step sometimes produces slight variations for equivalent
 values. For example \code{((12.2 \%\% 360) == (372.2 \%\% 360))} is not
 \code{TRUE} without rounding to \code{13} or fewer digits.}
+
+\item{verbose}{\code{logical} indicating whether to print verbose output.}
 
 \item{...}{additional arguments are ignored.}
 }
@@ -59,33 +67,33 @@ h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
 h2 <- seq(from=0, to=360, length.out=13)
 h_from <- seq(from=0, to=360, length.out=36)[-36]
 h_to <- approx_degrees(h1, h2, h_from)
-par("mfrow"=c(2, 2))
+withr::with_par(list("mfrow"=c(2, 2)), {
 display_degrees(h_from, col=h_colors)
 display_degrees(h_to, col=h_colors)
-plot(h_from, h_to, pch=20, col=h_colors)
-par("mfrow"=c(1, 1))
-
-h2 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
-   223.1, 263.2, 277.2, 307.7, 345.3, 372.2)
-h1 <- seq(from=0, to=360, length.out=13)
-h_from <- seq(from=0, to=360, length.out=36)[-36]
-h_to2 <- approx_degrees(h2, h1, h_from)
-par("mfrow"=c(2, 2))
-display_degrees(h_from, col=h_colors)
-display_degrees(h_to2, col=h_colors)
-plot(h_from, h_to2, pch=20, col=h_colors)
-par("mfrow"=c(1, 1))
+plot(h1, h2, pch=20, col="#55555555", type="l",
+   main="Input h1,h2")
+points(h1, h2, pch=20, col=h_colors)
+plot(h_from, h_to, pch=20, col="#55555555", type="l",
+   main="Output approx_degrees()")
+points(h_from, h_to, pch=20, col=h_colors)
+})
 
 h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
    223.1, 263.2, 277.2, 307.7, 345.3, 372.2)
 h2 <- rev((seq(from=0, to=360, length.out=13))[c(9:12,1:9)])
 h_from <- seq(from=0, to=360, length.out=36)[-36]
+h_to <- approx_degrees(h1, h2, h_from, direction=-1)
 h_to <- approx_degrees(h1, h2, h_from)
-par("mfrow"=c(2, 2))
+withr::with_par(list("mfrow"=c(2, 2)), {
 display_degrees(h_from, col=h_colors)
 display_degrees(h_to, col=h_colors)
-plot(h_from, h_to, pch=20, col=h_colors)
-par("mfrow"=c(1, 1))
+plot(h1, h2, pch=20, col="#55555555", type="l",
+   main="Input h1,h2")
+points(h1, h2, pch=20, col=h_colors)
+plot(h_from, h_to, pch=20, col="#55555555", type="l",
+   main="Output approx_degrees()")
+points(h_from, h_to, pch=20, col=h_colors)
+})
 
 # apply no transform
 approx_degrees(h1=0, h2=0, h=c(0, 90, 180, 270))
@@ -95,29 +103,28 @@ approx_degrees(h1=0, h2=180, h=c(0, 90, 180, 270))
 approx_degrees(h1=180, h2=0, h=c(0, 90, 180, 270))
 
 # flip the direction
-approx_degrees(h1=c(1, 360), h2=c(359, 0), h=c(0, 90, 180, 270))
-approx_degrees(h1=c(1, 360), h2=c(359, 0)+90, h=c(0, 90, 180, 270))
-approx_degrees(h1=c(1, 360)+90, h2=c(359, 0), h=c(0, 90, 180, 270))
+approx_degrees(h1=c(1, 360), h2=c(359, 0),
+   h=c(0, 90, 180, 270))
+approx_degrees(h1=c(1, 360), h2=c(359, 0)+90,
+   h=c(0, 90, 180, 270))
+approx_degrees(h1=c(1, 360)+90, h2=c(359, 0),
+   h=c(0, 90, 180, 270))
 
 # verify reverse h2 with break across 0-360
 seq1 <- seq(from=0, to=330, by=30)
 seq2 <- (rev(seq1) + 120) \%\% 360
 seq_out <- seq(from=0, to=350, by=10);
-approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out, verbose=TRUE)
+approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out)
 plot(seq1, seq2, pch=20, col="blue", asp=1, ylim=c(0, 360))
-points(seq_out, approx_out, col="red", add=TRUE, cex=2)
+points(seq_out, approx_out, col="red", cex=2)
 
 # verify forward h2 with break across 0-360
 seq1 <- seq(from=0, to=330, by=30)
 seq2 <- (seq1 + 120) \%\% 360
 seq_out <- seq(from=0, to=350, by=10);
-approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out, verbose=TRUE)
+approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out)
 plot(seq1, seq2, pch=20, col="blue", asp=1, ylim=c(0, 360))
-points(seq_out, approx_out, col="red", add=TRUE, cex=2)
-
-new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=15, reverse_h2=TRUE)
-hseq <- seq(from=0, to=350, by=15);
-approx_degrees(h2=new_h1h2$h1, h1=new_h1h2$h2, h=hseq, verbose=FALSE)
+points(seq_out, approx_out, col="red", cex=2)
 
 }
 \seealso{
@@ -135,6 +142,7 @@ Other colorjam hue warp:
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{plot_colorjam_steps}()},
 \code{\link{remap_colorjam_preset}()},
 \code{\link{validate_colorjam_preset}()}
 }

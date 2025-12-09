@@ -28,6 +28,12 @@
 #'    this step sometimes produces slight variations for equivalent
 #'    values. For example `((12.2 %% 360) == (372.2 %% 360))` is not
 #'    `TRUE` without rounding to `13` or fewer digits.
+#' @param direction `integer` or default NULL, which detects the direction
+#'    using the input data.
+#'    The direction represents whether h1 and h2 are both increasiing together,
+#'    which is `direction=1`.
+#'    When h1 is increasing by h2 is decreasing, `direction=-1`.
+#' @param verbose `logical` indicating whether to print verbose output.
 #' @param ... additional arguments are ignored.
 #'
 #' @family colorjam hue warp
@@ -40,33 +46,33 @@
 #' h2 <- seq(from=0, to=360, length.out=13)
 #' h_from <- seq(from=0, to=360, length.out=36)[-36]
 #' h_to <- approx_degrees(h1, h2, h_from)
-#' par("mfrow"=c(2, 2))
+#' withr::with_par(list("mfrow"=c(2, 2)), {
 #' display_degrees(h_from, col=h_colors)
 #' display_degrees(h_to, col=h_colors)
-#' plot(h_from, h_to, pch=20, col=h_colors)
-#' par("mfrow"=c(1, 1))
-#'
-#' h2 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
-#'    223.1, 263.2, 277.2, 307.7, 345.3, 372.2)
-#' h1 <- seq(from=0, to=360, length.out=13)
-#' h_from <- seq(from=0, to=360, length.out=36)[-36]
-#' h_to2 <- approx_degrees(h2, h1, h_from)
-#' par("mfrow"=c(2, 2))
-#' display_degrees(h_from, col=h_colors)
-#' display_degrees(h_to2, col=h_colors)
-#' plot(h_from, h_to2, pch=20, col=h_colors)
-#' par("mfrow"=c(1, 1))
+#' plot(h1, h2, pch=20, col="#55555555", type="l",
+#'    main="Input h1,h2")
+#' points(h1, h2, pch=20, col=h_colors)
+#' plot(h_from, h_to, pch=20, col="#55555555", type="l",
+#'    main="Output approx_degrees()")
+#' points(h_from, h_to, pch=20, col=h_colors)
+#' })
 #'
 #' h1 <- c(12.2, 27.3, 47.0, 66.5, 85.9, 106.3, 131.7,
 #'    223.1, 263.2, 277.2, 307.7, 345.3, 372.2)
 #' h2 <- rev((seq(from=0, to=360, length.out=13))[c(9:12,1:9)])
 #' h_from <- seq(from=0, to=360, length.out=36)[-36]
+#' h_to <- approx_degrees(h1, h2, h_from, direction=-1)
 #' h_to <- approx_degrees(h1, h2, h_from)
-#' par("mfrow"=c(2, 2))
+#' withr::with_par(list("mfrow"=c(2, 2)), {
 #' display_degrees(h_from, col=h_colors)
 #' display_degrees(h_to, col=h_colors)
-#' plot(h_from, h_to, pch=20, col=h_colors)
-#' par("mfrow"=c(1, 1))
+#' plot(h1, h2, pch=20, col="#55555555", type="l",
+#'    main="Input h1,h2")
+#' points(h1, h2, pch=20, col=h_colors)
+#' plot(h_from, h_to, pch=20, col="#55555555", type="l",
+#'    main="Output approx_degrees()")
+#' points(h_from, h_to, pch=20, col=h_colors)
+#' })
 #'
 #' # apply no transform
 #' approx_degrees(h1=0, h2=0, h=c(0, 90, 180, 270))
@@ -76,29 +82,28 @@
 #' approx_degrees(h1=180, h2=0, h=c(0, 90, 180, 270))
 #'
 #' # flip the direction
-#' approx_degrees(h1=c(1, 360), h2=c(359, 0), h=c(0, 90, 180, 270))
-#' approx_degrees(h1=c(1, 360), h2=c(359, 0)+90, h=c(0, 90, 180, 270))
-#' approx_degrees(h1=c(1, 360)+90, h2=c(359, 0), h=c(0, 90, 180, 270))
+#' approx_degrees(h1=c(1, 360), h2=c(359, 0),
+#'    h=c(0, 90, 180, 270))
+#' approx_degrees(h1=c(1, 360), h2=c(359, 0)+90,
+#'    h=c(0, 90, 180, 270))
+#' approx_degrees(h1=c(1, 360)+90, h2=c(359, 0),
+#'    h=c(0, 90, 180, 270))
 #'
 #' # verify reverse h2 with break across 0-360
 #' seq1 <- seq(from=0, to=330, by=30)
 #' seq2 <- (rev(seq1) + 120) %% 360
 #' seq_out <- seq(from=0, to=350, by=10);
-#' approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out, verbose=TRUE)
+#' approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out)
 #' plot(seq1, seq2, pch=20, col="blue", asp=1, ylim=c(0, 360))
-#' points(seq_out, approx_out, col="red", add=TRUE, cex=2)
+#' points(seq_out, approx_out, col="red", cex=2)
 #'
 #' # verify forward h2 with break across 0-360
 #' seq1 <- seq(from=0, to=330, by=30)
 #' seq2 <- (seq1 + 120) %% 360
 #' seq_out <- seq(from=0, to=350, by=10);
-#' approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out, verbose=TRUE)
+#' approx_out <- approx_degrees(h1=seq1, h2=seq2, h=seq_out)
 #' plot(seq1, seq2, pch=20, col="blue", asp=1, ylim=c(0, 360))
-#' points(seq_out, approx_out, col="red", add=TRUE, cex=2)
-#'
-#' new_h1h2 <- adjust_hue_warp(preset="dichromat", h2_shift=15, reverse_h2=TRUE)
-#' hseq <- seq(from=0, to=350, by=15);
-#' approx_degrees(h2=new_h1h2$h1, h1=new_h1h2$h2, h=hseq, verbose=FALSE)
+#' points(seq_out, approx_out, col="red", cex=2)
 #'
 #' @export
 approx_degrees <- function
@@ -106,14 +111,25 @@ approx_degrees <- function
  h2,
  h=NULL,
  preset="custom",
- direction=1,
+ direction=NULL,
  digits=10,
  verbose=FALSE,
  ...)
 {
    # validate arguments
    if (length(direction) == 0) {
-      direction <- 1;
+      if (!missing(h1) && !missing(h2)) {
+         if (length(h1) == 1 && length(h2) == 1) {
+            direction <- 1;
+         } else {
+            h1h2 <- jamba::mixedSortDF(byCols=c("h1", "h2"),
+               data.frame(h1, h2))
+            direction <- as.numeric(head(names(
+               jamba::tcount(sign(diff(h1h2$h2)))), 1));
+         }
+      } else {
+         direction <- 1;
+      }
    }
    direction <- head(direction, 1);
 

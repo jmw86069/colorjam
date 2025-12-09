@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,28 +50,22 @@
         <dd>Blend multiple colors</dd>
       </dl><dl><dt>
 
-          <code><a href="closestRcolor.html">closestRcolor()</a></code>
+          <code><a href="closestRcolor.html">closestRcolor()</a></code> <code><a href="closestRcolor.html">closest_named_color()</a></code>
 
         </dt>
         <dd>Find the closest R color</dd>
-      </dl><dl><dt>
-
-          <code><a href="closest_named_color.html">closest_named_color()</a></code>
-
-        </dt>
-        <dd>Closest colorjam named_colors</dd>
-      </dl><dl><dt>
-
-          <code><a href="color_complement.html">color_complement()</a></code>
-
-        </dt>
-        <dd>Create color complement by rotating the color hue</dd>
       </dl><dl><dt>
 
           <code><a href="colors_to_df.html">colors_to_df()</a></code>
 
         </dt>
         <dd>Convert colors to data.frame of color attributes</dd>
+      </dl><dl><dt>
+
+          <code><a href="color_complement.html">color_complement()</a></code>
+
+        </dt>
+        <dd>Create color complement by rotating the color hue</dd>
       </dl><dl><dt>
 
           <code><a href="group2colors.html">group2colors()</a></code>
@@ -96,99 +90,6 @@
 
         </dt>
         <dd>Subset a vector of colors using one or more color attributes</dd>
-      </dl></div><div class="section level2">
-      <h2 id="colorjam-data">Colorjam data<a class="anchor" aria-label="anchor" href="#colorjam-data"></a></h2>
-
-      <div class="section-desc"><p>Jam linear and divergent gradient data</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="jam_divergent.html">jam_divergent</a></code>
-
-        </dt>
-        <dd>Jam Divergent Color Gradients</dd>
-      </dl><dl><dt>
-
-          <code><a href="jam_linear.html">jam_linear</a></code>
-
-        </dt>
-        <dd>Jam Linear Color Gradients</dd>
-      </dl><dl><dt>
-
-          <code><a href="named_colors.html">named_colors</a></code>
-
-        </dt>
-        <dd>named_colors from meodai/color-names and R colors()</dd>
-      </dl></div><div class="section level2">
-      <h2 id="colorjam-r-shiny-functions">Colorjam R-shiny functions<a class="anchor" aria-label="anchor" href="#colorjam-r-shiny-functions"></a></h2>
-
-      <div class="section-desc"><p>The Colorjam R-shiny App</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="colorjamShinyServer.html">colorjamShinyServer()</a></code>
-
-        </dt>
-        <dd>Colorjam R-shiny app server</dd>
-      </dl><dl><dt>
-
-          <code><a href="colorjamShinyUI.html">colorjamShinyUI()</a></code>
-
-        </dt>
-        <dd>Colorjam R-shiny app UI</dd>
-      </dl><dl><dt>
-
-          <code><a href="launchColorjamShiny.html">launchColorjamShiny()</a></code>
-
-        </dt>
-        <dd>Colorjam R-shiny App</dd>
-      </dl></div><div class="section level2">
-      <h2 id="colorjam-ggplot-functions">Colorjam ggplot2 functions<a class="anchor" aria-label="anchor" href="#colorjam-ggplot-functions"></a></h2>
-
-      <div class="section-desc"><p>Functions that apply colorjam to ggplot2 objects</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="jam_pal.html">jam_pal()</a></code>
-
-        </dt>
-        <dd>Jam color palette for ggplot2</dd>
-      </dl><dl><dt>
-
-          <code><a href="scale_color_jam.html">scale_color_jam()</a></code>
-
-        </dt>
-        <dd>Apply rainbowJam categorical colors to a ggplot2 object</dd>
-      </dl><dl><dt>
-
-          <code><a href="scale_fill_jam.html">scale_fill_jam()</a></code>
-
-        </dt>
-        <dd>Apply rainbowJam categorical color fill to a ggplot2 object</dd>
-      </dl><dl><dt>
-
-          <code><a href="theme_jam.html">theme_jam()</a></code>
-
-        </dt>
-        <dd>Jam default theme for ggplot2</dd>
       </dl></div><div class="section level2">
       <h2 id="colorjam-gradients">Colorjam gradients<a class="anchor" aria-label="anchor" href="#colorjam-gradients"></a></h2>
 
@@ -237,6 +138,18 @@
 
       <dl><dt>
 
+          <code><a href="add_colors.html">add_colors()</a></code>
+
+        </dt>
+        <dd>Add categorical colors to an existing color set</dd>
+      </dl><dl><dt>
+
+          <code><a href="color_complement.html">color_complement()</a></code>
+
+        </dt>
+        <dd>Create color complement by rotating the color hue</dd>
+      </dl><dl><dt>
+
           <code><a href="col_div_xf.html">col_div_xf()</a></code>
 
         </dt>
@@ -278,6 +191,76 @@
         </dt>
         <dd>Get vibrant reference color for a given HCL color hue</dd>
       </dl></div><div class="section level2">
+      <h2 id="colorjam-ggplot-functions">Colorjam ggplot2 functions<a class="anchor" aria-label="anchor" href="#colorjam-ggplot-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions that apply colorjam to ggplot2 objects</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="scale_color_div_xf.html">scale_color_div_xf()</a></code> <code><a href="scale_color_div_xf.html">scale_fill_div_xf()</a></code>
+
+        </dt>
+        <dd>Continuous divergent color scale for ggplot2, with max and optional floor</dd>
+      </dl><dl><dt>
+
+          <code><a href="scale_color_jam.html">scale_color_jam()</a></code>
+
+        </dt>
+        <dd>Apply rainbowJam categorical colors to a ggplot2 object</dd>
+      </dl><dl><dt>
+
+          <code><a href="scale_color_linear_xf.html">scale_color_linear_xf()</a></code> <code><a href="scale_color_linear_xf.html">scale_fill_linear_xf()</a></code>
+
+        </dt>
+        <dd>Continuous linear color scale for ggplot2, with max and optional floor</dd>
+      </dl><dl><dt>
+
+          <code><a href="scale_fill_jam.html">scale_fill_jam()</a></code>
+
+        </dt>
+        <dd>Apply rainbowJam categorical color fill to a ggplot2 object</dd>
+      </dl><dl><dt>
+
+          <code><a href="theme_jam.html">theme_jam()</a></code>
+
+        </dt>
+        <dd>Jam default theme for ggplot2</dd>
+      </dl></div><div class="section level2">
+      <h2 id="colorjam-data">Colorjam data<a class="anchor" aria-label="anchor" href="#colorjam-data"></a></h2>
+
+      <div class="section-desc"><p>Jam linear and divergent gradient data</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="jam_divergent.html">jam_divergent</a></code>
+
+        </dt>
+        <dd>Jam Divergent Color Gradients</dd>
+      </dl><dl><dt>
+
+          <code><a href="jam_linear.html">jam_linear</a></code>
+
+        </dt>
+        <dd>Jam Linear Color Gradients</dd>
+      </dl><dl><dt>
+
+          <code><a href="named_colors.html">named_colors</a></code>
+
+        </dt>
+        <dd>named_colors from meodai/color-names and R colors()</dd>
+      </dl></div><div class="section level2">
       <h2 id="colorjam-display">Colorjam display<a class="anchor" aria-label="anchor" href="#colorjam-display"></a></h2>
 
       <div class="section-desc"><p>Functions to display colors for visual review</p></div>
@@ -309,7 +292,7 @@
       </dl></div><div class="section level2">
       <h2 id="colorjam-hue-warp">Colorjam hue warp<a class="anchor" aria-label="anchor" href="#colorjam-hue-warp"></a></h2>
 
-      <div class="section-desc"><p>Functions to adjust hue color wheel for RGB, RYB, dichromat and other specifics</p></div>
+      <div class="section-desc"><p>Custom color wheel functions, mostly internal use by colorjam.</p></div>
 
 
     </div><div class="section level2">
@@ -403,6 +386,12 @@
         <dd>Plot colorjam preset</dd>
       </dl><dl><dt>
 
+          <code><a href="plot_colorjam_steps.html">plot_colorjam_steps()</a></code>
+
+        </dt>
+        <dd>Plot colorjam steps</dd>
+      </dl><dl><dt>
+
           <code><a href="remap_colorjam_preset.html">remap_colorjam_preset()</a></code>
 
         </dt>
@@ -414,9 +403,9 @@
         </dt>
         <dd>Validate h1,h2 color hue warp data</dd>
       </dl></div><div class="section level2">
-      <h2 id="colorjam-deprecated-functions">Colorjam deprecated functions<a class="anchor" aria-label="anchor" href="#colorjam-deprecated-functions"></a></h2>
+      <h2 id="colorjam-r-shiny-app">Colorjam R-shiny App<a class="anchor" aria-label="anchor" href="#colorjam-r-shiny-app"></a></h2>
 
-      <div class="section-desc"><p>Functions to be removed in future versions</p></div>
+      <div class="section-desc"><p>Colorjam R-shiny App</p></div>
 
 
     </div><div class="section level2">
@@ -426,10 +415,75 @@
 
       <dl><dt>
 
+          <code><a href="colorjamShinyServer.html">colorjamShinyServer()</a></code>
+
+        </dt>
+        <dd>Colorjam R-shiny app server</dd>
+      </dl><dl><dt>
+
+          <code><a href="colorjamShinyUI.html">colorjamShinyUI()</a></code>
+
+        </dt>
+        <dd>Colorjam R-shiny app UI</dd>
+      </dl><dl><dt>
+
+          <code><a href="launchColorjamShiny.html">launchColorjamShiny()</a></code>
+
+        </dt>
+        <dd>Colorjam R-shiny App</dd>
+      </dl></div><div class="section level2">
+      <h2 id="colorjam-internal-functions">Colorjam internal functions<a class="anchor" aria-label="anchor" href="#colorjam-internal-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions to be removed or hidden in future versions</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="color_distance.html">color_distance()</a></code>
+
+        </dt>
+        <dd>Calculate color distance between two or more colors</dd>
+      </dl><dl><dt>
+
+          <code><a href="find_color_spread.html">find_color_spread()</a></code>
+
+        </dt>
+        <dd>Find a spread of colors with minimum distance between them</dd>
+      </dl><dl><dt>
+
+          <code><a href="jam_pal.html">jam_pal()</a></code>
+
+        </dt>
+        <dd>Jam color palette for ggplot2</dd>
+      </dl><dl><dt>
+
           <code><a href="rainbowJam_v1.html">rainbowJam_v1()</a></code>
 
         </dt>
         <dd>rainbow categorical colors using varied luminance and chroma</dd>
+      </dl><dl><dt>
+
+          <code><a href="show_color_distance.html">show_color_distance()</a></code>
+
+        </dt>
+        <dd>Show color distance as a heatmap</dd>
+      </dl><dl><dt>
+
+          <code><a href="slot_colors.html">slot_colors()</a></code>
+
+        </dt>
+        <dd>Slot a set of colors into a reference set of colors</dd>
+      </dl><dl><dt>
+
+          <code><a href="vals2colorLevels.html">vals2colorLevels()</a></code>
+
+        </dt>
+        <dd>Apply color gradient to numeric values</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
@@ -440,7 +494,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

@@ -11,9 +11,9 @@ color_complement(
   Crange = c(5, 100),
   Lrange = c(10, 95),
   Cgrey = getOption("jam.Cgrey", 5),
-  preset = getOption("colorjam.preset", "dichromat"),
+  preset = getOption("colorjam.preset", "dichromat2"),
   useWarpHue = TRUE,
-  use_hsl = FALSE,
+  use_hsl = TRUE,
   verbose = FALSE,
   ...
 )
@@ -47,10 +47,15 @@ values.}
 considered greyscale, therefore the color hue is not relevant,
 and the \code{Crange} is not applied.}
 
-\item{useWarpHue}{\code{logical} indicating whether to use the warp
-hue functions \code{colorjam::h2hw()} and \code{colorjam::hw2h()} which
-effectively change the color wheel from red-green-blue to
-red-yellow-blue.}
+\item{useWarpHue}{\code{logical} default TRUE, whether to use the preset.
+When FALSE it effectively uses preset='rgb' which performs no
+particular hue adjustments. Note the 'rgb' color wheel is
+not particularly intuitive for complementary colors.}
+
+\item{use_hsl}{\code{logical} default TRUE, use HSL to determine equivalent
+complementary values for Saturation (S) and Lightness (L), rather
+than HCL where Chroma (C) and Luminance (L) is not at all consistent
+across the color wheel.}
 
 \item{...}{additional arguments are ignored.}
 }
@@ -72,18 +77,22 @@ saturation.
 \examples{
 n <- 5;
 rc <- colorjam::rainbowJam(n);
-rc_comp <- color_complement(rc, preset="dichromat");
-rc_comp2 <- color_complement(rc, preset="dichromat", useWarpHue=FALSE);
+rc_comp <- color_complement(rc, preset="dichromat2");
+rc_comp2 <- color_complement(rc, preset="dichromat2", useWarpHue=FALSE);
+rc_comp2rgb <- color_complement(rc, preset="rgb");
 rc_comp3 <- color_complement(rc, preset="ryb");
 jamba::showColors(list(rainbowJam=rc,
-   `complement\n(preset="dichromat")`=rc_comp,
-   `complement\n(useWarpHue=FALSE)`=rc_comp2,
-   `complement\n(preset="ryb")`=rc_comp3));
+   `color_complement\n(preset="dichromat")`=rc_comp,
+   `color_complement\n(useWarpHue=FALSE)`=rc_comp2,
+   `color_complement\n(preset="rgb")`=rc_comp2rgb,
+   `color_complement\n(preset="ryb")`=rc_comp3));
 
+n <- 8
 rc <- colorjam::rainbowJam(n, preset="ryb");
 rc_comp <- color_complement(rc, preset="ryb");
-jamba::showColors(list(`rainbowJam\n(preset="ryb")`=rc,
-   `complement\n(preset="ryb")`=rc_comp));
+jamba::showColors(list(
+   `rainbowJam\n(preset="ryb")`=rc,
+   `color_complement\n(preset="ryb")`=rc_comp));
 
 ## divergent color gradients through white
 ## hint: use higher lens value to make middle colors more intense
@@ -122,6 +131,16 @@ jamba::showColors(list(RdBu_r=RdBu_r, complement=rc_divergent));
 
 }
 \seealso{
+Other colorjam assignment: 
+\code{\link{add_colors}()},
+\code{\link{col_div_xf}()},
+\code{\link{col_linear_xf}()},
+\code{\link{group2colors}()},
+\code{\link{matrix2heatColors}()},
+\code{\link{rainbowJamMulti}()},
+\code{\link{vals2colorLevels}()},
+\code{\link{vibrant_color_by_hue}()}
+
 Other colorjam core: 
 \code{\link{blend_colors}()},
 \code{\link{closestRcolor}()},
@@ -131,5 +150,5 @@ Other colorjam core:
 \code{\link{sort_colors}()},
 \code{\link{subset_colors}()}
 }
+\concept{colorjam assignment}
 \concept{colorjam core}
-\concept{jam utility functions}

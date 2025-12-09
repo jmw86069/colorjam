@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,170 @@
 <div id="colorjam-todo" class="section level1">
 
 <div class="section level2">
+<h2 id="id_05dec2025">05dec2025<a class="anchor" aria-label="anchor" href="#id_05dec2025"></a></h2>
+<p>Prepare for CRAN to support: jamba, venndir, multienrichjam.</p>
+<ul><li><p>Remove dependency on jamses for heatmaps.</p></li>
+<li><p>Consider new ggplot2 function using <code><a href="reference/col_div_xf.html">col_div_xf()</a></code> to work the same way, <code><a href="reference/scale_color_div_xf.html">scale_color_div_xf()</a></code>, <code><a href="reference/scale_color_div_xf.html">scale_fill_div_xf()</a></code>.</p></li>
+<li>
+<p>Improve the default color wheel. Reduce hot pink, improve purple. Revisit classic RYB color wheel, then remove 2 green wedges.</p>
+<ul><li>Consider defining C,L,S,L ranges per color hue to optimize aesthetics.</li>
+</ul></li>
+<li><p>Change examples to use <code><a href="https://withr.r-lib.org/reference/with_par.html" class="external-link">withr::with_par()</a></code></p></li>
+<li><p>DONE. <code><a href="reference/theme_jam.html">theme_jam()</a></code>: define <code><a href="reference/rainbowJam.html">rainbowJam()</a></code> default discrete colors.</p></li>
+<li><p>IN PROGRESS. Simplify exported functions, remove/hide all non-essential</p></li>
+<li>
+<p><code><a href="reference/color_pie.html">color_pie()</a></code></p>
+<ul><li>DONE. Consider init.angle=270 (top) especially for divergent colors.</li>
+<li>DONE. Consider attribute ‘divergent=TRUE’ in <code><a href="reference/col_div_xf.html">col_div_xf()</a></code> and <code><a href="reference/make_jam_divergent.html">make_jam_divergent()</a></code>
+</li>
+<li>DONE. Accept <code>function</code> input similar to <code><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">jamba::showColors()</a></code>
+</li>
+<li>DEFER. Consider argument ‘buffer’ to add empty buffer zone. Nice-to-have.</li>
+</ul></li>
+<li><p>FIXED. <code><a href="reference/color_complement.html">color_complement()</a></code> Note ‘dichromat2’ is not correct.</p></li>
+<li>
+<p><code><a href="reference/matrix2heatColors.html">matrix2heatColors()</a></code> - used by multienrichjam</p>
+<ul><li>Consider converting to <code><a href="reference/col_div_xf.html">col_div_xf()</a></code>, <code><a href="reference/col_linear_xf.html">col_linear_xf()</a></code>.</li>
+</ul></li>
+<li><p>Pie in the sky: Evaluate alternate k-means approach to color selection.</p></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_21apr2025">21apr2025<a class="anchor" aria-label="anchor" href="#id_21apr2025"></a></h2>
+<ul><li><p>Add <code>named_color</code> package maintenance functions.</p></li>
+<li>
+<p>Evaluate color distance within color blindness types:</p>
+<ul><li>Consider <code>colorblindcheck::palette_dist()</code> for alternate color distance.</li>
+<li>
+<code>colorblindr()</code> can convert grid graphics to different forms.</li>
+</ul></li>
+<li><p>Evaluate custom color wheel using <code>named_colors</code></p></li>
+<li>
+<p><code><a href="reference/add_colors.html">add_colors()</a></code></p>
+<ul><li>
+<p>DONE. Consider method to compare new colors to each other.</p>
+<ul><li>Test: <code>new_colors &lt;- add_colors(rainbowJam(4), n=3, do_plot=TRUE, color_fn=colorspace::rainbow_hcl)</code>
+</li>
+<li>DONE. Implement logic to subset <code>new_colors</code> by imposing <code>min_distance</code> before assigning <code>n</code> colors. For example, if <code>n=4</code> but 12 new colors are found, the 12 could each be very different from <code>given_colors</code> but very similar to each other. The approach should select the <code>n</code> colors most distinct from each other.</li>
+</ul></li>
+</ul></li>
+<li>
+<p>Add tests</p>
+<ul><li>Add tests for <code><a href="reference/slot_colors.html">slot_colors()</a></code>
+</li>
+<li>Add tests for <code><a href="reference/color_distance.html">color_distance()</a></code>
+</li>
+<li>Add tests for <code><a href="reference/add_colors.html">add_colors()</a></code>
+</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_11apr2025">11apr2025<a class="anchor" aria-label="anchor" href="#id_11apr2025"></a></h2>
+<ul><li>
+<p><code><a href="reference/add_colors.html">add_colors()</a></code></p>
+<ul><li>DONE. Iterate progressively lower color distance for dynamic use.</li>
+<li>DEFER. Consider custom color distance for low-saturation bright colors, which look more similar than distance metrics show.</li>
+<li>DENY. Consider defining dynamic color distance by overall available color palette, not by using the input colors. Denied bc the dynamic distance approach sidesteps the need.</li>
+<li>DEFER. Consider finding <strong>a reasonable color distance metric</strong>, somehow the available metrics still fall short (of the intended effect here tbf).</li>
+<li>Consider future approach to apply additional logic to color filtering, for example transform by color blindness before calculating distances, or add logic to reward colors with distinct luminance.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_06apr2025">06apr2025<a class="anchor" aria-label="anchor" href="#id_06apr2025"></a></h2>
+<ul><li>
+<p>Prepare for CRAN release.</p>
+<ul><li>Consider removing functions not absolutely necessary: <code><a href="reference/launchColorjamShiny.html">launchColorjamShiny()</a></code>, <code><a href="reference/matrix2heatColors.html">matrix2heatColors()</a></code> (?), <code><a href="reference/rainbowJamMulti.html">rainbowJamMulti()</a></code> - may be superceded by <code><a href="reference/add_colors.html">add_colors()</a></code> <code><a href="reference/rainbowJam_v1.html">rainbowJam_v1()</a></code> <code><a href="reference/remap_colorjam_preset.html">remap_colorjam_preset()</a></code>
+</li>
+<li>Consider transitioning all user-facing functions to use presets, thus hiding or removing all other functions.</li>
+<li>Consider hiding (not exporting) some internal functions: <code><a href="reference/h2hw.html">h2hw()</a></code>, <code><a href="reference/hw2h.html">hw2h()</a></code>, <code><a href="reference/h2hwOptions.html">h2hwOptions()</a></code>
+</li>
+<li>Consider renaming <code>color_to_df()</code> for clarity? Suggestions: <code>annotate_colors()</code> since it takes a vector of colors, and returns a <code>data.frame</code> of annotations.</li>
+<li>Consider renaming functions from camelCase to snake_case for consistency? (Or both, shudder.) Mostly would mean adding <code>rainbow_jam()</code> and deprecating <code><a href="reference/rainbowJam.html">rainbowJam()</a></code>.</li>
+<li>Consider how best to include ggplot2 themes and scales. Confirm <code><a href="reference/scale_color_jam.html">scale_color_jam()</a></code> works with combination of assigned and missing colors.</li>
+<li>Update function family and pkgdown categories.</li>
+</ul></li>
+<li>
+<p>Consider changing <code><a href="reference/scale_color_jam.html">scale_color_jam()</a></code>, <code><a href="reference/scale_fill_jam.html">scale_fill_jam()</a></code></p>
+<ul><li>Add argument <code>colorSub</code> to assign colors by name, then use <code><a href="reference/add_colors.html">add_colors()</a></code>.</li>
+<li>Internally, see steps used by <code>ggplot2::manual_scale()</code>.</li>
+</ul></li>
+<li>
+<p>Add functions to help “maintain” named_colors from “meodai/color_names”</p>
+<ul><li>Download latest</li>
+<li>Re-create <code>named_colors</code>. Decide what to do with retired colors and backward compatibility. For now, they are lost, in part bc retired colors have tended to remove disrespectful or otherwise inappropriate labels.</li>
+<li>Refresh the named color wheel, e.g. the “preset”. Optional? It might be best to keep the wheel consistent over time.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_05apr2025">05apr2025<a class="anchor" aria-label="anchor" href="#id_05apr2025"></a></h2>
+<ul><li>
+<p>DONE. Prototype <code><a href="reference/add_colors.html">add_colors()</a></code> function</p>
+<ul><li>
+<code><a href="reference/slot_colors.html">slot_colors()</a></code> - used to compare <code>x</code> colors to <code>y</code> colors, “assigning” colors in <code>x</code> to the corresponding best match in <code>y</code>, with default restrictions using color distance.</li>
+<li>
+<code><a href="reference/color_distance.html">color_distance()</a></code> - wrapper to <code>farver::compare::colour()</code>
+</li>
+</ul></li>
+<li>
+<p>Experiment with, then add <code>named_colors</code> color wheel</p>
+<ul><li>Theory is to define the color wheel using “crowd sourcing” based upon people’s interest and enthusiasm for colors across the RGB color wheel. It appears to be a natural method of pruning the blue-green/green colors, which appeat to have proportionally fewer names than yellow/gold/orange.</li>
+</ul></li>
+<li><p>Add <code>fibonacci_colors()</code></p></li>
+<li>
+<p>Transition <code>design2colors()</code> from <code><a href="https://rdrr.io/pkg/platjam/man/design2colors.html" class="external-link">platjam::design2colors()</a></code></p>
+<ul><li>Use <code><a href="reference/add_colors.html">add_colors()</a></code> to add colors iteratively.</li>
+</ul></li>
+<li>
+<p>Add testthis</p>
+<ul><li><code><a href="reference/rainbowJam.html">rainbowJam()</a></code></li>
+<li>
+<code><a href="reference/rainbowJam.html">rainbowJam()</a></code> with alternative presets</li>
+<li><code><a href="reference/add_colors.html">add_colors()</a></code></li>
+<li><code><a href="reference/slot_colors.html">slot_colors()</a></code></li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_01apr2025">01apr2025<a class="anchor" aria-label="anchor" href="#id_01apr2025"></a></h2>
+<ul><li>
+<p><code><a href="reference/theme_jam.html">theme_jam()</a></code></p>
+<ul><li>Add <code>axis.text.y.angle=0</code> to code and defaults.</li>
+<li>Consider reducing strip margin around labels?</li>
+</ul></li>
+<li>
+<p><code><a href="reference/colorjam_presets.html">colorjam_presets()</a></code></p>
+<ul><li>Consider hue wheel defined by <code>named_colors</code>.</li>
+</ul></li>
+<li>
+<p><code>named_colors</code></p>
+<ul><li>Add maintenance functions to download latest <code>named_colors</code>, filter for approved colors, redefine the color wheel (see above) and update the colorjam package data object.</li>
+<li>Color wheel: Sort colors by hue. Define steps using spline, using hue rank, scaled from 0 to 360. Consider some “rounding” of decimal values, then take the mean rank for ties, where the same hue appears consecutively. (Alternate is to reduce repeated values to single entry.)</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_19mar2025">19mar2025<a class="anchor" aria-label="anchor" href="#id_19mar2025"></a></h2>
+<ul><li>
+<p><code><a href="reference/col_linear_xf.html">col_linear_xf()</a></code></p>
+<ul><li>Consider new arg <code>floor_colramp="Blues"</code> to assign colors below floor.</li>
+<li>Consider optional argument with specific breakpoints, labels, to be used as default with heatmap legends.</li>
+</ul></li>
+<li><p>Consider function to create <code><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Legend.html" class="external-link">ComplexHeatmap::Legend()</a></code> from <code><a href="reference/col_div_xf.html">col_div_xf()</a></code> or <code><a href="reference/col_linear_xf.html">col_linear_xf()</a></code></p></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_21jan2025">21jan2025<a class="anchor" aria-label="anchor" href="#id_21jan2025"></a></h2>
+<ul><li><p>consider making a ggplot2 “theme” that automatically uses the colorjam categorical color functions, as drop-in replacement for rainbow colors, most notably used by Seurat/tSNE/UMAP plots to color each cluster.</p></li>
+<li>
+<p>novel color wheel using “meodai/named_colors” as crowd-sourced evidence</p>
+<ul><li>filter named_colors for chroma, luminance, for usability by <code><a href="reference/rainbowJam.html">rainbowJam()</a></code>
+</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
+<h2 id="id_14jan2025">14jan2025<a class="anchor" aria-label="anchor" href="#id_14jan2025"></a></h2>
+<ul><li>
+<p><code><a href="reference/col_linear_xf.html">col_linear_xf()</a></code> and <code><a href="reference/col_div_xf.html">col_div_xf()</a></code></p>
+<ul><li>When <code>floor</code> is used, consider optional argument <code>floor_color</code> to apply a different color to indicate when a value is below the floor. For example, sometimes it’s useful to use yellow to indicate a value is below the floor, rather than relying on discerning white versus slightly off-white, especially for <code>colramp="Reds"</code> where the baseline color is already slightly reddish-white.</li>
+</ul></li>
+</ul></div>
+<div class="section level2">
 <h2 id="id_11dec2024">11dec2024<a class="anchor" aria-label="anchor" href="#id_11dec2024"></a></h2>
 <ul><li>Improve <code>blend_color()</code> handling of alpha so it builds over time, use formula: <code>a + (1-a) * b</code> where a,b are alpha values between 0 and 1.</li>
 </ul></div>
@@ -43,8 +207,8 @@
 <ul><li><p><code><a href="reference/blend_colors.html">blend_colors()</a></code> - consider <code>preset=getOption("colorjam.blend.preset")</code> so it can be easily customized with a fixed scheme.</p></li>
 <li><p>Fix package dependencies so it does not also load <code>jamba</code> upon load.</p></li>
 <li>
-<p><code><a href="reference/color_pie.html">color_pie()</a></code>: make it more similar to <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code></p>
-<ul><li><p><code>color_pie(rainbowJam(12))</code> should show hex color as labels by default, same as <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code></p></li>
+<p><code><a href="reference/color_pie.html">color_pie()</a></code>: make it more similar to <code><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">jamba::showColors()</a></code></p>
+<ul><li><p><code>color_pie(rainbowJam(12))</code> should show hex color as labels by default, same as <code><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">jamba::showColors()</a></code></p></li>
 <li><p>Consider argument <code>inner_radius</code> to make donut plots.</p></li>
 <li>
 <p>Consider replacing <code>label_radius</code> with combination of</p>
@@ -103,7 +267,7 @@
 <div class="section level2">
 <h2 id="todo-24apr2024">TODO 24apr2024<a class="anchor" aria-label="anchor" href="#todo-24apr2024"></a></h2>
 <ul><li>
-<p><code><a href="reference/closest_named_color.html">closest_named_color()</a></code> and <code><a href="reference/closestRcolor.html">closestRcolor()</a></code></p>
+<p><code><a href="reference/closestRcolor.html">closest_named_color()</a></code> and <code><a href="reference/closestRcolor.html">closestRcolor()</a></code></p>
 <ul><li>
 <p>Consider option to return the input/output values in a <code>data.frame</code>:</p>
 <ul><li>hex color value</li>
@@ -315,7 +479,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

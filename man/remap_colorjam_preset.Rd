@@ -64,6 +64,7 @@ Other colorjam hue warp:
 \code{\link{hw2h}()},
 \code{\link{mean_angle}()},
 \code{\link{plot_colorjam_preset}()},
+\code{\link{plot_colorjam_steps}()},
 \code{\link{validate_colorjam_preset}()}
 }
 \concept{colorjam hue warp}

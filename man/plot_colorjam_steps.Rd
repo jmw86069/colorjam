@@ -49,3 +49,23 @@ plot_colorjam_steps(step_name, hue="orange")
 plot_colorjam_steps(step_name, hue="gold")
 
 }
+\seealso{
+Other colorjam hue warp: 
+\code{\link{add_colorjam_preset}()},
+\code{\link{add_colorjam_step}()},
+\code{\link{adjust_hue_warp}()},
+\code{\link{approx_degrees}()},
+\code{\link{colorjam_presets}()},
+\code{\link{colorjam_steps}()},
+\code{\link{display_degrees}()},
+\code{\link{h2hw}()},
+\code{\link{h2hwOptions}()},
+\code{\link{hcl_to_hsl_hue}()},
+\code{\link{hsl_to_hcl_hue}()},
+\code{\link{hw2h}()},
+\code{\link{mean_angle}()},
+\code{\link{plot_colorjam_preset}()},
+\code{\link{remap_colorjam_preset}()},
+\code{\link{validate_colorjam_preset}()}
+}
+\concept{colorjam hue warp}

@@ -1,5 +1,35 @@
 # colorjam Todo
 
+## 05dec2025
+
+Prepare for CRAN to support: jamba, venndir, multienrichjam.
+
+* Remove dependency on jamses for heatmaps.
+* Consider new ggplot2 function using `col_div_xf()` to work the same way,
+`scale_color_div_xf()`, `scale_fill_div_xf()`.
+* Improve the default color wheel. Reduce hot pink, improve purple.
+Revisit classic RYB color wheel, then remove 2 green wedges.
+
+   * Consider defining C,L,S,L ranges per color hue to optimize aesthetics.
+
+* Change examples to use `withr::with_par()`
+* DONE. `theme_jam()`: define `rainbowJam()` default discrete colors.
+* IN PROGRESS. Simplify exported functions, remove/hide all non-essential
+* `color_pie()`
+
+   * DONE. Consider init.angle=270 (top) especially for divergent colors.
+   * DONE. Consider attribute 'divergent=TRUE' in `col_div_xf()`
+   and `make_jam_divergent()`
+   * DONE. Accept `function` input similar to `jamba::showColors()`
+   * DEFER. Consider argument 'buffer' to add empty buffer zone. Nice-to-have.
+
+* FIXED. `color_complement()` Note 'dichromat2' is not correct.
+* `matrix2heatColors()` - used by multienrichjam
+
+   * Consider converting to `col_div_xf()`, `col_linear_xf()`.
+
+* Pie in the sky: Evaluate alternate k-means approach to color selection.
+
 ## 21apr2025
 
 * Add `named_color` package maintenance functions.

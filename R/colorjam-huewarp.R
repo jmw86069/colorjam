@@ -93,7 +93,7 @@
 #'    h2=c(0,120,180,240,280,360))
 #' h2hw(300)
 #'
-#' @family hue warp functions
+#' @family colorjam hue warp
 #'
 #' @export
 h2hwOptions <- function
@@ -221,7 +221,7 @@ h2hwOptions <- function
 #' warpedHuesBY <- h2hw(huesBY, preset="ryb");
 #' warpedHuesBY;
 #'
-#' @family hue warp functions
+#' @family colorjam hue warp
 #'
 #' @export
 h2hw <- function

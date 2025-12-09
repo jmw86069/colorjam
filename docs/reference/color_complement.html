@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +46,9 @@
 <span>  Crange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">100</span><span class="op">)</span>,</span>
 <span>  Lrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">95</span><span class="op">)</span>,</span>
 <span>  Cgrey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"jam.Cgrey"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"dichromat"</span><span class="op">)</span>,</span>
+<span>  preset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"colorjam.preset"</span>, <span class="st">"dichromat2"</span><span class="op">)</span>,</span>
 <span>  useWarpHue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  use_hsl <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_hsl <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -99,10 +99,17 @@ and the <code>Crange</code> is not applied.</p></dd>
 
 
 <dt id="arg-usewarphue">useWarpHue<a class="anchor" aria-label="anchor" href="#arg-usewarphue"></a></dt>
-<dd><p><code>logical</code> indicating whether to use the warp
-hue functions <code><a href="h2hw.html">colorjam::h2hw()</a></code> and <code><a href="hw2h.html">colorjam::hw2h()</a></code> which
-effectively change the color wheel from red-green-blue to
-red-yellow-blue.</p></dd>
+<dd><p><code>logical</code> default TRUE, whether to use the preset.
+When FALSE it effectively uses preset='rgb' which performs no
+particular hue adjustments. Note the 'rgb' color wheel is
+not particularly intuitive for complementary colors.</p></dd>
+
+
+<dt id="arg-use-hsl">use_hsl<a class="anchor" aria-label="anchor" href="#arg-use-hsl"></a></dt>
+<dd><p><code>logical</code> default TRUE, use HSL to determine equivalent
+complementary values for Saturation (S) and Lightness (L), rather
+than HCL where Chroma (C) and Luminance (L) is not at all consistent
+across the color wheel.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -125,10 +132,18 @@ saturation.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other colorjam core:
+    <div class="dont-index"><p>Other colorjam assignment:
+<code><a href="add_colors.html">add_colors</a>()</code>,
+<code><a href="col_div_xf.html">col_div_xf</a>()</code>,
+<code><a href="col_linear_xf.html">col_linear_xf</a>()</code>,
+<code><a href="group2colors.html">group2colors</a>()</code>,
+<code><a href="matrix2heatColors.html">matrix2heatColors</a>()</code>,
+<code><a href="rainbowJamMulti.html">rainbowJamMulti</a>()</code>,
+<code><a href="vals2colorLevels.html">vals2colorLevels</a>()</code>,
+<code><a href="vibrant_color_by_hue.html">vibrant_color_by_hue</a>()</code></p>
+<p>Other colorjam core:
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
 <code><a href="closestRcolor.html">closestRcolor</a>()</code>,
-<code><a href="closest_named_color.html">closest_named_color</a>()</code>,
 <code><a href="colors_to_df.html">colors_to_df</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="rainbowJam.html">rainbowJam</a>()</code>,
@@ -140,27 +155,31 @@ saturation.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5</span>;</span></span>
 <span class="r-in"><span><span class="va">rc</span> <span class="op">&lt;-</span> <span class="fu">colorjam</span><span class="fu">::</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="va">rc_comp</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"dichromat"</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="va">rc_comp2</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"dichromat"</span>, useWarpHue<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">rc_comp</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"dichromat2"</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">rc_comp2</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"dichromat2"</span>, useWarpHue<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">rc_comp2rgb</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"rgb"</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">rc_comp3</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"ryb"</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rainbowJam<span class="op">=</span><span class="va">rc</span>,</span></span>
-<span class="r-in"><span>   `complement\n(preset="dichromat")`<span class="op">=</span><span class="va">rc_comp</span>,</span></span>
-<span class="r-in"><span>   `complement\n(useWarpHue=FALSE)`<span class="op">=</span><span class="va">rc_comp2</span>,</span></span>
-<span class="r-in"><span>   `complement\n(preset="ryb")`<span class="op">=</span><span class="va">rc_comp3</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rainbowJam<span class="op">=</span><span class="va">rc</span>,</span></span>
+<span class="r-in"><span>   `color_complement\n(preset="dichromat")`<span class="op">=</span><span class="va">rc_comp</span>,</span></span>
+<span class="r-in"><span>   `color_complement\n(useWarpHue=FALSE)`<span class="op">=</span><span class="va">rc_comp2</span>,</span></span>
+<span class="r-in"><span>   `color_complement\n(preset="rgb")`<span class="op">=</span><span class="va">rc_comp2rgb</span>,</span></span>
+<span class="r-in"><span>   `color_complement\n(preset="ryb")`<span class="op">=</span><span class="va">rc_comp3</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="color_complement-1.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">8</span></span></span>
 <span class="r-in"><span><span class="va">rc</span> <span class="op">&lt;-</span> <span class="fu">colorjam</span><span class="fu">::</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span>, preset<span class="op">=</span><span class="st">"ryb"</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">rc_comp</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span>, preset<span class="op">=</span><span class="st">"ryb"</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`rainbowJam\n(preset="ryb")`<span class="op">=</span><span class="va">rc</span>,</span></span>
-<span class="r-in"><span>   `complement\n(preset="ryb")`<span class="op">=</span><span class="va">rc_comp</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   `rainbowJam\n(preset="ryb")`<span class="op">=</span><span class="va">rc</span>,</span></span>
+<span class="r-in"><span>   `color_complement\n(preset="ryb")`<span class="op">=</span><span class="va">rc_comp</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="color_complement-2.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## divergent color gradients through white</span></span></span>
 <span class="r-in"><span><span class="co">## hint: use higher lens value to make middle colors more intense</span></span></span>
 <span class="r-in"><span><span class="va">rc</span> <span class="op">&lt;-</span> <span class="fu">colorjam</span><span class="fu">::</span><span class="fu"><a href="rainbowJam.html">rainbowJam</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">rc_comp</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">rc</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="va">rc_ramps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">rc</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>   <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rc</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"white"</span>, <span class="va">rc_comp</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">rc_ramps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">rc</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rc</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"white"</span>, <span class="va">rc_comp</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      n<span class="op">=</span><span class="fl">25</span>,</span></span>
 <span class="r-in"><span>      lens<span class="op">=</span><span class="fl">0</span>,</span></span>
 <span class="r-in"><span>      divergent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
@@ -169,13 +188,13 @@ saturation.</p>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">[</span><span class="fl">25</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"color complements"</span>;</span></span>
 <span class="r-in"><span>   <span class="va">j</span>;</span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">rc_ramps</span>, groupCellnotes<span class="op">=</span><span class="cn">TRUE</span>, groupByColors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">rc_ramps</span>, groupCellnotes<span class="op">=</span><span class="cn">TRUE</span>, groupByColors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="color_complement-3.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## divergent color gradients through black</span></span></span>
 <span class="r-in"><span><span class="co">## hint: use higher lens value to make middle colors more intense</span></span></span>
-<span class="r-in"><span><span class="va">rc_ramps2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">rc</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>   <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rc</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"black"</span>, <span class="va">rc_comp</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">rc_ramps2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">rc</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">rc</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"black"</span>, <span class="va">rc_comp</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      n<span class="op">=</span><span class="fl">25</span>,</span></span>
 <span class="r-in"><span>      lens<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>      divergent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
@@ -184,13 +203,13 @@ saturation.</p>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">[</span><span class="fl">25</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"color complements"</span>;</span></span>
 <span class="r-in"><span>   <span class="va">j</span>;</span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">rc_ramps2</span>, groupCellnotes<span class="op">=</span><span class="cn">TRUE</span>, groupByColors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="va">rc_ramps2</span>, groupCellnotes<span class="op">=</span><span class="cn">TRUE</span>, groupByColors<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="color_complement-4.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># test divergent color gradient</span></span></span>
-<span class="r-in"><span><span class="va">RdBu_r</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="st">"RdBu_r"</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">RdBu_r</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="st">"RdBu_r"</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="va">rc_divergent</span> <span class="op">&lt;-</span> <span class="fu">color_complement</span><span class="op">(</span><span class="va">RdBu_r</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>RdBu_r<span class="op">=</span><span class="va">RdBu_r</span>, complement<span class="op">=</span><span class="va">rc_divergent</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>RdBu_r<span class="op">=</span><span class="va">RdBu_r</span>, complement<span class="op">=</span><span class="va">rc_divergent</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="color_complement-5.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -204,7 +223,7 @@ saturation.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

@@ -37,17 +37,6 @@
 #'    the categorical colors returned.
 #' @param hues `numeric` optional vector with specific hues to use instead
 #'    of using `Hstart` and filling the 360 degree color wheel with colors.
-#' @param warpHue `logical` (deprecated) formerly to enable or disable the
-#'    color warping for custom color wheel.
-#'    To disable a custom color wheel use `preset="rgb"`.
-#' @param h1,h2 `numeric` (deprecated) in favor of argument `preset` to
-#'    define the `h1` and `h2` values.
-#'    To use custom values for `h1` and `h2` use `add_colorjam_preset()`
-#'    to define a new preset name, then use the name with `preset`.
-#' @param Cvals,Lvals `numeric` (deprecated) in favor of argument `step`
-#'    to define the sequence of Chroma and Luminance values.
-#'    To define custom values, use `add_colorjam_step()` to define a new
-#'    step name, then use the name with `step`.
 #' @param Crange,Lrange `numeric` optional permitted ranges for
 #'    Chroma and Luminance values.
 #'    These adjustments may be useful to impose a darker or lighter
@@ -150,11 +139,11 @@ rainbowJam <- function
  Hstart=0,#12.2,
  alpha=1,
  hues=NULL,
- warpHue=NULL,
- h1=NULL,
- h2=NULL,
- Cvals=NULL,
- Lvals=NULL,
+ # warpHue=NULL,
+ # h1=NULL,
+ # h2=NULL,
+ # Cvals=NULL,
+ # Lvals=NULL,
  Crange=NULL,
  Lrange=NULL,
  phase=1,
@@ -185,26 +174,26 @@ rainbowJam <- function
    direction <- match.arg(direction);
    test_color_model <- match.arg(test_color_model);
 
-   # deprecated arguments
-   warn_txt <- character(0);
-   if (length(h1) > 0 || length(h2) > 0) {
-      warn_txt <- c(warn_txt,
-         "!"=paste("{.var h1} and {.var h2} are deprecated,",
-            "use argument {.var preset}."))
-   }
-   if (length(Cvals) > 0 || length(Lvals) > 0) {
-      warn_txt <- c(warn_txt,
-         "!"=paste("{.var Cvals} and {.var Lvals} are deprecated,",
-            "use argument {.var step}."))
-   }
-   if (length(warpHue) > 0) {
-      warn_txt <- c(warn_txt,
-         "!"=paste("{.var warpHue} is deprecated,",
-            "disable warp hue with {.code preset='rgb'}."))
-   }
-   if (length(warn_txt) > 0) {
-      cli::cli_warn(warn_txt);
-   }
+   ## deprecated arguments
+   # warn_txt <- character(0);
+   # if (length(h1) > 0 || length(h2) > 0) {
+   #    warn_txt <- c(warn_txt,
+   #       "!"=paste("{.var h1} and {.var h2} are deprecated,",
+   #          "use argument {.var preset}."))
+   # }
+   # if (length(Cvals) > 0 || length(Lvals) > 0) {
+   #    warn_txt <- c(warn_txt,
+   #       "!"=paste("{.var Cvals} and {.var Lvals} are deprecated,",
+   #          "use argument {.var step}."))
+   # }
+   # if (length(warpHue) > 0) {
+   #    warn_txt <- c(warn_txt,
+   #       "!"=paste("{.var warpHue} is deprecated,",
+   #          "disable warp hue with {.code preset='rgb'}."))
+   # }
+   # if (length(warn_txt) > 0) {
+   #    cli::cli_warn(warn_txt);
+   # }
 
 
    # handle preset
@@ -320,6 +309,11 @@ rainbowJam <- function
    if (verbose) {
       jamba::printDebug("rainbowJam(): ",
          "applying h2hw()");
+   }
+   arglist <- list(...);
+   warpHue <- TRUE;
+   if ("warpHue" %in% names(arglist)) {
+      warpHue <- arglist[["warpHue"]];
    }
    if (2 %in% warpHue) {
       jamba::printDebug("rainbowJam(): ",

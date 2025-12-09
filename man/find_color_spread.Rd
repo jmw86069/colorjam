@@ -8,7 +8,7 @@ find_color_spread(
   x,
   n = 2,
   min_distance = 11.5,
-  step_distance = 0,
+  step_distance = -1,
   method = "cie2000",
   use_white = "F5",
   byCols = c("-met_n", "-d", "-found_n"),
@@ -24,9 +24,13 @@ find_color_spread(
 
 \item{min_distance}{\code{numeric} minimum distance required between colors.}
 
-\item{step_distance}{\code{numeric} default 0, when non-zero the \code{min_distance}
+\item{step_distance}{\code{numeric} default -1, when non-zero the \code{min_distance}
 is iterated until the \code{min_distance} criteria are met for at least
-\code{n} colors.}
+\code{n} colors.
+\itemize{
+\item Use \code{step_distance=0} to prevent returning colors when there are
+not \code{n} colors with distance \code{min_distance}.
+}}
 
 \item{method}{\code{character} distance method, default 'cie2000'.}
 
@@ -41,7 +45,7 @@ The columns are sorted as follows:
 \item \code{'-found_n'} - decreasing number of colors that met the criteria
 }}
 
-\item{first_only}{\code{logical} default FALSE, whether to return only the
+\item{first_only}{\code{logical} default TRUE, whether to return only the
 first successful color combination meeting the criteria for
 \code{min_distance} and \code{n}.
 \itemize{
@@ -53,6 +57,12 @@ sorting.
 }}
 
 \item{...}{additional arguments are passed to \code{color_distance()}.}
+}
+\value{
+\code{character} vector of colors with minimum distances to each
+other of at least \code{min_distance}, or lower when \code{step_distance} is
+negative. Note that it may return more than \code{n} colors, when
+there are multiple colors to meet this criteria.
 }
 \description{
 Find a spread of colors with minimum distance between them
@@ -77,7 +87,26 @@ It then runs all combinations and sorts for the set with the
 highest minimum distance, thereby the "most distinctive subset".
 }
 \examples{
-find_color_spread(colorspace::rainbow_hcl(12), n=5, min_distance=20, step_distance=-1, first_only=TRUE)
-find_color_spread(colorspace::rainbow_hcl(30), n=12, min_distance=20, step_distance=-1, first_only=TRUE)
+x12 <- colorspace::rainbow_hcl(12, c=95)
+new5 <- sort_colors(find_color_spread(x12, n=5, min_distance=40))
+color_pie(list(x12, new5))
+
+x12 <- rainbow(50)
+new7 <- sort_colors(find_color_spread(x12, n=7, min_distance=30))
+color_pie(list(x12, new7))
+
+x3a <- rainbow(30)
+x3b <- sort_colors(find_color_spread(x3a, n=12, min_distance=20))
+color_pie(list(x3a, x3b))
 
 }
+\seealso{
+Other colorjam internal: 
+\code{\link{color_distance}()},
+\code{\link{jam_pal}()},
+\code{\link{rainbowJam_v1}()},
+\code{\link{show_color_distance}()},
+\code{\link{slot_colors}()},
+\code{\link{vals2colorLevels}()}
+}
+\concept{colorjam internal}

@@ -41,7 +41,7 @@
 #' n <- 15
 #' color_pie(list(
 #'    rainbowJam(n),
-#'    rainbow_hcl(n, c=85)),
+#'    colorspace::rainbow_hcl(n, c=85)),
 #'    main="rainbowJam(15) [outer]\nrainbow_hcl(15) [inner]")
 #'
 #' rainbow_list <- lapply(4*c(5,4,2,1), function(n){
@@ -77,7 +77,47 @@ color_pie <- function
  clockwise=TRUE,
  ...)
 {
-   ##
+   ## convert function to colors
+   fn_to_color <- function
+   (f,
+    n=7,
+    ...)
+   {
+      if (is.function(f)) {
+         if (all(c("colors", "breaks") %in% names(attributes(f)))) {
+            colorset <- tryCatch({
+               br <- attr(f, "breaks")
+               if (length(br) > 0) {
+                  if ("matrix" %in% class(attr(f, "colors"))) {
+                     jamba::nameVector(grDevices::rgb(attr(f, "colors")),
+                        format(digits=2, br))
+                  } else {
+                     jamba::nameVector(attr(f, "colors"),
+                        format(digits=2, br))
+                  }
+               } else {
+                  attr(f, "colors")
+               }
+            }, error=function(e) {
+               NULL
+            })
+         } else {
+            colorset <- tryCatch({
+               k <- seq_len(n)
+               jamba::nameVector(f(n), k)
+            }, error=function(e) {
+               NULL
+            })
+         }
+      } else if (is.character(f)) {
+         colorset <- f
+      } else {
+         colorset <- NULL
+      }
+      colorset
+   }
+
+   ## process colors sent as a list
    if (is.list(colors)) {
       radius_seq <- head(
          seq(from=radius,
@@ -113,9 +153,30 @@ color_pie <- function
          }
       });
       return(invisible(l));
+   } else {
+      if (is.function(colors)) {
+         # convert colors to a vector
+         colorfn <- colors;
+         # check for divergent colors
+         if (isTRUE(attributes(colorfn)$divergent)) {
+            if (length(init.angle) == 0) {
+               init.angle <- 270;
+            }
+         }
+         colors <- fn_to_color(colorfn, ...);
+      }
    }
+   if (is.function(border)) {
+      # convert colors to a vector
+      borderfn <- border;
+      border <- fn_to_color(borderfn, ...);
+   }
+
+   # Define default init.angle
    if (length(init.angle) == 0) {
-      if (clockwise) {
+      if (isTRUE(attributes(colors)$divergent)) {
+         init.angle <- 270;
+      } else if (clockwise) {
          init.angle <- 90 + 360 / length(colors) / 2;
       } else {
          init.angle <- 90 - 360 / length(colors) / 2;

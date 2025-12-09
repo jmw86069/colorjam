@@ -6,6 +6,8 @@
 #' with some defaults intended in future to assist with color blindness
 #' calculations.
 #'
+#' @family colorjam internal
+#'
 #' @returns `numeric` color distance with `length(x)` entries when both
 #'    `x` and `y` are supplied, or a `numeric` matrix with color distances
 #'    between all entries in `x`.
@@ -19,8 +21,15 @@
 #'    * When `y` is not supplied, `x` is compared to itself,
 #'    returning a `matrix`.
 #' @param y `character` color, default NULL
-#' @param method `character`, default 'cie2000', the color distance method,
-#'    passed to `farver::compare_colour()`. In future, this argument
+#' @param method `character`, default 'cmc', the color distance method,
+#'    passed to `farver::compare_colour()`.
+#'    * Note that 'cmc' uses arguments `lightness` and `chroma` which
+#'    have custom values 2/3 and 1, respectively. The defaults are 2 and 1
+#'    for acceptability, and 1 and 1 for perceptability.
+#'    In our testing, 2/3 and 1 were more useful, since lightness on
+#'    computer screen and in print is more easily perceived than
+#'    on a painted surface.
+#'    * In future, this argument
 #'    may permit additional distance methods, and/or specific color function,
 #'    in order to impose other criteria and adjustments.
 #' @param use_white `character` default "F5" representing the
@@ -31,31 +40,34 @@
 #'    * The typical default 'D65' is 'daylight 6500K' and
 #'    is typically used for neutral daylight without blue (cool) or
 #'    yellow (warm) shifted background lighting.
+#' @param do_plot `logical` default FALSE, whether to plot results using
+#'    `show_color_distance()`.
 #' @param ... additional arguments are passed to `farver::compare_colour()`
+#'    and to `show_color_distance()`.
 #'
 #' @examples
 #' color_distance("red", "firebrick", use_white="D65")
 #'
-#' color_distance(grDevices::palette.colors(15))
+#' palette15 <- sort_colors(grDevices::palette.colors(15, "Polychrome 36"))
+#' color_distance(palette15, do_plot=TRUE)
 #'
-#' pc <- rainbowJam(5)
+#' pc <- rainbowJam(8)
 #' cd <- color_distance(pc);
-#' show_color_distance(cd, pc=pc, column_title="rainbowJam()");
-#'
-#' pc <- grDevices::palette.colors(15);
-#' cd <- color_distance(pc);
-#' show_color_distance(cd, pc=pc, column_title="palette.colors()");
+#' show_color_distance(cd, pc=pc);
 #'
 #' @export
 color_distance <- function
 (x,
  y=NULL,
- method=c("cie2000",
+ method=c(
+    "cmc",
+    "cie2000",
     "cie94",
     "cie1976",
-    "cmc",
     "euclidean"),
  use_white="F5",
+ lightness=2/3,
+ chroma=1,
  do_plot=FALSE,
  ...)
 {
@@ -91,151 +103,16 @@ color_distance <- function
       to_space="rgb",
       white_to=use_white,
       method=method,
+      lightness=lightness,
+      chroma=chroma,
       ...)
    attr(cd, "method") <- method;
+
+   if (isTRUE(do_plot)) {
+      show_color_distance(cd,
+         ...)
+   }
 
    return(cd)
 }
 
-#' Show color distance as a heatmap
-#'
-#' Show color distance as a heatmap
-#'
-#' This function uses `ComplexHeatmap::Heatmap()`, which is not
-#' required for colorjam as a whole. It creates a matrix visual
-#' summary of color distances, and displays the actual colors as
-#' row and column annotations outside the color distance
-#' heatmap.
-#'
-#' @returns `ComplexHeatmap::Heatmap` object, when printed it will
-#'    draw a heatmap.
-#'
-#' @param cd `numeric` matrix, default NULL, with pre-calculated values.
-#' @param pc `character` vector of colors used in `cd`, useful when
-#'    there are `names(pc)` to use as heatmap column or row labels.
-#'    When only `pc` is provided and not `cd`, the `cd` is calculated
-#'    by calling `color_distance(pc)`.
-#' @param show_labels `logical` default TRUE, used when `pc` is provided.
-#' @param cluster_data `logical` default FALSE, whether to enable row
-#'    and column hierarchical clustering in the heatmap.
-#' @param row_split `numeric` default 0, used when `cluster_data=TRUE`
-#'    to subdivide the dendrogram into this many separate subclusters.
-#' @param ... additional arguments are passed to `color_distance()`,
-#'    then to `jamses::heatmap_se()`. Many arguments in `jamses::heatmap_se()`
-#'    are also passed through to `ComplexHeatmap::Heatmap()`.
-#'
-#' @examples
-#' pc <- grDevices::palette.colors(25);
-#' cd <- color_distance(pc, method="cie2000");
-#' show_color_distance(cd, pc)
-#'
-#' # with clustering
-#' show_color_distance(cd, pc, cluster_data=TRUE,
-#'    column_title_gp=grid::gpar(fontsize=20),
-#'    column_title="palette.colors()")
-#'
-#' # compare two color vectors
-#' pc1 <- rainbowJam(10, preset="ryb2")
-#' pc2 <- colorspace::rainbow_hcl(10)
-#' cd <- color_distance(pc1, pc2)
-#' show_color_distance(cd, cluster_data=TRUE,
-#'    row_title_rot=90, row_title="rainbowJam()",
-#'    row_title_gp=grid::gpar(fontsize=20),
-#'    column_title_gp=grid::gpar(fontsize=20),
-#'    column_title_rot=0, column_title="rainbow_hcl()")
-#'
-#' # evaluate the small step size between HCL rainbow colors
-#' show_color_distance(pc2,
-#'    column_title_gp=grid::gpar(fontsize=20),
-#'    column_title_rot=0, column_title="rainbow_hcl()")
-#'
-#' # evaluate the larger step sizes between colorjam rainbow colors
-#' show_color_distance(pc1, cluster_data=FALSE,
-#'    column_title_gp=grid::gpar(fontsize=20),
-#'    column_title_rot=0, column_title="rainbowJam()")
-#'
-#' @export
-show_color_distance <- function
-(cd=NULL,
- pc=NULL,
- show_labels=TRUE,
- cluster_data=FALSE,
- row_split=0,
- ...)
-{
-   #
-   if (!requireNamespace("jamses", quietly=TRUE)) {
-      stop("This function requires jamses, SummarizedExperiment, ComplexHeatmap")
-   }
-   if (inherits(cd, "character") && is.atomic(cd)) {
-      pc <- cd;
-      cd <- NULL;
-   }
-   if (length(cd) == 0 && length(pc) > 1) {
-      cd <- color_distance(pc,
-         ...);
-
-   }
-   if (length(pc) == 0) {
-      pc <- unique(c(colnames(cd),
-         rownames(cd)))
-   }
-
-   if (length(names(pc)) == 0) {
-      names(pc) <- jamba::makeNames(pc,
-         renameFirst=FALSE);
-   }
-   legend_at <- pretty(c(cd, 150))
-   legend_labels <- legend_at;
-   color_max <- max(legend_at);
-   if (length(row_split) == 0 || any(row_split %in% c(0, 1))) {
-      row_split <- NULL;
-   }
-
-   # optional cell labels
-   use_cell_fn <- NULL;
-   if (TRUE %in% show_labels) {
-      use_cell_fn <- jamba::cell_fun_label(
-         m=list(cd,
-            round(cd)),
-         col_hm=colorjam::col_div_xf(color_max),
-         show=2);
-   }
-
-   # make SE for convenience
-   cse <- SummarizedExperiment::SummarizedExperiment(
-      assays=list(distance=cd),
-      rowData=data.frame(color=rownames(cd)),
-      colData=data.frame(color=colnames(cd)))
-
-   data_type <- "distance";
-   if ("method" %in% names(attributes(cd))) {
-      data_type <- attr(cd, "method")
-   }
-
-   # make heatmap
-   jamses::heatmap_se(cse,
-      use_raster=FALSE,
-      data_type=data_type,
-      cell_fun=use_cell_fn,
-      top_colnames="color",
-      rowData_colnames="color",
-      sample_color_list=list(color=pc),
-      cluster_columns=cluster_data,
-      cluster_rows=cluster_data,
-      show_left_legend=FALSE,
-      show_top_legend=FALSE,
-      color_max=color_max,
-      centerby_colnames=FALSE,
-      legend_at=legend_at,
-      row_names_side="left",
-      row_dend_side="right",
-      column_names_side="top",
-      column_names_rot=60,
-      row_split=row_split,
-      column_split=row_split,
-      column_dend_side="bottom",
-      legend_labels=legend_labels,
-      ...)
-
-}

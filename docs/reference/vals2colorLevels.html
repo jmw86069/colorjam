@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@ ramp at zero.</p></dd>
 
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
 <dd><p>color value compatible with the <code>col</code> argument of
-<code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>. Example include: single color; multiple
+<code><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>. Example include: single color; multiple
 colors; single color ramp name; or a custom color function.</p></dd>
 
 
@@ -79,7 +79,7 @@ a single color is supplied in <code>col</code>.</p></dd>
 
 
 <dt id="arg-lens">lens<a class="anchor" aria-label="anchor" href="#arg-lens"></a></dt>
-<dd><p>numeric value sent to <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html" class="external-link">jamba::warpRamp()</a></code>, to define the
+<dd><p>numeric value sent to <code><a href="https://jmw86069.github.io/jamba/reference/warpRamp.html" class="external-link">jamba::warpRamp()</a></code>, to define the
 level of color warping to apply to the color gradient, where <code>lens=0</code>
 applies no adjustment.</p></dd>
 
@@ -109,7 +109,7 @@ gradient. Higher values define a smooth color gradient.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments are passed to <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>.</p></dd>
+<dd><p>additional arguments are passed to <code><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -117,7 +117,7 @@ gradient. Higher values define a smooth color gradient.</p></dd>
     <p>This function is similar to several other existing R functions
 that take a vector of numeric values, and apply a color gradient
 (color ramp) to the numeric values. This function provides the ability
-to warp the color ramp, for example using <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html" class="external-link">jamba::warpRamp()</a></code> in order
+to warp the color ramp, for example using <code><a href="https://jmw86069.github.io/jamba/reference/warpRamp.html" class="external-link">jamba::warpRamp()</a></code> in order
 to adjust the color gradient relative to the numeric range of the
 data.</p>
 <p>Note that the function <code><a href="col_div_xf.html">col_div_xf()</a></code> and <code><a href="col_linear_xf.html">col_linear_xf()</a></code> may
@@ -128,32 +128,41 @@ numeric break points.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other colorjam assignment:
+<code><a href="add_colors.html">add_colors</a>()</code>,
 <code><a href="col_div_xf.html">col_div_xf</a>()</code>,
 <code><a href="col_linear_xf.html">col_linear_xf</a>()</code>,
+<code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="matrix2heatColors.html">matrix2heatColors</a>()</code>,
 <code><a href="rainbowJamMulti.html">rainbowJamMulti</a>()</code>,
-<code><a href="vibrant_color_by_hue.html">vibrant_color_by_hue</a>()</code></p></div>
+<code><a href="vibrant_color_by_hue.html">vibrant_color_by_hue</a>()</code></p>
+<p>Other colorjam internal:
+<code><a href="color_distance.html">color_distance</a>()</code>,
+<code><a href="find_color_spread.html">find_color_spread</a>()</code>,
+<code><a href="jam_pal.html">jam_pal</a>()</code>,
+<code><a href="rainbowJam_v1.html">rainbowJam_v1</a>()</code>,
+<code><a href="show_color_distance.html">show_color_distance</a>()</code>,
+<code><a href="slot_colors.html">slot_colors</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Start with an example numeric vector</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="vals2colorLevels-1.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># decrease the number of gradient colors</span></span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="vals2colorLevels-2.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># change the baseline</span></span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, baseline<span class="op">=</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">showColors</a></span><span class="op">(</span><span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, baseline<span class="op">=</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-plt img"><img src="vals2colorLevels-3.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># adjust the gradient using lens</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mar"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/rbindList.html" class="external-link">rbindList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lens</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/imageByColors.html" class="external-link">imageByColors</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/rbindList.html" class="external-link">rbindList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/nameVector.html" class="external-link">nameVector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lens</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span>   <span class="fu">vals2colorLevels</span><span class="op">(</span><span class="va">x</span>, rampN<span class="op">=</span><span class="fl">25</span>, lens<span class="op">=</span><span class="va">lens</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>ylab<span class="op">=</span><span class="st">"color lens factor"</span>, xlab<span class="op">=</span><span class="st">"numeric value"</span>,</span></span>
@@ -171,7 +180,7 @@ numeric break points.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

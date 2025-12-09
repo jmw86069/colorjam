@@ -58,9 +58,12 @@ value, as sent to \code{jamba::setTextContrastColor()}, used only when
 Jam color palette for ggplot2
 }
 \seealso{
-Other colorjam ggplot2: 
-\code{\link{scale_color_jam}()},
-\code{\link{scale_fill_jam}()},
-\code{\link{theme_jam}()}
+Other colorjam internal: 
+\code{\link{color_distance}()},
+\code{\link{find_color_spread}()},
+\code{\link{rainbowJam_v1}()},
+\code{\link{show_color_distance}()},
+\code{\link{slot_colors}()},
+\code{\link{vals2colorLevels}()}
 }
-\concept{colorjam ggplot2}
+\concept{colorjam internal}

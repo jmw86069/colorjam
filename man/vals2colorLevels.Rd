@@ -91,12 +91,22 @@ title(ylab="color lens factor", xlab="numeric value",
 }
 \seealso{
 Other colorjam assignment: 
+\code{\link{add_colors}()},
 \code{\link{col_div_xf}()},
 \code{\link{col_linear_xf}()},
+\code{\link{color_complement}()},
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
 \code{\link{rainbowJamMulti}()},
 \code{\link{vibrant_color_by_hue}()}
+
+Other colorjam internal: 
+\code{\link{color_distance}()},
+\code{\link{find_color_spread}()},
+\code{\link{jam_pal}()},
+\code{\link{rainbowJam_v1}()},
+\code{\link{show_color_distance}()},
+\code{\link{slot_colors}()}
 }
 \concept{colorjam assignment}
-\concept{jam color functions}
+\concept{colorjam internal}

@@ -346,6 +346,16 @@ colors_to_df <- function
          from=c("H", "S", "L"),
          to=c("hsl_h", "hsl_s", "hsl_l"));
       x_df[,colnames(hsl_df)] <- hsl_df;
+
+      # Add luv
+      luvdf <- data.frame(farver::decode_colour(x, to="luv"))
+      colnames(luvdf) <- paste0("luv_", colnames(luvdf));
+      x_df[,colnames(luvdf)] <- luvdf;
+
+      # Add yxy
+      yxydf <- data.frame(farver::decode_colour(x, to="yxy"))
+      colnames(yxydf) <- paste0("yxy_", colnames(yxydf));
+      x_df[,colnames(yxydf)] <- yxydf;
    }
 
    # optional subset

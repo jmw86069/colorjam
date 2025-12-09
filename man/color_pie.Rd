@@ -63,7 +63,7 @@ color_pie(list(
 n <- 15
 color_pie(list(
    rainbowJam(n),
-   rainbow_hcl(n, c=85)),
+   colorspace::rainbow_hcl(n, c=85)),
    main="rainbowJam(15) [outer]\nrainbow_hcl(15) [inner]")
 
 rainbow_list <- lapply(4*c(5,4,2,1), function(n){

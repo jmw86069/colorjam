@@ -12,6 +12,7 @@ col_linear_xf(
   n = 6,
   colramp = "Purples",
   open_floor = FALSE,
+  floor_color = NULL,
   debug = FALSE,
   ...
 )
@@ -73,10 +74,35 @@ below the \code{floor}, versus using gradient colors below the
 \code{floor}, while all remaining numeric-color assignments
 are held constant.}
 
+\item{floor_color}{\code{character} default NULL, optional fixed color
+to apply below the floor threshold. Note that this color
+works best when \code{open_floor=FALSE}.}
+
 \item{debug}{\code{logical} indicating whether to produce a plot
 that shows the resulting color gradient.}
 
 \item{...}{additional arguments are ignored.}
+}
+\value{
+\code{function} that takes \code{numeric} input and returns a \code{character}
+vector of colors of the same length.
+
+The color function also recognizes arguments:
+\itemize{
+\item 'return_rgb': \code{logical} whether to return R,G,B as a matrix,
+default FALSE.
+\item 'max_value': \code{numeric} with maximum RGB values, default 1.
+}
+
+The object contains attributes:
+\itemize{
+\item 'legend_at': \code{numeric} vector of legend label positions.
+\item 'legend_labels': \code{character} vector of labels associated
+with the 'legend_at' positions. When \code{floor} is used,
+the labels include positions just below floor, and the label
+indicates '<floor', for example '<1.5'.
+The label is used by \code{scale_color_div_xf()} for the ggplot2 legend.
+}
 }
 \description{
 Linear color interpolation function with adjustable range, baseline, and floor
@@ -164,7 +190,9 @@ Other colorjam gradients:
 \code{\link{twostep_gradient}()}
 
 Other colorjam assignment: 
+\code{\link{add_colors}()},
 \code{\link{col_div_xf}()},
+\code{\link{color_complement}()},
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
 \code{\link{rainbowJamMulti}()},

@@ -1,3 +1,47 @@
+# colorjam 0.0.34.900
+
+* Added 'farver' to dependencies.
+* Fixed various warnings.
+
+## Changes to existing functions
+
+* `rainbowJam()`
+
+   * Removed deprecated arguments: warpHue, h1, h2, Cvals, Lvals
+
+* `theme_jam()`
+
+   * Sets `rainbowJam()` default for ggplot2 categorical colors,
+   ggplot2-4.0.0+. Can be avoided with `use_rainbowJam=FALSE`.
+
+* `colors_to_df()`
+
+   * Added two Euclidean-type coordinate systems: 'luv' and 'yxy' (CIExy).
+
+* `color_distance()`
+
+   * New default `method="cmc"`, new arguments lightness=2/3, chroma=1,
+   which differ from other recommendations (2 and 1 for acceptability,
+   1 and 1 for perceptability).
+
+* `color_pie()` accepts color `function` input, and recognizes attribute
+'divergent=TRUE' to place the center color at the top of the circle.
+* `col_div_xf()` and `make_jam_divergent()` add attribute 'divergent=TRUE'
+to be used by `color_pie()` and any enterprising uses of colors or
+color functions that may benefit.
+* `make_jam_divergent()` fixed use of `lite` in vectorized form when
+creating multiple gradients at once.
+
+## Bug fixes
+
+* `color_complement()`
+
+   * Fixed order of hue warp operations which caused mis-alignment on custom
+   color wheels.
+   * Fixed application of HSL using HCL hue `hcl_to_hsl_hue()`, improving
+   the output color "equivalence" relative to that color hue.
+
+
 # colorjam 0.0.33.900
 
 ## Changes to existing functions

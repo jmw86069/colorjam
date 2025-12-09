@@ -86,8 +86,9 @@ if (jamba::check_pkg_installed("ggplot2")) {
 }
 \seealso{
 Other colorjam ggplot2: 
-\code{\link{jam_pal}()},
+\code{\link{scale_color_div_xf}()},
 \code{\link{scale_color_jam}()},
+\code{\link{scale_color_linear_xf}()},
 \code{\link{theme_jam}()}
 }
 \concept{colorjam ggplot2}

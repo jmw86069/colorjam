@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,7 @@
 <span>  n <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>  colramp <span class="op">=</span> <span class="st">"Purples"</span>,</span>
 <span>  open_floor <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  floor_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -83,7 +84,7 @@ be applied starting at <code>baseline</code> through <code>x</code>.</p></dd>
 
 <dt id="arg-lens">lens<a class="anchor" aria-label="anchor" href="#arg-lens"></a></dt>
 <dd><p><code>numeric</code> value indicating a color lens applied
-to the color gradient, passed to <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>.
+to the color gradient, passed to <code><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>.
 Lens values <code>lens &gt; 0</code> will condense the color gradient,
 making smaller changes more visually distinct; <code>lens &lt; 0</code>
 expands the color gradient, making smaller changes less
@@ -101,7 +102,7 @@ distinct color than using a larger <code>n</code>. See examples.</p></dd>
 
 
 <dt id="arg-colramp">colramp<a class="anchor" aria-label="anchor" href="#arg-colramp"></a></dt>
-<dd><p><code>character</code> passed to <code><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>
+<dd><p><code>character</code> passed to <code><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">jamba::getColorRamp()</a></code>
 which recognizes one of several forms of input:</p><ul><li><p><code>character</code> string matching the name of a color ramp
 from <code>RColorBrewer</code> (see divergent palettes with
 <code>RColorBrewer::display.brewer.all(type="div")</code>).
@@ -124,6 +125,12 @@ below the <code>floor</code>, versus using gradient colors below the
 are held constant.</p></dd>
 
 
+<dt id="arg-floor-color">floor_color<a class="anchor" aria-label="anchor" href="#arg-floor-color"></a></dt>
+<dd><p><code>character</code> default NULL, optional fixed color
+to apply below the floor threshold. Note that this color
+works best when <code>open_floor=FALSE</code>.</p></dd>
+
+
 <dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
 <dd><p><code>logical</code> indicating whether to produce a plot
 that shows the resulting color gradient.</p></dd>
@@ -133,6 +140,20 @@ that shows the resulting color gradient.</p></dd>
 <dd><p>additional arguments are ignored.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p><code>function</code> that takes <code>numeric</code> input and returns a <code>character</code>
+vector of colors of the same length.</p>
+<p>The color function also recognizes arguments:</p><ul><li><p>'return_rgb': <code>logical</code> whether to return R,G,B as a matrix,
+default FALSE.</p></li>
+<li><p>'max_value': <code>numeric</code> with maximum RGB values, default 1.</p></li>
+</ul><p>The object contains attributes:</p><ul><li><p>'legend_at': <code>numeric</code> vector of legend label positions.</p></li>
+<li><p>'legend_labels': <code>character</code> vector of labels associated
+with the 'legend_at' positions. When <code>floor</code> is used,
+the labels include positions just below floor, and the label
+indicates '&lt;floor', for example '&lt;1.5'.
+The label is used by <code><a href="scale_color_div_xf.html">scale_color_div_xf()</a></code> for the ggplot2 legend.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function is the linear equivalent of <code><a href="col_div_xf.html">col_div_xf()</a></code>, in that
@@ -146,7 +167,9 @@ color gradient.</p>
 <code><a href="make_jam_divergent.html">make_jam_divergent</a>()</code>,
 <code><a href="twostep_gradient.html">twostep_gradient</a>()</code></p>
 <p>Other colorjam assignment:
+<code><a href="add_colors.html">add_colors</a>()</code>,
 <code><a href="col_div_xf.html">col_div_xf</a>()</code>,
+<code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="matrix2heatColors.html">matrix2heatColors</a>()</code>,
 <code><a href="rainbowJamMulti.html">rainbowJamMulti</a>()</code>,
@@ -201,12 +224,12 @@ color gradient.</p>
 <span class="r-plt img"><img src="col_linear_xf-4.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Optionally show how to display data and legend in ComplexHeatmap</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/check_pkg_installed.html" class="external-link">check_pkg_installed</a></span><span class="op">(</span><span class="st">"ComplexHeatmap"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/check_pkg_installed.html" class="external-link">check_pkg_installed</a></span><span class="op">(</span><span class="st">"ComplexHeatmap"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span>   <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">81</span><span class="op">)</span> <span class="op">*</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span>   <span class="va">col1</span> <span class="op">&lt;-</span> <span class="fu">col_linear_xf</span><span class="op">(</span><span class="fl">14</span>, floor<span class="op">=</span><span class="fl">4</span>, n<span class="op">=</span><span class="fl">8</span>, lens<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span>   <span class="va">hm_1</span> <span class="op">&lt;-</span> <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span><span class="va">m</span>, col<span class="op">=</span><span class="va">col1</span>,</span></span>
-<span class="r-in"><span>      cell_fun<span class="op">=</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/cell_fun_label.html" class="external-link">cell_fun_label</a></span><span class="op">(</span>m<span class="op">=</span><span class="va">m</span>, col_hm<span class="op">=</span><span class="va">col1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      cell_fun<span class="op">=</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/cell_fun_label.html" class="external-link">cell_fun_label</a></span><span class="op">(</span>m<span class="op">=</span><span class="va">m</span>, col_hm<span class="op">=</span><span class="va">col1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      heatmap_legend_param<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>         color_bar<span class="op">=</span><span class="st">"discrete"</span>,</span></span>
 <span class="r-in"><span>         at<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">3.99</span>, <span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>,</span></span>
@@ -218,7 +241,7 @@ color gradient.</p>
 <span class="r-in"><span>   <span class="va">col2</span> <span class="op">&lt;-</span> <span class="fu">col_linear_xf</span><span class="op">(</span><span class="fl">14</span>, floor<span class="op">=</span><span class="fl">4</span>, n<span class="op">=</span><span class="fl">8</span>, lens<span class="op">=</span><span class="fl">2</span>, open_floor<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span>   <span class="va">hm_2</span> <span class="op">&lt;-</span> <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html" class="external-link">Heatmap</a></span><span class="op">(</span><span class="va">m</span>,</span></span>
 <span class="r-in"><span>      col<span class="op">=</span><span class="va">col2</span>,</span></span>
-<span class="r-in"><span>      cell_fun<span class="op">=</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/cell_fun_label.html" class="external-link">cell_fun_label</a></span><span class="op">(</span>m<span class="op">=</span><span class="va">m</span>, col_hm<span class="op">=</span><span class="va">col2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      cell_fun<span class="op">=</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/cell_fun_label.html" class="external-link">cell_fun_label</a></span><span class="op">(</span>m<span class="op">=</span><span class="va">m</span>, col_hm<span class="op">=</span><span class="va">col2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      heatmap_legend_param<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>         color_bar<span class="op">=</span><span class="st">"discrete"</span>,</span></span>
 <span class="r-in"><span>         at<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">3.99</span>, <span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>,</span></span>
@@ -241,7 +264,7 @@ color gradient.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

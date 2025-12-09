@@ -25,6 +25,13 @@
 #' @return `function` that maps a vector of `numeric` values
 #'    to R colors using the divergent color gradient and numeric
 #'    thresholds defined.
+#'    The object contains attributes:
+#'    * 'legend_at': `numeric` vector of legend label positions.
+#'    * 'legend_labels': `character` vector of labels associated
+#'    with the 'legend_at' positions. When `floor` is used,
+#'    the labels include positions just below floor, and the label
+#'    indicates '<floor', for example '<1.5'.
+#'    The label is used by `scale_color_div_xf()` for the ggplot2 legend.
 #'
 #' @param x `numeric` value used as a threshold, where numeric
 #'    values at or above this value `x` are assigned the last
@@ -176,6 +183,34 @@ col_div_xf <- function
       x <- 1;
    }
 
+   # define breaks for display
+   use_breaks <- pretty(c(-1, 1) * x, n=8)
+   # remove breaks outside range
+   use_breaks <- use_breaks[abs(use_breaks) <= x]
+   # confirm the edges contain the range
+   if (!x %in% use_breaks) {
+      use_breaks <- c(-x, use_breaks, x)
+   }
+   # default labels
+   use_labels <- format(signif(digits=2, use_breaks),
+      trim=TRUE);
+   # insert floor if needed
+   if (length(floor) > 0 && floor > 0) {
+      # remove breaks inside the floor
+      use_breaks_sub <- use_breaks[!abs(use_breaks) < floor]
+      # add the floor boundaries
+      add_floor <- c(0,
+         floor - (floor*1e-4), floor) * rep(c(-1, 1), each=3);
+      # combine
+      use_breaks <- unique(sort(c(use_breaks_sub, add_floor)));
+      ## optionally add labels to indicate <floor and >-floor
+      use_labels <- format(signif(digits=2, use_breaks),
+         trim=TRUE);
+      use_labels_k <- floor(length(use_breaks) / 2) + c(0, 2)
+      use_labels[use_labels_k] <- paste0(c(">", "<"),
+         use_labels[use_labels_k + c(-1, 1)]);
+   }
+
    # internal debug plot function
    debug_colors <- function(x, col_fn) {
       test_seq <- seq(from=-x, to=x, length.out=n);
@@ -204,52 +239,61 @@ col_div_xf <- function
       if (debug) {
          debug_colors(x=x, col_fn=col_fn);
       }
-      return(invisible(col_fn))
-   }
-   color_v <- jamba::getColorRamp(colramp, n=n, lens=lens, ...);
-   color_1 <- head(color_v, base::floor(n/2));
-   color_2 <- tail(color_v, base::floor(n/2));
-   # define floor_color
-   if (length(floor_color) == 1 && inherits(floor_color, "character")) {
-      mid_color <- floor_color;
+      # return(invisible(col_fn))
    } else {
-      mid_color <- color_v[ceiling(n/2)];
+      # apply color floor
+      color_v <- jamba::getColorRamp(colramp, n=n, lens=lens, ...);
+      color_1 <- head(color_v, base::floor(n/2));
+      color_2 <- tail(color_v, base::floor(n/2));
+      # define floor_color
+      if (length(floor_color) == 1 && inherits(floor_color, "character")) {
+         mid_color <- floor_color;
+      } else {
+         mid_color <- color_v[ceiling(n/2)];
+      }
+      colors_v <- c(color_1, rep(mid_color, 3), color_2);
+
+      floor_buffer <- weighted.mean(c(floor, 0), w=c(1e10, 1))
+      break_2 <- c(floor_buffer,
+         seq(from=floor,
+            to=x,
+            length.out=base::floor(n/2)));
+      break_1 <- rev(-1 * break_2);
+      breaks_v <- c(break_1, 0, break_2);
+
+      # assemble into data.frame to keep values aligned
+      cbdf <- data.frame(colors=colors_v,
+         breaks=breaks_v);
+
+      # open_floor=TRUE
+      # allows colors below the floor to be continuous
+      if (open_floor) {
+         remove_rows <- c(length(color_1) + 1,
+            length(color_1) + 3);
+         keep_rows <- setdiff(
+            seq_len(nrow(cbdf)),
+            remove_rows);
+         cbdf <- cbdf[keep_rows,,drop=FALSE];
+      }
+
+      # color function used by ComplexHeatmap::Heatmap()
+      col_fn <- circlize::colorRamp2(
+         breaks=cbdf$breaks,
+         colors=cbdf$colors);
    }
-   colors_v <- c(color_1, rep(mid_color, 3), color_2);
 
-   floor_buffer <- weighted.mean(c(floor, 0), w=c(1e10, 1))
-   break_2 <- c(floor_buffer,
-      seq(from=floor,
-         to=x,
-         length.out=base::floor(n/2)));
-   break_1 <- rev(-1 * break_2);
-   breaks_v <- c(break_1, 0, break_2);
-
-   # assemble into data.frame to keep values aligned
-   cbdf <- data.frame(colors=colors_v,
-      breaks=breaks_v);
-
-   # open_floor=TRUE
-   # allows colors below the floor to be continuous
-   if (open_floor) {
-      remove_rows <- c(length(color_1) + 1,
-         length(color_1) + 3);
-      keep_rows <- setdiff(
-         seq_len(nrow(cbdf)),
-         remove_rows);
-      cbdf <- cbdf[keep_rows,,drop=FALSE];
-   }
-
-   # color function used by ComplexHeatmap::Heatmap()
-   col_fn <- circlize::colorRamp2(
-      breaks=cbdf$breaks,
-      colors=cbdf$colors);
+   # insert display_breaks to use for color legends
+   attr(col_fn, "legend_at") <- use_breaks;
+   attr(col_fn, "legend_labels") <- use_labels;
 
    # optional debug=TRUE displays the result for review
    if (debug) {
       print(cbdf);
       debug_colors(x=x, col_fn=col_fn);
    }
+
+   # 0.0.34.900: add attribute 'divergent=TRUE'
+   attr(col_fn, "divergent") <- TRUE;
 
    return(invisible(col_fn));
 }
@@ -265,6 +309,22 @@ col_div_xf <- function
 #'
 #' @family colorjam gradients
 #' @family colorjam assignment
+#'
+#' @returns `function` that takes `numeric` input and returns a `character`
+#'    vector of colors of the same length.
+#'
+#'    The color function also recognizes arguments:
+#'    * 'return_rgb': `logical` whether to return R,G,B as a matrix,
+#'    default FALSE.
+#'    * 'max_value': `numeric` with maximum RGB values, default 1.
+#'
+#'    The object contains attributes:
+#'    * 'legend_at': `numeric` vector of legend label positions.
+#'    * 'legend_labels': `character` vector of labels associated
+#'    with the 'legend_at' positions. When `floor` is used,
+#'    the labels include positions just below floor, and the label
+#'    indicates '<floor', for example '<1.5'.
+#'    The label is used by `scale_color_div_xf()` for the ggplot2 legend.
 #'
 #' @inheritParams col_div_xf
 #' @param baseline `numeric` value to define the baseline value, used
@@ -383,12 +443,29 @@ col_linear_xf <- function
       floor <- baseline;
    }
    floor_in_range <- (floor > min(x_range) && floor < max(x_range));
+
+   # define breaks for display
+   use_breaks <- pretty(c(baseline, x), n=8)
+   # remove breaks outside range
+   use_breaks <- use_breaks[use_breaks <= max(x_range) &
+         use_breaks >= min(x_range)];
+   if (!min(x_range) %in% use_breaks) {
+      use_breaks <- c(min(x_range), use_breaks);
+   }
+   if (!max(x_range) %in% use_breaks) {
+      use_breaks <- c(use_breaks, max(x_range));
+   }
+   use_breaks <- sort(unique(use_breaks));
+
    color_v <- jamba::getColorRamp(colramp, n=n, lens=lens, ...);
    if (!floor_in_range) {
       x_seq <- seq(from=baseline, to=x, length.out=n);
       col_fn <- circlize::colorRamp2(
          breaks=x_seq,
          colors=color_v)
+      use_labels <- format(signif(use_breaks, digits=3), trim=TRUE);
+      attr(col_fn, "legend_at") <- use_breaks;
+      attr(col_fn, "legend_labels") <- use_labels;
       if (debug) {
          debug_colors_linear(x=x, col_fn=col_fn, baseline);
       }
@@ -412,6 +489,12 @@ col_linear_xf <- function
          length.out=n - 1));
    breaks_v <- c(baseline, break_2);
 
+   # remove below floor from use_breaks
+   use_breaks <- use_breaks[use_breaks >= floor];
+   use_breaks <- sort(unique(c(baseline, floor_buffer, floor, use_breaks)));
+   use_labels <- format(signif(use_breaks, digits=3), trim=TRUE)
+   use_labels[2] <- paste0("<", use_labels[3])
+
    # assemble into data.frame to keep values aligned
    cbdf <- data.frame(colors=colors_v,
       breaks=breaks_v);
@@ -430,6 +513,10 @@ col_linear_xf <- function
    col_fn <- circlize::colorRamp2(
       breaks=cbdf$breaks,
       colors=cbdf$colors);
+
+   # Attributes
+   attr(col_fn, "legend_at") <- use_breaks;
+   attr(col_fn, "legend_labels") <- use_labels;
 
    # optional debug=TRUE displays the result for review
    if (debug) {
@@ -510,6 +597,7 @@ col_linear_xf <- function
 #' rownames(m) <- seq_len(nrow(m));
 #' colnames(m) <- seq_len(ncol(m));
 #' hm1 <- ComplexHeatmap::Heatmap(m[,1:10],
+#'    name="lite=TRUE",
 #'    cluster_columns=FALSE,
 #'    cluster_rows=FALSE,
 #'    row_names_side="left",
@@ -520,7 +608,10 @@ col_linear_xf <- function
 #'       color_bar="discrete"),
 #'    col=jg3[[1]])
 #'
-#' hm2 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
+#' m2 <- m[21:1, 12:21];
+#' rownames(m2) <- rownames(m);
+#' hm2 <- ComplexHeatmap::Heatmap(m2,
+#'    name="lite=FALSE",
 #'    cluster_columns=FALSE,
 #'    cluster_rows=FALSE,
 #'    border=TRUE,
@@ -529,7 +620,8 @@ col_linear_xf <- function
 #'       at=seq(from=-1, to=1, by=0.25),
 #'       color_bar="discrete"),
 #'    col=jg2[[1]])
-#' hm1 + hm2
+#' ComplexHeatmap::draw(hm1 + hm2,
+#'    ht_gap=grid::unit(10, "mm"))
 #' }
 #'
 #' @param linear1 `character` input consisting of one of:
@@ -642,7 +734,7 @@ make_jam_divergent <- function
             n=nk,
             ...)), -1);
       if (length(linear2) < k || length(linear2[[k]]) == 0) {
-         if (TRUE %in% lite) {
+         if (TRUE %in% lite[k]) {
             defaultBaseColor <- "white";
          } else {
             defaultBaseColor <- "black";
@@ -656,25 +748,15 @@ make_jam_divergent <- function
             n=nk,
             ...);
       }
-      # if (1 == 2) {
-      #    if (lite[k]) {
-      #       gr1 <- head(rev(colorjam::jam_linear[[linear1[k]]]), -1)
-      #       gr2 <- colorjam::jam_linear[[linear2[k]]];
-      #    } else {
-      #       n1 <- jamba::vigrep(paste0("^", linear1[k], "_"),
-      #          names(colorjam::jam_divergent));
-      #       n2 <- jamba::vigrep(paste0("_", linear2[k], "$"),
-      #          names(colorjam::jam_divergent));
-      #       gr1 <- head(colorjam::jam_divergent[[n1]], 10)
-      #       gr2 <- tail(colorjam::jam_divergent[[n2]], 11)
-      #    }
-      # }
+      ## combine halves of the gradient
       gr12 <- c(gr1, gr2);
-      if (n == 0) {
+      if (n[k] == 0) {
          gr12 <- jamba::getColorRamp(gr12,
             n=NULL,
             divergent=TRUE)
       }
+      # 0.0.34.900: add divergent=TRUE for downstream use
+      attr(gr12, "divergent") <- TRUE;
       gr12;
    })
    names(gradient_list) <- gradient_names;

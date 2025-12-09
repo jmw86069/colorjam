@@ -106,6 +106,7 @@ m <- mseq \%*\% t(mseq);
 rownames(m) <- seq_len(nrow(m));
 colnames(m) <- seq_len(ncol(m));
 hm1 <- ComplexHeatmap::Heatmap(m[,1:10],
+   name="lite=TRUE",
    cluster_columns=FALSE,
    cluster_rows=FALSE,
    row_names_side="left",
@@ -116,7 +117,10 @@ hm1 <- ComplexHeatmap::Heatmap(m[,1:10],
       color_bar="discrete"),
    col=jg3[[1]])
 
-hm2 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
+m2 <- m[21:1, 12:21];
+rownames(m2) <- rownames(m);
+hm2 <- ComplexHeatmap::Heatmap(m2,
+   name="lite=FALSE",
    cluster_columns=FALSE,
    cluster_rows=FALSE,
    border=TRUE,
@@ -125,7 +129,8 @@ hm2 <- ComplexHeatmap::Heatmap(m[21:1,12:21],
       at=seq(from=-1, to=1, by=0.25),
       color_bar="discrete"),
    col=jg2[[1]])
-hm1 + hm2
+ComplexHeatmap::draw(hm1 + hm2,
+   ht_gap=grid::unit(10, "mm"))
 }
 
 }

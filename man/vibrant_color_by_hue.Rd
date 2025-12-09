@@ -38,8 +38,10 @@ color space.
 }
 \seealso{
 Other colorjam assignment: 
+\code{\link{add_colors}()},
 \code{\link{col_div_xf}()},
 \code{\link{col_linear_xf}()},
+\code{\link{color_complement}()},
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
 \code{\link{rainbowJamMulti}()},

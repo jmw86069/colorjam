@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@ operation.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>data.frame</code> with color attributes as columns.
 When <code>byCols</code> is defined, the <code>data.frame</code> is sorted using
-<code><a href="https://rdrr.io/pkg/jamba/man/mixedSortDF.html" class="external-link">jamba::mixedSortDF()</a></code>.
+<code><a href="https://jmw86069.github.io/jamba/reference/mixedSortDF.html" class="external-link">jamba::mixedSortDF()</a></code>.
 When <code>...</code> is supplied, <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> is applied to subset colors.</p>
     </div>
     <div class="section level2">
@@ -83,7 +83,7 @@ will be converted to <code>"#FF0000FF"</code>.</p></li>
 <li><p><code>"name"</code> if <code>names(x)</code> is not empty</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="added-by-jamba-col-hcl-">Added by <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hcl-"></a></h2>
+    <h2 id="added-by-jamba-col-hcl-">Added by <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">jamba::col2hcl()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hcl-"></a></h2>
 
 <ul><li><p><code>"H"</code> contains color hue as values from <code>0</code> to <code>360</code>.</p></li>
 <li><p><code>"C"</code> contains color chroma (aka saturation) ranging from <code>0</code> up to <code>200</code>,
@@ -101,19 +101,19 @@ to <code>1</code> (fully opaque, not transparent).</p></li>
 <li><p><code>"blue"</code> contains the blue color channel, values range from <code>0</code> to <code>255</code>.</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="added-by-jamba-col-hsv-">Added by <code><a href="https://rdrr.io/pkg/jamba/man/col2hsv.html" class="external-link">jamba::col2hsv()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hsv-"></a></h2>
+    <h2 id="added-by-jamba-col-hsv-">Added by <code><a href="https://jmw86069.github.io/jamba/reference/col2hsv.html" class="external-link">jamba::col2hsv()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hsv-"></a></h2>
 
 <ul><li><p><code>"h"</code> contains color hue as values from <code>0</code> to <code>1</code>. Note these values
-may not map directly to color hue obtained from <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>.</p></li>
+may not map directly to color hue obtained from <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>.</p></li>
 <li><p><code>"s"</code> contains color saturation with values from <code>0</code> to <code>1</code>.</p></li>
 <li><p><code>"v"</code> contains color vibrance (brightness/lightness) with values
 from <code>0</code> to <code>1</code>.</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="added-by-jamba-col-hsl-">Added by <code><a href="https://rdrr.io/pkg/jamba/man/col2hsl.html" class="external-link">jamba::col2hsl()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hsl-"></a></h2>
+    <h2 id="added-by-jamba-col-hsl-">Added by <code><a href="https://jmw86069.github.io/jamba/reference/col2hsl.html" class="external-link">jamba::col2hsl()</a></code><a class="anchor" aria-label="anchor" href="#added-by-jamba-col-hsl-"></a></h2>
 
 <ul><li><p><code>"hsl_h"</code> contains color hue as values from <code>0</code> to <code>1</code>. Note these values
-may not map directly to color hue obtained from <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>.</p></li>
+may not map directly to color hue obtained from <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>.</p></li>
 <li><p><code>"hsl_s"</code> contains color saturation with values from <code>0</code> to <code>100</code>.</p></li>
 <li><p><code>"hsl_l"</code> contains color luminance (brightness/lightness) with values
 from <code>0</code> to <code>100</code>.</p></li>
@@ -126,7 +126,6 @@ from <code>0</code> to <code>100</code>.</p></li>
 <p>Other colorjam core:
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
 <code><a href="closestRcolor.html">closestRcolor</a>()</code>,
-<code><a href="closest_named_color.html">closest_named_color</a>()</code>,
 <code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
 <code><a href="rainbowJam.html">rainbowJam</a>()</code>,
@@ -143,7 +142,7 @@ from <code>0</code> to <code>100</code>.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

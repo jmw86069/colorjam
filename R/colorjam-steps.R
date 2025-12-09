@@ -118,7 +118,7 @@ add_colorjam_step <- function
    if (length(step_list) == 0 || all(lengths(step_list) == 0)) {
       if (step %in% ls(.colorjam_steps)) {
          # remove
-         rm(step,
+         rm(list=as.character(step),
             envir=.colorjam_steps)
          if (TRUE %in% verbose) {
             cli::cli_alert_info("removed step '{.field {step}}'.")
@@ -141,6 +141,8 @@ add_colorjam_step <- function
 #'
 #' Simple function to plot the series of Chroma/Luminance steps
 #' for a given named step series. See steps with `colorjam_steps()`.
+#'
+#' @family colorjam hue warp
 #'
 #' @param step `character` name of colorjam step from `colorjam_steps()`
 #' @param n `integer` number of steps to show, default NULL uses all steps.

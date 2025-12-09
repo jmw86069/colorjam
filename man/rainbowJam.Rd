@@ -11,11 +11,6 @@ rainbowJam(
   Hstart = 0,
   alpha = 1,
   hues = NULL,
-  warpHue = NULL,
-  h1 = NULL,
-  h2 = NULL,
-  Cvals = NULL,
-  Lvals = NULL,
   Crange = NULL,
   Lrange = NULL,
   phase = 1,
@@ -51,20 +46,6 @@ the categorical colors returned.}
 
 \item{hues}{\code{numeric} optional vector with specific hues to use instead
 of using \code{Hstart} and filling the 360 degree color wheel with colors.}
-
-\item{warpHue}{\code{logical} (deprecated) formerly to enable or disable the
-color warping for custom color wheel.
-To disable a custom color wheel use \code{preset="rgb"}.}
-
-\item{h1, h2}{\code{numeric} (deprecated) in favor of argument \code{preset} to
-define the \code{h1} and \code{h2} values.
-To use custom values for \code{h1} and \code{h2} use \code{add_colorjam_preset()}
-to define a new preset name, then use the name with \code{preset}.}
-
-\item{Cvals, Lvals}{\code{numeric} (deprecated) in favor of argument \code{step}
-to define the sequence of Chroma and Luminance values.
-To define custom values, use \code{add_colorjam_step()} to define a new
-step name, then use the name with \code{step}.}
 
 \item{Crange, Lrange}{\code{numeric} optional permitted ranges for
 Chroma and Luminance values.

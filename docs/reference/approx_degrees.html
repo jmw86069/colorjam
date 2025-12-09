@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@
 <span>  <span class="va">h2</span>,</span>
 <span>  h <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  preset <span class="op">=</span> <span class="st">"custom"</span>,</span>
-<span>  direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  direction <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -73,6 +73,14 @@ then the object returned is a <code>function</code> to be called
 to convert a numeric vector "from" to degree angles "to".</p></dd>
 
 
+<dt id="arg-direction">direction<a class="anchor" aria-label="anchor" href="#arg-direction"></a></dt>
+<dd><p><code>integer</code> or default NULL, which detects the direction
+using the input data.
+The direction represents whether h1 and h2 are both increasiing together,
+which is <code>direction=1</code>.
+When h1 is increasing by h2 is decreasing, <code>direction=-1</code>.</p></dd>
+
+
 <dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
 <dd><p><code>integer</code> value indicating the number of digits
 of precision to use for the input <code>h1</code> and <code>h2</code> degree angles,
@@ -80,6 +88,10 @@ used when confining to 360 degrees with <code>h1 %% 360</code>, and
 this step sometimes produces slight variations for equivalent
 values. For example <code>((12.2 %% 360) == (372.2 %% 360))</code> is not
 <code>TRUE</code> without rounding to <code>13</code> or fewer digits.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p><code>logical</code> indicating whether to print verbose output.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -113,49 +125,49 @@ angle in "to".</p>
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="plot_colorjam_steps.html">plot_colorjam_steps</a>()</code>,
 <code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h_colors</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"firebrick"</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">35</span>, trimRamp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>;</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">h_colors</span> <span class="op">&lt;-</span> <span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/getColorRamp.html" class="external-link">getColorRamp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"firebrick"</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">35</span>, trimRamp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">h1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12.2</span>, <span class="fl">27.3</span>, <span class="fl">47.0</span>, <span class="fl">66.5</span>, <span class="fl">85.9</span>, <span class="fl">106.3</span>, <span class="fl">131.7</span>,</span></span>
 <span class="r-in"><span>   <span class="fl">223.1</span>, <span class="fl">263.2</span>, <span class="fl">277.2</span>, <span class="fl">307.7</span>, <span class="fl">345.3</span>, <span class="fl">372.2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">13</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">h_from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">36</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">36</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">h_to</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, <span class="va">h_from</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_par.html" class="external-link">with_par</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_from</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_to</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"#55555555"</span>, type<span class="op">=</span><span class="st">"l"</span>,</span></span>
+<span class="r-in"><span>   main<span class="op">=</span><span class="st">"Input h1,h2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"#55555555"</span>, type<span class="op">=</span><span class="st">"l"</span>,</span></span>
+<span class="r-in"><span>   main<span class="op">=</span><span class="st">"Output approx_degrees()"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="approx_degrees-1.png" alt="" width="768" height="768"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12.2</span>, <span class="fl">27.3</span>, <span class="fl">47.0</span>, <span class="fl">66.5</span>, <span class="fl">85.9</span>, <span class="fl">106.3</span>, <span class="fl">131.7</span>,</span></span>
-<span class="r-in"><span>   <span class="fl">223.1</span>, <span class="fl">263.2</span>, <span class="fl">277.2</span>, <span class="fl">307.7</span>, <span class="fl">345.3</span>, <span class="fl">372.2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">h1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">13</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">h_from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">36</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">36</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">h_to2</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span><span class="va">h2</span>, <span class="va">h1</span>, <span class="va">h_from</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_from</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_to2</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="approx_degrees-2.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">h1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12.2</span>, <span class="fl">27.3</span>, <span class="fl">47.0</span>, <span class="fl">66.5</span>, <span class="fl">85.9</span>, <span class="fl">106.3</span>, <span class="fl">131.7</span>,</span></span>
 <span class="r-in"><span>   <span class="fl">223.1</span>, <span class="fl">263.2</span>, <span class="fl">277.2</span>, <span class="fl">307.7</span>, <span class="fl">345.3</span>, <span class="fl">372.2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">h_from</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">360</span>, length.out<span class="op">=</span><span class="fl">36</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">36</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">h_to</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, <span class="va">h_from</span>, direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">h_to</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, <span class="va">h_from</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_par.html" class="external-link">with_par</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_from</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="display_degrees.html">display_degrees</a></span><span class="op">(</span><span class="va">h_to</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"mfrow"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="approx_degrees-3.png" alt="" width="768" height="768"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"#55555555"</span>, type<span class="op">=</span><span class="st">"l"</span>,</span></span>
+<span class="r-in"><span>   main<span class="op">=</span><span class="st">"Input h1,h2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">h1</span>, <span class="va">h2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"#55555555"</span>, type<span class="op">=</span><span class="st">"l"</span>,</span></span>
+<span class="r-in"><span>   main<span class="op">=</span><span class="st">"Output approx_degrees()"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">h_from</span>, <span class="va">h_to</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="va">h_colors</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="approx_degrees-2.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># apply no transform</span></span></span>
 <span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fl">0</span>, h2<span class="op">=</span><span class="fl">0</span>, h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -168,166 +180,33 @@ angle in "to".</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 180 270   0  90</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># flip the direction</span></span></span>
-<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span>, h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0.0000 359.2479 359.4986 359.7493</span>
-<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span><span class="op">+</span><span class="fl">90</span>, h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 90.00000 89.24791 89.49861 89.74930</span>
-<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span><span class="op">+</span><span class="fl">90</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span>, h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 359.7493   0.0000 359.2479 359.4986</span>
+<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   0 270 180  90</span>
+<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span><span class="op">+</span><span class="fl">90</span>,</span></span>
+<span class="r-in"><span>   h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  90   0 270 180</span>
+<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">360</span><span class="op">)</span><span class="op">+</span><span class="fl">90</span>, h2<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">359</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   h<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">270</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  90   0 270 180</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># verify reverse h2 with break across 0-360</span></span></span>
 <span class="r-in"><span><span class="va">seq1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">330</span>, by<span class="op">=</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">seq2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">seq1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span></span></span>
 <span class="r-in"><span><span class="va">seq_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">350</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df</span>,<span style="color: #87D7FF;"> input:</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  90         1    -330     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   30  60         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   60  30         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   90   0         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 120 330         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 150 300         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 180 270         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  210 240         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  240 210         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  270 180         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  300 150         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  330 120         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">direction:</span><span style="color: #FF8700;">1</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">which_flips:</span><span style="color: #FF8700;">2</span>,<span style="color: #FFAF5F;">3</span>,<span style="color: #FF8700;">4</span>,<span style="color: #FFAF5F;">6</span>,<span style="color: #FF8700;">7</span>,<span style="color: #FFAF5F;">8</span>,<span style="color: #FF8700;">9</span>,<span style="color: #FFAF5F;">10</span>,<span style="color: #FF8700;">11</span>,<span style="color: #FFAF5F;">12</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing above 360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df</span>,<span style="color: #87D7FF;"> expanded:</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     h1   h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0   90         1    -330     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   30  420         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   60  750         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   90 1080         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 120 1410         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 150 1740         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 180 2070         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  210 2400         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  240 2730         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  270 3060         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  300 3390         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  330 3720         1      30     -30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_min_span:</span><span style="color: #00AFFF;">0</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_max_span:</span><span style="color: #00AFFF;">360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_range_span:</span><span style="color: #00AFFF;">360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h2_min_span:</span><span style="color: #00AFFF;">0</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h2_max_span:</span><span style="color: #00AFFF;">3,960</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h2_range_span:</span><span style="color: #00AFFF;">3,960</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (expanded):</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h1   h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     0   90         1      NA      NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    30  420         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    60  750         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    90 1080         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  120 1410         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  150 1740         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  180 2070         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   210 2400         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   240 2730         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   270 3060         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   300 3390         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   330 3720         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41  360  450         1      30   -3270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31  390  780         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  420 1110         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  450 1440         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121 480 1770         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111 510 2100         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101 540 2430         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91  570 2760         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81  600 3090         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71  630 3420         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61  660 3750         1      30     330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51  690 4080         1      30     330</span>
+<span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">seq1</span>, <span class="va">seq2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"blue"</span>, asp<span class="op">=</span><span class="fl">1</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">seq_out</span>, <span class="va">approx_out</span>, col<span class="op">=</span><span class="st">"red"</span>, add<span class="op">=</span><span class="cn">TRUE</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>"add" is not a graphical parameter</span>
-<span class="r-plt img"><img src="approx_degrees-4.png" alt="" width="768" height="768"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">seq_out</span>, <span class="va">approx_out</span>, col<span class="op">=</span><span class="st">"red"</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="approx_degrees-3.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># verify forward h2 with break across 0-360</span></span></span>
 <span class="r-in"><span><span class="va">seq1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">330</span>, by<span class="op">=</span><span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">seq2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">seq1</span> <span class="op">+</span> <span class="fl">120</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span></span></span>
 <span class="r-in"><span><span class="va">seq_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">350</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df</span>,<span style="color: #87D7FF;"> input:</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0 120         1    -330      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   30 150         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   60 180         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   90 210         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  120 240         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 150 270         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 180 300         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 210 330         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  240   0         1      30    -330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  270  30         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  300  60         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  330  90         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">direction:</span><span style="color: #FF8700;">1</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">which_flips:</span><span style="color: #FF8700;">9</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">correcting discontinuity in h2 angles crossing above 360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df</span>,<span style="color: #87D7FF;"> expanded:</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     h1  h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0 120         1    -330      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   30 150         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   60 180         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   90 210         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  120 240         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 150 270         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 180 300         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 210 330         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  240 360         1      30    -330</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  270 390         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  300 420         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  330 450         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_min_span:</span><span style="color: #00AFFF;">0</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_max_span:</span><span style="color: #00AFFF;">360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h1_range_span:</span><span style="color: #00AFFF;">360</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h2_min_span:</span><span style="color: #00AFFF;">0</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:50</span>) 11Dec2024:   <span style="color: #FF8700;">h2_max_span:</span><span style="color: #00AFFF;">720</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:51</span>) 11Dec2024:   <span style="color: #FF8700;">h2_range_span:</span><span style="color: #00AFFF;">720</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ##  (<span style="color: #00FFFF; font-weight: bold;">13:12:51</span>) 11Dec2024:   <span style="color: #FF8700;">approx_degrees(): </span><span style="color: #00AFFF;">h1h2_df (expanded):</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h1  h2 direction h1_diff h2_diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0 120         1      NA      NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    30 150         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    60 180         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    90 210         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   120 240         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  150 270         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  180 300         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  210 330         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   240 360         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   270 390         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   300 420         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   330 450         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51  360 480         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61  390 510         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71  420 540         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81  450 570         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91  480 600         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101 510 630         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111 540 660         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121 570 690         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  600 720         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  630 750         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31  660 780         1      30      30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41  690 810         1      30      30</span>
+<span class="r-in"><span><span class="va">approx_out</span> <span class="op">&lt;-</span> <span class="fu">approx_degrees</span><span class="op">(</span>h1<span class="op">=</span><span class="va">seq1</span>, h2<span class="op">=</span><span class="va">seq2</span>, h<span class="op">=</span><span class="va">seq_out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">seq1</span>, <span class="va">seq2</span>, pch<span class="op">=</span><span class="fl">20</span>, col<span class="op">=</span><span class="st">"blue"</span>, asp<span class="op">=</span><span class="fl">1</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">seq_out</span>, <span class="va">approx_out</span>, col<span class="op">=</span><span class="st">"red"</span>, add<span class="op">=</span><span class="cn">TRUE</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>"add" is not a graphical parameter</span>
-<span class="r-plt img"><img src="approx_degrees-5.png" alt="" width="768" height="768"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">new_h1h2</span> <span class="op">&lt;-</span> <span class="fu"><a href="adjust_hue_warp.html">adjust_hue_warp</a></span><span class="op">(</span>preset<span class="op">=</span><span class="st">"dichromat"</span>, h2_shift<span class="op">=</span><span class="fl">15</span>, reverse_h2<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">hseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">350</span>, by<span class="op">=</span><span class="fl">15</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span><span class="fu">approx_degrees</span><span class="op">(</span>h2<span class="op">=</span><span class="va">new_h1h2</span><span class="op">$</span><span class="va">h1</span>, h1<span class="op">=</span><span class="va">new_h1h2</span><span class="op">$</span><span class="va">h2</span>, h<span class="op">=</span><span class="va">hseq</span>, verbose<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  26.60759  81.16162 198.58586 293.17607 336.14153  19.10699  62.07245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 105.03791 148.00337 190.96883 233.93429 274.48661 311.31696 348.14732</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15]  24.97768  61.80804 291.89394 348.71212  47.51960 111.61568 175.71176</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] 239.80784 303.90392   8.00000</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">seq_out</span>, <span class="va">approx_out</span>, col<span class="op">=</span><span class="st">"red"</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="approx_degrees-4.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -340,7 +219,7 @@ angle in "to".</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

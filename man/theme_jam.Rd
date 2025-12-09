@@ -7,11 +7,13 @@
 theme_jam(
   theme_default = ggplot2::theme_bw,
   base_size = 18,
+  use_rainbowJam = TRUE,
+  darken_colour = FALSE,
   grid.major.size = 0.5,
   grid.minor.size = 0.25,
   strip.background.colour = "grey30",
   strip.background.fill = "lightgoldenrod1",
-  strip.text.size = ggplot2::rel(0.8),
+  strip.text.size = ggplot2::rel(14.18),
   panel.grid.major.colour = "grey80",
   panel.grid.minor.colour = "grey90",
   panel.background = ggplot2::element_rect(fill = "white", colour = NA),
@@ -31,42 +33,61 @@ theme_jam(
 \item{base_size}{\code{numeric} default font point size, used for scaling the
 overall text sizes larger or smaller.}
 
-\item{grid.major.size, grid.minor.size}{\code{numeric} the line width for the major
-and minor grid lines, respectively. Set to 0 to suppress either.}
+\item{use_rainbowJam}{\code{logical} default TRUE, whether to use colorjam
+for default categorical/discrete colors in ggplot2 version 4.0.0+.}
+
+\item{darken_colour}{\code{logical} default FALSE, when \code{use_rainbowJam=TRUE}
+it optionally darkens the 'colour' palette, useful when applying
+slightly darked outline color together with 'fill' color.
+See Examples.}
+
+\item{grid.major.size, grid.minor.size}{\code{numeric} defaults 0.5, 0.25
+the line width for the major and minor grid lines, respectively.
+Set to 0 to suppress either, or use 'blankGrid' or 'blankXgrid' or
+'blankYgrid' arguments.}
 
 \item{strip.background.colour, strip.background.fill}{\code{character}
 color for the border and strip background itself when ggplot2 is
-using a faceted layout.}
+using a faceted layout.
+Default is black border and 'lightgoldenrod1' strip fill color.}
 
 \item{strip.text.size}{\code{numeric} or relative class \code{ggplot2::rel()} to
-define direct or relative text font size, respectively.}
+define direct or relative text font size, respectively.
+Default is '14/18' to convert default base_size=18 to font size 14 point.}
 
 \item{panel.grid.major.colour, panel.grid.minor.colour}{\code{character}
-colors for the major and minor grid lines, respectively.}
+colors for the major and minor grid lines, respectively.
+Defaults are 'grey80' and 'grey90', respectively.}
 
 \item{panel.background, panel.border}{\code{element_rect} or \code{NULL}
 indicating the type of background or border
 to draw around each plot panel. When set to \code{NULL} it is
-set to \code{ggplot2::element_blank()} which displays nothing.}
+set to \code{ggplot2::element_blank()} which displays nothing.
+Default uses white panel background fill with black border.}
 
-\item{axis.text.x.angle}{\code{numeric} degrees to rotate the x-axis
-labels, apparently starts at 0 (horizontal) and goes
-counter-clockwise (to the left.)}
+\item{axis.text.x.angle}{\code{numeric} degrees to rotate x-axis labels,
+default 60 degrees.Starts at 0 (horizontal) and goes
+counter-clockwise so that 60 show labels tilted down-left.}
 
-\item{blankGrid, blankXgrid, blankYgrid}{\code{logical} indicating whether
+\item{blankGrid, blankXgrid, blankYgrid}{\code{logical} default FALSE, whether
 to have a blank grid for everything, major, or minor axis lines,
-respectively. Intended to make it fast and easy to remove all
-gridlines.}
+respectively.
+Intended for convenience to remove gridlines.}
 
-\item{resetTheme}{\code{logical} whether to call the function \code{theme_default}
-which essentially resets (replaces) all previous settings with
-those defined in the theme function. If \code{FALSE} then only the
-specific settings defined in this function will be applied.}
+\item{resetTheme}{\code{logical} whether to call \code{ggplot2::theme_default}
+which replaces all previous ggplot2 theme settings with
+those defined in the theme function.
+If \code{FALSE} then only the specific settings defined in this function
+will be applied.}
 
 \item{verbose}{\code{logical} indicating whether to print verbose output.}
 
-\item{...}{additional arguments are passed to \code{ggplot2::theme()} in
-order to allow custom settings beyond what this function provides.}
+\item{...}{additional arguments are passed to \code{ggplot2::theme()},
+and optionally to \code{jam_pal()} when \code{use_rainbowJam=TRUE}.
+Arguments are filtered to match named arguments in respective functions,
+by calling \code{jamba::call_fn_ellipsis()}. In other words, adding
+arguments to '...' should be safe even when the argument is not
+present in \code{ggplot2::theme()}.}
 }
 \description{
 Jam default theme for ggplot2
@@ -79,22 +100,38 @@ overlaps.
 }
 \examples{
 if (jamba::check_pkg_installed("ggplot2")) {
+   set.seed(123)
    dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
    d <- ggplot2::ggplot(dsamp,
       ggplot2::aes(carat, price)) +
       ggplot2::geom_point(
-         ggplot2::aes(colour=cut),
+         ggplot2::aes(colour=as.character(cut)),
          size=2);
+   print(d +
+      scale_color_jam() +
+      ggplot2::ggtitle("scale_color_jam()"));
+   print(d +
+      theme_jam() +
+      ggplot2::ggtitle("theme_jam()"));
 
-   print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
-   print(d + scale_color_jam() + theme_jam() + ggplot2::ggtitle("scale_color_jam() + theme_jam()"));
+   d2 <- ggplot2::ggplot(dsamp,
+      ggplot2::aes(carat, price)) +
+      ggplot2::geom_point(
+         shape="circle filled",
+         ggplot2::aes(colour=as.character(cut),
+            fill=as.character(cut)),
+         size=2);
+   print(d2 +
+      theme_jam(darken_colour=TRUE) +
+      ggplot2::ggtitle("theme_jam(darken_colour=TRUE)"));
 }
 
 }
 \seealso{
 Other colorjam ggplot2: 
-\code{\link{jam_pal}()},
+\code{\link{scale_color_div_xf}()},
 \code{\link{scale_color_jam}()},
+\code{\link{scale_color_linear_xf}()},
 \code{\link{scale_fill_jam}()}
 }
 \concept{colorjam ggplot2}

@@ -11,7 +11,7 @@
 #' ensures the output color is reasonably high in color
 #' saturation.
 #'
-#' @family jam utility functions
+#' @family colorjam assignment
 #'
 #' @param color `character` vector of R compatible colors.
 #' @param Hflip `numeric` value in degrees (from 0 to 360) added
@@ -35,10 +35,14 @@
 #' @param Cgrey `numeric` color chroma, at or below which a color is
 #'    considered greyscale, therefore the color hue is not relevant,
 #'    and the `Crange` is not applied.
-#' @param useWarpHue `logical` indicating whether to use the warp
-#'    hue functions `colorjam::h2hw()` and `colorjam::hw2h()` which
-#'    effectively change the color wheel from red-green-blue to
-#'    red-yellow-blue.
+#' @param useWarpHue `logical` default TRUE, whether to use the preset.
+#'    When FALSE it effectively uses preset='rgb' which performs no
+#'    particular hue adjustments. Note the 'rgb' color wheel is
+#'    not particularly intuitive for complementary colors.
+#' @param use_hsl `logical` default TRUE, use HSL to determine equivalent
+#'    complementary values for Saturation (S) and Lightness (L), rather
+#'    than HCL where Chroma (C) and Luminance (L) is not at all consistent
+#'    across the color wheel.
 #' @param ... additional arguments are ignored.
 #'
 #' @family colorjam core
@@ -48,18 +52,22 @@
 #' @examples
 #' n <- 5;
 #' rc <- colorjam::rainbowJam(n);
-#' rc_comp <- color_complement(rc, preset="dichromat");
-#' rc_comp2 <- color_complement(rc, preset="dichromat", useWarpHue=FALSE);
+#' rc_comp <- color_complement(rc, preset="dichromat2");
+#' rc_comp2 <- color_complement(rc, preset="dichromat2", useWarpHue=FALSE);
+#' rc_comp2rgb <- color_complement(rc, preset="rgb");
 #' rc_comp3 <- color_complement(rc, preset="ryb");
 #' jamba::showColors(list(rainbowJam=rc,
-#'    `complement\n(preset="dichromat")`=rc_comp,
-#'    `complement\n(useWarpHue=FALSE)`=rc_comp2,
-#'    `complement\n(preset="ryb")`=rc_comp3));
+#'    `color_complement\n(preset="dichromat")`=rc_comp,
+#'    `color_complement\n(useWarpHue=FALSE)`=rc_comp2,
+#'    `color_complement\n(preset="rgb")`=rc_comp2rgb,
+#'    `color_complement\n(preset="ryb")`=rc_comp3));
 #'
+#' n <- 8
 #' rc <- colorjam::rainbowJam(n, preset="ryb");
 #' rc_comp <- color_complement(rc, preset="ryb");
-#' jamba::showColors(list(`rainbowJam\n(preset="ryb")`=rc,
-#'    `complement\n(preset="ryb")`=rc_comp));
+#' jamba::showColors(list(
+#'    `rainbowJam\n(preset="ryb")`=rc,
+#'    `color_complement\n(preset="ryb")`=rc_comp));
 #'
 #' ## divergent color gradients through white
 #' ## hint: use higher lens value to make middle colors more intense
@@ -104,9 +112,9 @@ color_complement <- function
  Crange=c(5, 100),
  Lrange=c(10, 95),
  Cgrey=getOption("jam.Cgrey", 5),
- preset=getOption("colorjam.preset", "dichromat"),
+ preset=getOption("colorjam.preset", "dichromat2"),
  useWarpHue=TRUE,
- use_hsl=FALSE,
+ use_hsl=TRUE,
  verbose=FALSE,
  ...)
 {
@@ -128,6 +136,8 @@ color_complement <- function
    if (TRUE %in% use_hsl) {
       hcl <- jamba::col2hsl(color);
       rownames(hcl)[2] <- "C";
+      # convert HSL hue to HCL hue for consistency
+      hcl["H",] <- hsl_to_hcl_hue(hcl["H",]);
    } else {
       hcl <- jamba::col2hcl(color);
    }
@@ -136,23 +146,41 @@ color_complement <- function
    # print verbose output
    if (TRUE %in% verbose) {
       jamba::printDebug("color_complement(): ",
-         "hcl (before):");
-      print(round(digits=3, t(hcl)));
+         "preset: ", preset);
+      # jamba::printDebug("color_complement(): ",
+      #    "hcl (before):");
+      # print(round(digits=3, t(hcl)));
+      jamba::printDebug("color_complement(): ",
+         "H original:        ", jamba::padInteger(round(H)));
    }
 
-   # rotate the color hue
-   newH <- (Hflip + H) %% 360;
+   ## rotate the color hue
+   # newH1 <- (Hflip + H) %% 360;
 
    # optionally adjust color wheel
    if (TRUE %in% useWarpHue) {
-      H <- colorjam::h2hw(h=H,
-         preset=preset);
+      H <- colorjam::h2hw(h=H, preset=preset);
+      if (TRUE %in% verbose) {
+         jamba::printDebug("color_complement(): ",
+            "H warped:          ", jamba::padInteger(round(H)));
+      }
    }
 
-   # optionally revert the adjusted color wheel
+   # 0.0.34.900: rotate the color hue after warp
+   newH <- (Hflip + H) %% 360;
+   if (TRUE %in% verbose) {
+      jamba::printDebug("color_complement(): ",
+         "newH from warped H:", jamba::padInteger(round(newH)));
+   }
+
+   # revert the warped hue if needed
    if (TRUE %in% useWarpHue) {
       newH <- colorjam::hw2h(h=newH,
          preset=preset);
+      if (TRUE %in% verbose) {
+         jamba::printDebug("color_complement(): ",
+            "un-warped newH:    ", jamba::padInteger(round(newH)));
+      }
    }
    hcl["H",] <- newH;
 
@@ -199,6 +227,9 @@ color_complement <- function
 
    # convert back to hex
    if (TRUE %in% use_hsl) {
+      # convert HCL hue back to HSL hue
+      hcl["H",] <- hcl_to_hsl_hue(hcl["H",]);
+      # rename dimensions to match H,S,L
       rownames(hcl)[2] <- "S";
       color2 <- jamba::hsl2col(hcl);
    } else {

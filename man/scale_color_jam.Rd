@@ -63,7 +63,7 @@ to be applied to ggplot2 objects. It can provide a more visibly
 distinct set of categorical colors than \code{ggplot2::scale_color_hue()}.
 }
 \examples{
-\dontshow{if ((requireNamespace("ggplot2", quietly=TRUE))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if ((requireNamespace("ggplot2", quietly=TRUE))) withAutoprint(\{ # examplesIf}
 dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
 d <- ggplot2::ggplot(
    dsamp, ggplot2::aes(carat, price)) +
@@ -79,7 +79,8 @@ print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
 }
 \seealso{
 Other colorjam ggplot2: 
-\code{\link{jam_pal}()},
+\code{\link{scale_color_div_xf}()},
+\code{\link{scale_color_linear_xf}()},
 \code{\link{scale_fill_jam}()},
 \code{\link{theme_jam}()}
 }

@@ -73,7 +73,7 @@
 #'
 #' @return vector of colors
 #'
-#' @family colorjam deprecated
+#' @family colorjam internal
 #'
 #' @examples
 #' rainbowJam_v1(12);
@@ -655,7 +655,7 @@ matrix2heatColors <- function
 #' @param verbose logical indicating whether to print verbose output.
 #' @param ... additional arguments are passed to `jamba::getColorRamp()`.
 #'
-#' @family jam color functions
+#' @family colorjam internal
 #'
 #' @examples
 #' # Start with an example numeric vector

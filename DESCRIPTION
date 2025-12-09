@@ -1,7 +1,7 @@
 Package: colorjam
 Type: Package
 Title: Jam Color manipulation functions
-Version: 0.0.33.900
+Version: 0.0.34.900
 Authors@R: person(given="James M.", family="Ward",
     email="jmw86069@gmail.com", role=c("aut", "cre"))
 Maintainer: James M. Ward <jmw86069@gmail.com>
@@ -13,25 +13,30 @@ Depends: R (>= 3.5.0),
 Imports:
     jamba (>= 1.0.4),
     colorspace,
+    farver,
     circlize,
     cli,
-    dichromat
+    dichromat,
+    withr
 Suggests: 
     ggplot2,
     shiny,
-    testthat (>= 3.0.0)
-Enhanced:
+    testthat (>= 3.0.0),
+    plotly
+Enhances:
     jamses,
     SummarizedExperiment,
-    ComplexHeatmap
+    ComplexHeatmap,
+    scales,
+    ragg
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 biocViews:
 Remotes:
    github::jmw86069/jamses
-URL: https://jmw86069.github.io/colorjam
+URL: https://jmw86069.github.io/colorjam/
 BugReports: https://github.com/jmw86069/colorjam/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3

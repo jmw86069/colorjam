@@ -11,58 +11,92 @@
 #' @param theme_default `function` representing a ggplot2 theme.
 #' @param base_size `numeric` default font point size, used for scaling the
 #'    overall text sizes larger or smaller.
-#' @param grid.major.size,grid.minor.size `numeric` the line width for the major
-#'    and minor grid lines, respectively. Set to 0 to suppress either.
+#' @param use_rainbowJam `logical` default TRUE, whether to use colorjam
+#'    for default categorical/discrete colors in ggplot2 version 4.0.0+.
+#' @param darken_colour `logical` default FALSE, when `use_rainbowJam=TRUE`
+#'    it optionally darkens the 'colour' palette, useful when applying
+#'    slightly darked outline color together with 'fill' color.
+#'    See Examples.
+#' @param grid.major.size,grid.minor.size `numeric` defaults 0.5, 0.25
+#'    the line width for the major and minor grid lines, respectively.
+#'    Set to 0 to suppress either, or use 'blankGrid' or 'blankXgrid' or
+#'    'blankYgrid' arguments.
 #' @param strip.background.colour,strip.background.fill `character`
 #'    color for the border and strip background itself when ggplot2 is
 #'    using a faceted layout.
+#'    Default is black border and 'lightgoldenrod1' strip fill color.
 #' @param strip.text.size `numeric` or relative class `ggplot2::rel()` to
 #'    define direct or relative text font size, respectively.
+#'    Default is '14/18' to convert default base_size=18 to font size 14 point.
 #' @param panel.grid.major.colour,panel.grid.minor.colour `character`
 #'    colors for the major and minor grid lines, respectively.
+#'    Defaults are 'grey80' and 'grey90', respectively.
 #' @param panel.background,panel.border `element_rect` or `NULL`
 #'    indicating the type of background or border
 #'    to draw around each plot panel. When set to `NULL` it is
 #'    set to `ggplot2::element_blank()` which displays nothing.
-#' @param axis.text.x.angle `numeric` degrees to rotate the x-axis
-#'    labels, apparently starts at 0 (horizontal) and goes
-#'    counter-clockwise (to the left.)
-#' @param blankGrid,blankXgrid,blankYgrid `logical` indicating whether
+#'    Default uses white panel background fill with black border.
+#' @param axis.text.x.angle `numeric` degrees to rotate x-axis labels,
+#'    default 60 degrees.Starts at 0 (horizontal) and goes
+#'    counter-clockwise so that 60 show labels tilted down-left.
+#' @param blankGrid,blankXgrid,blankYgrid `logical` default FALSE, whether
 #'    to have a blank grid for everything, major, or minor axis lines,
-#'    respectively. Intended to make it fast and easy to remove all
-#'    gridlines.
-#' @param resetTheme `logical` whether to call the function `theme_default`
-#'    which essentially resets (replaces) all previous settings with
-#'    those defined in the theme function. If `FALSE` then only the
-#'    specific settings defined in this function will be applied.
+#'    respectively.
+#'    Intended for convenience to remove gridlines.
+#' @param resetTheme `logical` whether to call `ggplot2::theme_default`
+#'    which replaces all previous ggplot2 theme settings with
+#'    those defined in the theme function.
+#'    If `FALSE` then only the specific settings defined in this function
+#'    will be applied.
 #' @param verbose `logical` indicating whether to print verbose output.
-#' @param ... additional arguments are passed to `ggplot2::theme()` in
-#'    order to allow custom settings beyond what this function provides.
+#' @param ... additional arguments are passed to `ggplot2::theme()`,
+#'    and optionally to `jam_pal()` when `use_rainbowJam=TRUE`.
+#'    Arguments are filtered to match named arguments in respective functions,
+#'    by calling `jamba::call_fn_ellipsis()`. In other words, adding
+#'    arguments to '...' should be safe even when the argument is not
+#'    present in `ggplot2::theme()`.
 #'
 #' @family colorjam ggplot2
 #'
 #' @examples
 #' if (jamba::check_pkg_installed("ggplot2")) {
+#'    set.seed(123)
 #'    dsamp <- ggplot2::diamonds[sample(nrow(ggplot2::diamonds), 1000),];
 #'    d <- ggplot2::ggplot(dsamp,
 #'       ggplot2::aes(carat, price)) +
 #'       ggplot2::geom_point(
-#'          ggplot2::aes(colour=cut),
+#'          ggplot2::aes(colour=as.character(cut)),
 #'          size=2);
+#'    print(d +
+#'       scale_color_jam() +
+#'       ggplot2::ggtitle("scale_color_jam()"));
+#'    print(d +
+#'       theme_jam() +
+#'       ggplot2::ggtitle("theme_jam()"));
 #'
-#'    print(d + scale_color_jam() + ggplot2::ggtitle("scale_color_jam()"));
-#'    print(d + scale_color_jam() + theme_jam() + ggplot2::ggtitle("scale_color_jam() + theme_jam()"));
+#'    d2 <- ggplot2::ggplot(dsamp,
+#'       ggplot2::aes(carat, price)) +
+#'       ggplot2::geom_point(
+#'          shape="circle filled",
+#'          ggplot2::aes(colour=as.character(cut),
+#'             fill=as.character(cut)),
+#'          size=2);
+#'    print(d2 +
+#'       theme_jam(darken_colour=TRUE) +
+#'       ggplot2::ggtitle("theme_jam(darken_colour=TRUE)"));
 #' }
 #'
 #' @export
 theme_jam <- function
 (theme_default=ggplot2::theme_bw,
  base_size=18,
+ use_rainbowJam=TRUE,
+ darken_colour=FALSE,
  grid.major.size=0.5,
  grid.minor.size=0.25,
  strip.background.colour="grey30",
  strip.background.fill="lightgoldenrod1",
- strip.text.size=ggplot2::rel(0.8),
+ strip.text.size=ggplot2::rel(14.18),
  panel.grid.major.colour="grey80",
  panel.grid.minor.colour="grey90",
  panel.background=ggplot2::element_rect(
@@ -89,6 +123,8 @@ theme_jam <- function
    if (!jamba::check_pkg_installed("ggplot2")) {
       stop("theme_jam() requires the ggplot2 package.");
    }
+
+   ## Define the initial theme, either default or current active theme
    if (TRUE %in% resetTheme) {
       tNew <- theme_default(base_size=base_size);
    } else {
@@ -100,9 +136,12 @@ theme_jam <- function
    if (length(panel.background) == 0) {
       panel.background <- ggplot2::element_blank();
    }
+
+   ## Define theme elements
    tNew <- tNew +
       ggplot2::theme(
-         axis.text.x=ggplot2::element_text(angle=axis.text.x.angle,
+         axis.text.x=ggplot2::element_text(
+            angle=axis.text.x.angle,
             hjust=1),
          strip.text=ggplot2::element_text(
             size=strip.text.size,
@@ -115,10 +154,12 @@ theme_jam <- function
          panel.border=panel.border,
          panel.grid.major=ggplot2::element_line(
             colour=panel.grid.major.colour,
-            size=grid.major.size),
+            linewidth=grid.major.size),
          panel.grid.minor=ggplot2::element_line(
             colour=panel.grid.minor.colour,
-            size=grid.minor.size));
+            linewidth=grid.minor.size));
+
+   ## Optionally blank the x- or y-axis grid lines
    if (blankGrid || blankXgrid) {
       if (verbose) {
          jamba::printDebug("theme_jam(): ",
@@ -137,8 +178,35 @@ theme_jam <- function
          panel.grid.major.y=ggplot2::element_blank(),
          panel.grid.minor.y=ggplot2::element_blank());
    }
+
+   ## Apply rainbowJam for ggplot2 >= "4.0.0"
+   if (isTRUE(use_rainbowJam) &&
+         packageVersion("ggplot2") >= "4.0.0") {
+      # Use new theme elements to define discrete color functions
+      tNew <- tNew + ggplot2::theme(
+         palette.colour.discrete=jam_pal(
+            darken=darken_colour,
+            ...),
+         palette.fill.discrete=jam_pal(...)
+      )
+   }
+
+   ## Apply optional arguments
    if (length(list(...)) > 0) {
-      tNew <- tNew + ggplot2::theme(...);
+      tNew <- tryCatch({
+         tNew + ggplot2::theme(...)
+      }, error=function(e){
+         # try again using jamba
+         jamba::printDebug("Error using '...':");print(e);# debug
+         tryCatch({
+            tNew + jamba::call_fn_ellipsis(ggplot2::theme,
+               ...)
+         }, error=function(e){
+            jamba::printDebug("Error using jamba::call_fn_ellipsis():");print(e);# debug
+            # ignore '...' for now
+            tNew
+         })
+      })
    }
    invisible(tNew);
 }
@@ -349,7 +417,7 @@ scale_fill_jam <- function
 #'    `invert=TRUE`.
 #' @param ... additional arguments are passed to `rainbowJam()`.
 #'
-#' @family colorjam ggplot2
+#' @family colorjam internal
 #'
 #' @export
 jam_pal <- function

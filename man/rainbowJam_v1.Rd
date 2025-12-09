@@ -124,4 +124,13 @@ jamba::showColors(rainbowJam_v1(12));
 jamba::showColors(rainbowJam_v1(12, nameStyle="colors"));
 
 }
-\concept{colorjam deprecated}
+\seealso{
+Other colorjam internal: 
+\code{\link{color_distance}()},
+\code{\link{find_color_spread}()},
+\code{\link{jam_pal}()},
+\code{\link{show_color_distance}()},
+\code{\link{slot_colors}()},
+\code{\link{vals2colorLevels}()}
+}
+\concept{colorjam internal}

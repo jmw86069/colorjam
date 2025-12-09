@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Find the closest R color</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jmw86069/colorjam/blob/HEAD/R/jam-color.R" class="external-link"><code>R/jam-color.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jmw86069/colorjam/blob/HEAD/R/colorjam-closest-color.R" class="external-link"><code>R/colorjam-closest-color.R</code></a></small>
       <div class="d-none name"><code>closestRcolor.Rd</code></div>
     </div>
 
@@ -42,8 +42,26 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">closestRcolor</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  colorSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  C_min <span class="op">=</span> <span class="va">Cgrey</span>,</span>
 <span>  Cgrey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"jam.Cgrey"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  C_min <span class="op">=</span> <span class="va">Cgrey</span>,</span>
+<span>  showPalette <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  colorModel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcl"</span>, <span class="st">"LUV"</span><span class="op">)</span>,</span>
+<span>  Hwt <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  Cwt <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  Lwt <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  warpHue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  preset <span class="op">=</span> <span class="st">"ryb"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"maximum"</span>,</span>
+<span>  returnType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"color"</span>, <span class="st">"name"</span>, <span class="st">"match"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">closest_named_color</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  colorSet <span class="op">=</span> <span class="fu">colorjam</span><span class="fu">::</span><span class="va"><a href="named_colors.html">named_colors</a></span>,</span>
+<span>  Cgrey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"jam.Cgrey"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  C_min <span class="op">=</span> <span class="va">Cgrey</span>,</span>
 <span>  showPalette <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  colorModel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hcl"</span>, <span class="st">"LUV"</span><span class="op">)</span>,</span>
 <span>  Hwt <span class="op">=</span> <span class="fl">2.5</span>,</span>
@@ -72,42 +90,31 @@ valid color in R.</p></dd>
 the R colors <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>.</p></dd>
 
 
-<dt id="arg-c-min-cgrey">C_min, Cgrey<a class="anchor" aria-label="anchor" href="#arg-c-min-cgrey"></a></dt>
-<dd><p><code>numeric</code> minimum color Chroma filter applied to
-handle greyscale colors. In most practical cases <code>C_min</code> and <code>Cgrey</code>
-should be the same value. Note <code>Cgrey</code> is used as an option in
-<code><a href="https://rdrr.io/pkg/jamba/man/make_styles.html" class="external-link">jamba::make_styles()</a></code>, <code><a href="https://rdrr.io/pkg/jamba/man/applyCLrange.html" class="external-link">jamba::applyCLrange()</a></code> for similar
-use cases, so it is used here as well: <code>getOption("jamba.Cgrey", 5)</code>.</p><ul><li><p><code>C_min</code> is applied to <code>colorSet</code> to require the closest matching
-color to have at least this color Chroma (saturation).</p></li>
-<li><p><code>Cgrey</code> is applied to <code>x</code> to determine if the input color itself
-is considered greyscale, in which case it should not be matched
-with saturated colors since there is no reliable color hue.
-Instead, the subset of <code>colorSet</code> with Chroma below <code>C_min</code> is used
-for color-matching.</p></li>
-</ul><p>Reworded in short:</p><ul><li><p>Colors in <code>x</code> with Chroma above <code>Cgrey</code> are matched with
-colors in <code>colorSet</code> with Chroma above <code>C_min</code>.</p></li>
-<li><p>Colors in <code>x</code> with Chroma below <code>Cgrey</code> are matched with
-colors in <code>colorSet</code> with Chroma below <code>C_min</code>.</p></li>
-<li><p>The end result should be that saturated input colors match
-saturated reference colors, and unsaturated input colors match
-unsaturated reference colors.</p></li>
+<dt id="arg-cgrey-c-min">Cgrey, C_min<a class="anchor" aria-label="anchor" href="#arg-cgrey-c-min"></a></dt>
+<dd><p><code>numeric</code> default 5, using <code>getOption("jamba.Cgrey", 5)</code>,
+the Chroma at which colors are considered "grey" ("gray").
+The purpose is for saturated colors to match saturated colors,
+and non-saturated colors to match non-saturated colors.</p><ul><li><p><code>Cgrey</code> is applied to <code>colorSet</code>.</p></li>
+<li><p><code>C_min</code> is applied to <code>x</code>.</p></li>
+<li><p>They should be the same value in most scenarios, however it may be
+useful to force <code>x</code> to match with non-grey colors even with small
+but non-zero Chroma.</p></li>
+</ul><p>Rules:</p><ul><li><p>All non-grey colors <code>x</code> are compared with non-grey <code>colorSet</code>.</p></li>
+<li><p>Grey colors <code>x</code> are compared with grey <code>colorSet</code>,
+therefore color Hue is not used.</p></li>
+<li><p>Note <code>Cgrey</code> is an argument in <code><a href="https://jmw86069.github.io/jamba/reference/make_styles.html" class="external-link">jamba::make_styles()</a></code>, and
+<code><a href="https://jmw86069.github.io/jamba/reference/applyCLrange.html" class="external-link">jamba::applyCLrange()</a></code> for similar use cases.</p></li>
 </ul></dd>
-
-
-<dt id="arg-cgrey">Cgrey<a class="anchor" aria-label="anchor" href="#arg-cgrey"></a></dt>
-<dd><p><code>numeric</code> color Chroma at or below which the input color <code>x</code>
-is considered to be "grey" (or "gray"), and therefore the color
-hue is no longer matched.</p></dd>
 
 
 <dt id="arg-showpalette">showPalette<a class="anchor" aria-label="anchor" href="#arg-showpalette"></a></dt>
 <dd><p><code>logical</code> indicating whether to display the input
 colors and resulting closest matching colors by using
-<code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code>.</p></dd>
+<code><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">jamba::showColors()</a></code>.</p></dd>
 
 
 <dt id="arg-colormodel">colorModel<a class="anchor" aria-label="anchor" href="#arg-colormodel"></a></dt>
-<dd><p><code>character</code> color model to use:</p><ul><li><p><code>"hcl"</code>: default, uses HCL provided by <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code> which
+<dd><p><code>character</code> color model to use:</p><ul><li><p><code>"hcl"</code>: default, uses HCL provided by <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">jamba::col2hcl()</a></code> which
 uses the equivalent of <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code> and considers
 color hues in terms of 360 degree angles along a color wheel.</p></li>
 <li><p><code>"LUV"</code>: uses CIELUV color space, provided by <code><a href="https://colorspace.R-Forge.R-project.org/reference/LUV.html" class="external-link">colorspace::LUV()</a></code>
@@ -117,8 +124,9 @@ allowing comparisons using Euclidean distance.</p></li>
 
 
 <dt id="arg-hwt-cwt-lwt">Hwt, Cwt, Lwt<a class="anchor" aria-label="anchor" href="#arg-hwt-cwt-lwt"></a></dt>
-<dd><p><code>numeric</code> relative weights for each dimension of
-HCL colors, for the H, C, and L channels, respectively.</p></dd>
+<dd><p><code>numeric</code>, defaults 2.5, 1, 4, respectively,
+relative weights for the H, C, and L channels, respectively,
+only when <code>colorModel="hcl"</code>.</p></dd>
 
 
 <dt id="arg-warphue">warpHue<a class="anchor" aria-label="anchor" href="#arg-warphue"></a></dt>
@@ -183,12 +191,24 @@ colors, and increased resolution of color hue.</p>
 matching color Hue above Chroma and Luminance. The distance method
 by default uses <code>method="maximum"</code> which also emphasizes the lowest
 distance in any of the three dimensions.</p>
+<p>Notably, this function does not use <code><a href="color_distance.html">color_distance()</a></code>, in part
+because in practice the color metrics used by 'cie2000', 'cie94', 'cmc'
+did not prioritize the same color hue, and often the returned color
+was similar but not the most visibly similar in terms of hue.</p>
+<p>Also <code><a href="color_distance.html">color_distance()</a></code> does not currently permit weights for Hue,
+Chroma, Luminance, as these values are already defined in
+<code><a href="https://farver.data-imaginist.com/reference/compare_colour.html" class="external-link">farver::compare_colour()</a></code>.</p><div class="section">
+<h3 id="todo">Todo<a class="anchor" aria-label="anchor" href="#todo"></a></h3>
+
+<ul><li><p>Consider testing then adding <code><a href="color_distance.html">color_distance()</a></code> as an optional metric.
+Test whether it could improve results.</p></li>
+</ul></div>
+
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other colorjam core:
 <code><a href="blend_colors.html">blend_colors</a>()</code>,
-<code><a href="closest_named_color.html">closest_named_color</a>()</code>,
 <code><a href="color_complement.html">color_complement</a>()</code>,
 <code><a href="colors_to_df.html">colors_to_df</a>()</code>,
 <code><a href="group2colors.html">group2colors</a>()</code>,
@@ -216,7 +236,7 @@ distance in any of the three dimensions.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

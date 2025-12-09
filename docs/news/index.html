@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,114 @@
       <small>Source: <a href="https://github.com/jmw86069/colorjam/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.34.900" id="colorjam-0034900">colorjam 0.0.34.900<a class="anchor" aria-label="anchor" href="#colorjam-0034900"></a></h2>
+<ul><li>Added ‘farver’ to dependencies.</li>
+<li>Fixed various warnings.</li>
+</ul><div class="section level3">
+<h3 id="changes-to-existing-functions-0-0-34-900">Changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-34-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/rainbowJam.html">rainbowJam()</a></code></p>
+<ul><li>Removed deprecated arguments: warpHue, h1, h2, Cvals, Lvals</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/theme_jam.html">theme_jam()</a></code></p>
+<ul><li>Sets <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> default for ggplot2 categorical colors, ggplot2-4.0.0+. Can be avoided with <code>use_rainbowJam=FALSE</code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/colors_to_df.html">colors_to_df()</a></code></p>
+<ul><li>Added two Euclidean-type coordinate systems: ‘luv’ and ‘yxy’ (CIExy).</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/color_distance.html">color_distance()</a></code></p>
+<ul><li>New default <code>method="cmc"</code>, new arguments lightness=2/3, chroma=1, which differ from other recommendations (2 and 1 for acceptability, 1 and 1 for perceptability).</li>
+</ul></li>
+<li><p><code><a href="../reference/color_pie.html">color_pie()</a></code> accepts color <code>function</code> input, and recognizes attribute ‘divergent=TRUE’ to place the center color at the top of the circle.</p></li>
+<li><p><code><a href="../reference/col_div_xf.html">col_div_xf()</a></code> and <code><a href="../reference/make_jam_divergent.html">make_jam_divergent()</a></code> add attribute ‘divergent=TRUE’ to be used by <code><a href="../reference/color_pie.html">color_pie()</a></code> and any enterprising uses of colors or color functions that may benefit.</p></li>
+<li><p><code><a href="../reference/make_jam_divergent.html">make_jam_divergent()</a></code> fixed use of <code>lite</code> in vectorized form when creating multiple gradients at once.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-34-900">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-34-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/color_complement.html">color_complement()</a></code></p>
+<ul><li>Fixed order of hue warp operations which caused mis-alignment on custom color wheels.</li>
+<li>Fixed application of HSL using HCL hue <code><a href="../reference/hcl_to_hsl_hue.html">hcl_to_hsl_hue()</a></code>, improving the output color “equivalence” relative to that color hue.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.33.900" id="colorjam-0033900">colorjam 0.0.33.900<a class="anchor" aria-label="anchor" href="#colorjam-0033900"></a></h2>
+<div class="section level3">
+<h3 id="changes-to-existing-functions-0-0-33-900">Changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-33-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/col_div_xf.html">col_div_xf()</a></code>, <code><a href="../reference/col_linear_xf.html">col_linear_xf()</a></code></p>
+<ul><li>new argument <code>floor_color</code> to assign an optional fixed color below the signal <code>floor</code>, which can be helpful to indicate a sharp indication of values below the noise floor. Otherwise, values might be “nearly the background color” but not clearly defined as such.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.32.900" id="colorjam-0032900">colorjam 0.0.32.900<a class="anchor" aria-label="anchor" href="#colorjam-0032900"></a></h2>
+<div class="section level3">
+<h3 id="changes-to-existing-functions-0-0-32-900">Changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-32-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/add_colors.html">add_colors()</a></code> substantial improvements</p>
+<ul><li>Default begins with <code>min_distance=30</code>, iterates <code>max_iterations</code>, then progressively reduces <code>min_distance</code> by <code>step_distance</code> until <code>n</code> colors are found. If <code>n</code> colors are no solution is found it returns ‘NULL’. When <code>step_distance==0</code> it imposes a strict color distance requirement.</li>
+<li>This process works best when <code>color_fn</code> returns visually distinct colors.</li>
+<li>The new colors are also compared using <code><a href="../reference/find_color_spread.html">find_color_spread()</a></code> to identify colors with greatest difference from each other. This step is still fairly slow, but ultimately necessary to apply two constraints: new colors should differ from given colors, and the new colors which are different from given colors must also be different from each other. In practice, it involves creating a notably larger set of new colors, in order to have ‘n’ colors which are also different from each other.</li>
+<li>In principle, colors should be as different as possible given the color distance method and white reference.</li>
+<li>New argument <code>method</code> to define the color distance method.</li>
+<li>New argument <code>use_white</code> to define a white reference point, passed to <code><a href="https://farver.data-imaginist.com/reference/compare_colour.html" class="external-link">farver::compare_colour()</a></code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/slot_colors.html">slot_colors()</a></code></p>
+<ul><li>new argument <code>min_distance=11.5</code> imposes a minimum threshold when assigning colors. The default is based on the cie2000 distance, and visual comparisons of various color comparisons.</li>
+<li>New argument <code>method</code> to define the color distance method.</li>
+<li>New argument <code>use_white</code> to define a white reference point, passed to <code><a href="https://farver.data-imaginist.com/reference/compare_colour.html" class="external-link">farver::compare_colour()</a></code>.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/rainbowJam.html">rainbowJam()</a></code></p>
+<ul><li>Added secret testing mode <code>test_color_model="HSL"</code> which enables potential hybrid approach that uses HSL to improve visual vibrance of colors.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-function-0-0-32-900">new function<a class="anchor" aria-label="anchor" href="#new-function-0-0-32-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/find_color_spread.html">find_color_spread()</a></code></p>
+<ul><li>Intended at first to be internal, it could be broadly useful.</li>
+<li>It takes a vector of colors, and finds a subset of colors that are all at least <code>min_distance</code> color distance from the rest of the group. For example, given 25 rainbow colors, find 5 that have at least <code>min_distance=15</code>.</li>
+<li>It can be used to find the most distinctive <code>n</code> colors in a set, compared with each other.</li>
+<li>It becomes useful together with <code><a href="../reference/add_colors.html">add_colors()</a></code> to ensure newly added colors are not just different from <code>given_colors</code>, but also different from each other.</li>
+<li>Sadly, this function is currently fairly slow, but will be optimized aggressively over time.</li>
+</ul></li>
+<li><p><code><a href="../reference/plot_colorjam_steps.html">plot_colorjam_steps()</a></code> - simple function to review the Chroma/Luminance steps defined for a given step name.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.31.900" id="colorjam-0031900">colorjam 0.0.31.900<a class="anchor" aria-label="anchor" href="#colorjam-0031900"></a></h2>
+<ul><li>Bumped jamba dependency to 1.0.4, using CRAN. Woot.</li>
+<li>Incremental update to add features to prepare for CRAN submission.</li>
+</ul><div class="section level3">
+<h3 id="new-functions-0-0-31-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-31-900"></a></h3>
+<ul><li>
+<p><code><a href="../reference/add_colors.html">add_colors()</a></code></p>
+<ul><li>Prototype of function to take <code>given_colors</code> and add <code>n</code> more categorical colors with reasonably maximal visual difference.</li>
+<li>Future intention is to use Fibonnaci colors to extend colors in sets.</li>
+<li>Todo: Add another pass to filter adjacent colors whose CL values make the color appear more similar than indicated by the color distance method=“cie2000”.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/color_distance.html">color_distance()</a></code></p>
+<ul><li>Wrapper to <code><a href="https://farver.data-imaginist.com/reference/compare_colour.html" class="external-link">farver::compare_colour()</a></code> that takes hex input, uses <code>method="cie2000"</code> by default.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/show_color_distance.html">show_color_distance()</a></code></p>
+<ul><li>Utility function that uses <code>ComplexHeatmap</code> via <code>jamses</code> to display a visual of color distance.</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/slot_colors.html">slot_colors()</a></code></p>
+<ul><li>Internal function to match one set of colors (given) to another (ref). It detects a reasonable color distance threshold based upon the given colors, so that any “un-slotted” colors could be considered at least as different from the given colors as the given colors are from each other, on average.</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.30.900" id="colorjam-0030900">colorjam 0.0.30.900<a class="anchor" aria-label="anchor" href="#colorjam-0030900"></a></h2>
 <ul><li>Moved <code>jamba</code> to Imports, from Depends, for cleaner R code.</li>
@@ -79,17 +187,17 @@
 <h3 id="bug-fixes-0-0-27-900">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-27-900"></a></h3>
 <ul><li>
 <p><code><a href="../reference/launchColorjamShiny.html">launchColorjamShiny()</a></code></p>
-<ul><li>Error when <code>jamba</code> was not already loaded, added proper package prefix: <code><a href="https://rdrr.io/pkg/jamba/man/kable_coloring.html" class="external-link">jamba::kable_coloring()</a></code>
+<ul><li>Error when <code>jamba</code> was not already loaded, added proper package prefix: <code><a href="https://jmw86069.github.io/jamba/reference/kable_coloring.html" class="external-link">jamba::kable_coloring()</a></code>
 </li>
 </ul></li>
 <li>
 <p><code><a href="../reference/subset_colors.html">subset_colors()</a></code></p>
-<ul><li>added missing prefixes for <code><a href="https://rdrr.io/pkg/jamba/man/rgb2col.html" class="external-link">jamba::rgb2col()</a></code>
+<ul><li>added missing prefixes for <code><a href="https://jmw86069.github.io/jamba/reference/rgb2col.html" class="external-link">jamba::rgb2col()</a></code>
 </li>
 </ul></li>
 <li>
 <p><code><a href="../reference/rainbowJam.html">rainbowJam()</a></code></p>
-<ul><li>added missing prefix for <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>
+<ul><li>added missing prefix for <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">jamba::col2hcl()</a></code>
 </li>
 </ul></li>
 <li><p><code>named_colors</code> - fixed missing named using <code>data-raw/named_colors.R</code></p></li>
@@ -175,7 +283,7 @@
 <li>436 colors from <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, which were not already defined by Meodai colors.</li>
 </ul></li>
 <li><p>Colors are intended to improve labeling <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> colors.</p></li>
-<li><p>Color labels from <code><a href="../reference/closest_named_color.html">closest_named_color()</a></code> could become a QC step to confirm that <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> creates colors that can be assigned to different named colors.</p></li>
+<li><p>Color labels from <code><a href="../reference/closestRcolor.html">closest_named_color()</a></code> could become a QC step to confirm that <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> creates colors that can be assigned to different named colors.</p></li>
 <li><p>In testing, <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code> did not provide sufficient detail, specific examples frequently included <code>"cornflowerblue"</code> and <code>"steelblue"</code> despite appearing for colors with visibly distinctive blue/purple color hues.</p></li>
 </ul></li>
 </ul></div>
@@ -192,7 +300,7 @@
 <code><a href="../reference/colorjamShinyServer.html">colorjamShinyServer()</a></code>,<code><a href="../reference/colorjamShinyUI.html">colorjamShinyUI()</a></code> are internal functions to provide <code>server</code> and <code>ui</code> components to <code><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">shiny::runApp()</a></code>.</li>
 </ul></li>
 <li>
-<p><code><a href="../reference/closest_named_color.html">closest_named_color()</a></code></p>
+<p><code><a href="../reference/closestRcolor.html">closest_named_color()</a></code></p>
 <ul><li>simple wrapper to <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> except that it uses the 4883 <code>named_colors</code> instead of R <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">grDevices::colors()</a></code>, although all colors are contained in <code>named_colors</code>.</li>
 </ul></li>
 <li>
@@ -334,7 +442,7 @@
 <li>
 <p><code><a href="../reference/color_pie.html">color_pie()</a></code></p>
 <ul><li>text labels are rotated parallel to each pie wedge</li>
-<li>text labels use <code><a href="https://rdrr.io/pkg/jamba/man/shadowText.html" class="external-link">jamba::shadowText()</a></code> and <code><a href="https://rdrr.io/pkg/jamba/man/setTextContrastColor.html" class="external-link">jamba::setTextContrastColor()</a></code>
+<li>text labels use <code><a href="https://jmw86069.github.io/jamba/reference/shadowText.html" class="external-link">jamba::shadowText()</a></code> and <code><a href="https://jmw86069.github.io/jamba/reference/setTextContrastColor.html" class="external-link">jamba::setTextContrastColor()</a></code>
 </li>
 <li>default radius is now 1.1, to fit most plot devices.</li>
 </ul></li>
@@ -386,7 +494,7 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.23.900" id="colorjam-0023900">colorjam 0.0.23.900<a class="anchor" aria-label="anchor" href="#colorjam-0023900"></a></h2>
-<ul><li>bumped dependency <code>jamba (&gt;= 0.0.83.900)</code> to include <code><a href="https://rdrr.io/pkg/jamba/man/hsl2col.html" class="external-link">hsl2col()</a></code>, <code><a href="https://rdrr.io/pkg/jamba/man/col2hsl.html" class="external-link">col2hsl()</a></code>
+<ul><li>bumped dependency <code>jamba (&gt;= 0.0.83.900)</code> to include <code><a href="https://jmw86069.github.io/jamba/reference/hsl2col.html" class="external-link">hsl2col()</a></code>, <code><a href="https://jmw86069.github.io/jamba/reference/col2hsl.html" class="external-link">col2hsl()</a></code>
 </li>
 </ul><div class="section level3">
 <h3 id="changes-to-existing-functions-0-0-23-900">changes to existing functions<a class="anchor" aria-label="anchor" href="#changes-to-existing-functions-0-0-23-900"></a></h3>
@@ -431,7 +539,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-0-22-950">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-22-950"></a></h3>
 <ul><li>
-<code><a href="../reference/approx_degrees.html">approx_degrees()</a></code> was calling <code><a href="https://rdrr.io/pkg/jamba/man/tcount.html" class="external-link">tcount()</a></code> from the <code>jamba</code> package, and because the <code>jamba</code> package is listed as “Depends” its functions are loaded and available to <code>colorjam</code> once it is loaded. However, for some curious reason in R internals, when the function is called directly <code><a href="../reference/approx_degrees.html">colorjam::approx_degrees()</a></code> it does not import <code>jamba</code> functions, therefore <code><a href="https://rdrr.io/pkg/jamba/man/tcount.html" class="external-link">jamba::tcount()</a></code> is not available, and it throws an error. The issue was reported via the <code>venndir</code> package, where default usage of <code>venndir</code> causes an error for the most basic operations. The workaround is to load colorjam or jamba first, however the real fix is to include package prefix here.</li>
+<code><a href="../reference/approx_degrees.html">approx_degrees()</a></code> was calling <code><a href="https://jmw86069.github.io/jamba/reference/tcount.html" class="external-link">tcount()</a></code> from the <code>jamba</code> package, and because the <code>jamba</code> package is listed as “Depends” its functions are loaded and available to <code>colorjam</code> once it is loaded. However, for some curious reason in R internals, when the function is called directly <code><a href="../reference/approx_degrees.html">colorjam::approx_degrees()</a></code> it does not import <code>jamba</code> functions, therefore <code><a href="https://jmw86069.github.io/jamba/reference/tcount.html" class="external-link">jamba::tcount()</a></code> is not available, and it throws an error. The issue was reported via the <code>venndir</code> package, where default usage of <code>venndir</code> causes an error for the most basic operations. The workaround is to load colorjam or jamba first, however the real fix is to include package prefix here.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -460,7 +568,7 @@
 <ul><li>
 <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> and <code><a href="../reference/twostep_gradient.html">twostep_gradient()</a></code> were updated to use proper package prefixing to the <code>jamba</code> package.</li>
 <li>
-<code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code> and <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code> no longer <code><a href="https://ggplot2.tidyverse.org" class="external-link">require(ggplot2)</a></code>, and use <code><a href="https://rdrr.io/pkg/jamba/man/check_pkg_installed.html" class="external-link">jamba::check_pkg_installed()</a></code> to test whether ggplot2 is available. Added examples for both.</li>
+<code><a href="../reference/scale_color_jam.html">scale_color_jam()</a></code> and <code><a href="../reference/scale_fill_jam.html">scale_fill_jam()</a></code> no longer <code><a href="https://ggplot2.tidyverse.org" class="external-link">require(ggplot2)</a></code>, and use <code><a href="https://jmw86069.github.io/jamba/reference/check_pkg_installed.html" class="external-link">jamba::check_pkg_installed()</a></code> to test whether ggplot2 is available. Added examples for both.</li>
 <li>
 <code><a href="../reference/theme_jam.html">theme_jam()</a></code> no longer <code><a href="https://ggplot2.tidyverse.org" class="external-link">require(ggplot2)</a></code> and now properly calls <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">ggplot2::theme_classic()</a></code> with argument <code>resetTheme=TRUE</code>.</li>
 </ul></div>
@@ -534,7 +642,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-0-17-900">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-17-900"></a></h3>
 <ul><li>
-<code><a href="../reference/mean_angle.html">mean_angle()</a></code> had bare reference to <code><a href="https://rdrr.io/pkg/jamba/man/deg2rad.html" class="external-link">jamba::deg2rad()</a></code> which was fixed. This fixed an error in <code><a href="../reference/blend_colors.html">blend_colors()</a></code> when the <code>jamba</code> was not attached.</li>
+<code><a href="../reference/mean_angle.html">mean_angle()</a></code> had bare reference to <code><a href="https://jmw86069.github.io/jamba/reference/deg2rad.html" class="external-link">jamba::deg2rad()</a></code> which was fixed. This fixed an error in <code><a href="../reference/blend_colors.html">blend_colors()</a></code> when the <code>jamba</code> was not attached.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -611,7 +719,7 @@
 <div class="section level3">
 <h3 id="new-function-0-0-13-900">New function<a class="anchor" aria-label="anchor" href="#new-function-0-0-13-900"></a></h3>
 <ul><li>
-<code><a href="../reference/color_pie.html">color_pie()</a></code> is a simple function to display colors in pie chart form, which is helpful to assess the first and last color in a rainbow color ramp. In fact, <code><a href="../reference/color_pie.html">color_pie()</a></code> might be moved into <code><a href="https://rdrr.io/pkg/jamba/man/showColors.html" class="external-link">jamba::showColors()</a></code> as an optional output format. Current challenge is how to label each ring, when the input is a list of color vectors.</li>
+<code><a href="../reference/color_pie.html">color_pie()</a></code> is a simple function to display colors in pie chart form, which is helpful to assess the first and last color in a rainbow color ramp. In fact, <code><a href="../reference/color_pie.html">color_pie()</a></code> might be moved into <code><a href="https://jmw86069.github.io/jamba/reference/showColors.html" class="external-link">jamba::showColors()</a></code> as an optional output format. Current challenge is how to label each ring, when the input is a list of color vectors.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -635,7 +743,7 @@
 <div class="section level3">
 <h3 id="changes-0-0-10-900">changes<a class="anchor" aria-label="anchor" href="#changes-0-0-10-900"></a></h3>
 <ul><li>
-<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> was updated to handle new behavior from <code><a href="https://rdrr.io/pkg/jamba/man/col2hcl.html" class="external-link">col2hcl()</a></code> which by default does not assign names to unnamed vectors.</li>
+<code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> was updated to handle new behavior from <code><a href="https://jmw86069.github.io/jamba/reference/col2hcl.html" class="external-link">col2hcl()</a></code> which by default does not assign names to unnamed vectors.</li>
 <li>
 <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> now has <code>method</code> argument to define the distance method (see <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">stats::dist()</a></code>); added optional “LUV” color model. In some cases “LUV” has greater sensitivity albeit with less accuracy. In other words for large color vectors, “LUV” may produce the most non-repeated colors at cost of accuracy, while “hcl” tends to be more accurate but sometimes snaps two similar colors to the same closest R color. Future work should probably handle greyscale colors separately.</li>
 </ul></div>
@@ -653,7 +761,7 @@
 <div class="section level3">
 <h3 id="new-functions-0-0-8-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-8-900"></a></h3>
 <ul><li>
-<code><a href="../reference/vals2colorLevels.html">vals2colorLevels()</a></code> converts a numeric vector into a color gradient, optionally divergent around a baseline, optionally applying the color warp using <code><a href="https://rdrr.io/pkg/jamba/man/warpRamp.html" class="external-link">jamba::warpRamp()</a></code> and a <code>lens</code> adjustment value.</li>
+<code><a href="../reference/vals2colorLevels.html">vals2colorLevels()</a></code> converts a numeric vector into a color gradient, optionally divergent around a baseline, optionally applying the color warp using <code><a href="https://jmw86069.github.io/jamba/reference/warpRamp.html" class="external-link">jamba::warpRamp()</a></code> and a <code>lens</code> adjustment value.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -696,7 +804,7 @@
 <div class="section level3">
 <h3 id="new-functions-0-0-3-900">new functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-3-900"></a></h3>
 <ul><li>
-<code><a href="../reference/group2colors.html">group2colors()</a></code> takes a vector of group labels and assigns categorical colors, by default using <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> but which can be substituted with other color functions as needed. It maintains order of factor levels, otherwise uses <code><a href="https://rdrr.io/pkg/jamba/man/mixedSort.html" class="external-link">jamba::mixedSort()</a></code> to order unique labels before assigning colors.</li>
+<code><a href="../reference/group2colors.html">group2colors()</a></code> takes a vector of group labels and assigns categorical colors, by default using <code><a href="../reference/rainbowJam.html">rainbowJam()</a></code> but which can be substituted with other color functions as needed. It maintains order of factor levels, otherwise uses <code><a href="https://jmw86069.github.io/jamba/reference/mixedSort.html" class="external-link">jamba::mixedSort()</a></code> to order unique labels before assigning colors.</li>
 <li>
 <code><a href="../reference/closestRcolor.html">closestRcolor()</a></code> finds the closest named R color from <code><a href="https://rdrr.io/r/grDevices/colors.html" class="external-link">colors()</a></code> and returns that name. It can also be given a custom color vector, and will return the closest color for each color in the input list.</li>
 <li>
@@ -712,7 +820,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

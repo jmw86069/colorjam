@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,11 +42,13 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">theme_jam</span><span class="op">(</span></span>
 <span>  theme_default <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span>,</span>
 <span>  base_size <span class="op">=</span> <span class="fl">18</span>,</span>
+<span>  use_rainbowJam <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  darken_colour <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  grid.major.size <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  grid.minor.size <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  strip.background.colour <span class="op">=</span> <span class="st">"grey30"</span>,</span>
 <span>  strip.background.fill <span class="op">=</span> <span class="st">"lightgoldenrod1"</span>,</span>
-<span>  strip.text.size <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">0.8</span><span class="op">)</span>,</span>
+<span>  strip.text.size <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">14.18</span><span class="op">)</span>,</span>
 <span>  panel.grid.major.colour <span class="op">=</span> <span class="st">"grey80"</span>,</span>
 <span>  panel.grid.minor.colour <span class="op">=</span> <span class="st">"grey90"</span>,</span>
 <span>  panel.background <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, colour <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
@@ -74,52 +76,71 @@
 overall text sizes larger or smaller.</p></dd>
 
 
+<dt id="arg-use-rainbowjam">use_rainbowJam<a class="anchor" aria-label="anchor" href="#arg-use-rainbowjam"></a></dt>
+<dd><p><code>logical</code> default TRUE, whether to use colorjam
+for default categorical/discrete colors in ggplot2 version 4.0.0+.</p></dd>
+
+
+<dt id="arg-darken-colour">darken_colour<a class="anchor" aria-label="anchor" href="#arg-darken-colour"></a></dt>
+<dd><p><code>logical</code> default FALSE, when <code>use_rainbowJam=TRUE</code>
+it optionally darkens the 'colour' palette, useful when applying
+slightly darked outline color together with 'fill' color.
+See Examples.</p></dd>
+
+
 <dt id="arg-grid-major-size-grid-minor-size">grid.major.size, grid.minor.size<a class="anchor" aria-label="anchor" href="#arg-grid-major-size-grid-minor-size"></a></dt>
-<dd><p><code>numeric</code> the line width for the major
-and minor grid lines, respectively. Set to 0 to suppress either.</p></dd>
+<dd><p><code>numeric</code> defaults 0.5, 0.25
+the line width for the major and minor grid lines, respectively.
+Set to 0 to suppress either, or use 'blankGrid' or 'blankXgrid' or
+'blankYgrid' arguments.</p></dd>
 
 
 <dt id="arg-strip-background-colour-strip-background-fill">strip.background.colour, strip.background.fill<a class="anchor" aria-label="anchor" href="#arg-strip-background-colour-strip-background-fill"></a></dt>
 <dd><p><code>character</code>
 color for the border and strip background itself when ggplot2 is
-using a faceted layout.</p></dd>
+using a faceted layout.
+Default is black border and 'lightgoldenrod1' strip fill color.</p></dd>
 
 
 <dt id="arg-strip-text-size">strip.text.size<a class="anchor" aria-label="anchor" href="#arg-strip-text-size"></a></dt>
 <dd><p><code>numeric</code> or relative class <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::rel()</a></code> to
-define direct or relative text font size, respectively.</p></dd>
+define direct or relative text font size, respectively.
+Default is '14/18' to convert default base_size=18 to font size 14 point.</p></dd>
 
 
 <dt id="arg-panel-grid-major-colour-panel-grid-minor-colour">panel.grid.major.colour, panel.grid.minor.colour<a class="anchor" aria-label="anchor" href="#arg-panel-grid-major-colour-panel-grid-minor-colour"></a></dt>
 <dd><p><code>character</code>
-colors for the major and minor grid lines, respectively.</p></dd>
+colors for the major and minor grid lines, respectively.
+Defaults are 'grey80' and 'grey90', respectively.</p></dd>
 
 
 <dt id="arg-panel-background-panel-border">panel.background, panel.border<a class="anchor" aria-label="anchor" href="#arg-panel-background-panel-border"></a></dt>
 <dd><p><code>element_rect</code> or <code>NULL</code>
 indicating the type of background or border
 to draw around each plot panel. When set to <code>NULL</code> it is
-set to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_blank()</a></code> which displays nothing.</p></dd>
+set to <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">ggplot2::element_blank()</a></code> which displays nothing.
+Default uses white panel background fill with black border.</p></dd>
 
 
 <dt id="arg-axis-text-x-angle">axis.text.x.angle<a class="anchor" aria-label="anchor" href="#arg-axis-text-x-angle"></a></dt>
-<dd><p><code>numeric</code> degrees to rotate the x-axis
-labels, apparently starts at 0 (horizontal) and goes
-counter-clockwise (to the left.)</p></dd>
+<dd><p><code>numeric</code> degrees to rotate x-axis labels,
+default 60 degrees.Starts at 0 (horizontal) and goes
+counter-clockwise so that 60 show labels tilted down-left.</p></dd>
 
 
 <dt id="arg-blankgrid-blankxgrid-blankygrid">blankGrid, blankXgrid, blankYgrid<a class="anchor" aria-label="anchor" href="#arg-blankgrid-blankxgrid-blankygrid"></a></dt>
-<dd><p><code>logical</code> indicating whether
+<dd><p><code>logical</code> default FALSE, whether
 to have a blank grid for everything, major, or minor axis lines,
-respectively. Intended to make it fast and easy to remove all
-gridlines.</p></dd>
+respectively.
+Intended for convenience to remove gridlines.</p></dd>
 
 
 <dt id="arg-resettheme">resetTheme<a class="anchor" aria-label="anchor" href="#arg-resettheme"></a></dt>
-<dd><p><code>logical</code> whether to call the function <code>theme_default</code>
-which essentially resets (replaces) all previous settings with
-those defined in the theme function. If <code>FALSE</code> then only the
-specific settings defined in this function will be applied.</p></dd>
+<dd><p><code>logical</code> whether to call <code>ggplot2::theme_default</code>
+which replaces all previous ggplot2 theme settings with
+those defined in the theme function.
+If <code>FALSE</code> then only the specific settings defined in this function
+will be applied.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -127,8 +148,12 @@ specific settings defined in this function will be applied.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments are passed to <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code> in
-order to allow custom settings beyond what this function provides.</p></dd>
+<dd><p>additional arguments are passed to <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code>,
+and optionally to <code><a href="jam_pal.html">jam_pal()</a></code> when <code>use_rainbowJam=TRUE</code>.
+Arguments are filtered to match named arguments in respective functions,
+by calling <code><a href="https://jmw86069.github.io/jamba/reference/call_fn_ellipsis.html" class="external-link">jamba::call_fn_ellipsis()</a></code>. In other words, adding
+arguments to '...' should be safe even when the argument is not
+present in <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">ggplot2::theme()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -141,26 +166,43 @@ overlaps.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other colorjam ggplot2:
-<code><a href="jam_pal.html">jam_pal</a>()</code>,
+<code><a href="scale_color_div_xf.html">scale_color_div_xf</a>()</code>,
 <code><a href="scale_color_jam.html">scale_color_jam</a>()</code>,
+<code><a href="scale_color_linear_xf.html">scale_color_linear_xf</a>()</code>,
 <code><a href="scale_fill_jam.html">scale_fill_jam</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jamba/man/check_pkg_installed.html" class="external-link">check_pkg_installed</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">jamba</span><span class="fu">::</span><span class="fu"><a href="https://jmw86069.github.io/jamba/reference/check_pkg_installed.html" class="external-link">check_pkg_installed</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
 <span class="r-in"><span>   <span class="va">dsamp</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html" class="external-link">diamonds</a></span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html" class="external-link">diamonds</a></span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span>,<span class="op">]</span>;</span></span>
 <span class="r-in"><span>   <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dsamp</span>,</span></span>
 <span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>         <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="va">cut</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>         size<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"scale_color_jam()"</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">theme_jam</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam()"</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span> <span class="op">+</span> <span class="fu"><a href="scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"scale_color_jam()"</span><span class="op">)</span><span class="op">)</span>;</span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d</span> <span class="op">+</span> <span class="fu"><a href="scale_color_jam.html">scale_color_jam</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_jam</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"scale_color_jam() + theme_jam()"</span><span class="op">)</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span>   <span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dsamp</span>,</span></span>
+<span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>         shape<span class="op">=</span><span class="st">"circle filled"</span>,</span></span>
+<span class="r-in"><span>         <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cut</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         size<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;</span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">d2</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">theme_jam</span><span class="op">(</span>darken_colour<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>      <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"theme_jam(darken_colour=TRUE)"</span><span class="op">)</span><span class="op">)</span>;</span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-plt img"><img src="theme_jam-1.png" alt="" width="768" height="768"></span>
 <span class="r-plt img"><img src="theme_jam-2.png" alt="" width="768" height="768"></span>
+<span class="r-plt img"><img src="theme_jam-3.png" alt="" width="768" height="768"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -173,7 +215,7 @@ overlaps.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

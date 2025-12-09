@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">colorjam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.30.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.34.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@ the preset. The description will be added as an attribute:
     <p>The colorjam presets represent customized color wheels, used
 for various color operations.</p><ul><li><p><code>h1</code> contains actual color hue values, with range <code>c(0, 360)</code>.
 Its values are intended to be used in HCL color hue operations,
-such as <code><a href="https://rdrr.io/pkg/jamba/man/hcl2col.html" class="external-link">jamba::hcl2col()</a></code>, or <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code>. These
+such as <code><a href="https://jmw86069.github.io/jamba/reference/hcl2col.html" class="external-link">jamba::hcl2col()</a></code>, or <code><a href="https://colorspace.R-Forge.R-project.org/reference/polarLUV.html" class="external-link">colorspace::polarLUV()</a></code>. These
 are not equal to <code>HSV</code> or <code>HLS</code> (also known as HSL) color hues,
 although colorjam preset could be used to convert from HCL to HSV.</p></li>
 <li><p><code>h2</code> contains virtual color hue values, with range <code>c(0, 360)</code>.
@@ -129,6 +129,7 @@ actual HCL colors around the color wheel.</p></li>
 <code><a href="hw2h.html">hw2h</a>()</code>,
 <code><a href="mean_angle.html">mean_angle</a>()</code>,
 <code><a href="plot_colorjam_preset.html">plot_colorjam_preset</a>()</code>,
+<code><a href="plot_colorjam_steps.html">plot_colorjam_steps</a>()</code>,
 <code><a href="remap_colorjam_preset.html">remap_colorjam_preset</a>()</code>,
 <code><a href="validate_colorjam_preset.html">validate_colorjam_preset</a>()</code></p></div>
     </div>
@@ -176,12 +177,10 @@ actual HCL colors around the color wheel.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># remove a preset by defining `h1=NULL`</span></span></span>
 <span class="r-in"><span><span class="fu">add_colorjam_preset</span><span class="op">(</span><span class="st">"custom_dichromat"</span>, h1<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>object 'preset' not found</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> removed preset '<span style="color: #00BB00;">custom_dichromat</span>'.</span>
 <span class="r-in"><span><span class="fu"><a href="colorjam_presets.html">colorjam_presets</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "custom_dichromat" "dichromat"        "dichromat2"       "hcl_to_hsl"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "none"             "rgb"              "rgb2"             "ryb"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [9] "ryb2"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "dichromat"  "dichromat2" "hcl_to_hsl" "none"       "rgb"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "rgb2"       "ryb"        "ryb2"      </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -194,7 +193,7 @@ actual HCL colors around the color wheel.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

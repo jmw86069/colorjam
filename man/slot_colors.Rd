@@ -106,3 +106,13 @@ ref_colors <- colorspace::rainbow_hcl(16)
 slot_colors(given_colors, ref_colors, verbose=TRUE, do_plot=TRUE)
 
 }
+\seealso{
+Other colorjam internal: 
+\code{\link{color_distance}()},
+\code{\link{find_color_spread}()},
+\code{\link{jam_pal}()},
+\code{\link{rainbowJam_v1}()},
+\code{\link{show_color_distance}()},
+\code{\link{vals2colorLevels}()}
+}
+\concept{colorjam internal}

@@ -11,6 +11,7 @@ col_div_xf(
   n = 15,
   colramp = "RdBu_r",
   open_floor = FALSE,
+  floor_color = NULL,
   debug = FALSE,
   ...
 )
@@ -67,6 +68,10 @@ below the \code{floor}, versus using gradient colors below the
 \code{floor}, while all remaining numeric-color assignments
 are held constant.}
 
+\item{floor_color}{\code{character} default NULL, optional fixed color
+to apply below the floor threshold. Note that this color
+works best when \code{open_floor=FALSE}.}
+
 \item{debug}{\code{logical} indicating whether to produce a plot
 that shows the resulting color gradient.}
 
@@ -76,6 +81,15 @@ that shows the resulting color gradient.}
 \code{function} that maps a vector of \code{numeric} values
 to R colors using the divergent color gradient and numeric
 thresholds defined.
+The object contains attributes:
+\itemize{
+\item 'legend_at': \code{numeric} vector of legend label positions.
+\item 'legend_labels': \code{character} vector of labels associated
+with the 'legend_at' positions. When \code{floor} is used,
+the labels include positions just below floor, and the label
+indicates '<floor', for example '<1.5'.
+The label is used by \code{scale_color_div_xf()} for the ggplot2 legend.
+}
 }
 \description{
 Divergent color interpolation function with adjustable range and optional
@@ -185,7 +199,9 @@ Other colorjam gradients:
 \code{\link{twostep_gradient}()}
 
 Other colorjam assignment: 
+\code{\link{add_colors}()},
 \code{\link{col_linear_xf}()},
+\code{\link{color_complement}()},
 \code{\link{group2colors}()},
 \code{\link{matrix2heatColors}()},
 \code{\link{rainbowJamMulti}()},

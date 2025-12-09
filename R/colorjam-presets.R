@@ -244,7 +244,7 @@ add_colorjam_preset <- function
    if (length(h1) == 0) {
       if (preset %in% ls(.colorjam_presets)) {
          # remove
-         rm(preset,
+         rm(list=as.character(preset),
             envir=.colorjam_presets)
          if (TRUE %in% verbose) {
             cli::cli_alert_info("removed preset '{.field {preset}}'.")

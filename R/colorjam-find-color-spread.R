@@ -21,12 +21,19 @@
 #' It then runs all combinations and sorts for the set with the
 #' highest minimum distance, thereby the "most distinctive subset".
 #'
+#' @returns `character` vector of colors with minimum distances to each
+#'    other of at least `min_distance`, or lower when `step_distance` is
+#'    negative. Note that it may return more than `n` colors, when
+#'    there are multiple colors to meet this criteria.
+#'
 #' @param x `character` vector of colors
 #' @param n `integer` minimum number of colors
 #' @param min_distance `numeric` minimum distance required between colors.
-#' @param step_distance `numeric` default 0, when non-zero the `min_distance`
+#' @param step_distance `numeric` default -1, when non-zero the `min_distance`
 #'    is iterated until the `min_distance` criteria are met for at least
 #'    `n` colors.
+#'    * Use `step_distance=0` to prevent returning colors when there are
+#'    not `n` colors with distance `min_distance`.
 #' @param method `character` distance method, default 'cie2000'.
 #' @param use_white `character` white reference, default 'F5'.
 #' @param byCols `character` with optional column sorting, used to prioritize
@@ -35,7 +42,7 @@
 #'    * `'-met_n'` - decreasing filter of whether the `n` threshold was met
 #'    * `'-d'` - decreasing minimum distance in each color set
 #'    * `'-found_n'` - decreasing number of colors that met the criteria
-#' @param first_only `logical` default FALSE, whether to return only the
+#' @param first_only `logical` default TRUE, whether to return only the
 #'    first successful color combination meeting the criteria for
 #'    `min_distance` and `n`.
 #'    * When `first_only=FALSE` it will exhaustively determine all possible
@@ -45,16 +52,27 @@
 #'    sorting.
 #' @param ... additional arguments are passed to `color_distance()`.
 #'
+#' @family colorjam internal
+#'
 #' @examples
-#' find_color_spread(colorspace::rainbow_hcl(12), n=5, min_distance=20, step_distance=-1, first_only=TRUE)
-#' find_color_spread(colorspace::rainbow_hcl(30), n=12, min_distance=20, step_distance=-1, first_only=TRUE)
+#' x12 <- colorspace::rainbow_hcl(12, c=95)
+#' new5 <- sort_colors(find_color_spread(x12, n=5, min_distance=40))
+#' color_pie(list(x12, new5))
+#'
+#' x12 <- rainbow(50)
+#' new7 <- sort_colors(find_color_spread(x12, n=7, min_distance=30))
+#' color_pie(list(x12, new7))
+#'
+#' x3a <- rainbow(30)
+#' x3b <- sort_colors(find_color_spread(x3a, n=12, min_distance=20))
+#' color_pie(list(x3a, x3b))
 #'
 #' @export
 find_color_spread <- function
 (x,
  n=2,
  min_distance=11.5,
- step_distance=0,
+ step_distance=-1,
  method="cie2000",
  use_white="F5",
  byCols=c("-met_n", "-d", "-found_n"),
@@ -74,7 +92,7 @@ find_color_spread <- function
       ...)
    diag(cd) <- NA;
    cd_min <- apply(cd, 1, min, na.rm=TRUE)
-   if (all(cd_min) >= min_distance) {
+   if (all(cd_min >= min_distance)) {
       return(x)
    }
    cd_num_valid <- apply(cd, 1, function(i){
@@ -172,6 +190,10 @@ find_color_spread <- function
          out_sublist <- strsplit(out_sublist_v, ",")
          # return(out_sublist)
          out_sublist_d <- sapply(out_sublist, function(k){
+            k1 <- cd[k, k, drop=FALSE];
+            if (length(k1) == 0) {
+               return(0)
+            }
             min(cd[k, k, drop=FALSE], na.rm=TRUE)
          })
          out_sublist_n <- lengths(out_sublist);
