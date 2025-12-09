@@ -1,5 +1,8 @@
 ---
-output: github_document
+output:
+  github_document:
+    df_print: kable
+    dev: ragg_png
 editor_options: 
   markdown: 
     wrap: 80
@@ -372,4 +375,44 @@ if (suppressPackageStartupMessages(require(ggplot2))) {
          panel.background=ggplot2::element_rect(fill="#EEEEEE"),
          base_size=24)
 }
+```
+
+### Tidy Colors
+
+The `colors_to_df()` output is a `data.frame` with sufficient columns
+to enable tidy filtering.
+
+An example with `data.frame` output is shown below:
+
+```{r colors_to_df}
+colors_df <- head(colors_to_df(named_colors), 20);
+colors_df
+```
+
+Two key function use this `data.frame` behavior:
+
+1. `sort_colors()`
+
+   * Sorting colors requires choosing criteria to sort,
+   and any column returned by `colors_to_df()` can be used.
+   * Most often, it uses the color hue from HCL `'H'`.
+   Did you know that the `'HCL'` and `'hsv'` hues are not the same?
+   They aren't even in the same order!
+   * The argument `byCols` is used to define the columns to sort,
+   for example: `byCols=c("H", "C", "L")`
+
+2. `subset_colors()`
+
+   * Again, any column returned by `colors_to_df()` can be used
+   with '...' to apply the equivalent of `subset()` on the `data.frame`.
+   * In fact, shhhhh `sort_colors()` and `subset_colors()` can both filter,
+   and can both sort by columns. The main difference is that
+   `subset_colors()` does not enable sorting by default, while
+   `sort_colors()` does sort by default.
+
+```{r sort_subset_colors, fig.alt="Example color wheel showing the result after applying subset and sort to colorjam named_colors."}
+new_colors <- head(subset_colors(named_colors,
+   H > 21 & H < 30 & C > 80,
+   byCols=c("H", "-C", "-L")), 20)
+color_pie(new_colors)
 ```
