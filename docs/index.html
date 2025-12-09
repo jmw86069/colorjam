@@ -376,6 +376,596 @@
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-ggplot2_theme_figure-1.png" alt="A ggplot2 figure is shown with several custom options provided by the colorjam theme function theme_jam()."></p>
 </div>
+<div class="section level3">
+<h3 id="tidy-colors">Tidy Colors<a class="anchor" aria-label="anchor" href="#tidy-colors"></a>
+</h3>
+<p>The <code><a href="reference/colors_to_df.html">colors_to_df()</a></code> output is a <code>data.frame</code> with sufficient columns to enable tidy filtering.</p>
+<p>An example with <code>data.frame</code> output is shown below:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colors_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/colors_to_df.html">colors_to_df</a></span><span class="op">(</span><span class="va">named_colors</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>;</span>
+<span><span class="va">colors_df</span></span></code></pre></div>
+<div class="kable-table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+<col width="4%">
+</colgroup>
+<thead><tr>
+<th align="left"></th>
+<th align="right">num</th>
+<th align="left">hex</th>
+<th align="left">name</th>
+<th align="right">H</th>
+<th align="right">C</th>
+<th align="right">L</th>
+<th align="right">alpha</th>
+<th align="right">red</th>
+<th align="right">green</th>
+<th align="right">blue</th>
+<th align="right">h</th>
+<th align="right">s</th>
+<th align="right">v</th>
+<th align="right">hsl_h</th>
+<th align="right">hsl_s</th>
+<th align="right">hsl_l</th>
+<th align="right">luv_l</th>
+<th align="right">luv_u</th>
+<th align="right">luv_v</th>
+<th align="right">yxy_y1</th>
+<th align="right">yxy_x</th>
+<th align="right">yxy_y2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">pink_prestige</td>
+<td align="right">1</td>
+<td align="left">#EE99AAFF</td>
+<td align="left">pink_prestige</td>
+<td align="right">0.0705808</td>
+<td align="right">54.40326</td>
+<td align="right">72.13857</td>
+<td align="right">1</td>
+<td align="right">238</td>
+<td align="right">153</td>
+<td align="right">170</td>
+<td align="right">0.9666667</td>
+<td align="right">0.3571429</td>
+<td align="right">0.9333333</td>
+<td align="right">348.0000</td>
+<td align="right">71.42857</td>
+<td align="right">76.66667</td>
+<td align="right">72.13857</td>
+<td align="right">54.40322</td>
+<td align="right">0.0670176</td>
+<td align="right">43.865593</td>
+<td align="right">0.3811828</td>
+<td align="right">0.3101709</td>
+</tr>
+<tr>
+<td align="left">raspberry</td>
+<td align="right">2</td>
+<td align="left">#B00149FF</td>
+<td align="left">raspberry</td>
+<td align="right">0.2808081</td>
+<td align="right">102.90505</td>
+<td align="right">37.36411</td>
+<td align="right">1</td>
+<td align="right">176</td>
+<td align="right">1</td>
+<td align="right">73</td>
+<td align="right">0.9314286</td>
+<td align="right">0.9943182</td>
+<td align="right">0.6901961</td>
+<td align="right">335.3143</td>
+<td align="right">98.87006</td>
+<td align="right">34.70588</td>
+<td align="right">37.36411</td>
+<td align="right">102.90382</td>
+<td align="right">0.5043382</td>
+<td align="right">9.735851</td>
+<td align="right">0.5306635</td>
+<td align="right">0.2702127</td>
+</tr>
+<tr>
+<td align="left">vivid_raspberry</td>
+<td align="right">3</td>
+<td align="left">#FF006CFF</td>
+<td align="left">vivid_raspberry</td>
+<td align="right">0.5142031</td>
+<td align="right">150.75152</td>
+<td align="right">54.39601</td>
+<td align="right">1</td>
+<td align="right">255</td>
+<td align="right">0</td>
+<td align="right">108</td>
+<td align="right">0.9294118</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">334.5882</td>
+<td align="right">100.00000</td>
+<td align="right">50.00000</td>
+<td align="right">54.39601</td>
+<td align="right">150.74545</td>
+<td align="right">1.3529069</td>
+<td align="right">22.349625</td>
+<td align="right">0.5328406</td>
+<td align="right">0.2709530</td>
+</tr>
+<tr>
+<td align="left">borderline_pink</td>
+<td align="right">4</td>
+<td align="left">#EE1166FF</td>
+<td align="left">borderline_pink</td>
+<td align="right">0.5247145</td>
+<td align="right">138.14189</td>
+<td align="right">51.31679</td>
+<td align="right">1</td>
+<td align="right">238</td>
+<td align="right">17</td>
+<td align="right">102</td>
+<td align="right">0.9358974</td>
+<td align="right">0.9285714</td>
+<td align="right">0.9333333</td>
+<td align="right">336.9231</td>
+<td align="right">86.66667</td>
+<td align="right">50.00000</td>
+<td align="right">51.31679</td>
+<td align="right">138.13609</td>
+<td align="right">1.2650851</td>
+<td align="right">19.543224</td>
+<td align="right">0.5276855</td>
+<td align="right">0.2723711</td>
+</tr>
+<tr>
+<td align="left">strawberry_milkshake</td>
+<td align="right">5</td>
+<td align="left">#D47186FF</td>
+<td align="left">strawberry_milkshake</td>
+<td align="right">0.6298097</td>
+<td align="right">65.86261</td>
+<td align="right">59.46350</td>
+<td align="right">1</td>
+<td align="right">212</td>
+<td align="right">113</td>
+<td align="right">134</td>
+<td align="right">0.9646465</td>
+<td align="right">0.4669811</td>
+<td align="right">0.8313725</td>
+<td align="right">347.2727</td>
+<td align="right">53.51351</td>
+<td align="right">63.72549</td>
+<td align="right">59.46350</td>
+<td align="right">65.85863</td>
+<td align="right">0.7239639</td>
+<td align="right">27.531948</td>
+<td align="right">0.4115168</td>
+<td align="right">0.3032503</td>
+</tr>
+<tr>
+<td align="left">pink</td>
+<td align="right">6</td>
+<td align="left">#FFC0CBFF</td>
+<td align="left">pink</td>
+<td align="right">0.6598403</td>
+<td align="right">38.58612</td>
+<td align="right">83.58652</td>
+<td align="right">1</td>
+<td align="right">255</td>
+<td align="right">192</td>
+<td align="right">203</td>
+<td align="right">0.9708995</td>
+<td align="right">0.2470588</td>
+<td align="right">1.0000000</td>
+<td align="right">349.5238</td>
+<td align="right">100.00000</td>
+<td align="right">87.64706</td>
+<td align="right">83.58652</td>
+<td align="right">38.58356</td>
+<td align="right">0.4443627</td>
+<td align="right">63.274348</td>
+<td align="right">0.3559281</td>
+<td align="right">0.3177817</td>
+</tr>
+<tr>
+<td align="left">fever_dream</td>
+<td align="right">7</td>
+<td align="left">#DD5577FF</td>
+<td align="left">fever_dream</td>
+<td align="right">0.6636920</td>
+<td align="right">93.23099</td>
+<td align="right">55.28332</td>
+<td align="right">1</td>
+<td align="right">221</td>
+<td align="right">85</td>
+<td align="right">119</td>
+<td align="right">0.9583333</td>
+<td align="right">0.6153846</td>
+<td align="right">0.8666667</td>
+<td align="right">345.0000</td>
+<td align="right">66.66667</td>
+<td align="right">60.00000</td>
+<td align="right">55.28332</td>
+<td align="right">93.22473</td>
+<td align="right">1.0799272</td>
+<td align="right">23.205436</td>
+<td align="right">0.4571880</td>
+<td align="right">0.2914646</td>
+</tr>
+<tr>
+<td align="left">blush_hour</td>
+<td align="right">8</td>
+<td align="left">#FF6F91FF</td>
+<td align="left">blush_hour</td>
+<td align="right">0.6994852</td>
+<td align="right">98.31289</td>
+<td align="right">65.49801</td>
+<td align="right">1</td>
+<td align="right">255</td>
+<td align="right">111</td>
+<td align="right">145</td>
+<td align="right">0.9606481</td>
+<td align="right">0.5647059</td>
+<td align="right">1.0000000</td>
+<td align="right">345.8333</td>
+<td align="right">100.00000</td>
+<td align="right">71.76471</td>
+<td align="right">65.49801</td>
+<td align="right">98.30557</td>
+<td align="right">1.2002055</td>
+<td align="right">34.679035</td>
+<td align="right">0.4430580</td>
+<td align="right">0.2952573</td>
+</tr>
+<tr>
+<td align="left">warm_pink</td>
+<td align="right">9</td>
+<td align="left">#FB5581FF</td>
+<td align="left">warm_pink</td>
+<td align="right">0.7309388</td>
+<td align="right">114.38859</td>
+<td align="right">60.42453</td>
+<td align="right">1</td>
+<td align="right">251</td>
+<td align="right">85</td>
+<td align="right">129</td>
+<td align="right">0.9558233</td>
+<td align="right">0.6613546</td>
+<td align="right">0.9843137</td>
+<td align="right">344.0964</td>
+<td align="right">95.40230</td>
+<td align="right">65.88235</td>
+<td align="right">60.42453</td>
+<td align="right">114.37928</td>
+<td align="right">1.4592488</td>
+<td align="right">28.597258</td>
+<td align="right">0.4727965</td>
+<td align="right">0.2876836</td>
+</tr>
+<tr>
+<td align="left">minted_blueberry_lemonade</td>
+<td align="right">10</td>
+<td align="left">#B32651FF</td>
+<td align="left">minted_blueberry_lemonade</td>
+<td align="right">0.8475109</td>
+<td align="right">93.79360</td>
+<td align="right">40.51949</td>
+<td align="right">1</td>
+<td align="right">179</td>
+<td align="right">38</td>
+<td align="right">81</td>
+<td align="right">0.9491726</td>
+<td align="right">0.7877095</td>
+<td align="right">0.7019608</td>
+<td align="right">341.7021</td>
+<td align="right">64.97696</td>
+<td align="right">42.54902</td>
+<td align="right">40.51949</td>
+<td align="right">93.78333</td>
+<td align="right">1.3873308</td>
+<td align="right">11.567001</td>
+<td align="right">0.5034147</td>
+<td align="right">0.2803467</td>
+</tr>
+<tr>
+<td align="left">plum_cheese</td>
+<td align="right">11</td>
+<td align="left">#670728FF</td>
+<td align="left">plum_cheese</td>
+<td align="right">1.0703754</td>
+<td align="right">54.14944</td>
+<td align="right">20.78795</td>
+<td align="right">1</td>
+<td align="right">103</td>
+<td align="right">7</td>
+<td align="right">40</td>
+<td align="right">0.9427083</td>
+<td align="right">0.9320388</td>
+<td align="right">0.4039216</td>
+<td align="right">339.3750</td>
+<td align="right">87.27273</td>
+<td align="right">21.56863</td>
+<td align="right">20.78795</td>
+<td align="right">54.13999</td>
+<td align="right">1.0115379</td>
+<td align="right">3.189649</td>
+<td align="right">0.5242263</td>
+<td align="right">0.2762370</td>
+</tr>
+<tr>
+<td align="left">just_pink_enough</td>
+<td align="right">12</td>
+<td align="left">#FFEBEEFF</td>
+<td align="left">just_pink_enough</td>
+<td align="right">1.0844364</td>
+<td align="right">11.40565</td>
+<td align="right">94.67497</td>
+<td align="right">1</td>
+<td align="right">255</td>
+<td align="right">235</td>
+<td align="right">238</td>
+<td align="right">0.9750000</td>
+<td align="right">0.0784314</td>
+<td align="right">1.0000000</td>
+<td align="right">351.0000</td>
+<td align="right">100.00000</td>
+<td align="right">96.07843</td>
+<td align="right">94.67497</td>
+<td align="right">11.40361</td>
+<td align="right">0.2158617</td>
+<td align="right">86.850890</td>
+<td align="right">0.3243488</td>
+<td align="right">0.3261197</td>
+</tr>
+<tr>
+<td align="left">love_juice</td>
+<td align="right">13</td>
+<td align="left">#CC1155FF</td>
+<td align="left">love_juice</td>
+<td align="right">1.1132992</td>
+<td align="right">118.16675</td>
+<td align="right">44.08672</td>
+<td align="right">1</td>
+<td align="right">204</td>
+<td align="right">17</td>
+<td align="right">85</td>
+<td align="right">0.9393939</td>
+<td align="right">0.9166667</td>
+<td align="right">0.8000000</td>
+<td align="right">338.1818</td>
+<td align="right">84.61538</td>
+<td align="right">43.33333</td>
+<td align="right">44.08672</td>
+<td align="right">118.14445</td>
+<td align="right">2.2959227</td>
+<td align="right">13.898292</td>
+<td align="right">0.5294945</td>
+<td align="right">0.2751588</td>
+</tr>
+<tr>
+<td align="left">i_love_you_pink</td>
+<td align="right">14</td>
+<td align="left">#D97D8FFF</td>
+<td align="left">i_love_you_pink</td>
+<td align="right">1.1227836</td>
+<td align="right">60.58866</td>
+<td align="right">62.84847</td>
+<td align="right">1</td>
+<td align="right">217</td>
+<td align="right">125</td>
+<td align="right">143</td>
+<td align="right">0.9673913</td>
+<td align="right">0.4239631</td>
+<td align="right">0.8509804</td>
+<td align="right">348.2609</td>
+<td align="right">54.76190</td>
+<td align="right">67.05882</td>
+<td align="right">62.84847</td>
+<td align="right">60.57703</td>
+<td align="right">1.1872358</td>
+<td align="right">31.405506</td>
+<td align="right">0.4002688</td>
+<td align="right">0.3072867</td>
+</tr>
+<tr>
+<td align="left">vampirella</td>
+<td align="right">15</td>
+<td align="left">#9B2848FF</td>
+<td align="left">vampirella</td>
+<td align="right">1.1384221</td>
+<td align="right">76.40123</td>
+<td align="right">35.89973</td>
+<td align="right">1</td>
+<td align="right">155</td>
+<td align="right">40</td>
+<td align="right">72</td>
+<td align="right">0.9536232</td>
+<td align="right">0.7419355</td>
+<td align="right">0.6078431</td>
+<td align="right">343.3043</td>
+<td align="right">58.97436</td>
+<td align="right">38.23529</td>
+<td align="right">35.89973</td>
+<td align="right">76.38615</td>
+<td align="right">1.5179325</td>
+<td align="right">8.956152</td>
+<td align="right">0.4911980</td>
+<td align="right">0.2847877</td>
+</tr>
+<tr>
+<td align="left">köfte_brown</td>
+<td align="right">16</td>
+<td align="left">#773644FF</td>
+<td align="left">köfte_brown</td>
+<td align="right">1.1754052</td>
+<td align="right">41.65790</td>
+<td align="right">31.75826</td>
+<td align="right">1</td>
+<td align="right">119</td>
+<td align="right">54</td>
+<td align="right">68</td>
+<td align="right">0.9641026</td>
+<td align="right">0.5462185</td>
+<td align="right">0.4666667</td>
+<td align="right">347.0769</td>
+<td align="right">37.57225</td>
+<td align="right">33.92157</td>
+<td align="right">31.75826</td>
+<td align="right">41.64914</td>
+<td align="right">0.8545391</td>
+<td align="right">6.978651</td>
+<td align="right">0.4290555</td>
+<td align="right">0.3002969</td>
+</tr>
+<tr>
+<td align="left">sprinkled_with_pink</td>
+<td align="right">17</td>
+<td align="left">#E7A2AEFF</td>
+<td align="left">sprinkled_with_pink</td>
+<td align="right">1.1934883</td>
+<td align="right">43.38015</td>
+<td align="right">73.47320</td>
+<td align="right">1</td>
+<td align="right">231</td>
+<td align="right">162</td>
+<td align="right">174</td>
+<td align="right">0.9710145</td>
+<td align="right">0.2987013</td>
+<td align="right">0.9058824</td>
+<td align="right">349.5652</td>
+<td align="right">58.97436</td>
+<td align="right">77.05882</td>
+<td align="right">73.47320</td>
+<td align="right">43.37074</td>
+<td align="right">0.9035563</td>
+<td align="right">45.888618</td>
+<td align="right">0.3678610</td>
+<td align="right">0.3154297</td>
+</tr>
+<tr>
+<td align="left">mellow_melon</td>
+<td align="right">18</td>
+<td align="left">#EE2266FF</td>
+<td align="left">mellow_melon</td>
+<td align="right">1.3680192</td>
+<td align="right">134.59582</td>
+<td align="right">52.15941</td>
+<td align="right">1</td>
+<td align="right">238</td>
+<td align="right">34</td>
+<td align="right">102</td>
+<td align="right">0.9444444</td>
+<td align="right">0.8571429</td>
+<td align="right">0.9333333</td>
+<td align="right">340.0000</td>
+<td align="right">85.71429</td>
+<td align="right">53.33333</td>
+<td align="right">52.15941</td>
+<td align="right">134.55745</td>
+<td align="right">3.2133636</td>
+<td align="right">20.286331</td>
+<td align="right">0.5238221</td>
+<td align="right">0.2779303</td>
+</tr>
+<tr>
+<td align="left">paper_hearts</td>
+<td align="right">19</td>
+<td align="left">#CC4466FF</td>
+<td align="left">paper_hearts</td>
+<td align="right">1.5145482</td>
+<td align="right">93.72115</td>
+<td align="right">49.41683</td>
+<td align="right">1</td>
+<td align="right">204</td>
+<td align="right">68</td>
+<td align="right">102</td>
+<td align="right">0.9583333</td>
+<td align="right">0.6666667</td>
+<td align="right">0.8000000</td>
+<td align="right">345.0000</td>
+<td align="right">57.14286</td>
+<td align="right">53.33333</td>
+<td align="right">49.41683</td>
+<td align="right">93.68841</td>
+<td align="right">2.4771227</td>
+<td align="right">17.934716</td>
+<td align="right">0.4753347</td>
+<td align="right">0.2902652</td>
+</tr>
+<tr>
+<td align="left">coral_paradise</td>
+<td align="right">20</td>
+<td align="left">#E76682FF</td>
+<td align="left">coral_paradise</td>
+<td align="right">1.6624202</td>
+<td align="right">88.49063</td>
+<td align="right">59.98619</td>
+<td align="right">1</td>
+<td align="right">231</td>
+<td align="right">102</td>
+<td align="right">130</td>
+<td align="right">0.9638243</td>
+<td align="right">0.5584416</td>
+<td align="right">0.9058824</td>
+<td align="right">346.9767</td>
+<td align="right">72.88136</td>
+<td align="right">65.29412</td>
+<td align="right">59.98619</td>
+<td align="right">88.45338</td>
+<td align="right">2.5671695</td>
+<td align="right">28.108005</td>
+<td align="right">0.4431370</td>
+<td align="right">0.2984228</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Two key function use this <code>data.frame</code> behavior:</p>
+<ol style="list-style-type: decimal">
+<li>
+<p><code><a href="reference/sort_colors.html">sort_colors()</a></code></p>
+<ul>
+<li>Sorting colors requires choosing criteria to sort, and any column returned by <code><a href="reference/colors_to_df.html">colors_to_df()</a></code> can be used.</li>
+<li>Most often, it uses the color hue from HCL <code>'H'</code>. Did you know that the <code>'HCL'</code> and <code>'hsv'</code> hues are not the same? They aren’t even in the same order!</li>
+<li>The argument <code>byCols</code> is used to define the columns to sort, for example: <code>byCols=c("H", "C", "L")</code>
+</li>
+</ul>
+</li>
+<li>
+<p><code><a href="reference/subset_colors.html">subset_colors()</a></code></p>
+<ul>
+<li>Again, any column returned by <code><a href="reference/colors_to_df.html">colors_to_df()</a></code> can be used with ‘…’ to apply the equivalent of <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> on the <code>data.frame</code>.</li>
+<li>In fact, shhhhh <code><a href="reference/sort_colors.html">sort_colors()</a></code> and <code><a href="reference/subset_colors.html">subset_colors()</a></code> can both filter, and can both sort by columns. The main difference is that <code><a href="reference/subset_colors.html">subset_colors()</a></code> does not enable sorting by default, while <code><a href="reference/sort_colors.html">sort_colors()</a></code> does sort by default.</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/subset_colors.html">subset_colors</a></span><span class="op">(</span><span class="va">named_colors</span>,</span>
+<span>   <span class="va">H</span> <span class="op">&gt;</span> <span class="fl">21</span> <span class="op">&amp;</span> <span class="va">H</span> <span class="op">&lt;</span> <span class="fl">30</span> <span class="op">&amp;</span> <span class="va">C</span> <span class="op">&gt;</span> <span class="fl">80</span>,</span>
+<span>   byCols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H"</span>, <span class="st">"-C"</span>, <span class="st">"-L"</span><span class="op">)</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/color_pie.html">color_pie</a></span><span class="op">(</span><span class="va">new_colors</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-sort_subset_colors-1.png" alt="Example color wheel showing the result after applying subset and sort to colorjam named_colors."></p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
