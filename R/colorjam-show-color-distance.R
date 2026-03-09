@@ -13,6 +13,10 @@
 #' row and column annotations outside the color distance
 #' heatmap.
 #'
+#' ## Todo
+#'
+#' * Consider highlighting squares with distance below threshold.
+#'
 #' @family colorjam internal
 #'
 #' @returns `list` with two elements, suitable to use with
@@ -30,6 +34,7 @@
 #'    and column hierarchical clustering in the heatmap.
 #' @param row_split `numeric` default 0, used when `cluster_data=TRUE`
 #'    to subdivide the dendrogram into this many separate subclusters.
+#' @param digits `integer` default 3, number of digits for distance metric.
 #' @param ... additional arguments are passed to `color_distance()`,
 #'    then to `jamses::heatmap_se()`. Many arguments in `jamses::heatmap_se()`
 #'    are also passed through to `ComplexHeatmap::Heatmap()`.
@@ -61,6 +66,10 @@ show_color_distance <- function
  show_labels=TRUE,
  cluster_data=FALSE,
  row_split=0,
+ digits=3,
+ highlight_threshold=10,
+ highlight_color="red",
+ highlight_lwd=2,
  ...)
 {
    if (inherits(cd, "character") && is.atomic(cd)) {
@@ -98,7 +107,8 @@ show_color_distance <- function
       names(pc) <- jamba::makeNames(pc,
          renameFirst=FALSE);
    }
-   legend_at <- pretty(c(cd, 150))
+   legend_at <- pretty(c(cd, 200))
+   legend_at <- pretty(c(1, 100));
    legend_labels <- legend_at;
    color_max <- max(legend_at);
    if (length(row_split) == 0 || any(row_split %in% c(0, 1))) {
@@ -109,7 +119,9 @@ show_color_distance <- function
    use_cell_fn <- NULL;
    if (TRUE %in% show_labels) {
       use_cell_fn <- jamba::cell_fun_label(
-         m=list(cd,
+         m=list(
+            cd,
+            # jamba::noiseFloor(100 - cd),
             round(cd)),
          col_hm=colorjam::col_div_xf(color_max),
          show=2);
@@ -119,6 +131,7 @@ show_color_distance <- function
    cdc <- matrix(ncol=ncol(cd), nrow=nrow(cd),
       dimnames=dimnames(cd),
       data=col_div_xf(color_max)(cd));
+      # data=col_div_xf(color_max)(jamba::noiseFloor(100 - cd)));
 
    withr::with_par(list(mar=c(5, 7, 1, 1)), {
       cexCellnote <- 1;
@@ -127,11 +140,32 @@ show_color_distance <- function
       }
 
       # draw the matrix heatmap
+      cd_note <- signif(cd, digits=digits);
+      cd_note[cd_note == 0] <- NA;
       jamba::imageByColors(cdc,
          cexCellnote=cexCellnote,
+         groupCellnotes=FALSE,
          xaxt="n",
          yaxt="n",
-         cellnote=signif(cd, digits=3));
+         cellnote=cd_note);
+
+      # optional highlight_threshold
+      if (length(highlight_threshold) == 1 &&
+            any(cd_note <= highlight_threshold)) {
+         # get TRUE coordinates as matrix
+         cdc_highlight <- which(cd_note <= highlight_threshold &
+               cd_note > 0,
+            arr.ind=TRUE);
+         ix <- cdc_highlight[, 2];
+         iy <- cdc_highlight[, 1];
+         rect(xleft=ix - 0.5,
+            xright=ix + 0.5,
+            ybottom=iy - 0.5,
+            ytop=iy + 0.5,
+            col=NA,
+            border=highlight_color,
+            lwd=highlight_lwd)
+      }
 
       labelCex <- 0.8;
       if (ncol(cd) > 12) {

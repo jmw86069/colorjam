@@ -1,3 +1,10 @@
+# colorjam 0.0.35.900
+
+## Bug fixes
+
+* `theme_jam()` fixed bug in applying `base_size` to strip text size, causing
+it to be extremely large, errantly. It applied 14.18 instead of 14/18.
+
 # colorjam 0.0.34.900
 
 * Added 'farver' to dependencies.

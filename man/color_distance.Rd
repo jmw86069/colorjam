@@ -51,6 +51,13 @@ is typically used for neutral daylight without blue (cool) or
 yellow (warm) shifted background lighting.
 }}
 
+\item{lightness, chroma}{\code{numeric} used when \code{method="cmc"}, with default
+lightness=2/3 and chroma=1 used as a custom adaptation for computer
+screen perception.
+The typical defaults:
+lightness=2, chroma=1 for "acceptability"; and
+lightness=1, chroma=1 for "perceptability".}
+
 \item{do_plot}{\code{logical} default FALSE, whether to plot results using
 \code{show_color_distance()}.}
 

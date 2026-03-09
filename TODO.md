@@ -1,5 +1,11 @@
 # colorjam Todo
 
+## 18dec2025
+
+* Consider making it a function `named_colors()` so it behaves
+as a drop-in replacement for `colors()`.
+* `sort_colors(..., return_type="df")` should include color names.
+
 ## 05dec2025
 
 Prepare for CRAN to support: jamba, venndir, multienrichjam.

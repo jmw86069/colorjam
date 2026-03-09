@@ -10,6 +10,10 @@ show_color_distance(
   show_labels = TRUE,
   cluster_data = FALSE,
   row_split = 0,
+  digits = 3,
+  highlight_threshold = 10,
+  highlight_color = "red",
+  highlight_lwd = 2,
   ...
 )
 }
@@ -28,6 +32,8 @@ and column hierarchical clustering in the heatmap.}
 
 \item{row_split}{\code{numeric} default 0, used when \code{cluster_data=TRUE}
 to subdivide the dendrogram into this many separate subclusters.}
+
+\item{digits}{\code{integer} default 3, number of digits for distance metric.}
 
 \item{...}{additional arguments are passed to \code{color_distance()},
 then to \code{jamses::heatmap_se()}. Many arguments in \code{jamses::heatmap_se()}
@@ -53,6 +59,11 @@ It creates a matrix visual
 summary of color distances, and displays the actual colors as
 row and column annotations outside the color distance
 heatmap.
+\subsection{Todo}{
+\itemize{
+\item Consider highlighting squares with distance below threshold.
+}
+}
 }
 \examples{
 \dontshow{if ((requireNamespace("ComplexHeatmap", quietly=TRUE))) withAutoprint(\{ # examplesIf}

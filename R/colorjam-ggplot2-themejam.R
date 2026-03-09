@@ -96,7 +96,7 @@ theme_jam <- function
  grid.minor.size=0.25,
  strip.background.colour="grey30",
  strip.background.fill="lightgoldenrod1",
- strip.text.size=ggplot2::rel(14.18),
+ strip.text.size=ggplot2::rel(14/18),
  panel.grid.major.colour="grey80",
  panel.grid.minor.colour="grey90",
  panel.background=ggplot2::element_rect(

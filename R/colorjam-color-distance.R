@@ -40,6 +40,12 @@
 #'    * The typical default 'D65' is 'daylight 6500K' and
 #'    is typically used for neutral daylight without blue (cool) or
 #'    yellow (warm) shifted background lighting.
+#' @param lightness,chroma `numeric` used when `method="cmc"`, with default
+#'    lightness=2/3 and chroma=1 used as a custom adaptation for computer
+#'    screen perception.  
+#'    The typical defaults:  
+#'    lightness=2, chroma=1 for "acceptability"; and  
+#'    lightness=1, chroma=1 for "perceptability".
 #' @param do_plot `logical` default FALSE, whether to plot results using
 #'    `show_color_distance()`.
 #' @param ... additional arguments are passed to `farver::compare_colour()`
@@ -68,6 +74,7 @@ color_distance <- function
  use_white="F5",
  lightness=2/3,
  chroma=1,
+ make_symmetric=TRUE,
  do_plot=FALSE,
  ...)
 {
@@ -105,7 +112,13 @@ color_distance <- function
       method=method,
       lightness=lightness,
       chroma=chroma,
-      ...)
+      ...);
+   
+   # if 'cmc' then take the pmin() from top and bottom triangle.
+   if (isTRUE(make_symmetric)) {
+      cd <- pmin(cd, t(cd));
+   }
+   
    attr(cd, "method") <- method;
 
    if (isTRUE(do_plot)) {
